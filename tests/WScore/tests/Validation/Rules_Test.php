@@ -1,8 +1,8 @@
 <?php
 namespace wsTests\Validation;
 
-require_once( __DIR__ . '/../../autoloader.php' );
-use \WScore\Core;
+//require_once( __DIR__ . '/../../autoloader.php' );
+use \WScore\Validation\Rules;
 
 class Rules_Test extends \PHPUnit_Framework_TestCase
 {
@@ -11,8 +11,8 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        Core::go();
-        $this->rule = Core::get( '\WScore\Validation\Rules' );
+        require_once( __DIR__ . '/../../../../scripts/require.php' );
+        $this->rule = new Rules();
     }
     // +----------------------------------------------------------------------+
     function test_merge_filter()

@@ -1,8 +1,7 @@
 <?php
 namespace wsTests\Validation;
-require_once( __DIR__ . '/../../autoloader.php' );
 
-use \WScore\Core;
+use \WScore\Validation\Validation;
 
 class Validation_Test extends \PHPUnit_Framework_TestCase
 {
@@ -14,9 +13,9 @@ class Validation_Test extends \PHPUnit_Framework_TestCase
     
     public function setUp()
     {
-        Core::go();
-        $this->dio  = Core::get( '\WScore\Validation\Validation' );
-        $this->rule = Core::get( '\WScore\Validation\Rules' );
+        require_once( __DIR__ . '/../../../../scripts/require.php' );
+        $this->rule = new \WScore\Validation\Rules();
+        $this->dio  = include( __DIR__ . '/../../../../scripts/validation.php' );;
     }
     public function getData()
     {
