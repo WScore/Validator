@@ -1,0 +1,2 @@
+<?php
+namespace WScore\Validation;
