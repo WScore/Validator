@@ -1,0 +1,20 @@
+{
+    "name": "wscore/validation",
+    "description": "Validation and filtration for values such as form input.",
+    "authors": [
+        {
+            "name": "Asao Kamei",
+            "email": "kamei@workspot.jp"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+
+    },
+    "autoload": {
+        "psr-0": {
+            "WScore\\Validation": "src/"
+        }
+    }
+
+}
