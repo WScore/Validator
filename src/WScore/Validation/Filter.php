@@ -58,7 +58,7 @@ class Filter
      * @param mixed  $default
      * @return mixed
      */
-    public function arrGet( $arr, $key, $default=null ) {
+    private function arrGet( $arr, $key, $default=null ) {
         if( !is_array( $arr ) ) return $default;
         return array_key_exists( $key, $arr ) ? $arr[$key] : $default;
     }
@@ -78,7 +78,7 @@ class Filter
      * @param string      $method
      * @param null|string $p
      */
-    public function error( $method, $p=null ) {
+    protected function setError( $method, $p=null ) {
         $method = substr( $method, strrpos( $method, '::filter_' )+9 );
         $error = array(
             $method     => $p,
@@ -87,6 +87,10 @@ class Filter
             'message'   => $this->message,
         );
         $this->error = $error;
+    }
+
+    public function error() {
+        return $this->error;
     }
     // +----------------------------------------------------------------------+
     //  filter definitions (filters that alters the value).
@@ -143,7 +147,7 @@ class Filter
         $code = ( empty( $p ) || $p === true ) ? static::$charCode: $p;
         if( !mb_check_encoding( $this->value, $code ) ) {
             $this->value = ''; // overwrite invalid encode string.
-            $this->error( __METHOD__, $p );
+            $this->setError( __METHOD__, $p );
         }
     }
 
@@ -191,7 +195,7 @@ class Filter
     public function filter_required() {
         if( "{$this->value}" === '' ) { 
             // the value is empty. check if it is "required".
-            $this->error( __METHOD__ );
+            $this->setError( __METHOD__ );
         }
     }
 
@@ -220,7 +224,7 @@ class Filter
     public function filter_matches( $p ) {
         $option  = $this->arrGet( $this->matchType, $p, $p );
         if( !preg_match( "/^{$option}\$/", $this->value ) ) {
-            $this->error( __METHOD__, $p );
+            $this->setError( __METHOD__, $p );
         }
     }
     /**
@@ -228,7 +232,7 @@ class Filter
      */
     public function filter_pattern( $p ) {
         if( !preg_match( "/^{$p}\$/", $this->value ) ) {
-            $this->error( __METHOD__, $p );
+            $this->setError( __METHOD__, $p );
         }
     }
 
@@ -238,7 +242,7 @@ class Filter
 
     public function filter_sameEmpty() {
         if( "{$this->value}" !== "" ) {
-            $this->error( __METHOD__ );
+            $this->setError( __METHOD__ );
         }
     }
     // +----------------------------------------------------------------------+
