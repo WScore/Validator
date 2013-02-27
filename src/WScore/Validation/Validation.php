@@ -118,8 +118,8 @@ class Validation
     {
         if( substr( $method, 0, 4 ) == 'push' ) {
             $name    = $args[0];
-            $filter  = isset( $args[1] ) ? $args[1]: null;
-            $message = isset( $args[2] ) ? $args[2]: null;
+            $filter  = Utils::arrGet( $args, 1 );
+            $message = Utils::arrGet( $args, 2 );
             $type = strtolower( substr( $method, 4 ) );
             $rule = $this->rule->$type( $filter );
             return $this->push( $name, $rule, $message );

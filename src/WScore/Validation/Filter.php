@@ -52,17 +52,6 @@ class Filter
     }
 
     /**
-     * @param array  $arr
-     * @param string $key
-     * @param mixed  $default
-     * @return mixed
-     */
-    private function arrGet( $arr, $key, $default=null ) {
-        if( !is_array( $arr ) ) return $default;
-        return array_key_exists( $key, $arr ) ? $arr[$key] : $default;
-    }
-
-    /**
      * @param \Closure $closure
      * @param $p
      */
@@ -138,7 +127,7 @@ class Filter
      * @param $p
      */
     public function filter_sanitize( $p ) {
-        $option = $this->arrGet( $this->sanitizes, $p, $p );
+        $option = Utils::arrGet( $this->sanitizes, $p, $p );
         $this->value = filter_var( $this->value, $option );
     }
 
@@ -157,7 +146,7 @@ class Filter
         'zen_kana' => 'KVC',
     );
     public function filter_mbConvert( $p ) {
-        $convert = $this->arrGet( $this->mvConvert, $p, 'KV' );
+        $convert = Utils::arrGet( $this->mvConvert, $p, 'KV' );
         $this->value = mb_convert_kana( $this->value, $convert, static::$charCode );
     }
 
@@ -221,7 +210,7 @@ class Filter
     );
 
     public function filter_matches( $p ) {
-        $option  = $this->arrGet( $this->matchType, $p, $p );
+        $option  = Utils::arrGet( $this->matchType, $p, $p );
         if( !preg_match( "/^{$option}\$/", $this->value ) ) {
             $this->setError( __METHOD__, $p );
         }
