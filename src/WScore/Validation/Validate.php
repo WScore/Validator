@@ -19,7 +19,7 @@ class Validate
      * @Injection
      * @var array|Rules
      */
-    protected $rules;
+    protected $ruleObj;
 
     public $isValid;
 
@@ -39,18 +39,16 @@ class Validate
     {
         if( isset( $filter  ) ) $this->filter  = $filter;
         if( isset( $message ) ) $this->message = $message;
-        if( isset( $rule    ) ) $this->rules   = $rule;
+        if( isset( $rule    ) ) $this->ruleObj = $rule;
     }
 
     /**
      * initializes internal values.
      *
-     * @param array       $rules
      * @param null|string $message
      */
-    protected function init( $rules, $message=null )
+    protected function init( $message=null )
     {
-        $this->rules   = $rules;
         $this->value   = null;
         $this->isValid = true;
         $this->err_msg = null;
@@ -98,7 +96,7 @@ class Validate
     public function validate( $value, $rules, $message=null )
     {
         if( $rules instanceof Rules ) $rules = $rules->getFilters();
-        $this->init( $rules, $message );
+        $this->init( $message );
         if( is_array( $value ) )
         {
             $this->value   = array();
