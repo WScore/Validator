@@ -96,23 +96,23 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
 
         // convert to lower case
         $filters = array( 'string' => 'lower' );
-        $ok = $this->validate->is( $text, $filters );
-        $this->assertTrue( $ok );
+        $value = $this->validate->is( $text, $filters );
         $this->assertEquals( $text_alpha, $text );
+        $this->assertEquals( strtolower( $text_alpha ), $value );
         $this->assertEquals( strtolower( $text_alpha ), $this->validate->value );
 
         // convert to upper case
         $filters = array( 'string' => 'upper' );
-        $ok = $this->validate->is( $text, $filters );
-        $this->assertTrue( $ok );
+        $value = $this->validate->is( $text, $filters );
+        $this->assertEquals( strtoupper( $text_alpha ), $value );
         $this->assertEquals( strtoupper( $text_alpha ), $this->validate->value );
 
         $text_number = '123490';
         $text = $text_number;
         $filters = array( 'matches' => 'number' );
 
-        $ok = $this->validate->is( $text, $filters );
-        $this->assertTrue( $ok );
+        $value = $this->validate->is( $text, $filters );
+        $this->assertEquals( $text_number, $value );
         $this->assertEquals( $text_number, $text );
 
         $text_alpha = 'text';

@@ -67,10 +67,14 @@ class Validate
      * @param string|array $value
      * @param Rules|array  $rules
      * @param null|string  $message
-     * @return bool
+     * @return bool|mixed
      */
     public function is( $value, $rules, $message=null ) {
-        return $this->validate( $value, $rules, $message );
+        $valid = $this->validate( $value, $rules, $message );
+        if( $valid ) {
+            return $this->value;
+        }
+        return false;
     }
     /**
      * validates a value or an array of values for a given filters.
