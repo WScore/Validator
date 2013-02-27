@@ -46,6 +46,7 @@ class Rules implements \ArrayAccess
         // if option is FALSE, the rule is skipped.
         $this->filterOrder = array(
             // filterOptions (modifies the value)
+            'type'        => null,       // type of filter, such as 'text', 'mail', etc.
             'err_msg'     => false,
             'message'     => false,
             'multiple'    => false,      // multiple value.
