@@ -23,9 +23,6 @@ namespace WScore\Validation;
  */
 class Rules implements \ArrayAccess
 {
-    /** @var array        order of filterOptions to apply     */
-    protected $filterOrder = array();
-
     /** @var array        predefined filter filter set        */
     public $filterTypes = array();
 
@@ -44,7 +41,7 @@ class Rules implements \ArrayAccess
         // modifying the string (such as capitalize before checking patterns).
         //   rule => option
         // if option is FALSE, the rule is skipped.
-        $this->filterOrder = array(
+        $this->filter = array(
             // filterOptions (modifies the value)
             'type'        => null,       // type of filter, such as 'text', 'mail', etc.
             'err_msg'     => false,
@@ -89,9 +86,6 @@ class Rules implements \ArrayAccess
             'tel'      => 'multiple:tel | mbConvert:hankaku',
             'fax'      => 'multiple:tel | mbConvert:hankaku',
         );
-        
-        // default filter is filterOrder. 
-        $this->filter = $this->filterOrder;
     }
 
     // +----------------------------------------------------------------------+
