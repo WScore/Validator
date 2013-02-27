@@ -69,7 +69,7 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
     {
         $rule1 = $this->rule->start( 'text | required | string:lower' );
         $this->assertEquals( 'text', $rule1->type );
-        $this->assertEquals( true, $rule1->getFilters( 'required' ) );
+        $this->assertEquals( true, $rule1->isRequired() );
         $this->assertEquals( false, $rule1->getPattern() );
         $this->assertEquals( 'lower', $rule1->getFilters( 'string' ) );
     }
