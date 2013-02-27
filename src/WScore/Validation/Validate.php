@@ -56,7 +56,7 @@ class Validate
     {
         if( !$this->message ) return $error;
         $type = array_key_exists( 'type', $this->rules ) ? $this->rules[ 'type' ] : null;
-        return $this->message->message( $error, $this->filter->message, $type );
+        return $this->message->message( $error, $error['message'], $type );
     }
 
     // +----------------------------------------------------------------------+
@@ -88,19 +88,21 @@ class Validate
             $this->err_msg = array();
             foreach( $value as $key => $val ) 
             {
-                $success = $this->applyFilters( $val, $this->filter, $rules );
-                $this->value[ $key ] = $this->filter->value;
+                $filter = $this->applyFilters( $val, $rules );
+                $success = !$filter->error();
+                $this->value[ $key ] = $filter->value;
                 if( !$success ) {
-                    $this->err_msg[ $key ] = $this->filter->error;
+                    $this->err_msg[ $key ] = $filter->error;
                 }
                 $this->isValid &= ( $success === true );
             }
             $this->isValid = (bool) $this->isValid;
             return $this->isValid;
         }
-        $this->isValid = $this->applyFilters( $value, $this->filter, $rules );
-        $this->err_msg = $this->filter->error;
-        $this->value   = $this->filter->value;
+        $filter = $this->applyFilters( $value, $rules );
+        $this->isValid = !$filter->error();
+        $this->err_msg = $filter->error;
+        $this->value   = $filter->value;
         return $this->isValid;
     }
 
@@ -108,13 +110,12 @@ class Validate
      * do the validation for a single value.
      *
      * @param string $value
-     * @param Filter $filter
      * @param array  $rules
-     * @return bool
+     * @return Filter
      */
-    public function applyFilters( $value, $filter, $rules )
+    public function applyFilters( $value, $rules )
     {
-        $filter->setup( $value );
+        $filter = $this->filter->start( $value );
         $success = true;
         // loop through all the rules to validate $value.
         foreach( $rules as $rule => $parameter )
@@ -126,16 +127,16 @@ class Validate
             if( method_exists( $filter, $method ) ) {
                 $filter->$method( $parameter );
             }
-            // got some error. 
-            if( $filter->error ) {
-                $filter->error = $this->getMessage( $filter->error );
+            // got some error.
+            if( $error = $filter->error ) {
+                $filter->error = $this->getMessage( $error );
                 $success = false;
                 break;
             }
-            // loop break. 
+            // loop break.
             if( $filter->break ) break;
         }
-        return $success;
+        return $filter;
     }
     // +----------------------------------------------------------------------+
 }

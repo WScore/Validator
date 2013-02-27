@@ -44,7 +44,7 @@ class Filter
     {
         $class = get_called_class();
         $filter = new $class;
-        $this->value = $value;
+        $filter->value = $value;
         return $filter;
     }
 
