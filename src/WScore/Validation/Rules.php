@@ -124,6 +124,14 @@ class Rules implements \ArrayAccess
         return $this->filter;
     }
     // +----------------------------------------------------------------------+
+    public function start( $filters )
+    {
+        if( is_string( $filters ) ) {
+            $filters = Utils::convertFilter( $filters, true );
+        }
+        $type = Utils::arrGet( $filters, 'type', 'text' );
+        return $this->ruleForType( $type, $filters );
+    }
     /**
      * @param $type
      * @param $filters

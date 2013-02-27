@@ -22,7 +22,7 @@ class Utils
      * @param string|array $filter
      * @return array
      */
-    public static function convertFilter( $filter )
+    public static function convertFilter( $filter, $type=false )
     {
         if( !$filter ) return array();
         if( is_array( $filter ) ) return $filter;
@@ -37,7 +37,12 @@ class Utils
                 $filter_array[ $filter[0] ] = ( $filter[1]=='FALSE' )? false: $filter[1];
             }
             else {
-                $filter_array[ $filter[0] ] = true;
+                if( $type && !isset( $filter_array[ 'type' ] ) ) {
+                    $filter_array[ 'type' ] = $filter[0];
+                }
+                else {
+                    $filter_array[ $filter[0] ] = true;
+                }
             }
         }
         return $filter_array;
