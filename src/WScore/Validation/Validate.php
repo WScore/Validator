@@ -116,7 +116,6 @@ class Validate
     public function applyFilters( $value, $rules )
     {
         $filter = $this->filter->start( $value );
-        $success = true;
         // loop through all the rules to validate $value.
         foreach( $rules as $rule => $parameter )
         {
@@ -127,14 +126,12 @@ class Validate
             if( method_exists( $filter, $method ) ) {
                 $filter->$method( $parameter );
             }
-            // got some error.
-            if( $error = $filter->error ) {
-                $filter->error = $this->getMessage( $error );
-                $success = false;
-                break;
-            }
             // loop break.
-            if( $filter->break ) break;
+            if( $filter->breakLoop() ) break;
+        }
+        // got some error.
+        if( $error = $filter->error ) {
+            $filter->error = $this->getMessage( $error );
         }
         return $filter;
     }
