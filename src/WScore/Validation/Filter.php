@@ -15,7 +15,7 @@ class Filter
     public $break = false;
 
     /** @var string          error messages */
-    public $err_msg = '';
+    public $message = '';
 
     // +----------------------------------------------------------------------+
     /**
@@ -31,7 +31,25 @@ class Filter
         $this->value = $value;
         $this->error = null;
         $this->break = false;
-        $this->err_msg = '';
+        $this->message = '';
+    }
+
+    /**
+     * returns a fresh $filter with the value set.
+     *
+     * @param string        $value
+     * @return \WScore\Validation\Filter
+     */
+    public function start( $value )
+    {
+        $class = get_called_class();
+        $filter = new $class;
+        $this->value = $value;
+        return $filter;
+    }
+
+    public function breakLoop() {
+        return $this->break;
     }
 
     /**
@@ -62,7 +80,12 @@ class Filter
      */
     public function error( $method, $p=null ) {
         $method = substr( $method, strrpos( $method, '::filter_' )+9 );
-        $error = array( $method => $p );
+        $error = array(
+            $method     => $p,
+            'method'    => $method,
+            'parameter' => $p,
+            'message'   => $this->message,
+        );
         $this->error = $error;
     }
     // +----------------------------------------------------------------------+
@@ -78,7 +101,7 @@ class Filter
         $this->filter_message( $p );
     }
     public function filter_message( $p ) {
-        if( $p ) $this->err_msg = $p;
+        if( $p ) $this->message = $p;
     }
 
     /**

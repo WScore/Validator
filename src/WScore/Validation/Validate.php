@@ -56,7 +56,7 @@ class Validate
     {
         if( !$this->message ) return $error;
         $type = array_key_exists( 'type', $this->rules ) ? $this->rules[ 'type' ] : null;
-        return $this->message->message( $error, $this->filter->err_msg, $type );
+        return $this->message->message( $error, $this->filter->message, $type );
     }
 
     // +----------------------------------------------------------------------+
