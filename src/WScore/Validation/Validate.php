@@ -61,13 +61,14 @@ class Validate
      * generates error message from filter's error information.
      *
      * @param array $error
+     * @param array $rules
      * @return string
      */
-    public function getMessage( $error )
+    public function getMessage( $error, $rules )
     {
         if( isset( $this->userMessage ) ) return $this->userMessage;
         if( !$this->message ) return $error;
-        $type = array_key_exists( 'type', $this->rules ) ? $this->rules[ 'type' ] : null;
+        $type = array_key_exists( 'type', $rules ) ? $rules[ 'type' ] : null;
         return $this->message->message( $error, $error['message'], $type );
     }
 
@@ -131,6 +132,7 @@ class Validate
      */
     public function applyFilters( $value, $rules )
     {
+        /** @var $filter Filter */
         $filter = $this->filter->start( $value );
         // loop through all the rules to validate $value.
         foreach( $rules as $rule => $parameter )
@@ -147,7 +149,7 @@ class Validate
         }
         // got some error.
         if( $error = $filter->error ) {
-            $filter->error = $this->getMessage( $error );
+            $filter->error = $this->getMessage( $error, $rules );
         }
         return $filter;
     }
