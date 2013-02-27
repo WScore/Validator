@@ -65,12 +65,20 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
         // type is date. 
         $this->assertEquals( 'date', $rule2->getType() );
     }
-    function test_separated()
+    function test_start_required()
     {
         $rule1 = $this->rule->start( 'text | required | string:lower' );
         $this->assertEquals( 'text', $rule1->type );
         $this->assertEquals( true, $rule1->isRequired() );
         $this->assertEquals( false, $rule1->getPattern() );
         $this->assertEquals( 'lower', $rule1->getFilters( 'string' ) );
+    }
+    function test_start_()
+    {
+        $rule1 = $this->rule->start( 'number | pattern:int ' );
+        $this->assertEquals( 'number', $rule1->type );
+        $this->assertEquals( false, $rule1->isRequired() );
+        $this->assertEquals( 'int', $rule1->getPattern() );
+        $this->assertEquals( false, $rule1->getFilters( 'string' ) );
     }
 }
