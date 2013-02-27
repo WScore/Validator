@@ -18,6 +18,8 @@ class Validate
     
     public $err_msg;
 
+    /** @var string */
+    public $userMessage;
     // +----------------------------------------------------------------------+
     /**
      * @param \WScore\Validation\Filter  $filter
@@ -43,7 +45,7 @@ class Validate
         $this->value   = null;
         $this->isValid = true;
         $this->err_msg = null;
-        $this->message->setMessage( $message );
+        $this->userMessage = $message;
     }
 
     /**
@@ -54,6 +56,7 @@ class Validate
      */
     public function getMessage( $error )
     {
+        if( isset( $this->userMessage ) ) return $this->userMessage;
         if( !$this->message ) return $error;
         $type = array_key_exists( 'type', $this->rules ) ? $this->rules[ 'type' ] : null;
         return $this->message->message( $error, $error['message'], $type );

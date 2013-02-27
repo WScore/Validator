@@ -9,9 +9,6 @@ class Message
     /** @var array                  error message for each types.    */
     public $typeErrMsg = array();
 
-    /** @var string                 error message for the value.     */
-    public $message = '';
-
     // +----------------------------------------------------------------------+
     public function __construct()
     {
@@ -30,14 +27,6 @@ class Message
     }
 
     /**
-     * set message on error. this message will be used ALWAYS.
-     *
-     * @param string $message
-     */
-    public function setMessage( $message ) {
-        $this->message = $message;
-    }
-    /**
      * returns an error message from error information.
      * the error message will be:
      *   - $this->message if it is set,
@@ -55,10 +44,7 @@ class Message
         // is it really an error?
         if( !$error || empty( $error ) ) return '';
         
-        // 1. return message if it is set.
-        if( $this->message ) return $this->message;
-
-        // find rule and option of the last error.
+        // 1. find rule and option of the last error.
         if( !is_array( $error ) ) return $err_msg;
         $keys    = key( $error );
         $rule    = (is_array( $keys ) ) ? end( $keys ) : $keys;
