@@ -3,13 +3,22 @@ namespace WScore\Validation;
 
 class Validate
 {
-    /** @var \WScore\Validation\Filter */
+    /**
+     * @Inject
+     * @var \WScore\Validation\Filter
+     */
     protected $filter;
 
-    /** @var Message */
+    /**
+     * @Inject
+     * @var \WScore\Validation\Message
+     */
     protected $message;
 
-    /** @var array|Rules */
+    /**
+     * @Injection
+     * @var array|Rules
+     */
     protected $rules;
 
     public $isValid;
@@ -24,13 +33,13 @@ class Validate
     /**
      * @param \WScore\Validation\Filter  $filter
      * @param \WScore\Validation\Message $message
-     * @DimInjection Get \WScore\Validation\Filter
-     * @DimInjection Get \WScore\Validation\Message
+     * @param \WScore\Validation\Rules   $rule
      */
-    public function __construct( $filter, $message )
+    public function __construct( $filter=null, $message=null, $rule=null )
     {
-        $this->filter  = $filter;
-        $this->message = $message;
+        if( isset( $filter  ) ) $this->filter  = $filter;
+        if( isset( $message ) ) $this->message = $message;
+        if( isset( $rule    ) ) $this->rules   = $rule;
     }
 
     /**
