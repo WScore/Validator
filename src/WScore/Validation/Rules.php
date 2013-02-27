@@ -141,7 +141,8 @@ class Rules implements \ArrayAccess
     {
         $rule = new static();
         $rule->type = $type;
-        $typeFilter = $this->filterTypes[ $type ];
+        /** @var $typeFilter array */
+        $typeFilter = Utils::arrGet( $this->filterTypes, $type, array() );
         $rule->mergeFilter( $typeFilter );
         $rule->mergeFilter( $filters );
         $this->filter[ 'type' ] = $type;

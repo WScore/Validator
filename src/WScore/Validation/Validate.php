@@ -72,12 +72,13 @@ class Validate
 
     // +----------------------------------------------------------------------+
     /**
-     * @param string|array $value
-     * @param Rules|array  $rules
-     * @param null|string  $message
+     * @param string|array        $value
+     * @param Rules|array|string  $rules
+     * @param null|string         $message
      * @return bool|mixed
      */
     public function is( $value, $rules, $message=null ) {
+        if( is_string( $rules ) ) $rules = $this->ruleObj->start( $rules );
         $valid = $this->validate( $value, $rules, $message );
         if( $valid ) {
             return $this->value;
