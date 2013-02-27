@@ -42,8 +42,7 @@ class Filter
      */
     public function start( $value )
     {
-        $class = get_called_class();
-        $filter = new $class;
+        $filter = new static;
         $filter->value = $value;
         return $filter;
     }
