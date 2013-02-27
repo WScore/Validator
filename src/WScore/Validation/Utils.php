@@ -9,7 +9,7 @@ class Utils
      * @param null $default
      * @return null
      */
-    public static function arrGet( $arr, $key, $default=null ) 
+    public static function arrGet( $arr, $key, $default=null )
     {
         if( !is_string( $key ) ) return $default;
         if( !is_array(  $arr ) && ( is_object( $arr ) && !( $arr instanceof \ArrayAccess ) ) ) return $default;
@@ -20,6 +20,7 @@ class Utils
      * converts string filter to array. string in: 'rule1:parameter1|rule2:parameter2'
      *
      * @param string|array $filter
+     * @param bool         $type
      * @return array
      */
     public static function convertFilter( $filter, $type=false )
