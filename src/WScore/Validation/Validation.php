@@ -37,11 +37,10 @@ class Validation
     protected $rule = null;
     // +----------------------------------------------------------------------+
     /**
-     * @param Validate   $validate
-     * @param Rules      $rule
+     * @Inject
+     * @param \WScore\Validation\Validate   $validate
+     * @param \WScore\Validation\Rules      $rule
      * @param null|array $data
-     * @DimInjection Fresh \WScore\Validation\Validate
-     * @DimInjection Fresh \WScore\Validation\Rules
      */
     public function __construct( $validate, $rule, $data=null ) {
         $this->validate = $validate;
