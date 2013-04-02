@@ -14,6 +14,8 @@ namespace WScore\Validation;
  * @method pushTimeHi()
  * @method pushTel()
  * @method pushFax()
+ *
+ * @cacheable
  * 
  */
 class Validation
