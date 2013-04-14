@@ -8,24 +8,38 @@ class Message
     
     /** @var array                  error message for each types.    */
     public $typeErrMsg = array();
+    
+    protected $locale = 'en_US';
 
     // +----------------------------------------------------------------------+
-    public function __construct()
+    public function __construct( $locale=null )
     {
-        // error messages for each filter.
-        $this->filterErrMsg = array(
-            'encoding'  => 'invalid encoding',
-            'required'  => 'required field',
-            'sameAs'    => 'value not the same',
-            'sameEmpty' => 'missing value to compare',
-        );
-        // error messages for each type. 
-        $this->typeErrMsg = array(
-            'email' => 'invalid email',
-            'date'  => 'invalid date',
-        );
+        if( $locale ) {
+            $this->setLocale( $locale );
+        }
+        $this->loadMessage();
     }
 
+    /**
+     * @param string $locale
+     */
+    public function setLocale( $locale ) 
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * @param null|string $messageFile
+     */
+    public function loadMessage( $messageFile=null ) 
+    {
+        if( !$messageFile ) $messageFile = __DIR__ . "/Locale/Lang.{$this->locale}.php";
+        if( file_exists( $messageFile ) ) {
+            $messages = include( $messageFile );
+            $this->filterErrMsg = $messages[ 'filter' ];
+            $this->typeErrMsg   = $messages[ 'type' ];
+        }
+    }
     /**
      * returns an error message from error information.
      * the error message will be:
