@@ -7,19 +7,19 @@ class Validate
      * @Inject
      * @var \WScore\Validation\Filter
      */
-    protected $filter;
+    public $filter;
 
     /**
      * @Inject
      * @var \WScore\Validation\Message
      */
-    protected $message;
+    public $message;
 
     /**
      * @Injection
      * @var array|Rules
      */
-    protected $ruleObj;
+    public $ruleObj;
 
     public $isValid;
 
