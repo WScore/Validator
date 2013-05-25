@@ -133,6 +133,7 @@ class Rules implements \ArrayAccess
      */
     public function ruleForType( $type, $filters )
     {
+        /** @var Rules $rule */
         $rule = new static();
         $rule->type = $type;
         /** @var $typeFilter array */
