@@ -1,4 +1,5 @@
 <?php
+namespace WScore\Validation\Locale;
 
 return array(
     'filter' => array(
