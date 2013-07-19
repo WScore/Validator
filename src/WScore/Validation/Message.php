@@ -8,8 +8,12 @@ class Message
     
     /** @var array                  error message for each types.    */
     public $typeErrMsg = array();
-    
-    protected $locale = 'en_US';
+
+    /**
+     * @Inject
+     * @var \Locale
+     */
+    public $locale = null;
 
     // +----------------------------------------------------------------------+
     public function __construct( $locale=null )
@@ -33,12 +37,18 @@ class Message
      */
     public function loadMessage( $messageFile=null ) 
     {
-        if( !$messageFile ) $messageFile = __DIR__ . "/Locale/Lang.{$this->locale}.php";
-        if( file_exists( $messageFile ) ) {
-            $messages = include( $messageFile );
-            $this->filterErrMsg = $messages[ 'filter' ];
-            $this->typeErrMsg   = $messages[ 'type' ];
+        if( !$messageFile ) {
+            if( !isset( $this->locale ) ) $this->locale = '\\Locale';
+            $locale = call_user_func( array( $this->locale, 'getDefault' ) );
+            if( strlen( $locale ) > 5 ) $locale = substr( $locale, 0, 5 );
+            $messageFile = __DIR__ . "/Locale/Lang.{$locale}.php";
         }
+        if( !file_exists( $messageFile ) ) {
+            $messageFile = __DIR__ . "/Locale/Lang.en_US.php";
+        }
+        $messages = include( $messageFile );
+        $this->filterErrMsg = $messages[ 'filter' ];
+        $this->typeErrMsg   = $messages[ 'type' ];
     }
     /**
      * returns an error message from error information.

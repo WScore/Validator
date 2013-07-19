@@ -13,6 +13,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
     {
         require_once( __DIR__ . '/../../../../scripts/require.php' );
         $this->validate = include( __DIR__ . '/../../../../scripts/validate.php' );
+        // \Locale::setDefault( 'ja_JP' );
     }
     // +----------------------------------------------------------------------+
     function test_setting_message_override()
