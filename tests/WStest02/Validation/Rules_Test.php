@@ -135,13 +135,14 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
      */
     function apply_text_filter_on_invoke()
     {
-        $filter = 'required|min:5|max:10';
+        $filter = 'required|min:5|max:10|dummy:test';
         /** @var Rules $rule */
         $rule1 = $this->rule;
         $rule = $rule1( 'text', $filter );
         $this->assertEquals( true, $rule->isRequired() );
         $this->assertEquals(  5, $rule[ 'min' ] );
         $this->assertEquals( 10, $rule[ 'max' ] );
+        $this->assertEquals( 'test', $rule[ 'dummy' ] );
     }
 
     /**
@@ -149,11 +150,54 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
      */
     function apply_text_filter_on_static_parse()
     {
-        $filter = 'required|min:5|max:10';
+        $filter = 'required|min:5|max:10|dummy:test';
         /** @var Rules $rule */
         $rule = Rules::parse( 'text', $filter );
         $this->assertEquals( true, $rule->isRequired() );
         $this->assertEquals(  5, $rule[ 'min' ] );
         $this->assertEquals( 10, $rule[ 'max' ] );
+        $this->assertEquals( 'test', $rule[ 'dummy' ] );
+    }
+
+    /**
+     * @test
+     */
+    function use_array_to_set_filter()
+    {
+        $this->assertEquals( false, $this->rule->getPattern() );
+        $this->rule[ 'pattern' ] = 'some pattern';
+        $this->assertEquals( 'some pattern', $this->rule->getPattern() );
+    }
+
+    /**
+     * @test
+     */
+    function check_isset_on_false_filter()
+    {
+        $this->assertEquals( false, $this->rule->isRequired() );
+        $this->assertEquals( true, isset( $this->rule[ 'required' ] ) );
+    }
+
+    /**
+     * @test
+     */
+    function check_isset_on_non_existence_filter()
+    {
+        $this->assertEquals( false, isset( $this->rule[ 'test_test' ] ) );
+        $this->rule[ 'test_test' ] = 'tested';
+        $this->assertEquals( true, isset( $this->rule[ 'test_test' ] ) );
+        $this->assertEquals( 'tested', $this->rule->getFilters( 'test_test' ) );
+    }
+
+    /**
+     * @test
+     */
+    function get_filter_returns_all_filter_as_array()
+    {
+        $this->rule->min( 3 );
+        $filters = $this->rule->getFilters();
+        $this->assertEquals( true, is_array( $filters ) );
+        $this->assertEquals( 3, $filters[ 'min' ] );
+        $this->assertEquals( 3, $this->rule->getFilters( 'min' ) );
     }
 }
