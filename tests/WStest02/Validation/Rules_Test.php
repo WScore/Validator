@@ -183,10 +183,18 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
      */
     function check_isset_on_non_existence_filter()
     {
+        // no such test as test_test...
         $this->assertEquals( false, isset( $this->rule[ 'test_test' ] ) );
+
+        // set test, and should find the test_test
         $this->rule[ 'test_test' ] = 'tested';
         $this->assertEquals( true, isset( $this->rule[ 'test_test' ] ) );
         $this->assertEquals( 'tested', $this->rule->getFilters( 'test_test' ) );
+
+        // unset test
+        unset( $this->rule[ 'test_test' ] );
+        $this->assertEquals( false, isset( $this->rule[ 'test_test' ] ) );
+        $this->assertEquals( null, $this->rule->getFilters( 'test_test' ) );
     }
 
     /**
