@@ -3,16 +3,42 @@ WScore.Validation
 
 Validation and filtration for values such as form input.
 
-###some thought on filteration and validation.
-
 *   filteration:
     may change the input value. For instace, string:lower filter may change alphabets to lower character.
 *   validation:
     will only validates the value (no changes to the value).
 
 filters always should applied before the validators.
-
 also the order of filters is important.
+
+Usage (under refactoring)
+-------------------------
+
+```php
+$validate = include( 'path/to/scripts/validate.php' );
+$rule     = new \WScore\Validation\Rule();
+
+// basic validation by type
+
+$value = 'a text';
+echo $validate->is( $value, $rule('text') ); // 'a text'
+echo $validate->is( $value, $rule('int') ); // false
+
+// validation and getting errors
+
+$value = '';
+echo $validate->is( $value, $rule('text') ); // ''
+echo $validate->is( $value, $rule('text')->required() ); // false
+echo $validate->isError(); // true
+echo $validate->message(); // 'required field'
+
+// another way to get rules
+use WScore\Validation\Rule;
+$value = '3';
+echo $validate->is( $value, Rule::make( 'number|required|max:4' ) ); // '3'
+
+```
+
 
 Objects
 -------
