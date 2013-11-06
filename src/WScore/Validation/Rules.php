@@ -12,15 +12,15 @@ namespace WScore\Validation;
  * @method Rules err_msg( string $error_message )
  * @method Rules message( string $message )
  * @method Rules multiple( array $parameter )
- * @method Rules noNull( bool $not )
+ * @method Rules noNull( bool $not=true )
  * @method Rules encoding( string $encoding )
  * @method Rules mbConvert( string $type )
- * @method Rules trim( bool $trim )
+ * @method Rules trim( bool $trim=true )
  * @method Rules sanitize( string $type )
  * @method Rules string( string $type )
  * @method Rules default( string $value )
- * @method Rules required( bool $required )
- * @method Rules loopBreak( bool $break )
+ * @method Rules required( bool $required=true )
+ * @method Rules loopBreak( bool $break=true )
  * @method Rules code( string $type )
  * @method Rules maxlength( int $length )
  * @method Rules pattern( string $reg_expression )
@@ -28,27 +28,34 @@ namespace WScore\Validation;
  * @method Rules min( int $min )
  * @method Rules max( int $max )
  * @method Rules range( array $range )
- * @method Rules checkdate( bool $check )
+ * @method Rules checkdate( bool $check=true )
  * @method Rules mbCheckKana( string $type )
  * @method Rules sameWith( string $name )
  * @method Rules sameAs( string $name )
- * @method Rules sameEmpty( bool $check )
+ * @method Rules sameEmpty( bool $check=true )
  */
 class Rules implements \ArrayAccess
 {
-    /** @var array        predefined filter filter set        */
+    /**
+     * @var array        predefined filter filter set
+     */
     public $filterTypes = array();
 
-    /** @var null|string */
-    public $type = null;
-
-    /** @var array */
+    /**
+     * @var array
+     */
     public $filter = array();
+
+    /**
+     * @var Rules
+     */
+    protected static $_rules;
 
     // +----------------------------------------------------------------------+
     //  managing object
     // +----------------------------------------------------------------------+
     /**
+     * todo: keep these filter arrays in some language files.
      */
     public function __construct()
     {
@@ -101,8 +108,41 @@ class Rules implements \ArrayAccess
             'tel'      => [ 'multiple' => 'tel', 'mbConvert' => 'hankaku', 'pattern' => '[-0-9()]*' ],
             'fax'      => [ 'multiple' => 'tel', 'mbConvert' => 'hankaku', 'pattern' => '[-0-9()]*' ],
         );
+        static::$_rules = $this;
     }
 
+    /**
+     * @param string $type
+     * @param string $text
+     * @return Rules
+     */
+    public function __invoke( $type, $text='' )
+    {
+        $rule = clone( static::$_rules );
+        $rule->applyType( $type );
+        if( $text ) {
+            $rule->applyTextFilter( $text );
+        }
+        return $rule;
+    }
+
+    /**
+     * @param string $type
+     * @param string $text
+     * @return Rules
+     */
+    public static function parse( $type, $text='' )
+    {
+        $rule = clone( static::$_rules );
+        $rule->applyType( $type );
+        if( $text ) {
+            $rule->applyTextFilter( $text );
+        }
+        return $rule;
+    }
+    // +----------------------------------------------------------------------+
+    //  setting rule
+    // +----------------------------------------------------------------------+
     /**
      * @param string $type
      * @throws \RuntimeException
@@ -120,9 +160,24 @@ class Rules implements \ArrayAccess
             $this->$rule( $value );
         }
     }
-    // +----------------------------------------------------------------------+
-    //  setting rule
-    // +----------------------------------------------------------------------+
+
+    /**
+     * @param $text
+     */
+    public function applyTextFilter( $text )
+    {
+        $filter = Utils::convertFilter( $text );
+        if( empty( $filter ) ) return;
+        foreach( $filter as $key => $val ) {
+            $this->filter[ $key ] = $val;
+        }
+    }
+
+    /**
+     * @param $rule
+     * @param $args
+     * @return $this
+     */
     public function __call( $rule, $args )
     {
         $value = isset( $args[0] ) ? $args[0] : true;
@@ -153,6 +208,10 @@ class Rules implements \ArrayAccess
         return $this->filter[ 'pattern' ];
     }
 
+    /**
+     * @param null|string $name
+     * @return array|null
+     */
     public function getFilters( $name=null ) {
         if( isset( $name ) ) { 
             if( array_key_exists( $name, $this->filter ) ) return $this->filter[ $name ]; 
@@ -163,24 +222,6 @@ class Rules implements \ArrayAccess
     // +----------------------------------------------------------------------+
     //  tools for filters.
     // +----------------------------------------------------------------------+
-    /**
-     * merges text/array filters into Rule object's filter. 
-     * 
-     * @param array $filter ,
-     * @return array
-     */
-    public function mergeFilter( $filter )
-    {
-        if( is_string( $filter ) ) {
-            $filter = Utils::convertFilter( $filter );
-        }
-        if( empty( $filter ) ) return;
-        foreach( $filter as $key => $val ) {
-            $this->filter[ $key ] = $val;
-        }
-        return;
-    }
-
     /**
      * Whether a offset exists
      * @link http://php.net/manual/en/arrayaccess.offsetexists.php

@@ -85,4 +85,75 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( true, $rule[ 'required' ] );
         $this->assertEquals( true, $rule->isRequired() );
     }
+
+    /**
+     * @test
+     */
+    function static_parse_returns_new_rules()
+    {
+        $rule = Rules::parse( 'text' );
+        $this->assertEquals( 'WScore\Validation\Rules', get_class( $rule ) );
+        $this->assertEquals( 'text', $rule->getType() );
+    }
+
+    /**
+     * @test
+     */
+    function invoke()
+    {
+        $rule1 = $this->rule;
+        /** @var Rules $rule2 */
+        $rule2 = $rule1( 'text' );
+        $this->assertEquals( 'WScore\Validation\Rules', get_class( $rule2 ) );
+        $this->assertEquals( 'text', $rule2->getType() );
+
+        // make sure that these are different.
+        $this->assertNotEquals( $rule1, $rule2 );
+
+        // apply the same type, and should be equal.
+        $rule1->applyType( 'text' );
+        $this->assertEquals( $rule1, $rule2 );
+
+        // but not the same object.
+        $this->assertNotSame( $rule1, $rule2 );
+    }
+
+    /**
+     * @test
+     */
+    function apply_text_filter()
+    {
+        $filter = 'required|min:5|max:10';
+        $this->rule->applyTextFilter( $filter );
+        $this->assertEquals( true, $this->rule->isRequired() );
+        $this->assertEquals(  5, $this->rule[ 'min' ] );
+        $this->assertEquals( 10, $this->rule[ 'max' ] );
+    }
+
+    /**
+     * @test
+     */
+    function apply_text_filter_on_invoke()
+    {
+        $filter = 'required|min:5|max:10';
+        /** @var Rules $rule */
+        $rule1 = $this->rule;
+        $rule = $rule1( 'text', $filter );
+        $this->assertEquals( true, $rule->isRequired() );
+        $this->assertEquals(  5, $rule[ 'min' ] );
+        $this->assertEquals( 10, $rule[ 'max' ] );
+    }
+
+    /**
+     * @test
+     */
+    function apply_text_filter_on_static_parse()
+    {
+        $filter = 'required|min:5|max:10';
+        /** @var Rules $rule */
+        $rule = Rules::parse( 'text', $filter );
+        $this->assertEquals( true, $rule->isRequired() );
+        $this->assertEquals(  5, $rule[ 'min' ] );
+        $this->assertEquals( 10, $rule[ 'max' ] );
+    }
 }
