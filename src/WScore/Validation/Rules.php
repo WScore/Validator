@@ -9,17 +9,30 @@ namespace WScore\Validation;
  */
 
 /** 
- * @method text() 
- * @method mail()
- * @method number()
- * @method integer()
- * @method float()
- * @method date()
- * @method dateYM()
- * @method time()
- * @method timeHi()
- * @method tel()
- * @method fax()
+ * @method Rules err_msg( string $error_message )
+ * @method Rules message( string $message )
+ * @method Rules multiple( array $parameter )
+ * @method Rules noNull( bool $not )
+ * @method Rules encoding( string $encoding )
+ * @method Rules mbConvert( string $type )
+ * @method Rules trim( bool $trim )
+ * @method Rules sanitize( string $type )
+ * @method Rules string( string $type )
+ * @method Rules default( string $value )
+ * @method Rules required( bool $required )
+ * @method Rules loopBreak( bool $break )
+ * @method Rules code( string $type )
+ * @method Rules maxlength( int $length )
+ * @method Rules pattern( string $reg_expression )
+ * @method Rules matches( string $match_type )
+ * @method Rules min( int $min )
+ * @method Rules max( int $max )
+ * @method Rules range( array $range )
+ * @method Rules checkdate( bool $check )
+ * @method Rules mbCheckKana( string $type )
+ * @method Rules sameWith( string $name )
+ * @method Rules sameAs( string $name )
+ * @method Rules sameEmpty( bool $check )
  */
 class Rules implements \ArrayAccess
 {
@@ -31,7 +44,9 @@ class Rules implements \ArrayAccess
 
     /** @var array */
     public $filter = array();
-    
+
+    // +----------------------------------------------------------------------+
+    //  managing object
     // +----------------------------------------------------------------------+
     /**
      */
@@ -73,27 +88,55 @@ class Rules implements \ArrayAccess
 
         // filters for various types of input.
         $this->filterTypes = array(
-            'binary'   => 'noNull:FALSE | encoding:FALSE | mbConvert:FALSE | trim:FALSE ',
-            'text'     => '',
-            'mail'     => 'mbConvert:hankaku | sanitize:mail | matches:mail',
-            'number'   => 'mbConvert:hankaku | matches:number',
-            'integer'  => 'mbConvert:hankaku | matches:int',
-            'float'    => 'mbConvert:hankaku | matches:float',
-            'date'     => 'multiple:YMD | mbConvert:hankaku | pattern:[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}',
-            'dateYM'   => 'multiple:YM  | mbConvert:hankaku | pattern:[0-9]{4}-[0-9]{1,2}',
-            'time'     => 'multiple:His | mbConvert:hankaku | pattern:[0-9]{2}:[0-9]{2}:[0-9]{2}',
-            'timeHi'   => 'multiple:Hi  | mbConvert:hankaku | pattern:[0-9]{2}:[0-9]{2}',
-            'tel'      => 'multiple:tel | mbConvert:hankaku',
-            'fax'      => 'multiple:tel | mbConvert:hankaku',
+            'binary'   => [ 'noNull' => false, 'encoding' => false, 'mbConvert' => false, 'trim' => false ],
+            'text'     => [],
+            'mail'     => [ 'mbConvert' => 'hankaku', 'matches' => 'mail', 'sanitize' => 'mail' ],
+            'number'   => [ 'mbConvert' => 'hankaku', 'matches' => 'number' ],
+            'integer'  => [ 'mbConvert' => 'hankaku', 'matches' => 'int' ],
+            'float'    => [ 'mbConvert' => 'hankaku', 'matches' => 'float' ],
+            'date'     => [ 'multiple' => 'YMD', 'mbConvert' => 'hankaku', 'pattern' => '[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}' ],
+            'dateYM'   => [ 'multiple' => 'YM',  'mbConvert' => 'hankaku', 'pattern' => '[0-9]{4}-[0-9]{1,2}' ],
+            'time'     => [ 'multiple' => 'His', 'mbConvert' => 'hankaku', 'pattern' => '[0-9]{2}:[0-9]{2}:[0-9]{2}' ],
+            'timeHi'   => [ 'multiple' => 'Hi',  'mbConvert' => 'hankaku', 'pattern' => '[0-9]{2}:[0-9]{2}' ],
+            'tel'      => [ 'multiple' => 'tel', 'mbConvert' => 'hankaku', 'pattern' => '[-0-9()]*' ],
+            'fax'      => [ 'multiple' => 'tel', 'mbConvert' => 'hankaku', 'pattern' => '[-0-9()]*' ],
         );
     }
 
+    /**
+     * @param string $type
+     * @throws \RuntimeException
+     */
+    public function applyType( $type )
+    {
+        $type = strtolower( $type );
+        if( $type == 'email' ) $type = 'mail';
+        if( !array_key_exists( $type, $this->filterTypes ) ) {
+            throw new \RuntimeException( "rule type not defined: {$type}" );
+        }
+        $this->filter[ 'type' ] = $type;
+        $filters = $this->filterTypes[ $type ];
+        foreach( $filters as $rule => $value ) {
+            $this->$rule( $value );
+        }
+    }
+    // +----------------------------------------------------------------------+
+    //  setting rule
+    // +----------------------------------------------------------------------+
+    public function __call( $rule, $args )
+    {
+        $value = isset( $args[0] ) ? $args[0] : true;
+        $this->filter[ $rule ] = $value;
+        return $this;
+    }
+    // +----------------------------------------------------------------------+
+    //  getting information about Rule
     // +----------------------------------------------------------------------+
     /**
      * @return null|string
      */
     public function getType() {
-        return $this->type;
+        return $this->filter[ 'type' ];
     }
 
     /**
@@ -118,51 +161,7 @@ class Rules implements \ArrayAccess
         return $this->filter;
     }
     // +----------------------------------------------------------------------+
-    public function start( $filters )
-    {
-        if( is_string( $filters ) ) {
-            $filters = Utils::convertFilter( $filters, true );
-        }
-        $type = Utils::arrGet( $filters, 'type', 'text' );
-        return $this->ruleForType( $type, $filters );
-    }
-    /**
-     * @param $type
-     * @param $filters
-     * @return Rules
-     */
-    public function ruleForType( $type, $filters )
-    {
-        /** @var Rules $rule */
-        $rule = new static();
-        $rule->type = $type;
-        /** @var $typeFilter array */
-        $typeFilter = Utils::arrGet( $this->filterTypes, $type, array() );
-        $rule->mergeFilter( $typeFilter );
-        $rule->mergeFilter( $filters );
-        $this->filter[ 'type' ] = $type;
-        return $rule;
-    }
-
-    /**
-     * @param null|string|array $filters
-     * @return Rules
-     */
-    public function email( $filters=null ) {
-        return $this->ruleForType( 'mail', $filters );
-    }
-
-    /**
-     * @param string $method
-     * @param mixed $args
-     * @return Rules
-     */
-    public function __call( $method, $args ) {
-        $filter = array_key_exists( 0, $args ) ? $args[0]: null;
-        return $this->ruleForType( $method, $filter );
-    }
-    // +----------------------------------------------------------------------+
-    //  tools for filters. 
+    //  tools for filters.
     // +----------------------------------------------------------------------+
     /**
      * merges text/array filters into Rule object's filter. 
