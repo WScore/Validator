@@ -11,128 +11,46 @@ class Validate
 
     /**
      * @Inject
-     * @var \WScore\Validation\Message
+     * @var \WScore\Validation\ValueTO
      */
-    public $message;
+    public $valueTO;
 
-    /**
-     * @Injection
-     * @var array|Rules
-     */
-    public $ruleObj;
-
-    public $isValid;
-
-    public $value;
-    
-    public $err_msg;
-
-    /** @var string */
-    public $userMessage;
     // +----------------------------------------------------------------------+
     /**
      * @param \WScore\Validation\Filter  $filter
-     * @param \WScore\Validation\Message $message
-     * @param \WScore\Validation\Rules   $rule
+     * @param \WScore\Validation\Rules   $valueTO
      */
-    public function __construct( $filter=null, $message=null, $rule=null )
+    public function __construct( $filter=null, $valueTO=null )
     {
         if( isset( $filter  ) ) $this->filter  = $filter;
-        if( isset( $message ) ) $this->message = $message;
-        if( isset( $rule    ) ) $this->ruleObj = $rule;
+        if( isset( $valueTO ) ) $this->valueTO = $valueTO;
     }
 
-    /**
-     * initializes internal values.
-     *
-     * @param null|string $message
-     */
-    protected function init( $message=null )
-    {
-        $this->value   = null;
-        $this->isValid = true;
-        $this->err_msg = null;
-        $this->userMessage = $message;
-    }
-
-    /**
-     * generates error message from filter's error information.
-     *
-     * @param array $error
-     * @param array $rules
-     * @return string
-     */
-    public function getMessage( $error, $rules )
-    {
-        if( isset( $this->userMessage ) ) return $this->userMessage;
-        if( !$this->message ) return $error;
-        $type = array_key_exists( 'type', $rules ) ? $rules[ 'type' ] : null;
-        return $this->message->message( $error, $error['message'], $type );
-    }
-
-    // +----------------------------------------------------------------------+
     /**
      * @param string|array        $value
-     * @param Rules|array|string  $rules
-     * @param null|string         $message
+     * @param Rules|array         $rules
      * @return bool|mixed
      */
-    public function is( $value, $rules, $message=null ) {
-        if( is_string( $rules ) ) $rules = $this->ruleObj->start( $rules );
-        $valid = $this->validate( $value, $rules, $message );
-        if( $valid ) {
-            return $this->value;
+    public function is( $value, $rules ) 
+    {
+        $valueTO = $this->applyFilters( $value, $rules );
+        if( !$valueTO->getError() ) {
+            return $valueTO->getValue();
         }
         return false;
     }
-    /**
-     * validates a value or an array of values for a given filters.
-     * filter must be an array.
-     *
-     * @param string|array $value
-     * @param Rules|array  $rules
-     * @param null|string  $message
-     * @return bool
-     */
-    public function validate( $value, $rules, $message=null )
-    {
-        if( $rules instanceof Rules ) $rules = $rules->getFilters();
-        $this->init( $message );
-        if( is_array( $value ) )
-        {
-            $this->value   = array();
-            $this->err_msg = array();
-            foreach( $value as $key => $val ) 
-            {
-                $filter = $this->applyFilters( $val, $rules );
-                $success = !$filter->error();
-                $this->value[ $key ] = $filter->value;
-                if( !$success ) {
-                    $this->err_msg[ $key ] = $filter->error;
-                }
-                $this->isValid &= ( $success === true );
-            }
-            $this->isValid = (bool) $this->isValid;
-            return $this->isValid;
-        }
-        $filter = $this->applyFilters( $value, $rules );
-        $this->isValid = !$filter->error();
-        $this->err_msg = $filter->error;
-        $this->value   = $filter->value;
-        return $this->isValid;
-    }
 
     /**
-     * do the validation for a single value.
+     * apply filters on a single value.
      *
      * @param string $value
      * @param array  $rules
-     * @return Filter
+     * @return ValueTO
      */
     public function applyFilters( $value, $rules )
     {
         /** @var $filter Filter */
-        $filter = $this->filter->start( $value );
+        $valueTO = $this->valueTO->forge( $value );
         // loop through all the rules to validate $value.
         foreach( $rules as $rule => $parameter )
         {
@@ -140,17 +58,13 @@ class Validate
             if( $parameter === false ) continue; // skip rules with option as FALSE.
             // apply filter.
             $method = 'filter_' . $rule;
-            if( method_exists( $filter, $method ) ) {
-                $filter->$method( $parameter );
+            if( method_exists( $this->filter, $method ) ) {
+                $this->filter->$method( $valueTO, $parameter );
             }
             // loop break.
-            if( $filter->breakLoop() ) break;
+            if( $valueTO->getBreak() ) break;
         }
-        // got some error.
-        if( $error = $filter->error ) {
-            $filter->error = $this->getMessage( $error, $rules );
-        }
-        return $filter;
+        return $valueTO;
     }
     // +----------------------------------------------------------------------+
 }

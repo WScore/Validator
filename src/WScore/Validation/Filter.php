@@ -5,109 +5,61 @@ class Filter
 {
     public static $charCode = 'UTF-8';
     
-    /** @var null|string     value modified by filters */
-    public $value = null;
-    
-    /** @var null|string     set to method if error */
-    public $error = null;
-
-    /** @var bool            breaks the loop */
-    public $break = false;
-
-    /** @var string          error messages */
-    public $message = '';
-
     // +----------------------------------------------------------------------+
     /**
      */
     public function __construct()
     {
     }
+    
     /**
-     * @param string        $value
-     */
-    public function setup( $value )
-    {
-        $this->value = $value;
-        $this->error = null;
-        $this->break = false;
-        $this->message = '';
-    }
-
-    /**
-     * returns a fresh $filter with the value set.
-     *
-     * @param string        $value
-     * @return \WScore\Validation\Filter
-     */
-    public function start( $value )
-    {
-        $filter = new static;
-        $filter->value = $value;
-        return $filter;
-    }
-
-    public function breakLoop() {
-        return $this->break;
-    }
-
-    /**
+     * @param ValueTO $v
      * @param \Closure $closure
-     * @param $p
      */
-    public function applyClosure( $closure, $p ) {
-        $return = $closure( $this->value, $p );
-        if( !$return ) $this->error = true;
-    }
-
-    /**
-     * sets internal error information: $this->error = [ rule => option ]
-     *
-     * @param string      $method
-     * @param null|string $p
-     */
-    protected function setError( $method, $p=null ) {
-        $method = substr( $method, strrpos( $method, '::filter_' )+9 );
-        $error = array(
-            $method     => $p,
-            'method'    => $method,
-            'parameter' => $p,
-            'message'   => $this->message,
-        );
-        $this->error = $error;
-    }
-
-    public function error() {
-        return $this->error;
+    public function applyClosure( $v, $closure ) 
+    {
+        $val = $closure( $v->getValue() );
+        $v->setValue( $val );
     }
     // +----------------------------------------------------------------------+
     //  filter definitions (filters that alters the value).
     // +----------------------------------------------------------------------+
 
     /**
-     * sets error message for this filter.
+     * sets error message.
      *
+     * @param ValueTO $v
      * @param $p
      */
-    public function filter_err_msg( $p ) {
-        $this->filter_message( $p );
+    public function filter_err_msg( $v, $p ) {
+        $this->filter_message( $v, $p );
     }
-    public function filter_message( $p ) {
-        if( $p ) $this->message = $p;
+
+    /**
+     * sets error message.
+     * 
+     * @param ValueTO $v
+     * @param $p
+     */
+    public function filter_message( $v, $p ) {
+        if( $p ) $v->setMessage( $p );
     }
 
     /**
      * removes null from text. 
+     * 
+     * @param ValueTO $v
      */
-    public function filter_noNull() {
-        $this->value = str_replace( "\0", '', $this->value );
+    public function filter_noNull( $v ) {
+        $v->setValue( str_replace( "\0", '', $v->getValue() ) );
     }
 
     /**
      * trims text. 
+     * @param ValueTO $v
      */
-    public function filter_trim() {
-        $this->value = trim( $this->value );
+    public function filter_trim( $v ) {
+        $v->setValue( trim( $v->getValue() ) );
     }
 
     /**
@@ -123,19 +75,26 @@ class Filter
     );
 
     /**
-     * sanitize the value using filter_var. 
+     * sanitize the value using filter_var.
+     * @param ValueTO $v
      * @param $p
      */
-    public function filter_sanitize( $p ) {
+    public function filter_sanitize( $v, $p ) 
+    {
         $option = Utils::arrGet( $this->sanitizes, $p, $p );
-        $this->value = filter_var( $this->value, $option );
+        $v->setValue( filter_var( $v->getValue(), $option ) );
     }
 
-    public function filter_encoding( $p=null ) {
+    /**
+     * @param ValueTO $v
+     * @param null $p
+     */
+    public function filter_encoding( $v, $p=null ) 
+    {
         $code = ( empty( $p ) || $p === true ) ? static::$charCode: $p;
-        if( !mb_check_encoding( $this->value, $code ) ) {
-            $this->value = ''; // overwrite invalid encode string.
-            $this->setError( __METHOD__, $p );
+        if( !mb_check_encoding( $v->getValue(), $code ) ) {
+            $v->setValue( '' ); // overwrite invalid encode string.
+            $v->setError( __METHOD__, $p );
         }
     }
 
@@ -145,32 +104,48 @@ class Filter
         'zen_hira' => 'HVc',
         'zen_kana' => 'KVC',
     );
-    public function filter_mbConvert( $p ) {
+
+    /**
+     * @param ValueTO $v
+     * @param null $p
+     */
+    public function filter_mbConvert( $v, $p ) 
+    {
         $convert = Utils::arrGet( $this->mvConvert, $p, 'KV' );
-        $this->value = mb_convert_kana( $this->value, $convert, static::$charCode );
+        $v->setValue( mb_convert_kana( $v->getValue(), $convert, static::$charCode ) );
     }
 
-    public function filter_string( $p ) {
+    /**
+     * @param ValueTO $v
+     * @param null $p
+     */
+    public function filter_string( $v, $p ) 
+    {
+        $val = $v->getValue();
         if( $p == 'lower' ) {
-            $this->value = strtolower( $this->value );
+            $val = strtolower( $val );
         }
         elseif( $p == 'upper' ) {
-            $this->value = strtoupper( $this->value );
+            $val = strtoupper( $val );
         }
         elseif( $p == 'capital' ) {
-            $this->value = ucwords( $this->value );
+            $val = ucwords( $val );
         }
+        $v->setValue( $val );
     }
 
     /**
      * if the value is empty (false, null, empty string, or empty array), 
      * the default value of $p is used for the value. 
-     * 
+     *
+     * @param ValueTO $v
      * @param $p
      */
-    public function filter_default( $p ) {
-        if( !$this->value && "" == "{$this->value}" ) { // no value. set default...
-            $this->value = $p;
+    public function filter_default( $v, $p ) 
+    {
+        $val = $v->getValue();
+        if( !$val && "" == "{$val}" ) { // no value. set default...
+            $v->setValue( $p );
         }
     }
     // +----------------------------------------------------------------------+
@@ -179,21 +154,27 @@ class Filter
 
     /**
      * checks if the $value has some value.
+     * @param ValueTO $v
      */
-    public function filter_required() {
-        if( "{$this->value}" === '' ) { 
+    public function filter_required( $v ) 
+    {
+        $val = $v->getValue();
+        if( "{$val}" === '' ) { 
             // the value is empty. check if it is "required".
-            $this->setError( __METHOD__ );
+            $v->setError( __METHOD__ );
         }
     }
 
     /**
      * breaks loop if value is empty by returning $loop='break'.
      * validation is not necessary for empty value.
+     * @param ValueTO $v
      */
-    public function filter_loopBreak() {
-        if( "{$this->value}" == '' ) { // value is really empty. break the loop.
-            $this->break = true; // skip subsequent validations for empty values.
+    public function filter_loopBreak( $v ) 
+    {
+        $val = $v->getValue();
+        if( "{$val}" == '' ) { // value is really empty. break the loop.
+            $v->setBreak( true ); // skip subsequent validations for empty values.
         }
     }
 
@@ -209,28 +190,47 @@ class Filter
         'mail'   => '[a-zA-Z0-9_.-]+@[a-zA-Z0-9_.-]+\.[a-zA-Z]+',
     );
 
-    public function filter_matches( $p ) {
-        $option  = Utils::arrGet( $this->matchType, $p, $p );
-        if( !preg_match( "/^{$option}\$/", $this->value ) ) {
-            $this->setError( __METHOD__, $p );
-        }
-    }
     /**
+     * @param ValueTO $v
      * @param $p
      */
-    public function filter_pattern( $p ) {
-        if( !preg_match( "/^{$p}\$/", $this->value ) ) {
-            $this->setError( __METHOD__, $p );
+    public function filter_matches( $v, $p ) 
+    {
+        $option  = Utils::arrGet( $this->matchType, $p, $p );
+        if( !preg_match( "/^{$option}\$/", $v->getValue() ) ) {
+            $v->setError( __METHOD__, $p );
+        }
+    }
+    
+    /**
+     * @param ValueTO $v
+     * @param $p
+     */
+    public function filter_pattern( $v, $p ) {
+        if( !preg_match( "/^{$p}\$/", $v->getValue() ) ) {
+            $v->setError( __METHOD__, $p );
         }
     }
 
-    public function filter_sameAs( $p ) {
-        return $this->value===$p;
+    /**
+     * @param ValueTO $v
+     * @param $p
+     */
+    public function filter_sameAs( $v, $p ) 
+    {
+        if( $v->getValue() === $p ) {
+            $v->setError( __METHOD__, $p );
+        }
     }
 
-    public function filter_sameEmpty() {
-        if( "{$this->value}" !== "" ) {
-            $this->setError( __METHOD__ );
+    /**
+     * @param ValueTO $v
+     */
+    public function filter_sameEmpty( $v ) 
+    {
+        $val = $v->getValue();
+        if( "{$val}" !== "" ) {
+            $v->setError( __METHOD__ );
         }
     }
     // +----------------------------------------------------------------------+

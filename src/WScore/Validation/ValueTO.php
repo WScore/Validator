@@ -70,9 +70,13 @@ class ValueTO
      */
     public function setError( $method, $p=null )
     {
-        if( $method === false ) {
-            $this->error = $method;
+        $this->setBreak( true );
+        if( $method === false ) { // reset error to false.
+            $this->error = false;
             return;
+        }
+        if( substr( $method, 0, 7 ) === 'filter_' ) {
+            $method = substr( $method, 7 );
         }
         $this->error = array(
             'method' => $method,
@@ -118,7 +122,7 @@ class ValueTO
      */
     public function  __toString() 
     {
-        return $this->value;
+        return (string) $this->value;
     }
 
 }
