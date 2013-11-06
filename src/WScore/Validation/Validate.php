@@ -27,6 +27,8 @@ class Validate
     }
 
     /**
+     * returns the filtered value, or false if validation fails. 
+     * 
      * @param string|array        $value
      * @param Rules|array         $rules
      * @return bool|mixed
