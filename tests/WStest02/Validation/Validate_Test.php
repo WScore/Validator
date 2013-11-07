@@ -14,10 +14,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->validate = new Validate(
-            new Filter(), 
-            new ValueTO()
-        );
+        $this->validate = Validate::factory();
     }
 
     // +----------------------------------------------------------------------+

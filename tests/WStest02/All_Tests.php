@@ -12,6 +12,7 @@ class All_Tests
         $suite->addTestFile( $folder . 'Message_Test.php' );
         $suite->addTestFile( $folder . 'Rules_Test.php' );
         $suite->addTestFile( $folder . 'Validate_Test.php' );
+        $suite->addTestFile( $folder . 'Validation_Test.php' );
 
         return $suite;
     }

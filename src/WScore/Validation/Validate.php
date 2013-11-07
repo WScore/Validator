@@ -27,6 +27,16 @@ class Validate
     }
 
     /**
+     * @return static
+     */
+    public static function factory()
+    {
+        return new static(
+            new Filter(), new ValueTO()
+        );
+    }
+
+    /**
      * returns the filtered value, or false if validation fails. 
      * 
      * @param string|array        $value
