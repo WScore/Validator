@@ -2,58 +2,53 @@
 namespace WScore\Validation;
 
 /**
+ * validates an array of values (i.e. input from html form).
  * 
- * @method pushText()
- * @method pushMail()
- * @method pushNumber()
- * @method pushInteger()
- * @method pushFloat()
- * @method pushDate()
- * @method pushDateYM()
- * @method pushTime()
- * @method pushTimeHi()
- * @method pushTel()
- * @method pushFax()
- *
  * @cacheable
  * 
  */
 class Validation
 {
-    /** @var array                 source of data to read from     */
+    /**
+     * @var array                 source of data to read from
+     */
     protected $source = array();
 
-    /** @var array                 validated and invalidated data  */
+    /**
+     * @var array                 validated and invalidated data
+     */
     protected $output = array();
 
-    /** @var array                 invalidated error messages      */
+    /**
+     * @var array                 invalidated error messages
+     */
     protected $errors = array();
 
-    /** @var int                   number of errors (invalids)     */
+    /**
+     * @var int                   number of errors (invalids)
+     */
     protected $err_num = 0;
 
-    /** @var Validate */
-    protected $validate = null;
-
-    /** @var \WScore\Validation\Rules */
-    protected $rule = null;
-    // +----------------------------------------------------------------------+
     /**
      * @Inject
-     * @param \WScore\Validation\Validate   $validate
-     * @param \WScore\Validation\Rules      $rule
-     * @param null|array $data
+     * @var Validate
      */
-    public function __construct( $validate, $rule, $data=null ) {
+    protected $validate = null;
+
+    // +----------------------------------------------------------------------+
+    /**
+     * @param \WScore\Validation\Validate   $validate
+     */
+    public function __construct( $validate )
+    {
         $this->validate = $validate;
-        $this->rule     = $rule;
-        if( isset( $data ) ) $this->source = $data;
     }
 
     /**
      * @param array $data
      */
-    public function source( $data=array() ) {
+    public function source( $data=array() )
+    {
         $this->source = $data;
     }
 
@@ -61,7 +56,8 @@ class Validation
      * @param null|string $key
      * @return array
      */
-    public function pop( $key=null ) {
+    public function pop( $key=null )
+    {
         if( is_null( $key ) ) {
             return $this->output;
         }
@@ -71,7 +67,8 @@ class Validation
     /**
      * @return array
      */
-    public function popSafe() {
+    public function popSafe()
+    {
         $safeData = $this->output;
         $this->_findClean( $safeData, $this->errors );
         return $safeData;
@@ -80,16 +77,16 @@ class Validation
     /**
      * @param array      $data
      * @param array|null $error
-     * @param bool       $key
      */
-    public function _findClean( &$data, $error, $key=false ) {
+    private function _findClean( &$data, $error )
+    {
         if( empty( $error ) ) return; // no error at all.
         foreach( $data as $key => $val ) {
             if( !array_key_exists( $key, $error ) ) {
                 continue; // no error.
             }
             if( is_array( $data[ $key ] ) && is_array( $error[ $key ] ) ) {
-                $this->_findClean( $data[$key], $error[$key], $key );
+                $this->_findClean( $data[$key], $error[$key] );
             }
             else {
                 unset( $data[ $key ] );
@@ -101,7 +98,8 @@ class Validation
      * @param null|string $name
      * @return array|mixed
      */
-    public function popError( $name=null ) {
+    public function popError( $name=null )
+    {
         if( $name ) return Utils::arrGet( $this->errors, $name );
         return $this->errors;
     }
@@ -109,40 +107,22 @@ class Validation
     /**
      * @return bool
      */
-    public function isValid() {
+    public function isValid()
+    {
         return !$this->err_num;
     }
 
     // +----------------------------------------------------------------------+
 
-    public function __call( $method, $args )
-    {
-        if( substr( $method, 0, 4 ) == 'push' ) {
-            $name    = $args[0];
-            $filter  = Utils::arrGet( $args, 1 );
-            $message = Utils::arrGet( $args, 2 );
-            $type = strtolower( substr( $method, 4 ) );
-            $rule = $this->rule->$type( $filter );
-            return $this->push( $name, $rule, $message );
-        }
-        throw new \RuntimeException( 'unknown method: ' . $method );
-    }
     /**
      * @param string $name
-     * @param array|Rules $rules
-     * @param null  $message
+     * @param Rules $rules
      * @return mixed
      */
-    public function push( $name, $rules=array(), $message=null )
+    public function push( $name, $rules )
     {
-        if( !$rules instanceof Rules ) $rules = $this->rule->text( $rules );
-        $this->find( $name, $rules, $message );
-        $this->output[ $name ] = $this->validate->value;
-        if( !$this->validate->isValid ) {
-            $this->errors[ $name ] = $this->validate->err_msg;
-            $this->err_num ++;
-            return false;
-        }
+        $found = $this->find( $name, $rules );
+        $this->keep( $found, $name );
         return $this->output[ $name ];
     }
 
@@ -151,7 +131,8 @@ class Validation
      * @param mixed  $value
      * @return Validation
      */
-    public function pushValue( $name, $value ) {
+    public function pushValue( $name, $value )
+    {
         $this->output[ $name ] = $value;
         return $this;
     }
@@ -162,7 +143,8 @@ class Validation
      * @param bool|mixed $value
      * @return Validation
      */
-    public function pushError( $name, $error, $value=false ) {
+    public function pushError( $name, $error, $value=false )
+    {
         $this->errors[ $name ] = $error;
         $this->err_num ++;
         if( $value !== false ) $this->output[ $name ] = $value;
@@ -170,12 +152,13 @@ class Validation
     }
     
     /**
+     * finds a value with $name in the source data, applying the rules.
+     *
      * @param string $name
-     * @param array|Rules $rules
-     * @param null  $message
-     * @return mixed
+     * @param Rules  $rules
+     * @return ValueTO|ValueTO[]
      */
-    public function find( $name, $rules=array(), $message=null )
+    public function find( $name, $rules )
     {
         // find a value from data source.
         $value = null;
@@ -189,9 +172,52 @@ class Validation
         }
         // prepares filter for sameWith.
         $rules = Utils::prepare_sameWith( $this, $rules );
+
         // now, validate this value.
-        $ok = $this->validate->is( $value, $rules, $message );
-        return $ok;
+        if( is_array( $value ) ) {
+            $found = array();
+            foreach( $value as $key => $val ) {
+                $found[ $key ] = $this->validate->applyFilters( $val, $rules );
+            }
+        } else {
+            $found = $this->validate->applyFilters( $value, $rules );
+        }
+        return $found;
+    }
+
+    /**
+     * @param ValueTO|ValueTO[] $found
+     * @param string $key
+     * @param null $key2
+     */
+    private function keep( $found, $key, $key2=null )
+    {
+        if( is_array( $found ) ) {
+
+            /** @var $found ValueTO[] */
+            foreach( $found as $k => $f ) {
+                $this->keep( $f, $key, $k );
+            }
+            return;
+
+        } else {
+
+            /** @var $found ValueTO */
+            if( $found->getError() ) {
+
+                if( $key2 !== null ) {
+                    $this->errors[ $key ][ $key2 ] = $found->getMessage();
+                } else {
+                    $this->errors[ $key ] = $found->getMessage();
+                }
+                $this->err_num ++;
+            }
+            if( $key2 !== null ) {
+                $this->output[ $key ][ $key2 ] = $found->getValue();
+            } else {
+                $this->output[ $key ] = $found->getValue();
+            }
+        }
     }
     // +----------------------------------------------------------------------+
 }
