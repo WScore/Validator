@@ -88,6 +88,17 @@ class ValueTO
     /**
      * @return string
      */
+    public function getErrorMethod()
+    {
+        if( $this->error && isset( $this->error[ 'method' ] ) ) {
+            return $this->error[ 'method' ];
+        }
+        return null;
+    }
+
+    /**
+     * @return string
+     */
     public function getMessage()
     {
         return $this->message;
