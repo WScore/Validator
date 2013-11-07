@@ -40,11 +40,15 @@ class Validation_Test extends \PHPUnit_Framework_TestCase
     function find_a_single_value()
     {
         $rule = $this->rules;
-        $this->validate->source( array( 'test' => 'tested' ) );
+        $source = array( 'test' => 'tested' );
+        $this->validate->source( $source);
         $got = $this->validate->push( 'test', $rule('text') );
 
         $this->assertEquals( 'tested', $got );
         $this->assertEquals( 'tested', $this->validate->pop( 'test' ) );
+        $this->assertEquals( $source, $this->validate->pop() );
+        $this->assertEquals( true, $this->validate->isValid() );
+        $this->assertEquals( array(), $this->validate->popError() );
     }
 
     /**
@@ -54,10 +58,14 @@ class Validation_Test extends \PHPUnit_Framework_TestCase
     {
         $rule = $this->rules;
         $test = array( 'tested', 'more test' );
-        $this->validate->source( array( 'test' => $test ) );
+        $source = array( 'test' => $test );
+        $this->validate->source( $source );
         $got = $this->validate->push( 'test', $rule('text') );
 
         $this->assertEquals( $test, $got );
         $this->assertEquals( $test, $this->validate->pop( 'test' ) );
+        $this->assertEquals( $source, $this->validate->pop() );
+        $this->assertEquals( true, $this->validate->isValid() );
+        $this->assertEquals( array(), $this->validate->popError() );
     }
 }
