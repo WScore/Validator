@@ -135,7 +135,11 @@ class Rules implements \ArrayAccess, \IteratorAggregate
      */
     public static function parse( $type, $text='' )
     {
-        $rule = clone( static::$_rules );
+        if( !static::$_rules ) {
+            $rule = new static();
+        } else {
+            $rule = clone( static::$_rules );
+        }
         $rule->applyType( $type );
         if( $text ) {
             $rule->applyTextFilter( $text );
