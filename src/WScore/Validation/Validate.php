@@ -63,10 +63,10 @@ class Validate
      * apply filters on a single value.
      *
      * @param string $value
-     * @param array  $rules
+     * @param array|Rules  $rules
      * @return ValueTO
      */
-    public function applyFilters( $value, $rules )
+    public function applyFilters( $value, $rules=array() )
     {
         /** @var $filter Filter */
         $valueTO = $this->valueTO->forge( $value );
