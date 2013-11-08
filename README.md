@@ -8,11 +8,11 @@ Validation and filtration for values such as form input.
 *   validation:
     will only validates the value (no changes to the value).
 
-filters always should applied before the validators.
-also the order of filters is important.
 
 Simple Usage
 ------------
+
+examples for Validate object, which filters and validates a single value. 
 
 ```php
 $validate = \WScore\Validation\Validate::factory();
@@ -30,27 +30,17 @@ echo $validate->is( 'a text', $rule('text')->string('upper') ); // 'A TEXT'
 $value = '';
 echo $validate->is( $value, $rule('text') ); // ''
 echo $validate->is( $value, $rule('text')->required() ); // false
-echo $validate->isError(); // true
-echo $validate->message(); // 'required field'
+echo $validate->isValid(); // false
+echo $validate->getMessage(); // 'required field'
 ```
 
-Objects
--------
-
-*   Validate object:
-    filters and validates a single value.
-
-*   Validation object:
-    filters and validates against an array of inputs, such as $_POST.
-    Validation has multiple filter and sameAs validator which are not present in Validate.
-
-*   Rules object:
-    has predefined filters and validators to apply for several types of input.
 
 More Example
 ------------
 
-validation on input values.
+examples for Validation object, which filters and validates on array inputs,
+such as $_POST. 
+
 
 ```php
 $validation = Validation::factory();
@@ -111,6 +101,8 @@ $validation->popError(); // [ 'none' => 'required input' ]
 
 ###Multiple inputs
 
+to treat separate input fields as one input. 
+
 ```php
 $input = array( 'bd_y' => '2001', 'bd_m' => '09', 'bd_d' => '25' );
 echo $validation->push( 'bd', $rule('date' ) ); // 2001-09-25
@@ -118,9 +110,12 @@ echo $validation->push( 'bd', $rule('date' ) ); // 2001-09-25
 
 ###SameWith to compare values
 
+for password or email validation with two input fields 
+to compare each other. 
+
 ```php
 $input = array( 'text1' => '123ABC', 'text2' => '123abc' );
-echo $validation->push( 'bd', $rule('text')->string('lower')->sameWith('text2') ); // 123abc
+echo $validation->push( 'bd', $rule('text', 'string:lower | sameWith:text2' ) ); // 123abc
 ```
 
 Predefined Types
@@ -148,3 +143,29 @@ todo: to-be-write
 *   mbConvert
 *   trim
 *   etc.
+
+Objects
+-------
+
+*   Validate object:
+    filters and validates a single value.
+
+*   Validation object:
+    filters and validates against an array of inputs, such as $_POST.
+    Validation has multiple filter and sameAs validator which are not present in Validate.
+
+*   Rules object:
+    has predefined filters and validators to apply for several types of input.
+
+other objects:
+
+*   Message object:
+    handles messages for errors. 
+
+*   Filter object:
+    defines filters and validators as methods. 
+
+*   ValueTO object:
+    value-transfer-object used to carry value and associated error information, 
+    such as error methods name and parameter, and messages. 
+
