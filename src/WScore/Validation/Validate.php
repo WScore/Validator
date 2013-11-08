@@ -20,6 +20,13 @@ class Validate
      */
     public $message;
 
+    /**
+     * last ValueTO from applyFilter
+     * 
+     * @var \WScore\Validation\ValueTO
+     */
+    public $lastValue;
+
     // +----------------------------------------------------------------------+
     /**
      * @param \WScore\Validation\Filter $filter
@@ -52,11 +59,31 @@ class Validate
      */
     public function is( $value, $rules ) 
     {
-        $valueTO = $this->applyFilters( $value, $rules );
-        if( !$valueTO->getError() ) {
-            return $valueTO->getValue();
+        $this->lastValue = $this->applyFilters( $value, $rules );
+        if( !$this->lastValue->getError() ) {
+            return $this->lastValue->getValue();
         }
         return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isValid() {
+        if( $this->lastValue && $this->lastValue->getError() ) {
+            return false;
+        }
+        return true;
+    }
+    /**
+     * @return null|string
+     */
+    public function getMessage()
+    {
+        if( $this->lastValue && $this->lastValue->getError() ) {
+            return $this->lastValue->getMessage();
+        }
+        return null;
     }
 
     /**

@@ -108,4 +108,28 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
         $value = $this->validate->is( ' text ', $rules( 'text' ) );
         $this->assertEquals( 'text', $value );
     }
+
+    /**
+     * @test
+     */
+    function isValid_return_true_if_no_error()
+    {
+        $this->assertEquals( true, $this->validate->isValid() );
+        $this->assertEquals( null, $this->validate->getMessage() );
+        $this->validate->is( 'text', array( 'trim' => true ) );
+        $this->assertEquals( true, $this->validate->isValid() );
+        $this->assertEquals( null, $this->validate->getMessage() );
+    }
+
+    /**
+     * @test
+     */
+    function getMessage_returns_msg_if_is_fails()
+    {
+        $this->assertEquals( true, $this->validate->isValid() );
+        $this->assertEquals( null, $this->validate->getMessage() );
+        $this->validate->is( 'text', array( 'pattern' => '[0-9]*' ) );
+        $this->assertEquals( false, $this->validate->isValid() );
+        $this->assertEquals( 'invalid input', $this->validate->getMessage() );
+    }
 }
