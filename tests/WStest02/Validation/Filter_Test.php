@@ -82,6 +82,27 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( 'Test Test', $value->getValue() );
     }
 
+    /**
+     * @test
+     */
+    function pattern_fails()
+    {
+        $value = $this->validate->applyFilters( '3', [ 'pattern' => '[012]{1}' ] );
+        $this->assertEquals( '3', $value->getValue() );
+        $this->assertTrue( !!$value->getError() );
+    }
+
+    /**
+     * @test
+     */
+    function encoding_fails()
+    {
+        $bad = 'bad' . chr( 11111111 );
+        $value = $this->validate->applyFilters( $bad, [ 'encoding' => true ] );
+        $this->assertEquals( '', $value->getValue() );
+        $this->assertEquals( 'invalid encoding', $value->getMessage() );
+        $this->assertTrue( !!$value->getError() );
+    }
     // +----------------------------------------------------------------------+
     //  test mbConvert filter.
     // +----------------------------------------------------------------------+
