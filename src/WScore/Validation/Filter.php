@@ -218,7 +218,7 @@ class Filter
      */
     public function filter_sameAs( $v, $p ) 
     {
-        if( $v->getValue() === $p ) {
+        if( $v->getValue() !== $p ) {
             $v->setError( __METHOD__, $p );
         }
     }

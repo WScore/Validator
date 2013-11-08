@@ -98,7 +98,7 @@ class Rules implements \ArrayAccess, \IteratorAggregate
         $this->filterTypes = array(
             'binary'   => [ 'noNull' => false, 'encoding' => false, 'mbConvert' => false, 'trim' => false ],
             'text'     => [],
-            'mail'     => [ 'mbConvert' => 'hankaku', 'matches' => 'mail', 'sanitize' => 'mail' ],
+            'mail'     => [ 'mbConvert' => 'hankaku', 'string' => 'lower', 'matches' => 'mail', 'sanitize' => 'mail' ],
             'number'   => [ 'mbConvert' => 'hankaku', 'matches' => 'number' ],
             'integer'  => [ 'mbConvert' => 'hankaku', 'matches' => 'int' ],
             'float'    => [ 'mbConvert' => 'hankaku', 'matches' => 'float' ],

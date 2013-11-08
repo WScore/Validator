@@ -130,8 +130,8 @@ class Utils
         }
         $sub_filter[ 'sameWith' ] = false;
         $sub_filter[ 'required' ] = false;
-        $dio->find( $sub_name, $sub_filter );
-        $value = $dio->pop( $sub_name );
+        $found = $dio->find( $sub_name, $sub_filter );
+        $value = $found->getValue();
 
         // reset sameWith filter, and set same{As|Empty} filter.
         $filters[ 'sameWith' ] = false;
@@ -141,7 +141,6 @@ class Utils
         else {
             $filters[ 'sameEmpty' ] = true;
         }
-        $filters[ 'sameWith' ] = false;
         return $filters;
     }
     
