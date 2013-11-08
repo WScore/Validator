@@ -15,15 +15,22 @@ class Validate
      */
     public $valueTO;
 
+    /**
+     * @var \WScore\Validation\Message
+     */
+    public $message;
+
     // +----------------------------------------------------------------------+
     /**
-     * @param \WScore\Validation\Filter  $filter
-     * @param \WScore\Validation\Rules   $valueTO
+     * @param \WScore\Validation\Filter $filter
+     * @param \WScore\Validation\ValueTO $valueTO
+     * @param \WScore\Validation\Message $message
      */
-    public function __construct( $filter=null, $valueTO=null )
+    public function __construct( $filter=null, $valueTO=null, $message=null )
     {
         if( isset( $filter  ) ) $this->filter  = $filter;
         if( isset( $valueTO ) ) $this->valueTO = $valueTO;
+        if( isset( $message ) ) $this->message = $message;
     }
 
     /**
@@ -32,7 +39,7 @@ class Validate
     public static function factory()
     {
         return new static(
-            new Filter(), new ValueTO()
+            new Filter(), new ValueTO(), new Message()
         );
     }
 
@@ -76,6 +83,7 @@ class Validate
             // loop break.
             if( $valueTO->getBreak() ) break;
         }
+        $this->message->set( $valueTO );
         return $valueTO;
     }
     // +----------------------------------------------------------------------+
