@@ -53,6 +53,9 @@ class Validation
     }
 
     /**
+     * returns found value.
+     * this method returns values that maybe invalid.
+     *
      * @param null|string $key
      * @return array
      */
@@ -65,6 +68,8 @@ class Validation
     }
 
     /**
+     * returns all the valid values.
+     *
      * @return array
      */
     public function popSafe()
@@ -115,6 +120,9 @@ class Validation
     // +----------------------------------------------------------------------+
 
     /**
+     * pushes the $name.
+     * returns the found value, or false if validation fails.
+     *
      * @param string $name
      * @param Rules $rules
      * @return mixed
@@ -122,7 +130,9 @@ class Validation
     public function push( $name, $rules )
     {
         $found = $this->find( $name, $rules );
-        $this->keep( $found, $name );
+        if( !$this->keep( $found, $name ) ) {
+            return false;
+        }
         return $this->output[ $name ];
     }
 
@@ -189,22 +199,25 @@ class Validation
      * @param ValueTO|ValueTO[] $found
      * @param string $key
      * @param null $key2
+     * @return bool
      */
     private function keep( $found, $key, $key2=null )
     {
+        $isValid = true;
         if( is_array( $found ) ) {
 
             /** @var $found ValueTO[] */
             foreach( $found as $k => $f ) {
-                $this->keep( $f, $key, $k );
+                $isValid &= $this->keep( $f, $key, $k );
             }
-            return;
+            return $isValid;
 
         } else {
 
             /** @var $found ValueTO */
             if( $found->getError() ) {
 
+                $isValid = false;
                 if( $key2 !== null ) {
                     $this->errors[ $key ][ $key2 ] = $found->getMessage();
                 } else {
@@ -218,6 +231,7 @@ class Validation
                 $this->output[ $key ] = $found->getValue();
             }
         }
+        return $isValid;
     }
     // +----------------------------------------------------------------------+
 }
