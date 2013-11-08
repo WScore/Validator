@@ -31,7 +31,8 @@ class Filter
      * @param ValueTO $v
      * @param $p
      */
-    public function filter_err_msg( $v, $p ) {
+    public function filter_err_msg( $v, $p )
+    {
         $this->filter_message( $v, $p );
     }
 
@@ -41,7 +42,8 @@ class Filter
      * @param ValueTO $v
      * @param $p
      */
-    public function filter_message( $v, $p ) {
+    public function filter_message( $v, $p )
+    {
         if( $p ) $v->setMessage( $p );
     }
 
@@ -50,7 +52,8 @@ class Filter
      * 
      * @param ValueTO $v
      */
-    public function filter_noNull( $v ) {
+    public function filter_noNull( $v )
+    {
         $v->setValue( str_replace( "\0", '', $v->getValue() ) );
     }
 
@@ -58,7 +61,8 @@ class Filter
      * trims text. 
      * @param ValueTO $v
      */
-    public function filter_trim( $v ) {
+    public function filter_trim( $v )
+    {
         $v->setValue( trim( $v->getValue() ) );
     }
 
@@ -149,9 +153,6 @@ class Filter
             $v->setValue( $p );
         }
     }
-    // +----------------------------------------------------------------------+
-    //  filter definitions (filters for validation).
-    // +----------------------------------------------------------------------+
 
     /**
      * checks if the $value has some value.
@@ -166,6 +167,9 @@ class Filter
         }
     }
 
+    // +----------------------------------------------------------------------+
+    //  filter definitions (filters for validation).
+    // +----------------------------------------------------------------------+
     /**
      * breaks loop if value is empty by returning $loop='break'.
      * validation is not necessary for empty value.
@@ -207,7 +211,8 @@ class Filter
      * @param ValueTO $v
      * @param $p
      */
-    public function filter_pattern( $v, $p ) {
+    public function filter_pattern( $v, $p )
+    {
         if( !preg_match( "/^{$p}\$/", $v->getValue() ) ) {
             $v->setError( __METHOD__, $p );
         }
