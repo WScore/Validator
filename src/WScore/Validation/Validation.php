@@ -43,6 +43,11 @@ class Validation
     {
         $this->validate = $validate;
     }
+    
+    public static function factory()
+    {
+        return new static( Validate::factory() );
+    }
 
     /**
      * @param array $data
