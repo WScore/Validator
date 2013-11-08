@@ -68,4 +68,48 @@ class Validation_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( true, $this->validate->isValid() );
         $this->assertEquals( array(), $this->validate->popError() );
     }
+
+    /**
+     * @test
+     */
+    function find_will_result_inValid_if_required_data_is_not_set()
+    {
+        $rule = $this->rules;
+        $source = array( 'test' => '' );
+        $this->validate->source( $source );
+        $got = $this->validate->push( 'test', $rule('text')->required() );
+
+        $this->assertEquals( '', $got );
+        $this->assertEquals( '', $this->validate->pop( 'test' ) );
+        $this->assertEquals( $source, $this->validate->pop() );
+        $this->assertEquals( array(), $this->validate->popSafe() );
+        $this->assertEquals( false, $this->validate->isValid() );
+        $errors =  $this->validate->popError();
+        $this->assertEquals( 'required item', $errors[ 'test' ] );
+    }
+
+    /**
+     * @test
+     */
+    function find_will_return_array_of_errors_if_input_is_an_array()
+    {
+        $rule = $this->rules;
+        $test = array( '123', 'more test', '456' );
+        $source = array( 'test' => $test );
+        $this->validate->source( $source );
+        $got = $this->validate->push( 'test', $rule('number') );
+
+        // should return the input
+        $this->assertEquals( $test, $got );
+        $this->assertEquals( $test, $this->validate->pop( 'test' ) );
+        $this->assertEquals( $source, $this->validate->pop() );
+
+        // validation should become inValid.
+        $this->assertEquals( false, $this->validate->isValid() );
+        $errors =  $this->validate->popError();
+        $this->assertEquals( 'invalid input', $errors[ 'test' ][1] );
+
+        // popSafe returns data without error value.
+        $this->assertEquals( array( 'test' => array( 0=>'123', 2=>'456') ), $this->validate->popSafe() );
+    }
 }
