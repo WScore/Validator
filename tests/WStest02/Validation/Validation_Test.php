@@ -113,4 +113,36 @@ class Validation_Test extends \PHPUnit_Framework_TestCase
         // popSafe returns data without error value.
         $this->assertEquals( $collect, $this->validate->popSafe() );
     }
+
+    /**
+     * @test
+     */
+    function find_multiple_date_value()
+    {
+        $rule = $this->rules;
+        $source = array( 'test_y'=>'2013', 'test_m'=>'11', 'test_d'=>'08' );
+        $this->validate->source( $source );
+        $got = $this->validate->push( 'test', $rule('date') );
+        $this->assertEquals( '2013-11-08', $got );
+        $this->assertEquals( '2013-11-08', $this->validate->pop( 'test' ) );
+        $this->assertEquals( array( 'test' => '2013-11-08'), $this->validate->pop() );
+        $this->assertEquals( true, $this->validate->isValid() );
+        $this->assertEquals( array(), $this->validate->popError() );
+    }
+
+    /**
+     * @test
+     */
+    function find_multiple_datetime_value()
+    {
+        $rule = $this->rules;
+        $source = array( 'test_y'=>'2013', 'test_m'=>'11', 'test_d'=>'08', 'test_h'=>'15', 'test_i'=>'13', 'test_s'=>'59' );
+        $this->validate->source( $source );
+        $got = $this->validate->push( 'test', $rule('datetime') );
+        $this->assertEquals( '2013-11-08 15:13:59', $got );
+        $this->assertEquals( '2013-11-08 15:13:59', $this->validate->pop( 'test' ) );
+        $this->assertEquals( array( 'test' => '2013-11-08 15:13:59'), $this->validate->pop() );
+        $this->assertEquals( true, $this->validate->isValid() );
+        $this->assertEquals( array(), $this->validate->popError() );
+    }
 }
