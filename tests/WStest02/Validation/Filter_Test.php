@@ -173,4 +173,27 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
         $value = $this->validate->applyFilters( 'test', [ 'some' => $closure ] );
         $this->assertEquals( 'test:closured', $value->getValue() );
     }
+
+    /**
+     * @test
+     */
+    function choice_works()
+    {
+        $choice = array( '1', '3' );
+        $value = $this->validate->is( '1', array( 'choice' => $choice ) );
+        $this->assertEquals( '1', $value );
+        $this->assertEquals( true, $this->validate->isValid() );
+    }
+
+    /**
+     * @test
+     */
+    function choice_fails()
+    {
+        $choice = array( '1', '3' );
+        $value = $this->validate->is( '2', array( 'choice' => $choice ) );
+        $this->assertEquals( false, $value );
+        $this->assertEquals( false, $this->validate->isValid() );
+        $this->assertEquals( 'invalid choice', $this->validate->getMessage() );
+    }
 }

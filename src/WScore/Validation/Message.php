@@ -12,6 +12,7 @@ class Message
             0           => 'invalid input',
             'encoding'  => 'invalid encoding',
             'required'  => 'required item',
+            'choice'    => 'invalid choice',
             'sameAs'    => 'value not the same',
             'sameEmpty' => 'missing value to compare',
         );

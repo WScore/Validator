@@ -222,6 +222,18 @@ class Filter
      * @param ValueTO $v
      * @param $p
      */
+    public function filter_choice( $v, $p )
+    {
+        if( !is_array( $p ) ) $p = array( $p );
+        if( !in_array( $v->getValue(), $p ) ) {
+            $v->setError( __METHOD__, $p );
+        }
+    }
+
+    /**
+     * @param ValueTO $v
+     * @param $p
+     */
     public function filter_sameAs( $v, $p ) 
     {
         if( $v->getValue() !== $p ) {
