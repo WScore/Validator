@@ -99,7 +99,8 @@ class Filter
     }
 
     public $mvConvert = array(
-        'hankaku'  => 'aks',
+        'hankaku'  => 'aKVs',
+        'zenkaku'  => 'AKV',
         'han_kana' => 'kh',
         'zen_hira' => 'HVc',
         'zen_kana' => 'KVC',
