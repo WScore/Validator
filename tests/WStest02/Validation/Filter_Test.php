@@ -159,4 +159,18 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
         $value = $this->validate->applyFilters( "012ABCあいうａｂｃカキクｻﾞｼﾞｽﾞ", [ 'mbConvert' => 'zen_kana' ] );
         $this->assertEquals( '012ABCアイウａｂｃカキクザジズ', $value->getValue() );
     }
+    // +----------------------------------------------------------------------+
+    //  test closure
+    // +----------------------------------------------------------------------+
+    /**
+     * @test
+     */
+    function closure_works()
+    {
+        $closure = function( $v ) {
+            return $v . ':closured';
+        };
+        $value = $this->validate->applyFilters( 'test', [ 'some' => $closure ] );
+        $this->assertEquals( 'test:closured', $value->getValue() );
+    }
 }
