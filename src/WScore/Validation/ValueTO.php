@@ -75,9 +75,6 @@ class ValueTO
             $this->error = false;
             return;
         }
-        if( substr( $method, 0, 7 ) === 'filter_' ) {
-            $method = substr( $method, 7 );
-        }
         $this->error = array(
             'method' => $method,
             'parameter' => $p,

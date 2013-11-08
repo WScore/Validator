@@ -41,6 +41,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
         $value = $this->validate->applyFilters( ' text ', [ 'trim' => true ] );
         $this->assertEquals( 'WScore\Validation\Validate', get_class( $this->validate ) );
         $this->assertEquals( 'text', $value->getValue() );
+        $this->assertEquals( 'text', $value );
         $this->assertEquals( 'invalid input', $value->getMessage() );
     }
 
