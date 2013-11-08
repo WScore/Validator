@@ -30,6 +30,9 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( 'WScore\Validation\Validate', get_class( $this->validate ) );
     }
 
+    // +----------------------------------------------------------------------+
+    //  tests on applyFilter methods
+    // +----------------------------------------------------------------------+
     /**
      * @test
      */
@@ -59,6 +62,9 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( 'required item', $value->getMessage() );
     }
 
+    // +----------------------------------------------------------------------+
+    //  tests on is methods
+    // +----------------------------------------------------------------------+
     /**
      * @test
      */
@@ -75,5 +81,30 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
     {
         $value = $this->validate->is( '', [ 'required' => true ] );
         $this->assertEquals( false, $value );
+    }
+
+    // +----------------------------------------------------------------------+
+    //  integrate test using Rules object
+    // +----------------------------------------------------------------------+
+    /**
+     * @test
+     */
+    function applyFilter_with_rules()
+    {
+        $rules = $this->rules;
+        $value = $this->validate->applyFilters( ' text ', $rules( 'text' ) );
+        $this->assertEquals( 'WScore\Validation\Validate', get_class( $this->validate ) );
+        $this->assertEquals( 'text', $value->getValue() );
+        $this->assertEquals( 'invalid input', $value->getMessage() );
+    }
+
+    /**
+     * @test
+     */
+    function is_with_rules()
+    {
+        $rules = $this->rules;
+        $value = $this->validate->is( ' text ', $rules( 'text' ) );
+        $this->assertEquals( 'text', $value );
     }
 }

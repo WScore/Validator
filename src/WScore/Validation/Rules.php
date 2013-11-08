@@ -7,6 +7,7 @@ namespace WScore\Validation;
  * it's just pattern is uses in html5's form element, while matches are not.
  *
  */
+use Traversable;
 
 /** 
  * @method Rules err_msg( string $error_message )
@@ -34,7 +35,7 @@ namespace WScore\Validation;
  * @method Rules sameAs( string $name )
  * @method Rules sameEmpty( bool $check=true )
  */
-class Rules implements \ArrayAccess
+class Rules implements \ArrayAccess, \IteratorAggregate
 {
     /**
      * @var array        predefined filter filter set
@@ -262,5 +263,14 @@ class Rules implements \ArrayAccess
      */
     public function offsetUnset( $offset ) {
         if( array_key_exists( $offset, $this->filter ) ) unset( $this->filter[ $offset ] );
+    }
+
+    /**
+     * Retrieve an external iterator
+     * @return Traversable
+     */
+    public function getIterator()
+    {
+        return new \ArrayIterator( $this->filter );
     }
 }
