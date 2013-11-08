@@ -26,6 +26,9 @@ class Message
             return;
         }
         $method = $value->getErrorMethod();
+        if( strpos( $method, '::filter_' ) !== false ) {
+            $method = substr( $method, strpos( $method, '::filter_' )+9 );
+        }
         if( isset( $this->messages[ $method ] ) ) {
             $message = $this->messages[ $method ];
         } else{
