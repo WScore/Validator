@@ -58,8 +58,8 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
     function applying_type_sets_filters()
     {
         $rule = $this->rule;
-        $rule->filter[ 'test_filter' ] = false;
-        $rule->filterTypes[ 'test' ] = [ 'test_filter' => 'tested' ];
+        $rule[ 'test_filter' ] = false;
+        $rule->addFilterType( 'test', [ 'test_filter' => 'tested' ] );
 
         // make sure test_filter is not set.
         $this->assertEquals( false, $rule[ 'test_filter'] );

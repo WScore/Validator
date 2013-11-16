@@ -41,12 +41,12 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     /**
      * @var array        predefined filter filter set
      */
-    public $filterTypes = array();
+    protected $filterTypes = array();
 
     /**
      * @var array
      */
-    public $filter = array();
+    protected $filter = array();
 
     /**
      * @var Rules
@@ -169,6 +169,12 @@ class Rules implements \ArrayAccess, \IteratorAggregate
         foreach( $filters as $rule => $value ) {
             $this->$rule( $value );
         }
+    }
+    
+    public function addFilterType( $type, $filter )
+    {
+        $this->filterTypes[ $type ] = $filter;
+        return $this;
     }
 
     /**
