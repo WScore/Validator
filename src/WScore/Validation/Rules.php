@@ -1,6 +1,8 @@
 <?php
 namespace WScore\Validation;
 
+use WScore\DiContainer\Types\String as Locale;
+
 /**
  * about pattern and matches filter.
  * both filters uses preg_match for patter match.
@@ -49,9 +51,16 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     protected $filter = array();
 
     /**
+     * @Inject
      * @var Rules
      */
     protected static $_rules;
+
+    /**
+     * @Inject
+     * @var Locale
+     */
+    public $locale = 'en';
 
     // +----------------------------------------------------------------------+
     //  managing object
@@ -59,64 +68,38 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     /**
      * todo: keep these filter arrays in some language files.
      */
-    public function __construct()
+    public function __construct( $locale=null )
     {
-        // define order of filterOptions when applying. order can be critical when
-        // modifying the string (such as capitalize before checking patterns).
-        //   rule => option
-        // if option is FALSE, the rule is skipped.
-        $this->filter = array(
-            // filterOptions (modifies the value)
-            'type'        => null,       // type of filter, such as 'text', 'mail', etc.
-            'err_msg'     => false,
-            'message'     => false,
-            'multiple'    => false,      // multiple value.
-            'noNull'      => true,       // filters out NULL (\0) char from the value.
-            'encoding'    => 'UTF-8',    // checks the encoding of value.
-            'mbConvert'   => 'standard', // converts Kana set (Japanese)
-            'trim'        => true,       // trims value.
-            'sanitize'    => false,      // done, kind of
-            'string'      => false,      // converts value to upper/lower/etc.
-            'default'     => '',         // sets default if value is empty.
-            // validators (only checks the value).
-            'required'    => false,      // fails if value is empty.
-            'loopBreak'   => true,       // done, skip validations if value is empty.
-            'code'        => false,
-            'maxlength'   => false,
-            'pattern'     => false,      // checks pattern with preg_match.
-            'matches'     => false,      // preg_match with default types.
-            'kanaType'    => false,      // checks kana-types, hiragana, katakana, etc. 
-            'min'         => false,
-            'max'         => false,
-            'range'       => false,
-            'checkdate'   => false,
-            'mbCheckKana' => false,
-            'sameWith'    => false,      // comparing with other field.
-            'sameAs'      => false,
-            'sameEmpty'   => false,
-        );
-
-        // filters for various types of input.
-        $this->filterTypes = array(
-            'binary'   => [ 'noNull' => false, 'encoding' => false, 'mbConvert' => false, 'trim' => false ],
-            'text'     => [],
-            'hiragana' => [ 'mbConvert' => 'hiragana', 'kanaType' => 'hiragana' ],
-            'katakana' => [ 'mbConvert' => 'katakana', 'kanaType' => 'katakana' ],
-            'mail'     => [ 'mbConvert' => 'hankaku', 'string' => 'lower', 'matches' => 'mail', 'sanitize' => 'mail' ],
-            'number'   => [ 'mbConvert' => 'hankaku', 'matches' => 'number' ],
-            'integer'  => [ 'mbConvert' => 'hankaku', 'matches' => 'int' ],
-            'float'    => [ 'mbConvert' => 'hankaku', 'matches' => 'float' ],
-            'date'     => [ 'multiple' => 'YMD', 'mbConvert' => 'hankaku', 'pattern' => '[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}' ],
-            'dateYM'   => [ 'multiple' => 'YM',  'mbConvert' => 'hankaku', 'pattern' => '[0-9]{4}-[0-9]{1,2}' ],
-            'datetime' => [ 'multiple' => 'datetime', 'mbConvert' => 'hankaku', 'pattern' => '[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{2}:[0-9]{2}:[0-9]{2}' ],
-            'time'     => [ 'multiple' => 'His', 'mbConvert' => 'hankaku', 'pattern' => '[0-9]{2}:[0-9]{2}:[0-9]{2}' ],
-            'timeHi'   => [ 'multiple' => 'Hi',  'mbConvert' => 'hankaku', 'pattern' => '[0-9]{2}:[0-9]{2}' ],
-            'tel'      => [ 'multiple' => 'tel', 'mbConvert' => 'hankaku', 'pattern' => '[-0-9()]*' ],
-            'fax'      => [ 'multiple' => 'tel', 'mbConvert' => 'hankaku', 'pattern' => '[-0-9()]*' ],
-        );
+        if( $locale ) $this->locale = $locale;
+        $this->loadFilter();
+        $this->loadFilterType();
         static::$_rules = $this;
     }
 
+    /**
+     * @param null|string $filename
+     */
+    public function loadFilter( $filename=null )
+    {
+        if( !$filename ) {
+            $locale = strtolower( locale_get_primary_language( $this->locale ) );
+            $filename = __DIR__ . "/Locale/Filter.{$locale}.php";
+        }
+        $this->filter = include( $filename );
+    }
+
+    /**
+     * @param null|string $filename
+     */
+    public function loadFilterType( $filename=null )
+    {
+        if( !$filename ) {
+            $locale = strtolower( locale_get_primary_language( $this->locale ) );
+            $filename = __DIR__ . "/Locale/FilterType.{$locale}.php";
+        }
+        $this->filterTypes = include( $filename );
+    }
+    
     /**
      * @param string $type
      * @param string $text
