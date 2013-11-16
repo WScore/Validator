@@ -5,8 +5,6 @@
 return array(
     'binary'   => [ 'noNull' => false, 'encoding' => false, 'mbConvert' => false, 'trim' => false ],
     'text'     => [],
-    'hiragana' => [ 'mbConvert' => 'hiragana', 'kanaType' => 'hiragana' ],
-    'katakana' => [ 'mbConvert' => 'katakana', 'kanaType' => 'katakana' ],
     'mail'     => [ 'mbConvert' => 'hankaku', 'string' => 'lower', 'matches' => 'mail', 'sanitize' => 'mail' ],
     'number'   => [ 'mbConvert' => 'hankaku', 'matches' => 'number' ],
     'integer'  => [ 'mbConvert' => 'hankaku', 'matches' => 'int' ],

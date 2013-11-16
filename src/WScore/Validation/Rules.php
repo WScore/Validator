@@ -66,7 +66,7 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     //  managing object
     // +----------------------------------------------------------------------+
     /**
-     * todo: keep these filter arrays in some language files.
+     * @param string|null $locale
      */
     public function __construct( $locale=null )
     {
