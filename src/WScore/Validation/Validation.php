@@ -33,7 +33,7 @@ class Validation
      * @Inject
      * @var Validate
      */
-    protected $validate = null;
+    public $validate = null;
 
     // +----------------------------------------------------------------------+
     /**
