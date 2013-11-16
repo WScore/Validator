@@ -26,6 +26,7 @@ use Traversable;
  * @method Rules maxlength( int $length )
  * @method Rules pattern( string $reg_expression )
  * @method Rules matches( string $match_type )
+ * @method Rules kanaType( string $match_type )
  * @method Rules min( int $min )
  * @method Rules max( int $max )
  * @method Rules range( array $range )
