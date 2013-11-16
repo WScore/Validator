@@ -196,4 +196,61 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( false, $this->validate->isValid() );
         $this->assertEquals( 'invalid choice', $this->validate->getMessage() );
     }
+
+    /**
+     * @test
+     */
+    function kanaType_katakana_success_for_text_with_only_katakana()
+    {
+        $text = '　ァアイウエオヶ・ーヽヾ';
+        $value = $this->validate->is( $text, array( 'kanaType' => 'katakana' ) );
+        $this->assertEquals( $text, (string) $value );
+        $this->assertEquals( true, $this->validate->isValid() );
+        $this->assertEquals( null, $this->validate->getMessage() );
+    }
+
+    /**
+     * @test
+     */
+    function kanaType_katakana_fails_for_text_with_non_katakana()
+    {
+        // with hiragana
+        $text = 'アイウエオ' . 'あ';
+        $value = $this->validate->is( $text, array( 'kanaType' => 'katakana' ) );
+        $this->assertEquals( false, $this->validate->isValid() );
+
+        // with ascii
+        $text = 'アイウエオ' . 'a';
+        $value = $this->validate->is( $text, array( 'kanaType' => 'katakana' ) );
+        $this->assertEquals( false, $this->validate->isValid() );
+
+        // with space... not sure if this should fail
+        $text = 'アイウエオ' . ' ';
+        $value = $this->validate->is( $text, array( 'kanaType' => 'katakana' ) );
+        $this->assertEquals( false, $this->validate->isValid() );
+    }
+
+    /**
+     * @test
+     */
+    function kanaType_hiragana_success_for_text_with_only_hiragana()
+    {
+        $text = '　ぁあいうえおん゛ゞ';
+        $value = $this->validate->is( $text, array( 'kanaType' => 'hiragana' ) );
+        $this->assertEquals( $text, (string) $value );
+        $this->assertEquals( true, $this->validate->isValid() );
+        $this->assertEquals( null, $this->validate->getMessage() );
+    }
+
+    /**
+     * @test
+     */
+    function kanaType_hankana_success_for_text_with_only_hankaku_katakana()
+    {
+        $text = ' ｱﾝｧｨｩｪｫｬｭｮｯﾞﾞﾟ';
+        $value = $this->validate->is( $text, array( 'kanaType' => 'hankana' ) );
+        $this->assertEquals( $text, (string) $value );
+        $this->assertEquals( true, $this->validate->isValid() );
+        $this->assertEquals( null, $this->validate->getMessage() );
+    }
 }

@@ -21,10 +21,10 @@ class Filter
         $val = $closure( $v->getValue() );
         $v->setValue( $val );
     }
+    
     // +----------------------------------------------------------------------+
     //  filter definitions (filters that alters the value).
     // +----------------------------------------------------------------------+
-
     /**
      * sets error message.
      *
@@ -206,7 +206,29 @@ class Filter
             $v->setError( __METHOD__, $p );
         }
     }
-    
+
+    /**
+     * @param ValueTO $v
+     * @param $p
+     */
+    public function filter_kanaType( $v, $p )
+    {
+        $option  = Utils::arrGet( $this->kanaType, $p, $p );
+        if( !preg_match( "/^{$option}\$/u", $v->getValue() ) ) {
+            $v->setError( __METHOD__, $p );
+        }
+    }
+
+    /**
+     * @var array
+     */
+    public $kanaType = array(
+        'katakana' => '[　ーァ-ヶ・ーヽヾ]*',
+        'hiragana' => '[　ぁ-ん゛-ゞ]+',
+        'hankana' => '[ ｦ-ﾝﾞﾟ]+',
+        'hankaku' => '[ -~]+',
+    );
+
     /**
      * @param ValueTO $v
      * @param $p
