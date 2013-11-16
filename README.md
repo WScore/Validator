@@ -16,7 +16,7 @@ examples for Validate object, which filters and validates a single value.
 
 ```php
 $validate = \WScore\Validation\Validate::factory();
-$rule     = new \WScore\Validation\Rule();
+$rule     = new \WScore\Validation\Rules();
 
 // basic validation by type
 
@@ -44,11 +44,18 @@ such as $_POST.
 
 ```php
 $validation = Validation::factory();
+$rule     = new \WScore\Validation\Rules();
 
+$data = array(
+    'name' => 'my name',
+    'mail' => 'mail@example.com',
+    'mail2'=> 'bad@example.com',
+    'date_y' => '2013', 'date_m' => '11', 'date_d' => '15',
+);
 $validation->source( $_POST );
-$validation->push( 'name', 'text' );
-$validation->push( 'age',  'number' );
-$validation->pushValue( 'status', '1' );
+$validation->push( 'name', $rule('text') );
+$validation->push( 'mail', $rule('mail')->sameAs('email2') ); // checks against email2 input. 
+$validation->push( 'date', $rule('date') );
 
 $values = $validation->pop();     // returns all values including invalid ones.
 $goods  = $validation->popSafe(); // returns only the valid values.
@@ -69,11 +76,13 @@ $inputs = array( 'list' => [ '1', '2', 'bad', '4' ] );
 $validation->source( $inputs );
 
 if( !$validation->push( 'list', 'int' ) ) {
-    $values = $validate->pop();
-    $errors = $validate->popError();
+    $values = $validation->pop();
+    $goods  = $validation->popSafe();
+    $errors = $validation->popError();
 }
 /*
  * $values = array( 'list' => [ '1', '2', 'bad', '4' ] );
+ * $goods  = array( 'list' => [ '1', '2', '4' ] );
  * $errors = array( 'list' => [ 3 => 'invalid input' ] );
  */
 ```
@@ -94,9 +103,8 @@ that are: required, encoding, sameAs, and sameEmpty.
 They are defined in Message class, and to be i18n ready in some future.
 
 ```php
-$input = array( 'none' => '' );
-$validation->push( 'none', $rule('text')->required() );
-$validation->popError(); // [ 'none' => 'required input' ]
+$validate->is( '', $rule('text')->required() );
+echo $validate->getMessage(); // 'required input'
 ```
 
 ###Multiple inputs
@@ -105,7 +113,7 @@ to treat separate input fields as one input.
 
 ```php
 $input = array( 'bd_y' => '2001', 'bd_m' => '09', 'bd_d' => '25' );
-echo $validation->push( 'bd', $rule('date' ) ); // 2001-09-25
+echo $validation->push( 'bd', $rule('date') ); // 2001-09-25
 ```
 
 ###SameWith to compare values
