@@ -1,28 +1,35 @@
 <?php
 namespace WScore\Validation;
 
+use WScore\DiContainer\Types\String as Locale;
+
 class Message
 {
+    /**
+     * @var array
+     */
     public $messages = array();
+
+    /**
+     * @Inject
+     * @var Locale
+     */
+    public $locale = 'en';
 
     // +----------------------------------------------------------------------+
     public function __construct( $locale=null )
     {
-        $this->messages = array(
-            0           => 'invalid input',
-            'encoding'  => 'invalid encoding',
-            'required'  => 'required item',
-            'choice'    => 'invalid choice',
-            'sameAs'    => 'value not the same',
-            'sameEmpty' => 'missing value to compare',
-            'matches'   => [
-                'number' => 'only numbers (0-9)',
-                'int'    => 'not an integer',
-                'float'  => 'not a floating number',
-                'code'   => 'only alpha-numeric characters',
-                'mail'   => 'not a valid mail address',
-            ],
-        );
+        if( $locale ) $this->locale = $locale;
+        $this->loadMessage();
+    }
+    
+    public function loadMessage( $filename=null )
+    {
+        if( !$filename ) {
+            $locale = strtolower( locale_get_primary_language( $this->locale ) );
+            $filename = __DIR__ . "/Locale/Lang.{$locale}.php";
+        }
+        $this->messages = include( $filename ); 
     }
 
     /**
@@ -37,7 +44,7 @@ class Message
         if( strpos( $method, '::filter_' ) !== false ) {
             $method = substr( $method, strpos( $method, '::filter_' )+9 );
         }
-        $parameter = $value->getType();
+        $parameter = $value->getParameter();
         if( !isset( $this->messages[ $method ] ) ) {
             $message = $this->messages[ 0 ];
         }

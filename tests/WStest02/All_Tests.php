@@ -10,6 +10,7 @@ class All_Tests
         $suite = new \PHPUnit_Framework_TestSuite( 'all tests for WScore\'s Validation' );
         $folder = __DIR__ . '/Validation/';
         $suite->addTestFile( $folder . 'Message_Test.php' );
+        $suite->addTestFile( $folder . 'MessageJa_Test.php' );
         $suite->addTestFile( $folder . 'Rules_Test.php' );
         $suite->addTestFile( $folder . 'Validate_Test.php' );
         $suite->addTestFile( $folder . 'Validation_Test.php' );
