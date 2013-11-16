@@ -71,6 +71,6 @@ class Message_Test extends \PHPUnit_Framework_TestCase
 
         // now message is set for required method.
         $this->message->set( $this->value );
-        $this->assertEquals( 'invalid input', $this->value->getMessage() );
+        $this->assertEquals( $this->message->messages[0], $this->value->getMessage() );
     }
 }

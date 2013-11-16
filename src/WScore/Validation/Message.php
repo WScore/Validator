@@ -16,10 +16,10 @@ class Message
             'sameAs'    => 'value not the same',
             'sameEmpty' => 'missing value to compare',
             'matches'   => [
-                'number' => 'only number',
+                'number' => 'only numbers (0-9)',
                 'int'    => 'not an integer',
-                'float'  => 'not a float number',
-                'code'   => 'only alpha-numeric code',
+                'float'  => 'not a floating number',
+                'code'   => 'only alpha-numeric characters',
                 'mail'   => 'not a valid mail address',
             ],
         );
