@@ -16,6 +16,7 @@ class Validate
     public $valueTO;
 
     /**
+     * @Inject
      * @var \WScore\Validation\Message
      */
     public $message;
@@ -41,12 +42,13 @@ class Validate
     }
 
     /**
+     * @param null|string $locale
      * @return static
      */
-    public static function factory()
+    public static function factory( $locale=null )
     {
         return new static(
-            new Filter(), new ValueTO(), new Message()
+            new Filter(), new ValueTO(), new Message( $locale )
         );
     }
 

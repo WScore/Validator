@@ -13,6 +13,7 @@ class All_Tests
         $suite->addTestFile( $folder . 'MessageJa_Test.php' );
         $suite->addTestFile( $folder . 'Rules_Test.php' );
         $suite->addTestFile( $folder . 'Validate_Test.php' );
+        $suite->addTestFile( $folder . 'ValidateJa_Test.php' );
         $suite->addTestFile( $folder . 'Validation_Test.php' );
         $suite->addTestFile( $folder . 'Filter_Test.php' );
 
