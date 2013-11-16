@@ -106,8 +106,8 @@ class Filter
         'hankaku'  => 'aKVs',
         'zenkaku'  => 'AKVS',
         'han_kana' => 'khs',
-        'zen_hira' => 'HVcS',
-        'zen_kana' => 'KVCS',
+        'hiragana' => 'HVcS',
+        'katakana' => 'KVCS',
     );
 
     /**

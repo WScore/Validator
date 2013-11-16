@@ -145,18 +145,18 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    function mbConvert_for_zen_hira_converts()
+    function mbConvert_for_hiragana_converts()
     {
-        $value = $this->validate->applyFilters( "012ABCあいうａｂｃカキクｻﾞｼﾞｽﾞ", [ 'mbConvert' => 'zen_hira' ] );
+        $value = $this->validate->applyFilters( "012ABCあいうａｂｃカキクｻﾞｼﾞｽﾞ", [ 'mbConvert' => 'hiragana' ] );
         $this->assertEquals( '012ABCあいうａｂｃかきくざじず', $value->getValue() );
     }
 
     /**
      * @test
      */
-    function mbConvert_for_zen_kanau_converts()
+    function mbConvert_for_katakanau_converts()
     {
-        $value = $this->validate->applyFilters( "012ABCあいうａｂｃカキクｻﾞｼﾞｽﾞ", [ 'mbConvert' => 'zen_kana' ] );
+        $value = $this->validate->applyFilters( "012ABCあいうａｂｃカキクｻﾞｼﾞｽﾞ", [ 'mbConvert' => 'katakana' ] );
         $this->assertEquals( '012ABCアイウａｂｃカキクザジズ', $value->getValue() );
     }
     // +----------------------------------------------------------------------+
