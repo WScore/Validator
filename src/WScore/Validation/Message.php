@@ -15,12 +15,12 @@ class Message
             'choice'    => 'invalid choice',
             'sameAs'    => 'value not the same',
             'sameEmpty' => 'missing value to compare',
-            'matches' => [
+            'matches'   => [
                 'number' => 'only number',
-                'int' => 'not an integer',
-                'float' => 'not a float number',
-                'code' => 'only alpha-numeric code',
-                'mail' => 'not a valid mail address',
+                'int'    => 'not an integer',
+                'float'  => 'not a float number',
+                'code'   => 'only alpha-numeric code',
+                'mail'   => 'not a valid mail address',
             ],
         );
     }
@@ -37,21 +37,18 @@ class Message
         if( strpos( $method, '::filter_' ) !== false ) {
             $method = substr( $method, strpos( $method, '::filter_' )+9 );
         }
-        if( !isset( $this->messages[ $method ] ) ) 
-        {
+        $parameter = $value->getType();
+        if( !isset( $this->messages[ $method ] ) ) {
             $message = $this->messages[ 0 ];
         }
-        elseif( is_array( $this->messages[ $method ] ) ) 
-        {
-            $parameter = $value->getType();
-            if( isset( $this->messages[ $method ][ $parameter ] ) ) {
-                $message = $this->messages[ $method ][ $parameter ];
-            } else {
-                $message = $this->messages[ 0 ];
-            }
+        elseif( !is_array( $this->messages[ $method ] ) ) {
+            $message = $this->messages[ $method ];
+        }
+        elseif( isset( $this->messages[ $method ][ $parameter ] ) ) {
+            $message = $this->messages[ $method ][ $parameter ];
         }
         else {
-            $message = $this->messages[ $method ];
+            $message = $this->messages[ 0 ];
         }
         $value->setMessage( $message );
     }
