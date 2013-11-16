@@ -43,10 +43,14 @@ class Validation
     {
         $this->validate = $validate;
     }
-    
-    public static function factory()
+
+    /**
+     * @param null|string $locale
+     * @return static
+     */
+    public static function factory( $locale=null )
     {
-        return new static( Validate::factory() );
+        return new static( Validate::factory( $locale ) );
     }
 
     /**

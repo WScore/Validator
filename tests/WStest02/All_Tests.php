@@ -15,6 +15,7 @@ class All_Tests
         $suite->addTestFile( $folder . 'Validate_Test.php' );
         $suite->addTestFile( $folder . 'ValidateJa_Test.php' );
         $suite->addTestFile( $folder . 'Validation_Test.php' );
+        $suite->addTestFile( $folder . 'ValidationJa_Test.php' );
         $suite->addTestFile( $folder . 'Filter_Test.php' );
 
         return $suite;
