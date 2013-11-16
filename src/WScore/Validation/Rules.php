@@ -84,6 +84,7 @@ class Rules implements \ArrayAccess, \IteratorAggregate
             'maxlength'   => false,
             'pattern'     => false,      // checks pattern with preg_match.
             'matches'     => false,      // preg_match with default types.
+            'kanaType'    => false,      // checks kana-types, hiragana, katakana, etc. 
             'min'         => false,
             'max'         => false,
             'range'       => false,
@@ -98,6 +99,8 @@ class Rules implements \ArrayAccess, \IteratorAggregate
         $this->filterTypes = array(
             'binary'   => [ 'noNull' => false, 'encoding' => false, 'mbConvert' => false, 'trim' => false ],
             'text'     => [],
+            'hiragana' => [ 'mbConvert' => 'hiragana', 'kanaType' => 'hiragana' ],
+            'katakana' => [ 'mbConvert' => 'katakana', 'kanaType' => 'katakana' ],
             'mail'     => [ 'mbConvert' => 'hankaku', 'string' => 'lower', 'matches' => 'mail', 'sanitize' => 'mail' ],
             'number'   => [ 'mbConvert' => 'hankaku', 'matches' => 'number' ],
             'integer'  => [ 'mbConvert' => 'hankaku', 'matches' => 'int' ],
