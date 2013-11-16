@@ -15,6 +15,11 @@ class ValueTO
     private $value;
 
     /**
+     * @var string
+     */
+    private $type = 'text'; 
+
+    /**
      * @var bool|array
      */
     private $error = false;
@@ -126,9 +131,25 @@ class ValueTO
     }
 
     /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType( $type )
+    {
+        $this->type = $type;
+    }
+
+    /**
      * @return mixed
      */
-    public function  __toString() 
+    public function  __toString()
     {
         return (string) $this->value;
     }

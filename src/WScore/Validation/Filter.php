@@ -26,6 +26,15 @@ class Filter
     //  filter definitions (filters that alters the value).
     // +----------------------------------------------------------------------+
     /**
+     * @param ValueTO $v
+     * @param $p
+     */
+    public function filter_type( $v, $p )
+    {
+        $v->setType( $p );
+    }
+    
+    /**
      * sets error message.
      *
      * @param ValueTO $v
