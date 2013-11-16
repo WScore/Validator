@@ -88,6 +88,17 @@ class ValueTO
     }
 
     /**
+     * @return null|mixed
+     */
+    public function getParameter()
+    {
+        if( isset( $this->error[ 'parameter' ] ) ) {
+            return $this->error[ 'parameter' ];
+        }
+        return null;
+    }
+
+    /**
      * @return string
      */
     public function getErrorMethod()
