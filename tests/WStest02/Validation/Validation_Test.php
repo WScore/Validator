@@ -252,4 +252,31 @@ class Validation_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( false, $this->validate->isValid() );
         $this->assertEquals( array( 'mail1'=>'required item' ), $this->validate->popError() );
     }
+
+    /**
+     * @test
+     */
+    function pushValue_adds_value()
+    {
+        $this->assertEquals( null, $this->validate->pop( 'test' ) );
+        $this->validate->pushValue( 'test', 'tested' );
+        $this->assertEquals( 'tested', $this->validate->pop( 'test' ) );
+    }
+
+    /**
+     * @test
+     */
+    function pushError_adds_error()
+    {
+        $this->assertEquals( null, $this->validate->pop( 'test' ) );
+        $this->assertEquals( null, $this->validate->popError( 'test' ) );
+        
+        $this->validate->pushError( 'test', 'error-tested' );
+        $this->assertEquals( null, $this->validate->pop( 'test' ) );
+        $this->assertEquals( 'error-tested', $this->validate->popError( 'test' ) );
+
+        $this->validate->pushError( 'test', 'error-tested', 'tested' );
+        $this->assertEquals( 'tested', $this->validate->pop( 'test' ) );
+        $this->assertEquals( 'error-tested', $this->validate->popError( 'test' ) );
+    }
 }
