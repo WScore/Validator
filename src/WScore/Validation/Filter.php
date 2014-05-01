@@ -170,6 +170,7 @@ class Filter
     public function filter_required( $v ) 
     {
         $val = $v->getValue();
+        if( $val ) return;
         if( "{$val}" === '' ) { 
             // the value is empty. check if it is "required".
             $v->setError( __METHOD__ );

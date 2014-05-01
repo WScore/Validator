@@ -39,6 +39,7 @@ class Validate
         if( isset( $filter  ) ) $this->filter  = $filter;
         if( isset( $valueTO ) ) $this->valueTO = $valueTO;
         if( isset( $message ) ) $this->message = $message;
+        $this->lastValue = $this->valueTO;
     }
 
     /**
@@ -53,14 +54,16 @@ class Validate
     }
 
     /**
-     * returns the filtered value, or false if validation fails. 
-     * 
-     * @param string|array        $value
-     * @param Rules|array         $rules
+     * returns the filtered value, or false if validation fails.
+     *
+     * @param string|array $value
+     * @param Rules|array  $rules
+     * @param null|string  $message
      * @return bool|mixed
      */
-    public function is( $value, $rules ) 
+    public function is( $value, $rules, $message=null ) 
     {
+        if( $message ) $rules['message'] = $message;
         $this->lastValue = $this->applyFilters( $value, $rules );
         if( !$this->lastValue->getError() ) {
             return $this->lastValue->getValue();
@@ -77,6 +80,15 @@ class Validate
         }
         return true;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return $this->lastValue->getValue();
+    }
+    
     /**
      * @return null|string
      */
