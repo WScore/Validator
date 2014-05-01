@@ -1,7 +1,7 @@
 <?php
 namespace WScore\Validation;
 
-use WScore\DiContainer\Types\String as Locale;
+use WScore\Validation\Locale\String as Locale;
 
 /**
  * about pattern and matches filter.

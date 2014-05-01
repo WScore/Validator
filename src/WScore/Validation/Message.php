@@ -1,7 +1,7 @@
 <?php
 namespace WScore\Validation;
 
-use WScore\DiContainer\Types\String as Locale;
+use WScore\Validation\Locale\String as Locale;
 
 class Message
 {
@@ -33,11 +33,18 @@ class Message
     }
 
     /**
+     * find messages based on error type. 
+     * 1. use message if set.
+     * 2. use message for a specific method. 
+     * 3. use message for a method/parameter set. 
+     * 4. use general error message. 
+     * 
      * @param ValueTO $value
      */
     public function set( $value )
     {
         if( $value->getMessage() ) {
+            // 1. use message if set.
             return;
         }
         $method = $value->getErrorMethod();
@@ -46,15 +53,19 @@ class Message
         }
         $parameter = $value->getParameter();
         if( !isset( $this->messages[ $method ] ) ) {
+            // 4. use general error message. 
             $message = $this->messages[ 0 ];
         }
         elseif( !is_array( $this->messages[ $method ] ) ) {
+            // 2. use message for a specific method. 
             $message = $this->messages[ $method ];
         }
         elseif( isset( $this->messages[ $method ][ $parameter ] ) ) {
+            // 3. use message for a method/parameter set. 
             $message = $this->messages[ $method ][ $parameter ];
         }
         else {
+            // 4. use general error message. 
             $message = $this->messages[ 0 ];
         }
         $value->setMessage( $message );
