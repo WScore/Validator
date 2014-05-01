@@ -196,10 +196,10 @@ class Validation
         if( is_array( $value ) ) {
             $found = array();
             foreach( $value as $key => $val ) {
-                $found[ $key ] = $this->validate->applyFilters( $val, $rules );
+                $found[ $key ] = $this->validate->is( $val, $rules );
             }
         } else {
-            $found = $this->validate->applyFilters( $value, $rules );
+            $found = $this->validate->is( $value, $rules );
         }
         return $found;
     }

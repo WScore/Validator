@@ -5,27 +5,27 @@ class Validate
 {
     /**
      * @Inject
-     * @var \WScore\Validation\Filter
+     * @var Filter
      */
     public $filter;
 
     /**
      * @Inject
-     * @var \WScore\Validation\ValueTO
+     * @var ValueTO
      */
     public $valueTO;
 
     /**
      * @Inject
-     * @var \WScore\Validation\Message
+     * @var Message
      */
     public $message;
 
     // +----------------------------------------------------------------------+
     /**
-     * @param \WScore\Validation\Filter $filter
-     * @param \WScore\Validation\ValueTO $valueTO
-     * @param \WScore\Validation\Message $message
+     * @param Filter  $filter
+     * @param ValueTO $valueTO
+     * @param Message $message
      */
     public function __construct( $filter=null, $valueTO=null, $message=null )
     {
@@ -48,8 +48,8 @@ class Validate
     /**
      * returns the filtered value, or false if validation fails.
      *
-     * @param string|array $value
-     * @param Rules|array  $rules
+     * @param string $value
+     * @param array  $rules
      * @param null|string  $message
      * @return bool|mixed
      */
@@ -96,7 +96,7 @@ class Validate
      * apply filters on a single value.
      *
      * @param string $value
-     * @param array|Rules  $rules
+     * @param array  $rules
      */
     public function applyFilters( $value, $rules=array() )
     {
