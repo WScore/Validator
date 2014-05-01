@@ -46,6 +46,18 @@ class ValueTO
     }
 
     /**
+     * @param $value
+     */
+    public function reset( $value )
+    {
+        $this->value   = $value;
+        $this->type    = 'text';
+        $this->error   = false;
+        $this->message = null;
+        $this->break   = false;
+    }
+    
+    /**
      * @return mixed
      */
     public function getValue()

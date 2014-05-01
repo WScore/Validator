@@ -21,13 +21,6 @@ class Validate
      */
     public $message;
 
-    /**
-     * last ValueTO from applyFilter
-     * 
-     * @var \WScore\Validation\ValueTO
-     */
-    public $lastValue;
-
     // +----------------------------------------------------------------------+
     /**
      * @param \WScore\Validation\Filter $filter
@@ -39,7 +32,6 @@ class Validate
         if( isset( $filter  ) ) $this->filter  = $filter;
         if( isset( $valueTO ) ) $this->valueTO = $valueTO;
         if( isset( $message ) ) $this->message = $message;
-        $this->lastValue = $this->valueTO;
     }
 
     /**
@@ -64,9 +56,9 @@ class Validate
     public function is( $value, $rules, $message=null ) 
     {
         if( $message ) $rules['message'] = $message;
-        $this->lastValue = $this->applyFilters( $value, $rules );
-        if( !$this->lastValue->getError() ) {
-            return $this->lastValue->getValue();
+        $this->applyFilters( $value, $rules );
+        if( !$this->valueTO->getError() ) {
+            return $this->valueTO->getValue();
         }
         return false;
     }
@@ -75,7 +67,7 @@ class Validate
      * @return bool
      */
     public function isValid() {
-        if( $this->lastValue && $this->lastValue->getError() ) {
+        if( $this->valueTO->getError() ) {
             return false;
         }
         return true;
@@ -86,7 +78,7 @@ class Validate
      */
     public function getValue()
     {
-        return $this->lastValue->getValue();
+        return $this->valueTO->getValue();
     }
     
     /**
@@ -94,8 +86,8 @@ class Validate
      */
     public function getMessage()
     {
-        if( $this->lastValue && $this->lastValue->getError() ) {
-            return $this->lastValue->getMessage();
+        if( $this->valueTO->getError() ) {
+            return $this->valueTO->getMessage();
         }
         return null;
     }
@@ -105,12 +97,11 @@ class Validate
      *
      * @param string $value
      * @param array|Rules  $rules
-     * @return ValueTO
      */
     public function applyFilters( $value, $rules=array() )
     {
         /** @var $filter Filter */
-        $valueTO = $this->valueTO->forge( $value );
+        $this->valueTO->reset( $value );
         // loop through all the rules to validate $value.
         foreach( $rules as $rule => $parameter )
         {
@@ -119,15 +110,14 @@ class Validate
             // apply filter.
             $method = 'filter_' . $rule;
             if( method_exists( $this->filter, $method ) ) {
-                $this->filter->$method( $valueTO, $parameter );
+                $this->filter->$method( $this->valueTO, $parameter );
             } elseif( is_object( $parameter ) && is_callable( $parameter ) ) {
-                $this->filter->applyClosure( $valueTO, $parameter );
+                $this->filter->applyClosure( $this->valueTO, $parameter );
             }
             // loop break.
-            if( $valueTO->getBreak() ) break;
+            if( $this->valueTO->getBreak() ) break;
         }
-        $this->message->set( $valueTO );
-        return $valueTO;
+        $this->message->set( $this->valueTO );
     }
     // +----------------------------------------------------------------------+
 }
