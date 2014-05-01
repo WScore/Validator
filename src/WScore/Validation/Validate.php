@@ -38,7 +38,7 @@ class Validate
      * @param null|string $locale
      * @return static
      */
-    public static function factory( $locale=null )
+    public static function getInstance( $locale=null )
     {
         return new static(
             new Filter(), new ValueTO(), new Message( $locale )

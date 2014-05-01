@@ -12,7 +12,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         require_once( __DIR__ . '/../../../../scripts/require.php' );
-        $this->validate = Validate::factory();
+        $this->validate = Validate::getInstance();
         // \Locale::setDefault( 'ja_JP' );
     }
     // +----------------------------------------------------------------------+

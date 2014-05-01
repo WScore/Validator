@@ -22,7 +22,7 @@ class ValidateJa_Test extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->validate = Validate::factory( 'ja' );
+        $this->validate = Validate::getInstance( 'ja' );
         $this->rules    = new Rules();
         $this->msg     = include( __DIR__ . '/../../../src/WScore/Validation/Locale/Lang.ja.php' );
     }

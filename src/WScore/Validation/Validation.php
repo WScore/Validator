@@ -50,7 +50,7 @@ class Validation
      */
     public static function factory( $locale=null )
     {
-        return new static( Validate::factory( $locale ) );
+        return new static( Validate::getInstance( $locale ) );
     }
 
     /**

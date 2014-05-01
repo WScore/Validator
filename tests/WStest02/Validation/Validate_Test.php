@@ -17,7 +17,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->validate = Validate::factory();
+        $this->validate = Validate::getInstance();
         $this->rules    = new Rules();
     }
 
