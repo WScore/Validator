@@ -130,7 +130,8 @@ class Utils
         }
         $sub_filter[ 'sameWith' ] = false;
         $sub_filter[ 'required' ] = false;
-        $value = $dio->find( $sub_name, $sub_filter, $errors );
+        $value = $dio->find( $sub_name, $sub_filter );
+        $value = $dio->validate->verify( $value, $sub_filter, $errors );
 
         // reset sameWith filter, and set same{As|Empty} filter.
         $filters[ 'sameWith' ] = false;

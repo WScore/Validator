@@ -139,8 +139,10 @@ class Validation
      */
     public function push( $name, $rules )
     {
-        $this->output[$name] = $found = $this->find( $name, $rules, $errors );
+        $found = $this->find( $name, $rules );
+        $found = $this->validate->verify( $found, $rules, $errors );
         if( !$errors ) {
+            $this->pushValue( $name, $found );
             return $found;
         }
         $this->pushError( $name, $errors, $found );
@@ -181,52 +183,23 @@ class Validation
      *
      * @param string $name
      * @param array|Rules $rules
-     * @param array $errors
      * @return ValueTO|ValueTO[]
      */
-    public function find( $name, $rules, &$errors )
+    public function find( $name, &$rules )
     {
         // find a value from data source.
         $value = null;
-        if( array_key_exists( $name, $this->source ) ) {
-            // simplest case.
-            $value = $this->source[ $name ];
-        }
-        elseif( Utils::arrGet( $rules, 'multiple' ) ) {
+        if( Utils::arrGet( $rules, 'multiple' ) ) {
             // check for multiple case i.e. Y-m-d.
             $value = Utils::prepare_multiple( $name, $this->source, $rules[ 'multiple' ] );
         }
+        if( !$value && array_key_exists( $name, $this->source ) ) {
+            // simplest case.
+            $value = $this->source[ $name ];
+        }
         // prepares filter for sameWith.
         $rules = Utils::prepare_sameWith( $this, $rules );
-
-        return $this->is( $value, $rules, $errors );
-    }
-
-    /**
-     * @param string|array $value
-     * @param array|Rules $rules
-     * @param string|array $errors
-     * @return array|mixed
-     */
-    public function is( $value, $rules, &$errors )
-    {
-        if( is_array( $value ) ) {
-            $result = array();
-            $errors = array();
-            foreach( $value as $k => $v ) {
-                $result[$k] = $this->is( $v, $rules, $errors[$k] );
-                if( !$errors[$k] ) {
-                    unset( $errors[$k] );
-                }
-            }
-            return $result;
-        }
-        $valTO = $this->validate->applyFilters( $value, $rules );
-        if( $valTO->getError() ) {
-            $errors = $valTO->getMessage();
-            $this->err_num++;
-        }
-        return $valTO->getValue();
+        return $value;
     }
     // +----------------------------------------------------------------------+
 }

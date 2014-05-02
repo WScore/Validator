@@ -46,6 +46,38 @@ class Validate
     }
 
     /**
+     * validates a single or array of text value(s).
+     * returns the filtered value(s) and errors are
+     * returned as 3rd argument.
+     *
+     * @param string|array $value
+     * @param array|Rules $rules
+     * @param string|array $errors
+     * @return array|mixed
+     */
+    public function verify( $value, $rules, &$errors )
+    {
+        if( is_array( $value ) ) {
+            $result = array();
+            $errors = array();
+            foreach( $value as $k => $v ) {
+                $errors[$k] = null;
+                $result[$k] = $this->verify( $v, $rules, $errors[$k] );
+                if( !$errors[$k] ) {
+                    unset( $errors[$k] );
+                }
+            }
+            return $result;
+        }
+        $valTO = $this->applyFilters( $value, $rules );
+        if( $valTO->getError() ) {
+            $errors = $valTO->getMessage();
+        }
+        return $valTO->getValue();
+    }
+
+    /**
+     * validates a single text value.
      * returns the filtered value, or false if validation fails.
      *
      * @param string $value
