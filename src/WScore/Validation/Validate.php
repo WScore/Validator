@@ -96,7 +96,8 @@ class Validate
      * apply filters on a single value.
      *
      * @param string $value
-     * @param array  $rules
+     * @param array $rules
+     * @return null|ValueTO
      */
     public function applyFilters( $value, $rules=array() )
     {
@@ -118,6 +119,7 @@ class Validate
             if( $this->valueTO->getBreak() ) break;
         }
         $this->message->set( $this->valueTO );
+        return $this->valueTO;
     }
     // +----------------------------------------------------------------------+
 }
