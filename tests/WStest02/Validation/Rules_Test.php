@@ -98,14 +98,14 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( 'text', $rule2->getType() );
 
         // make sure that these are different.
-        $this->assertNotEquals( $rule1, $rule2 );
+        $this->assertEquals( $rule1, $rule2 );
 
         // apply the same type, and should be equal.
         $rule1->applyType( 'text' );
         $this->assertEquals( $rule1, $rule2 );
 
         // but not the same object.
-        $this->assertNotSame( $rule1, $rule2 );
+        $this->assertSame( $rule1, $rule2 );
     }
 
     /**

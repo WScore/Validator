@@ -41,6 +41,12 @@ use Traversable;
 class Rules implements \ArrayAccess, \IteratorAggregate
 {
     /**
+     * this is the mother of $filter.
+     * @var array
+     */
+    protected $baseFilters = array();
+
+    /**
      * @var array        predefined filter filter set
      */
     protected $filterTypes = array();
@@ -85,7 +91,8 @@ class Rules implements \ArrayAccess, \IteratorAggregate
             $locale = strtolower( locale_get_primary_language( $this->locale ) );
             $filename = __DIR__ . "/Locale/Filter.{$locale}.php";
         }
-        $this->filter = include( $filename );
+        $this->baseFilters = include( $filename );
+        $this->filter      = $this->baseFilters;
     }
 
     /**
@@ -107,12 +114,11 @@ class Rules implements \ArrayAccess, \IteratorAggregate
      */
     public function __invoke( $type, $text='' )
     {
-        $rule = clone( static::$_rules );
-        $rule->applyType( $type );
+        $this->applyType( $type );
         if( $text ) {
-            $rule->applyTextFilter( $text );
+            $this->applyTextFilter( $text );
         }
-        return $rule;
+        return $this;
     }
     // +----------------------------------------------------------------------+
     //  setting rule
@@ -128,13 +134,15 @@ class Rules implements \ArrayAccess, \IteratorAggregate
         if( !array_key_exists( $type, $this->filterTypes ) ) {
             throw new \RuntimeException( "rule type not defined: {$type}" );
         }
+        $this->filter = array_merge( $this->baseFilters, $this->filterTypes[ $type ] );
         $this->filter[ 'type' ] = $type;
-        $filters = $this->filterTypes[ $type ];
-        foreach( $filters as $rule => $value ) {
-            $this->$rule( $value );
-        }
     }
-    
+
+    /**
+     * @param string $type
+     * @param mixed $filter
+     * @return $this
+     */
     public function addFilterType( $type, $filter )
     {
         $this->filterTypes[ $type ] = $filter;
