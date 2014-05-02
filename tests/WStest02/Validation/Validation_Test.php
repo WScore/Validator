@@ -100,7 +100,7 @@ class Validation_Test extends \PHPUnit_Framework_TestCase
         $got = $this->validate->push( 'test', $rule('number') );
 
         // should return the input
-        $this->assertEquals( false, $got );
+        $this->assertEquals( ['123', 2=>'456'], $got );
         $this->assertEquals( $test, $this->validate->pop( 'test' ) );
         $this->assertEquals( $source, $this->validate->pop() );
 
