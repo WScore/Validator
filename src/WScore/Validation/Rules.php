@@ -105,6 +105,7 @@ class Rules implements \ArrayAccess, \IteratorAggregate
             $locale = strtolower( locale_get_primary_language( $this->locale ) );
             $filename = __DIR__ . "/Locale/Filter.{$locale}.php";
         }
+        /** @noinspection PhpIncludeInspection */
         $this->baseFilters = include( $filename );
         $this->filter      = $this->baseFilters;
     }
@@ -118,6 +119,7 @@ class Rules implements \ArrayAccess, \IteratorAggregate
             $locale = strtolower( locale_get_primary_language( $this->locale ) );
             $filename = __DIR__ . "/Locale/FilterType.{$locale}.php";
         }
+        /** @noinspection PhpIncludeInspection */
         $this->filterTypes = include( $filename );
     }
     

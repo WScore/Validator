@@ -2,7 +2,6 @@
 namespace WStest02\Validation;
 
 use WScore\Validation\Rules;
-use WScore\Validation\Validate;
 use WScore\Validation\Validation;
 
 require_once( dirname( dirname( __DIR__ ) ) . '/autoloader.php' );

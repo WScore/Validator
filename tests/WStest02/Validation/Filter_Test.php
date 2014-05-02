@@ -1,7 +1,6 @@
 <?php
 namespace WStest02\Validation;
 
-use WScore\Validation\Rules;
 use WScore\Validation\Validate;
 
 require_once( dirname( dirname( __DIR__ ) ) . '/autoloader.php' );
@@ -216,17 +215,17 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
     {
         // with hiragana
         $text = 'アイウエオ' . 'あ';
-        $value = $this->validate->is( $text, array( 'kanaType' => 'katakana' ) );
+        $this->validate->is( $text, array( 'kanaType' => 'katakana' ) );
         $this->assertEquals( false, $this->validate->isValid() );
 
         // with ascii
         $text = 'アイウエオ' . 'a';
-        $value = $this->validate->is( $text, array( 'kanaType' => 'katakana' ) );
+        $this->validate->is( $text, array( 'kanaType' => 'katakana' ) );
         $this->assertEquals( false, $this->validate->isValid() );
 
         // with space... not sure if this should fail
         $text = 'アイウエオ' . ' ';
-        $value = $this->validate->is( $text, array( 'kanaType' => 'katakana' ) );
+        $this->validate->is( $text, array( 'kanaType' => 'katakana' ) );
         $this->assertEquals( false, $this->validate->isValid() );
     }
 

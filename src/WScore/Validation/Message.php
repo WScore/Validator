@@ -29,11 +29,12 @@ class Message
             $locale = strtolower( locale_get_primary_language( $this->locale ) );
             $filename = __DIR__ . "/Locale/Lang.{$locale}.php";
         }
-        $this->messages = include( $filename ); 
+        /** @noinspection PhpIncludeInspection */
+        $this->messages = include( $filename );
     }
 
     /**
-     * find messages based on error type. 
+     * find messages based on error type.
      * 1. use message if set.
      * 2. use message for a specific method. 
      * 3. use message for a method/parameter set. 
