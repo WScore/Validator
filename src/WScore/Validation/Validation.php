@@ -93,7 +93,7 @@ class Validation
      * @param array      $data
      * @param array|null $error
      */
-    private function _findClean( &$data, $error )
+    protected function _findClean( &$data, $error )
     {
         if( empty( $error ) ) return; // no error at all.
         foreach( $data as $key => $val ) {
@@ -134,7 +134,7 @@ class Validation
      * returns the found value, or false if validation fails.
      *
      * @param string $name
-     * @param Rules $rules
+     * @param array|Rules $rules
      * @return mixed
      */
     public function push( $name, $rules )
@@ -180,7 +180,7 @@ class Validation
      * finds a value with $name in the source data, applying the rules.
      *
      * @param string $name
-     * @param Rules $rules
+     * @param array|Rules $rules
      * @param array $errors
      * @return ValueTO|ValueTO[]
      */
@@ -204,7 +204,7 @@ class Validation
 
     /**
      * @param string|array $value
-     * @param array $rules
+     * @param array|Rules $rules
      * @param string|array $errors
      * @return array|mixed
      */
