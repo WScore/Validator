@@ -74,16 +74,16 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
 
         // convert to lower case
         $filters = array( 'string' => 'lower' );
-        $value = $this->validate->is( $text, $filters );
+        $value = $this->validate->applyFilters( $text, $filters );
         $this->assertEquals( $text_alpha, $text );
         $this->assertEquals( strtolower( $text_alpha ), $value );
-        $this->assertEquals( strtolower( $text_alpha ), $this->validate->getValue() );
+        $this->assertEquals( strtolower( $text_alpha ), $value->getValue() );
 
         // convert to upper case
         $filters = array( 'string' => 'upper' );
         $value = $this->validate->is( $text, $filters );
         $this->assertEquals( strtoupper( $text_alpha ), $value );
-        $this->assertEquals( strtoupper( $text_alpha ), $this->validate->getValue() );
+        $this->assertEquals( strtoupper( $text_alpha ), $value->getValue() );
 
         $text_number = '123490';
         $text = $text_number;
@@ -108,18 +108,18 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
 
         // convert to lower case
         $filters = array( 'string' => 'lower' );
-        $ok = $this->validate->is( $text, $filters );
-        $this->assertTrue( !!$ok );
+        $ok = $this->validate->applyFilters( $text, $filters );
+        $this->assertTrue( !$ok->getError() );
         $this->assertEquals( $text_alpha, $text );
         $this->assertEquals( strtolower( $text_alpha ), $ok );
-        $this->assertEquals( strtolower( $text_alpha ), $this->validate->getValue() );
+        $this->assertEquals( strtolower( $text_alpha ), $ok->getValue() );
 
         // convert to upper case
         $filters = array( 'string' => 'upper' );
-        $ok = $this->validate->is( $text, $filters );
-        $this->assertTrue( !!$ok );
+        $ok = $this->validate->applyFilters( $text, $filters );
+        $this->assertTrue( !$ok->getError() );
         $this->assertEquals( strtoupper( $text_alpha ), $ok );
-        $this->assertEquals( strtoupper( $text_alpha ), $this->validate->getValue() );
+        $this->assertEquals( strtoupper( $text_alpha ), $ok->getValue() );
     }
     
     public function test_basic_pattern()

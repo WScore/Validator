@@ -80,7 +80,7 @@ class Validate
     {
         return $this->valueTO->getValue();
     }
-    
+
     /**
      * @return null|string
      */
