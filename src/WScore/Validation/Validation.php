@@ -37,6 +37,7 @@ class Validation
 
     // +----------------------------------------------------------------------+
     /**
+     * @Inject
      * @param \WScore\Validation\Validate   $validate
      */
     public function __construct( $validate )
@@ -48,7 +49,7 @@ class Validation
      * @param null|string $locale
      * @return static
      */
-    public static function factory( $locale=null )
+    public static function getInstance( $locale=null )
     {
         return new static( Validate::getInstance( $locale ) );
     }
@@ -196,10 +197,10 @@ class Validation
         if( is_array( $value ) ) {
             $found = array();
             foreach( $value as $key => $val ) {
-                $found[ $key ] = $this->validate->is( $val, $rules );
+                $found[ $key ] = $this->validate->applyFilters( $val, $rules );
             }
         } else {
-            $found = $this->validate->is( $value, $rules );
+            $found = $this->validate->applyFilters( $value, $rules );
         }
         return $found;
     }
