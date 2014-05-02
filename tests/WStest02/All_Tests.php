@@ -19,6 +19,7 @@ class All_Tests
         $suite->addTestFile( $folder . 'ValidationJa_Test.php' );
         $suite->addTestFile( $folder . 'Filter_Test.php' );
         $suite->addTestFile( $folder . 'Story_Test.php' );
+        $suite->addTestFile( $folder . 'Input_Test.php' );
         return $suite;
     }
 }

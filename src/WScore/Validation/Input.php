@@ -8,13 +8,27 @@ namespace WScore\Validation;
  * @package WScore\Validation
  *
  * for starting a new validation.
- * @method static Validation text( string $name, array $filters=array() )
+ * @method static Validation text(     string $name, array $rules=array() )
+ * @method static Validation mail(     string $name, array $rules=array() )
+ * @method static Validation number(   string $name, array $rules=array() )
+ * @method static Validation integer(  string $name, array $rules=array() )
+ * @method static Validation float(    string $name, array $rules=array() )
+ * @method static Validation date(     string $name, array $rules=array() )
+ * @method static Validation dateYM(   string $name, array $rules=array() )
+ * @method static Validation datetime( string $name, array $rules=array() )
+ * @method static Validation time(     string $name, array $rules=array() )
+ * @method static Validation timeHi(   string $name, array $rules=array() )
+ * @method static Validation tel(      string $name, array $rules=array() )
  *          
  * for accessing Validation object.
  * @method static source( array $source )
- * @method static pop( string $name=null )
  * @method static isValid()
+ * @method static pop( string $name=null )
+ * @method static popSafe()
  * @method static popError()
+ * @method static pushValue( $name, $value )
+ * @method static pushError( $name, $error, $value=false )
+ * @method static find( $name, array $rules )
  */
 class Input
 {
