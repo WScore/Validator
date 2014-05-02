@@ -6,3 +6,4 @@ require( __DIR__ . '/../src/WScore/Validation/Message.php' );
 require( __DIR__ . '/../src/WScore/Validation/ValueTO.php' );
 require( __DIR__ . '/../src/WScore/Validation/Validate.php' );
 require( __DIR__ . '/../src/WScore/Validation/Validation.php' );
+require( __DIR__ . '/../src/WScore/Validation/Input.php' );

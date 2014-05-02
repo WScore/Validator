@@ -252,6 +252,16 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     //  getting information about Rule
     // +----------------------------------------------------------------------+
     /**
+     * returns a list of available types. 
+     * 
+     * @return array
+     */
+    public function getTypeList()
+    {
+        return array_keys( $this->filterTypes );
+    }
+    
+    /**
      * @return null|string
      */
     public function getType() {
