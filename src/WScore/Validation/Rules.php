@@ -114,25 +114,6 @@ class Rules implements \ArrayAccess, \IteratorAggregate
         }
         return $rule;
     }
-
-    /**
-     * @param string $type
-     * @param string $text
-     * @return Rules
-     */
-    public static function parse( $type, $text='' )
-    {
-        if( !static::$_rules ) {
-            $rule = new static();
-        } else {
-            $rule = clone( static::$_rules );
-        }
-        $rule->applyType( $type );
-        if( $text ) {
-            $rule->applyTextFilter( $text );
-        }
-        return $rule;
-    }
     // +----------------------------------------------------------------------+
     //  setting rule
     // +----------------------------------------------------------------------+

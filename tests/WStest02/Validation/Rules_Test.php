@@ -89,16 +89,6 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    function static_parse_returns_new_rules()
-    {
-        $rule = Rules::parse( 'text' );
-        $this->assertEquals( 'WScore\Validation\Rules', get_class( $rule ) );
-        $this->assertEquals( 'text', $rule->getType() );
-    }
-
-    /**
-     * @test
-     */
     function invoke()
     {
         $rule1 = $this->rule;
@@ -139,20 +129,6 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
         /** @var Rules $rule */
         $rule1 = $this->rule;
         $rule = $rule1( 'text', $filter );
-        $this->assertEquals( true, $rule->isRequired() );
-        $this->assertEquals(  5, $rule[ 'min' ] );
-        $this->assertEquals( 10, $rule[ 'max' ] );
-        $this->assertEquals( 'test', $rule[ 'dummy' ] );
-    }
-
-    /**
-     * @test
-     */
-    function apply_text_filter_on_static_parse()
-    {
-        $filter = 'required|min:5|max:10|dummy:test';
-        /** @var Rules $rule */
-        $rule = Rules::parse( 'text', $filter );
         $this->assertEquals( true, $rule->isRequired() );
         $this->assertEquals(  5, $rule[ 'min' ] );
         $this->assertEquals( 10, $rule[ 'max' ] );
