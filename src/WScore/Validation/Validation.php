@@ -139,12 +139,13 @@ class Validation
      */
     public function push( $name, $rules )
     {
-        $this->output[$name] = $found = $this->find( $name, $rules );
-        if( !isset( $this->errors[$name] ) ) {
+        $this->output[$name] = $found = $this->find( $name, $rules, $errors );
+        if( !$errors ) {
             return $found;
         }
+        $this->pushError( $name, $errors, $found );
         if( is_array($found) ) {
-            $this->_findClean( $found, $this->errors[$name] );
+            $this->_findClean( $found, $errors );
             return $found;
         }
         return false;
@@ -174,15 +175,16 @@ class Validation
         if( $value !== false ) $this->output[ $name ] = $value;
         return $this;
     }
-    
+
     /**
      * finds a value with $name in the source data, applying the rules.
      *
      * @param string $name
-     * @param Rules  $rules
+     * @param Rules $rules
+     * @param array $errors
      * @return ValueTO|ValueTO[]
      */
-    public function find( $name, $rules )
+    public function find( $name, $rules, &$errors )
     {
         // find a value from data source.
         $value = null;
@@ -197,11 +199,7 @@ class Validation
         // prepares filter for sameWith.
         $rules = Utils::prepare_sameWith( $this, $rules );
 
-        $found = $this->is( $value, $rules, $errors );
-        if( $errors ) {
-            $this->errors[$name] = $errors;
-        }
-        return $found;
+        return $this->is( $value, $rules, $errors );
     }
 
     /**
@@ -229,45 +227,6 @@ class Validation
             $this->err_num++;
         }
         return $valTO->getValue();
-    }
-
-    /**
-     * @param ValueTO|ValueTO[] $found
-     * @param string $key
-     * @param null $key2
-     * @return bool
-     */
-    private function keep( $found, $key, $key2=null )
-    {
-        $isValid = true;
-        if( is_array( $found ) ) {
-
-            /** @var $found ValueTO[] */
-            foreach( $found as $k => $f ) {
-                $isValid &= $this->keep( $f, $key, $k );
-            }
-            return $isValid;
-
-        } else {
-
-            /** @var $found ValueTO */
-            if( $found->getError() ) {
-
-                $isValid = false;
-                if( $key2 !== null ) {
-                    $this->errors[ $key ][ $key2 ] = $found->getMessage();
-                } else {
-                    $this->errors[ $key ] = $found->getMessage();
-                }
-                $this->err_num ++;
-            }
-            if( $key2 !== null ) {
-                $this->output[ $key ][ $key2 ] = $found->getValue();
-            } else {
-                $this->output[ $key ] = $found->getValue();
-            }
-        }
-        return $isValid;
     }
     // +----------------------------------------------------------------------+
 }
