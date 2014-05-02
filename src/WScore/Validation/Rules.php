@@ -37,6 +37,20 @@ use Traversable;
  * @method Rules sameWith( string $name )
  * @method Rules sameAs( string $name )
  * @method Rules sameEmpty( bool $check=true )
+ *
+ * below are static methods for types.
+ *
+ * @method static Rules text( array $filters )
+ * @method static Rules mail( array $filters )
+ * @method static Rules binary( array $filters )
+ * @method static Rules number( array $filters )
+ * @method static Rules integer( array $filters )
+ * @method static Rules float( array $filters )
+ * @method static Rules date( array $filters )
+ * @method static Rules dateYM( array $filters )
+ * @method static Rules time( array $filters )
+ * @method static Rules timeHi( array $filters )
+ * @method static Rules tel( array $filters )
  */
 class Rules implements \ArrayAccess, \IteratorAggregate
 {
@@ -120,6 +134,32 @@ class Rules implements \ArrayAccess, \IteratorAggregate
         }
         return $this;
     }
+
+    /**
+     * @param null|string|Locale $locale
+     * @return static
+     */
+    public static function getInstance( $locale=null )
+    {
+        return new static( $locale );
+    }
+
+    /**
+     * @param $method
+     * @param $args
+     * @return \WScore\Validation\Rules
+     */
+    public static function __callStatic( $method, $args )
+    {
+        if( !static::$_rules ) {
+            static::getInstance();
+        }
+        static::$_rules->applyType( $method );
+        foreach( $args as $arg ) {
+            static::$_rules->apply( $arg );
+        }
+        return static::$_rules;
+    }
     // +----------------------------------------------------------------------+
     //  setting rule
     // +----------------------------------------------------------------------+
@@ -150,15 +190,49 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     }
 
     /**
+     * @param array|string $filters
+     * @return $this
+     * @throws \RuntimeException
+     */
+    public function apply( $filters )
+    {
+        if( is_array( $filters ) ) {
+            return $this->applyFilters( $filters );
+        }
+        elseif( is_string( $filters ) ) {
+            return $this->applyTextFilter( $filters );
+        }
+        throw new \RuntimeException( "filters must be an array or a text string. " );
+    }
+
+    /**
      * @param $text
+     * @return $this
      */
     public function applyTextFilter( $text )
     {
         $filter = Utils::convertFilter( $text );
-        if( empty( $filter ) ) return;
+        if( empty( $filter ) ) return $this;
         foreach( $filter as $key => $val ) {
             $this->filter[ $key ] = $val;
         }
+        return $this;
+    }
+
+    /**
+     * @param $filters
+     * @return $this
+     */
+    public function applyFilters( $filters )
+    {
+        foreach( $filters as $rule => $parameter ) {
+            if( is_numeric( $rule ) ) {
+                $rule = $parameter;
+                $parameter = true;
+            }
+            $this->filter[$rule] = $parameter;
+        }
+        return $this;
     }
 
     /**

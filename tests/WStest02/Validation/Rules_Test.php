@@ -114,7 +114,19 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
     function apply_text_filter()
     {
         $filter = 'required|min:5|max:10';
-        $this->rule->applyTextFilter( $filter );
+        $this->rule->apply( $filter );
+        $this->assertEquals( true, $this->rule->isRequired() );
+        $this->assertEquals(  5, $this->rule[ 'min' ] );
+        $this->assertEquals( 10, $this->rule[ 'max' ] );
+    }
+
+    /**
+     * @test
+     */
+    function apply_array_filter()
+    {
+        $filter = [ 'required', 'min'=>5, 'max'=>10 ];
+        $this->rule->apply( $filter );
         $this->assertEquals( true, $this->rule->isRequired() );
         $this->assertEquals(  5, $this->rule[ 'min' ] );
         $this->assertEquals( 10, $this->rule[ 'max' ] );
@@ -183,5 +195,18 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( true, is_array( $filters ) );
         $this->assertEquals( 3, $filters[ 'min' ] );
         $this->assertEquals( 3, $this->rule->getFilters( 'min' ) );
+    }
+
+    /**
+     * @test
+     */
+    function static_text_rules()
+    {
+        Rules::getInstance();
+        $rule = Rules::text('required|min:5|max:10|dummy:test');
+        $this->assertEquals( true, $rule->isRequired() );
+        $this->assertEquals(  5, $rule[ 'min' ] );
+        $this->assertEquals( 10, $rule[ 'max' ] );
+        $this->assertEquals( 'test', $rule[ 'dummy' ] );
     }
 }
