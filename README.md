@@ -20,34 +20,44 @@ Simple Usage That Should Be
 This package **almost** works like this.
 
 ```php
-use \WScore\Validation\Validation;
+use \WScore\Validation\Factory;
 use \WScore\Validation\Rules;
 
-$v = Validation::factory('ja'); // use Japanese rules and messages.
-$v->setSource( $_POST );        // validating post input.
+Factory::setLocale('ja');          // use Japanese rules and messages.
+$input = Factory::getValidator();  // get validator.
+$input->setSource( $_POST );       // validating post input.
 
-$v->push( 'name', Rules::text()->required() );
-$v->push( 'mail', Rules::mail()->sameAs( 'mail2' )->required() );
-$status = $v->push( 'status', Rules::int()->in( '1', '2', '3' ) );
-if( $status == '1' ) {
-    // do something important.
+// check if name or nickname is set
+if( !$input->is( 'name', Rules::text() ) ) {
+    if( !$input->is( 'nickname', Rules::text() ) ) {
+        $input->isError( 'name', 'requires name or nickname' );
+    }
 }
-$v->pushValue( 'notice', 'how do you like it?' );
 
-if( $v->isValid() ) {
-    $goodData = $v->pop();
+// check mail with confirmation
+$input->is( 'mail', Rules::mail()->sameAs( 'mail2' )->required() );
+
+// check value of input, and...
+$status = $input->is( 'status', Rules::int()->in( '1', '2', '3' )->required() );
+if( $status == '1' ) { // add some message?!
+    $input->setValue( 'notice', 'how do you like it?' );
+}
+
+if( $input->isValid() ) {
+    $goodData = $input->get();
 } else {
-    $badData = $v->pop();
-    $errors  = $v->popErrors();
+    $badData = $input->get();
+    $errors  = $input->errors();
 }
-
 ```
 
 Validating a value works like,
 
 ```php
-echo $v->is( 'WScore', Rules::text()->string('lower') ); // returns 'wscore'
-echo $v->is( 'Bad', Rules::int() ); // returns false
+$name  = $input->verify( 'WScore', Rules::text()->string('lower') ); // returns 'wscore'
+if( false === $input->verify( 'Bad', Rules::int() ) { // returns false
+    echo $input->lastError(); // echo 'not an integer';
+}
 ```
 
 
