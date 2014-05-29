@@ -1,13 +1,58 @@
 WScore.Validation
 =================
 
-Validation and filtration for values such as form input.
+A simple validation and filtration component.
+
+Simple to create rules, easy to write logic (i.e. if statements),
+lots of default error messages.
+
+
 
 *   filteration:
     may change the input value. For instace, string:lower filter may change alphabets to lower character.
 *   validation:
     will only validates the value (no changes to the value).
 
+
+Simple Usage That Should Be
+---------------------------
+
+This package **almost** works like this.
+
+```php
+use \WScore\Validation\Validation;
+use \WScore\Validation\Rules;
+
+$v = Validation::factory('ja'); // use Japanese rules and messages.
+$v->setSource( $_POST );        // validating post input.
+
+$v->push( 'name', Rules::text()->required() );
+$v->push( 'mail', Rules::mail()->sameAs( 'mail2' )->required() );
+$status = $v->push( 'status', Rules::int()->in( '1', '2', '3' ) );
+if( $status == '1' ) {
+    // do something important.
+}
+$v->pushValue( 'notice', 'how do you like it?' );
+
+if( $v->isValid() ) {
+    $goodData = $v->pop();
+} else {
+    $badData = $v->pop();
+    $errors  = $v->popErrors();
+}
+
+```
+
+Validating a value works like,
+
+```php
+echo $v->is( 'WScore', Rules::text()->string('lower') ); // returns 'wscore'
+echo $v->is( 'Bad', Rules::int() ); // returns false
+```
+
+
+OLD OLD OLD
+===========
 
 Simple Usage
 ------------
