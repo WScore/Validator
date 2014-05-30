@@ -61,8 +61,35 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
      * @test
      * @expectedException \BadMethodCallException
      */
-    function invalid_type_throws_exception()
+    function invalid_type_throws_BadMethodCallException()
     {
+        /** @noinspection PhpUndefinedMethodInspection */
         Rules::badType();
     }
+
+    /**
+     * @test
+     */
+    function object__is_equivalent_as_static_text_required()
+    {
+        $rules = Rules::getInstance();
+        $rules = $rules->applyType('text');
+        $this->assertEquals( 'text', $rules['type'] );
+        $this->assertEquals( 'text', $rules->getType() );
+        $this->assertEquals( false, $rules['required'] );
+        $this->assertEquals( false, $rules->isRequired() );
+        $array = $rules->toArray();
+        $this->assertEquals( 'text', $array['type'] );
+        $this->assertEquals( false, $array['required'] );
+
+        /** @var Rules $rules */
+        $rules = $rules->applyType('text')->required();
+        $this->assertEquals( 'text', $rules['type'] );
+        $this->assertEquals( true, $rules['required'] );
+        $this->assertEquals( true, $rules->isRequired() );
+        $array = $rules->toArray();
+        $this->assertEquals( 'text', $array['type'] );
+        $this->assertEquals( true, $array['required'] );
+    }
+
 }

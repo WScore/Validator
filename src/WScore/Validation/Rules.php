@@ -144,7 +144,6 @@ class Rules implements \ArrayAccess, \IteratorAggregate
         if( !static::$_rules ) {
             static::getInstance();
         }
-        /** @var Rules $rules */
         $rules = static::$_rules->applyType( $method );
         foreach( $args as $arg ) {
             $rules->apply( $arg );
@@ -156,7 +155,7 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     // +----------------------------------------------------------------------+
     /**
      * @param string $type
-     * @return $this
+     * @return Rules|$this
      * @throws \BadMethodCallException
      */
     public function applyType( $type )
