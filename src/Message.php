@@ -22,11 +22,13 @@ class Message
 
     /**
      * @param string $locale
+     * @return string
      */
     public static function locale( $locale=null )
     {
-        if( !$locale ) $locale = 'en';
+        if( !$locale ) return static::$locale;
         static::$locale = strtolower( locale_get_primary_language( $locale ) );
+        return static::$locale;
     }
 
     /**
