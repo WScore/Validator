@@ -140,41 +140,74 @@ class Validation
     public function push( $name, $rules )
     {
         $found = $this->find( $name, $rules );
-        $found = $this->validate->verify( $found, $rules, $errors );
-        if( !$errors ) {
-            $this->pushValue( $name, $found );
-            return $found;
+        if( is_array( $found ) ) {
+            $result = array();
+            foreach( $found as $key=>$value ) {
+                $valTO = $this->validate->applyFilters( $value, $rules );
+                if( $valTO->fails() ) {
+                    $this->pushError( $name, $valTO->message(), $valTO->getValue(), $key );
+                } else {
+                    $this->pushValue( $name, $valTO->getValue(), $key );
+                    $result[$key] = $valTO->getValue();
+                }
+            }
+            return $result;
         }
-        $this->pushError( $name, $errors, $found );
-        if( is_array($found) ) {
-            $this->_findClean( $found, $errors );
-            return $found;
+        $valTO = $this->validate->applyFilters( $found, $rules );
+        if( $valTO->fails() ) {
+            $this->pushError( $name, $valTO->message(), $valTO->getValue() );
+            return false;
         }
-        return false;
+        $this->pushValue( $name, $valTO->getValue() );
+        return $valTO->getValue();
     }
 
     /**
      * @param string $name
-     * @param mixed  $value
+     * @param mixed $value
+     * @param string|null $key
+     * @throws \InvalidArgumentException
      * @return Validation
      */
-    public function pushValue( $name, $value )
+    public function pushValue( $name, $value, $key=null )
     {
-        $this->output[ $name ] = $value;
+        if( !$key ) {
+            $this->output[ $name ] = $value;
+            return $this;
+        }
+        if( !isset( $this->output[$name] ) ) {
+            $this->output[$name] = array();
+        }
+        if( !is_array( $this->output[$name] ) ) {
+            throw new \InvalidArgumentException("not an array: {$name} with key:{$key}");
+        }
+        $this->output[$name][$key] = $value;
         return $this;
     }
 
     /**
      * @param string $name
-     * @param mixed  $error
+     * @param mixed $error
      * @param bool|mixed $value
+     * @param null $key
+     * @throws \InvalidArgumentException
      * @return Validation
      */
-    public function pushError( $name, $error, $value=false )
+    public function pushError( $name, $error, $value=false, $key=null )
     {
-        $this->errors[ $name ] = $error;
+        if( !$key ) {
+            $this->errors[ $name ] = $error;
+        } else {
+            if( !isset( $this->errors[$name] ) ) {
+                $this->errors[$name] = array();
+            }
+            if( !is_array( $this->errors[$name] ) ) {
+                throw new \InvalidArgumentException("not an array: {$name} with key:{$key}");
+            }
+            $this->errors[$name][$key] = $value;
+        }
+        if( $value !== false ) $this->pushValue( $name, $value, $key );
         $this->err_num ++;
-        if( $value !== false ) $this->output[ $name ] = $value;
         return $this;
     }
 

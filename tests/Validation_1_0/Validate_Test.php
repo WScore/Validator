@@ -41,6 +41,15 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    function result_returns_last_value()
+    {
+        $value = $this->validate->applyFilters( ' text ', [ 'trim' => true ] );
+        $this->assertSame( $value, $this->validate->result() );
+    }
+
+    /**
+     * @test
+     */
     function apply_filter_message()
     {
         $value = $this->validate->applyFilters( 'text', [ 'message' => 'tested' ] );

@@ -60,6 +60,7 @@ class ValueTO implements ValueToInterface
 
     /**
      * @param $value
+     * @return $this
      */
     public function reset( $value )
     {
@@ -68,6 +69,7 @@ class ValueTO implements ValueToInterface
         $this->error   = false;
         $this->message = null;
         $this->break   = false;
+        return $this;
     }
     
     /**
