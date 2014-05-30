@@ -30,7 +30,6 @@ return array(
     'max'         => false,
     'range'       => false,
     'checkdate'   => false,
-    'mbCheckKana' => false,
     'sameWith'    => false,      // comparing with other field.
     'sameAs'      => false,
     'sameEmpty'   => false,
