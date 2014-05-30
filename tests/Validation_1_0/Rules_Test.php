@@ -92,4 +92,18 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( true, $array['required'] );
     }
 
+    /**
+     * @test
+     */
+    function locale_ja_loads_filters_and_types_in_ja()
+    {
+        $rules = Rules::text();
+        $this->assertEquals( 'text', $rules->getType() );
+        $this->assertEquals( null, $rules['mbConvert'] );
+        Rules::locale('ja');
+        Rules::getInstance();
+        $rules = Rules::text();
+        $this->assertEquals( 'text', $rules->getType() );
+        $this->assertEquals( 'standard', $rules['mbConvert'] );
+    }
 }

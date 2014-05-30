@@ -15,6 +15,21 @@ Others are:
 *   easy to code logic.
 
 
+### License
+
+MIT License
+
+### Installation
+
+use composer. only dev-master is available...
+
+```json
+"require": {
+    "wscore/validation": "dev-master"
+}
+```
+
+
 Simple Usage That Should Be
 ---------------------------
 

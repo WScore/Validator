@@ -1,8 +1,6 @@
 <?php
 namespace WScore\Validation;
 
-use WScore\Validation\Locale\String as Locale;
-
 /**
  * about pattern and matches filter.
  * both filters uses preg_match for patter match.
@@ -77,7 +75,7 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     /**
      * @var string
      */
-    static $locale = 'en';
+    protected static $locale = 'en';
 
     // +----------------------------------------------------------------------+
     //  managing object
@@ -92,7 +90,7 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     /**
      * @param array $filters
      */
-    public function setFilter( $filters )
+    protected function setFilter( $filters )
     {
         $this->baseFilters = $filters;
         $this->filter      = $filters;
@@ -101,7 +99,7 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     /**
      * @param array $types
      */
-    public function setTypes( $types )
+    protected function setTypes( $types )
     {
         $this->filterTypes = $types;
     }
@@ -116,7 +114,7 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     }
 
     /**
-     * @param null|string|Locale $locale
+     * @param null|string $locale
      * @param null $dir
      * @return static
      */
