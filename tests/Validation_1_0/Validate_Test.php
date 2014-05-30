@@ -85,4 +85,39 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
         $value = $this->validate->applyFilters( '', ['matches'=>'not-valid'] );
         $this->assertEquals( 'invalid input', $value->getMessage() );
     }
+
+    /**
+     * @test
+     */
+    function locale_ja_returns_japanese_message()
+    {
+        $v = Validate::getInstance('ja');
+
+        $value = $v->applyFilters( ' text ', [ 'trim' => true ] );
+        $this->assertEquals( 'WScore\Validation\Validate', get_class( $v ) );
+
+        $this->assertEquals( 'text', $value->getValue() );
+        $this->assertEquals( 'text', $value );
+        $this->assertEquals( '入力内容を確認して下さい', $value->getMessage() );
+
+        // general message
+        $value = $v->applyFilters( '', [] );
+        $this->assertEquals( '入力内容を確認して下さい', $value->getMessage() );
+
+        // message based on method
+        $value = $v->applyFilters( '', [ 'required' => true ] );
+        $this->assertEquals( '必須項目です', $value->getMessage() );
+
+        // message based on type
+        $value = $v->applyFilters( '', ['type'=>'mail'] );
+        $this->assertEquals( '入力内容を確認して下さい', $value->getMessage() );
+
+        // message based on method/parameter
+        $value = $v->applyFilters( '', ['matches'=>'number'] );
+        $this->assertEquals( '数値のみです(0-9)', $value->getMessage() );
+        $value = $v->applyFilters( '', ['matches'=>'int'] );
+        $this->assertEquals( '整数を入力してください', $value->getMessage() );
+        $value = $v->applyFilters( '', ['matches'=>'not-valid'] );
+        $this->assertEquals( '入力内容を確認して下さい', $value->getMessage() );
+    }
 }
