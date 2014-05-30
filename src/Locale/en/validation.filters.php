@@ -8,7 +8,6 @@
 return array(
     // filterOptions (modifies the value)
     'type'        => null,       // type of filter, such as 'text', 'mail', etc.
-    'err_msg'     => false,
     'message'     => false,
     'multiple'    => false,      // multiple value.
     'noNull'      => true,       // filters out NULL (\0) char from the value.

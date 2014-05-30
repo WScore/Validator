@@ -30,14 +30,16 @@ use composer. only dev-master is available...
 ```
 
 
-Simple Usage That Should Be
----------------------------
-
-### Validating an input data
+Simple Usage
+------------
 
 This package **almost** works like this.
-```is``` method returns the found value, or false if fails to validate. 
-This makes it easy to write a simple logic based the returned value. 
+
+### Factory Validation object
+
+use ```Factory``` to construct validation object (not ready yet). 
+set the data to validate using ```source``` method. For verifying 
+form input, the source would be ```$_POST``` as in the example. 
 
 ```php
 use \WScore\Validation\Factory;
@@ -45,8 +47,16 @@ use \WScore\Validation\Rules;
 
 Factory::setLocale('ja');          // use Japanese rules and messages.
 $input = Factory::getValidator();  // get validator.
-$input->setSource( $_POST );       // validating post input.
+$input->source( $_POST );       // validating post input.
+```
 
+### Validating an input data
+
+```is``` method validates and returns the found value, or returns 
+false if fails to validate. This makes it easy to write a simple 
+logic based the returned value. 
+
+```php
 // check if name or nickname is set
 if( !$input->is( 'name', Rules::text() ) ) {
     if( !$input->is( 'nickname', Rules::text() ) ) {
@@ -55,7 +65,7 @@ if( !$input->is( 'name', Rules::text() ) ) {
 }
 
 // check mail with confirmation
-$input->is( 'mail', Rules::mail()->sameAs( 'mail2' )->required() );
+$input->is( 'mail', Rules::mail()->sameWith( 'mail2' )->required() );
 
 // check value of input, and do more stuff.
 $status = $input->is( 'status', Rules::int()->in( '1', '2', '3' )->required()->message('must be 1-3.') );
@@ -123,8 +133,8 @@ for password or email validation with two input fields
 to compare each other. 
 
 ```php
-$input = array( 'text1' => '123ABC', 'text2' => '123abc' );
-echo $validation->push( 'bd', Rules::text()->string('lower')->sameWith('text2') ); // 123abc
+$input->source([ 'text1' => '123ABC', 'text2' => '123abc' ] );
+echo $validation->is( 'text1', Rules::text()->string('lower')->sameWith('text2') ); // 123abc
 ```
 
 
@@ -133,20 +143,33 @@ echo $validation->push( 'bd', Rules::text()->string('lower')->sameWith('text2') 
 some filter must be applied in certain order... 
 
 ```php
-echo $validate->is( 'ABC', Rules::text()->pattern('[a-c]*')->string('lower'); // 'abc'
+echo $validate->verify( 'ABC', Rules::text()->pattern('[a-c]*')->string('lower'); // 'abc'
 ## should lower the string first, then check for pattern...
 ```
 
 ### Many predefined error messages
 
-some filter have own error messages, 
-that are: required, encoding, sameAs, and sameEmpty. 
-They are defined in Message class, and to be i18n ready in some future.
+Error message is determined as follows:
+1.   method and parameter specific message, 
+2.   method specific message, then,
+3.   general message
+
+filter, ```matches``` has its message based on the parameter. 
+Other filters such as ```required``` and ```sameWith``` has message. 
+And lastly, there is a generic message for general errors. 
 
 ```php
-$validate->is( '', $rule('text')->required() );
-echo $validate->getMessage(); // 'required input'
+$validate->verify( '', $rule('text')->required() );
+echo $validate->result()->message(); // 'required input'
 ```
+
+for tailored message, use ```message``` method to set its messag.e 
+
+```php
+$validate->verify( '', $rule('text')->required()->message('Oops!') );
+echo $validate->result()->message(); // 'Oops!'
+```
+
 
 Predefined Types
 ----------------
@@ -160,17 +183,31 @@ todo: to-be-written
 *   float
 *   date
 *   dateYM
-*   etc.
+*   datetime
+*   time
+*   timeHi
+*   tel
 
 Predefined Filters
 ------------------
 
 todo: to-be-write
 
+*   message
 *   multiple
 *   noNull
 *   encoding
-*   mbConvert
+*   mbConvert (Ja only)
 *   trim
+*   sanitize
+*   string
+*   default
+*   required
+*   loopBreak
+*   code
+*   maxlength
+*   pattern
+*   matches
+*   kanaType (ja only)
 *   etc.
 
