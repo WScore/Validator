@@ -33,7 +33,7 @@ use composer. only dev-master is available...
 Simple Usage That Should Be
 ---------------------------
 
-### validating an input data
+### Validating an input data
 
 This package **almost** works like this.
 ```is``` method returns the found value, or false if fails to validate. 
@@ -57,10 +57,12 @@ if( !$input->is( 'name', Rules::text() ) ) {
 // check mail with confirmation
 $input->is( 'mail', Rules::mail()->sameAs( 'mail2' )->required() );
 
-// check value of input, and...
-$status = $input->is( 'status', Rules::int()->in( '1', '2', '3' )->required() );
+// check value of input, and do more stuff.
+$status = $input->is( 'status', Rules::int()->in( '1', '2', '3' )->required()->message('must be 1-3.') );
 if( $status == '1' ) { // add some message?!
     $input->setValue( 'notice', 'how do you like it?' );
+} elseif( false === $status ) {
+    echo $input->message('status'); // echo 'must be 1-3'
 }
 
 if( $input->fails() ) {
@@ -71,7 +73,7 @@ if( $input->fails() ) {
 }
 ```
 
-### validating a single value
+### Validating a single value
 
 use ```verify``` method to validate a single value. 
 
