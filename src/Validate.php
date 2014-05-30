@@ -1,6 +1,10 @@
 <?php
 namespace WScore\Validation;
 
+/**
+ * Class Validate
+ * @package WScore\Validation
+ */
 class Validate
 {
     /**

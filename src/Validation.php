@@ -2,10 +2,10 @@
 namespace WScore\Validation;
 
 /**
+ * Class Validation
+ * @package WScore\Validation
+ *
  * validates an array of values (i.e. input from html form).
- * 
- * @cacheable
- * 
  */
 class Validation
 {
@@ -17,12 +17,12 @@ class Validation
     /**
      * @var array                 validated and invalidated data
      */
-    protected $output = array();
+    protected $found = array();
 
     /**
      * @var array                 invalidated error messages
      */
-    protected $errors = array();
+    protected $messages = array();
 
     /**
      * @var int                   number of errors (invalids)
@@ -30,7 +30,6 @@ class Validation
     protected $err_num = 0;
 
     /**
-     * @Inject
      * @var Validate
      */
     public $validate = null;
@@ -47,11 +46,12 @@ class Validation
 
     /**
      * @param null|string $locale
+     * @param null|string $dir
      * @return static
      */
-    public static function getInstance( $locale=null )
+    public static function getInstance( $locale=null, $dir=null )
     {
-        return new static( Validate::getInstance( $locale ) );
+        return new static( Validate::getInstance( $locale, $dir ) );
     }
 
     /**
@@ -62,6 +62,9 @@ class Validation
         $this->source = $data;
     }
 
+    // +----------------------------------------------------------------------+
+    //  getting found values
+    // +----------------------------------------------------------------------+
     /**
      * returns found value.
      * this method returns values that maybe invalid.
@@ -69,12 +72,10 @@ class Validation
      * @param null|string $key
      * @return array
      */
-    public function pop( $key=null )
+    public function get( $key=null )
     {
-        if( is_null( $key ) ) {
-            return $this->output;
-        }
-        return Utils::arrGet( $this->output, $key );
+        if( $key ) return Utils::arrGet( $this->found, $key );
+        return $this->found;
     }
 
     /**
@@ -82,10 +83,10 @@ class Validation
      *
      * @return array
      */
-    public function popSafe()
+    public function getSafe()
     {
-        $safeData = $this->output;
-        $this->_findClean( $safeData, $this->errors );
+        $safeData = $this->found;
+        $this->_findClean( $safeData, $this->messages );
         return $safeData;
     }
 
@@ -109,80 +110,25 @@ class Validation
         }
     }
 
+    // +----------------------------------------------------------------------+
+    //  errors and messages
+    // +----------------------------------------------------------------------+
+    /**
+     * @return bool
+     */
+    public function fails()
+    {
+        return $this->err_num?true:false;
+    }
+
     /**
      * @param null|string $name
      * @return array|mixed
      */
-    public function popError( $name=null )
+    public function message( $name=null )
     {
-        if( $name ) return Utils::arrGet( $this->errors, $name );
-        return $this->errors;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isValid()
-    {
-        return !$this->err_num;
-    }
-
-    // +----------------------------------------------------------------------+
-
-    /**
-     * pushes the $name.
-     * returns the found value, or false if validation fails.
-     *
-     * @param string $name
-     * @param array|Rules $rules
-     * @return mixed
-     */
-    public function push( $name, $rules )
-    {
-        $found = $this->find( $name, $rules );
-        if( is_array( $found ) ) {
-            $result = array();
-            foreach( $found as $key=>$value ) {
-                $valTO = $this->validate->applyFilters( $value, $rules );
-                if( $valTO->fails() ) {
-                    $this->pushError( $name, $valTO->message(), $valTO->getValue(), $key );
-                } else {
-                    $this->pushValue( $name, $valTO->getValue(), $key );
-                    $result[$key] = $valTO->getValue();
-                }
-            }
-            return $result;
-        }
-        $valTO = $this->validate->applyFilters( $found, $rules );
-        if( $valTO->fails() ) {
-            $this->pushError( $name, $valTO->message(), $valTO->getValue() );
-            return false;
-        }
-        $this->pushValue( $name, $valTO->getValue() );
-        return $valTO->getValue();
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $value
-     * @param string|null $key
-     * @throws \InvalidArgumentException
-     * @return Validation
-     */
-    public function pushValue( $name, $value, $key=null )
-    {
-        if( !$key ) {
-            $this->output[ $name ] = $value;
-            return $this;
-        }
-        if( !isset( $this->output[$name] ) ) {
-            $this->output[$name] = array();
-        }
-        if( !is_array( $this->output[$name] ) ) {
-            throw new \InvalidArgumentException("not an array: {$name} with key:{$key}");
-        }
-        $this->output[$name][$key] = $value;
-        return $this;
+        if( $name ) return Utils::arrGet( $this->messages, $name );
+        return $this->messages;
     }
 
     /**
@@ -193,21 +139,80 @@ class Validation
      * @throws \InvalidArgumentException
      * @return Validation
      */
-    public function pushError( $name, $error, $value=false, $key=null )
+    public function setError( $name, $error, $value=false, $key=null )
     {
         if( !$key ) {
-            $this->errors[ $name ] = $error;
+            $this->messages[ $name ] = $error;
         } else {
-            if( !isset( $this->errors[$name] ) ) {
-                $this->errors[$name] = array();
+            if( !isset( $this->messages[$name] ) ) {
+                $this->messages[$name] = array();
             }
-            if( !is_array( $this->errors[$name] ) ) {
+            if( !is_array( $this->messages[$name] ) ) {
                 throw new \InvalidArgumentException("not an array: {$name} with key:{$key}");
             }
-            $this->errors[$name][$key] = $value;
+            $this->messages[$name][$key] = $value;
         }
-        if( $value !== false ) $this->pushValue( $name, $value, $key );
+        if( $value !== false ) $this->set( $name, $value, $key );
         $this->err_num ++;
+        return $this;
+    }
+
+    // +----------------------------------------------------------------------+
+    //  find and validate and save it to found
+    // +----------------------------------------------------------------------+
+    /**
+     * pushes the $name.
+     * returns the found value, or false if validation fails.
+     *
+     * @param string $name
+     * @param array|Rules $rules
+     * @return mixed
+     */
+    public function is( $name, $rules )
+    {
+        $found = $this->find( $name, $rules );
+        if( is_array( $found ) ) {
+            $result = array();
+            foreach( $found as $key=>$value ) {
+                $valTO = $this->validate->applyFilters( $value, $rules );
+                if( $valTO->fails() ) {
+                    $this->setError( $name, $valTO->message(), $valTO->getValue(), $key );
+                } else {
+                    $this->set( $name, $valTO->getValue(), $key );
+                    $result[$key] = $valTO->getValue();
+                }
+            }
+            return $result;
+        }
+        $valTO = $this->validate->applyFilters( $found, $rules );
+        if( $valTO->fails() ) {
+            $this->setError( $name, $valTO->message(), $valTO->getValue() );
+            return false;
+        }
+        $this->set( $name, $valTO->getValue() );
+        return $valTO->getValue();
+    }
+
+    /**
+     * @param string $name
+     * @param mixed $value
+     * @param string|null $key
+     * @throws \InvalidArgumentException
+     * @return Validation
+     */
+    public function set( $name, $value, $key=null )
+    {
+        if( !$key ) {
+            $this->found[ $name ] = $value;
+            return $this;
+        }
+        if( !isset( $this->found[$name] ) ) {
+            $this->found[$name] = array();
+        }
+        if( !is_array( $this->found[$name] ) ) {
+            throw new \InvalidArgumentException("not an array: {$name} with key:{$key}");
+        }
+        $this->found[$name][$key] = $value;
         return $this;
     }
 

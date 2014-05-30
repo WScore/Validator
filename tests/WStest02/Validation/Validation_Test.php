@@ -258,7 +258,7 @@ class Validation_Test extends \PHPUnit_Framework_TestCase
     function pushValue_adds_value()
     {
         $this->assertEquals( null, $this->validate->pop( 'test' ) );
-        $this->validate->pushValue( 'test', 'tested' );
+        $this->validate->set( 'test', 'tested' );
         $this->assertEquals( 'tested', $this->validate->pop( 'test' ) );
     }
 
@@ -270,11 +270,11 @@ class Validation_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( null, $this->validate->pop( 'test' ) );
         $this->assertEquals( null, $this->validate->popError( 'test' ) );
         
-        $this->validate->pushError( 'test', 'error-tested' );
+        $this->validate->setError( 'test', 'error-tested' );
         $this->assertEquals( null, $this->validate->pop( 'test' ) );
         $this->assertEquals( 'error-tested', $this->validate->popError( 'test' ) );
 
-        $this->validate->pushError( 'test', 'error-tested', 'tested' );
+        $this->validate->setError( 'test', 'error-tested', 'tested' );
         $this->assertEquals( 'tested', $this->validate->pop( 'test' ) );
         $this->assertEquals( 'error-tested', $this->validate->popError( 'test' ) );
     }

@@ -62,9 +62,9 @@ class Story_Test extends \PHPUnit_Framework_TestCase
             if( 1 == $foundType ) {
                 $v->push( $n, Rules::text() );
             } elseif( 2 == $foundType ) {
-                $v->pushValue( $n, 'pushed name' );
+                $v->set( $n, 'pushed name' );
             } else {
-                $v->pushValue( $n, '' );
+                $v->set( $n, '' );
             }
         }
         $found = $v->pop();
