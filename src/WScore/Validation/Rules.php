@@ -145,17 +145,19 @@ class Rules implements \ArrayAccess, \IteratorAggregate
         if( !static::$_rules ) {
             static::getInstance();
         }
-        static::$_rules->applyType( $method );
+        /** @var Rules $rules */
+        $rules = static::$_rules->applyType( $method );
         foreach( $args as $arg ) {
-            static::$_rules->apply( $arg );
+            $rules->apply( $arg );
         }
-        return static::$_rules;
+        return $rules;
     }
     // +----------------------------------------------------------------------+
     //  setting rule
     // +----------------------------------------------------------------------+
     /**
      * @param string $type
+     * @return $this
      * @throws \BadMethodCallException
      */
     public function applyType( $type )
@@ -167,6 +169,7 @@ class Rules implements \ArrayAccess, \IteratorAggregate
         }
         $this->filter = array_merge( $this->baseFilters, $this->filterTypes[ $type ] );
         $this->filter[ 'type' ] = $type;
+        return $this;
     }
 
     /**
@@ -179,17 +182,17 @@ class Rules implements \ArrayAccess, \IteratorAggregate
         if( is_string( $filters ) ) {
             $filters = Utils::convertFilter( $filters );
         }
-        if( is_array( $filters ) ) {
-            foreach( $filters as $rule => $parameter ) {
-                if( is_numeric( $rule ) ) {
-                    $rule = $parameter;
-                    $parameter = true;
-                }
-                $this->filter[$rule] = $parameter;
-            }
-            return $this;
+        if( !is_array( $filters ) ) {
+            throw new \InvalidArgumentException( "filters must be an array or a text string. " );
         }
-        throw new \InvalidArgumentException( "filters must be an array or a text string. " );
+        foreach( $filters as $rule => $parameter ) {
+            if( is_numeric( $rule ) ) {
+                $rule = $parameter;
+                $parameter = true;
+            }
+            $this->filter[$rule] = $parameter;
+        }
+        return $this;
     }
 
     /**
@@ -206,16 +209,6 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     // +----------------------------------------------------------------------+
     //  getting information about Rule
     // +----------------------------------------------------------------------+
-    /**
-     * returns a list of available types. 
-     * 
-     * @return array
-     */
-    public function getTypeList()
-    {
-        return array_keys( $this->filterTypes );
-    }
-    
     /**
      * @return null|string
      */
@@ -238,14 +231,9 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     }
 
     /**
-     * @param null|string $name
-     * @return array|null
+     * @return array
      */
-    public function getFilters( $name=null ) {
-        if( isset( $name ) ) { 
-            if( array_key_exists( $name, $this->filter ) ) return $this->filter[ $name ]; 
-            return null;
-        }
+    public function toArray() {
         return $this->filter;
     }
     // +----------------------------------------------------------------------+

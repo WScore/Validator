@@ -20,11 +20,20 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
     {
         $rules = Rules::text();
         $this->assertEquals( 'text', $rules['type'] );
+        $this->assertEquals( 'text', $rules->getType() );
         $this->assertEquals( false, $rules['required'] );
+        $this->assertEquals( false, $rules->isRequired() );
+        $array = $rules->toArray();
+        $this->assertEquals( 'text', $array['type'] );
+        $this->assertEquals( false, $array['required'] );
 
         $rules = Rules::text()->required();
         $this->assertEquals( 'text', $rules['type'] );
         $this->assertEquals( true, $rules['required'] );
+        $this->assertEquals( true, $rules->isRequired() );
+        $array = $rules->toArray();
+        $this->assertEquals( 'text', $array['type'] );
+        $this->assertEquals( true, $array['required'] );
     }
 
     /**
@@ -34,6 +43,7 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
     {
         $rules = Rules::integer( 'required|max:10' );
         $this->assertEquals( 'integer', $rules['type'] );
+        $this->assertEquals( 'integer', $rules->getType() );
         $this->assertEquals( 10, $rules['max'] );
     }
 
