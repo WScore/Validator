@@ -124,20 +124,6 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     }
     
     /**
-     * @param string $type
-     * @param string $text
-     * @return Rules
-     */
-    public function __invoke( $type, $text='' )
-    {
-        $this->applyType( $type );
-        if( $text ) {
-            $this->applyTextFilter( $text );
-        }
-        return $this;
-    }
-
-    /**
      * @param null|string|Locale $locale
      * @return static
      */
@@ -167,14 +153,14 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     // +----------------------------------------------------------------------+
     /**
      * @param string $type
-     * @throws \RuntimeException
+     * @throws \BadMethodCallException
      */
     public function applyType( $type )
     {
         $type = strtolower( $type );
         if( $type == 'email' ) $type = 'mail';
         if( !array_key_exists( $type, $this->filterTypes ) ) {
-            throw new \RuntimeException( "rule type not defined: {$type}" );
+            throw new \BadMethodCallException( "undefined type: {$type}" );
         }
         $this->filter = array_merge( $this->baseFilters, $this->filterTypes[ $type ] );
         $this->filter[ 'type' ] = $type;
@@ -194,47 +180,24 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     /**
      * @param array|string $filters
      * @return $this
-     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
      */
     public function apply( $filters )
     {
+        if( is_string( $filters ) ) {
+            $filters = Utils::convertFilter( $filters );
+        }
         if( is_array( $filters ) ) {
-            return $this->applyFilters( $filters );
-        }
-        elseif( is_string( $filters ) ) {
-            return $this->applyTextFilter( $filters );
-        }
-        throw new \RuntimeException( "filters must be an array or a text string. " );
-    }
-
-    /**
-     * @param $text
-     * @return $this
-     */
-    public function applyTextFilter( $text )
-    {
-        $filter = Utils::convertFilter( $text );
-        if( empty( $filter ) ) return $this;
-        foreach( $filter as $key => $val ) {
-            $this->filter[ $key ] = $val;
-        }
-        return $this;
-    }
-
-    /**
-     * @param $filters
-     * @return $this
-     */
-    public function applyFilters( $filters )
-    {
-        foreach( $filters as $rule => $parameter ) {
-            if( is_numeric( $rule ) ) {
-                $rule = $parameter;
-                $parameter = true;
+            foreach( $filters as $rule => $parameter ) {
+                if( is_numeric( $rule ) ) {
+                    $rule = $parameter;
+                    $parameter = true;
+                }
+                $this->filter[$rule] = $parameter;
             }
-            $this->filter[$rule] = $parameter;
+            return $this;
         }
-        return $this;
+        throw new \InvalidArgumentException( "filters must be an array or a text string. " );
     }
 
     /**
@@ -294,14 +257,12 @@ class Rules implements \ArrayAccess, \IteratorAggregate
         return $this->filter;
     }
     // +----------------------------------------------------------------------+
-    //  tools for filters.
+    //  for ArrayAccess and IteratorAggregate.
     // +----------------------------------------------------------------------+
     /**
      * Whether a offset exists
-     * @link http://php.net/manual/en/arrayaccess.offsetexists.php
      * @param mixed $offset   An offset to check for.
      * @return boolean true on success or false on failure.
-     * The return value will be casted to boolean if non-boolean was returned.
      */
     public function offsetExists( $offset ) {
         return array_key_exists( $offset, $this->filter );
@@ -309,7 +270,6 @@ class Rules implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Offset to retrieve
-     * @link http://php.net/manual/en/arrayaccess.offsetget.php
      * @param mixed $offset   The offset to retrieve.
      * @return mixed Can return all value types.
      */
@@ -319,7 +279,6 @@ class Rules implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Offset to set
-     * @link http://php.net/manual/en/arrayaccess.offsetset.php
      * @param mixed $offset   The offset to assign the value to.
      * @param mixed $value    The value to set.
      * @return void
@@ -330,7 +289,6 @@ class Rules implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Offset to unset
-     * @link http://php.net/manual/en/arrayaccess.offsetunset.php
      * @param mixed $offset   The offset to unset.
      * @return void
      */
