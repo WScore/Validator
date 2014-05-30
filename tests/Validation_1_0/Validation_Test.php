@@ -61,6 +61,15 @@ class Validation_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( 'required item', $errors[ 'test' ] );
     }
 
+    /**
+     * @test
+     */
+    function verify_validates_a_value()
+    {
+        $this->assertEquals( 'test', $this->validate->verify( 'test', Rules::text() ) );
+        $this->assertEquals( 'test', $this->validate->verify( 'TEST', Rules::text()->string('lower') ) );
+        $this->assertEquals( false,  $this->validate->verify( 'b@d', Rules::text()->pattern('[a-z]*') ) );
+    }
     // +----------------------------------------------------------------------+
     //  test for array input
     // +----------------------------------------------------------------------+

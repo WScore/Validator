@@ -184,6 +184,16 @@ class Validation
     //  find and validate and save it to found
     // +----------------------------------------------------------------------+
     /**
+     * @param string      $value
+     * @param Rules|array $rules
+     * @return bool|string
+     */
+    public function verify( $value, $rules )
+    {
+        return $this->validate->is( $value, $rules );
+    }
+    
+    /**
      * pushes the $name.
      * returns the found value, or false if validation fails.
      *
