@@ -192,6 +192,13 @@ class Validation
     {
         return $this->validate->is( $value, $rules );
     }
+
+    /**
+     * @return ValueToInterface
+     */
+    public function result() {
+        return $this->validate->result();
+    }
     
     /**
      * pushes the $name.
