@@ -91,6 +91,29 @@ class Validation
     }
 
     /**
+     * @param string $name
+     * @param mixed $value
+     * @param string|null $key
+     * @throws \InvalidArgumentException
+     * @return Validation
+     */
+    public function set( $name, $value, $key=null )
+    {
+        if( !$key ) {
+            $this->found[ $name ] = $value;
+            return $this;
+        }
+        if( !isset( $this->found[$name] ) ) {
+            $this->found[$name] = array();
+        }
+        if( !is_array( $this->found[$name] ) ) {
+            throw new \InvalidArgumentException("not an array: {$name} with key:{$key}");
+        }
+        $this->found[$name][$key] = $value;
+        return $this;
+    }
+
+    /**
      * @param array      $data
      * @param array|null $error
      */
@@ -139,7 +162,7 @@ class Validation
      * @throws \InvalidArgumentException
      * @return Validation
      */
-    public function setError( $name, $error, $value=false, $key=null )
+    public function isError( $name, $error, $value=false, $key=null )
     {
         if( !$key ) {
             $this->messages[ $name ] = $error;
@@ -176,7 +199,7 @@ class Validation
             foreach( $found as $key=>$value ) {
                 $valTO = $this->validate->applyFilters( $value, $rules );
                 if( $valTO->fails() ) {
-                    $this->setError( $name, $valTO->message(), $valTO->getValue(), $key );
+                    $this->isError( $name, $valTO->message(), $valTO->getValue(), $key );
                 } else {
                     $this->set( $name, $valTO->getValue(), $key );
                     $result[$key] = $valTO->getValue();
@@ -186,34 +209,11 @@ class Validation
         }
         $valTO = $this->validate->applyFilters( $found, $rules );
         if( $valTO->fails() ) {
-            $this->setError( $name, $valTO->message(), $valTO->getValue() );
+            $this->isError( $name, $valTO->message(), $valTO->getValue() );
             return false;
         }
         $this->set( $name, $valTO->getValue() );
         return $valTO->getValue();
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $value
-     * @param string|null $key
-     * @throws \InvalidArgumentException
-     * @return Validation
-     */
-    public function set( $name, $value, $key=null )
-    {
-        if( !$key ) {
-            $this->found[ $name ] = $value;
-            return $this;
-        }
-        if( !isset( $this->found[$name] ) ) {
-            $this->found[$name] = array();
-        }
-        if( !is_array( $this->found[$name] ) ) {
-            throw new \InvalidArgumentException("not an array: {$name} with key:{$key}");
-        }
-        $this->found[$name][$key] = $value;
-        return $this;
     }
 
     /**
