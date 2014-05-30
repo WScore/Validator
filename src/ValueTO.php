@@ -35,13 +35,26 @@ class ValueTO
     protected $break = false;
 
     /**
+     * @var Message
+     */
+    protected $messenger;
+
+    /**
+     * @param Message $messenger
+     */
+    public function __construct( $messenger )
+    {
+        $this->messenger = $messenger;
+    }
+
+    /**
      * @param $value
      * @return static
      */
     public function forge( $value )
     {
-        $obj = new self;
-        $obj->value = $value;
+        $obj = clone( $this );
+        $obj->reset( $value );
         return $obj;
     }
 
@@ -130,7 +143,9 @@ class ValueTO
     public function getMessage()
     {
         if( !$this->message ) {
-
+            $method = $this->getErrorMethod();
+            $parameter = $this->getParameter();
+            $this->message = $this->messenger->find( $method, $parameter );
         }
         return $this->message;
     }

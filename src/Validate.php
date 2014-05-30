@@ -15,23 +15,15 @@ class Validate
      */
     public $valueTO;
 
-    /**
-     * @Inject
-     * @var Message
-     */
-    public $message;
-
     // +----------------------------------------------------------------------+
     /**
      * @param Filter  $filter
      * @param ValueTO $valueTO
-     * @param Message $message
      */
-    public function __construct( $filter=null, $valueTO=null, $message=null )
+    public function __construct( $filter=null, $valueTO=null )
     {
         if( isset( $filter  ) ) $this->filter  = $filter;
         if( isset( $valueTO ) ) $this->valueTO = $valueTO;
-        if( isset( $message ) ) $this->message = $message;
     }
 
     /**
@@ -41,7 +33,7 @@ class Validate
     public static function getInstance( $locale=null )
     {
         return new static(
-            new Filter(), new ValueTO(), Message::getInstance( $locale )
+            new Filter(), new ValueTO( Message::getInstance( $locale ) )
         );
     }
 
@@ -150,7 +142,6 @@ class Validate
             // loop break.
             if( $this->valueTO->getBreak() ) break;
         }
-        $this->message->set( $this->valueTO );
         return $this->valueTO;
     }
     // +----------------------------------------------------------------------+

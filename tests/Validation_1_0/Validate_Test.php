@@ -1,7 +1,6 @@
 <?php
 namespace tests\Validation_1_0;
 
-use WScore\Validation\Rules;
 use WScore\Validation\Validate;
 
 require_once( dirname( __DIR__ ) . '/autoloader.php' );
@@ -20,7 +19,6 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
 
     function test0()
     {
-        $rules = Rules::text();
         $this->assertEquals( 'WScore\Validation\Validate', get_class( $this->validate ) );
     }
 
@@ -55,4 +53,36 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
     {
         $value = $this->validate->applyFilters( '', [ 'required' => true ] );
         $this->assertEquals( 'required item', $value->getMessage() );
-    }}
+    }
+
+    /**
+     * @test
+     */
+    function get_general_error_message()
+    {
+        $value = $this->validate->applyFilters( '', [] );
+        $this->assertEquals( 'invalid input', $value->getMessage() );
+    }
+
+    /**
+     * @test
+     */
+    function get_message_based_type()
+    {
+        $value = $this->validate->applyFilters( '', ['type'=>'mail'] );
+        $this->assertEquals( 'invalid input', $value->getMessage() );
+    }
+
+    /**
+     * @test
+     */
+    function match_message()
+    {
+        $value = $this->validate->applyFilters( '', ['matches'=>'number'] );
+        $this->assertEquals( 'only numbers (0-9)', $value->getMessage() );
+        $value = $this->validate->applyFilters( '', ['matches'=>'int'] );
+        $this->assertEquals( 'not an integer', $value->getMessage() );
+        $value = $this->validate->applyFilters( '', ['matches'=>'not-valid'] );
+        $this->assertEquals( 'invalid input', $value->getMessage() );
+    }
+}

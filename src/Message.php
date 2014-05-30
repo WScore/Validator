@@ -1,8 +1,6 @@
 <?php
 namespace WScore\Validation;
 
-use WScore\Validation\Locale\String as Locale;
-
 class Message
 {
     /**
@@ -45,14 +43,14 @@ class Message
         /** @var Message $message */
         $message = new static();
         /** @noinspection PhpIncludeInspection */
-        $message->loadMessage( include($dir."validation.messages.php" ) );
+        $message->setMessages( include($dir."validation.messages.php" ) );
         return $message;
     }
 
     /**
      * @param $messages
      */
-    protected function loadMessage( $messages )
+    protected function setMessages( $messages )
     {
         $this->messages = $messages;
     }
@@ -60,23 +58,19 @@ class Message
     /**
      * find messages based on error type.
      * 1. use message if set.
-     * 2. use message for a specific method. 
-     * 3. use message for a method/parameter set. 
-     * 4. use general error message. 
-     * 
-     * @param ValueTO $value
+     * 2. use message for a specific method.
+     * 3. use message for a method/parameter set.
+     * 4. use general error message.
+     *
+     * @param $method
+     * @param $parameter
+     * @return string
      */
-    public function set( $value )
+    public function find( $method, $parameter )
     {
-        if( $value->getMessage() ) {
-            // 1. use message if set.
-            return;
-        }
-        $method = $value->getErrorMethod();
         if( strpos( $method, '::filter_' ) !== false ) {
             $method = substr( $method, strpos( $method, '::filter_' )+9 );
         }
-        $parameter = $value->getParameter();
         if( !isset( $this->messages[ $method ] ) ) {
             // 4. use general error message. 
             $message = $this->messages[ 0 ];
@@ -93,7 +87,7 @@ class Message
             // 4. use general error message. 
             $message = $this->messages[ 0 ];
         }
-        $value->setMessage( $message );
+        return $message;
     }
     // +----------------------------------------------------------------------+
 }
