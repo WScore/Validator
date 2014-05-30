@@ -1,3 +1,3 @@
 <?php
 
-require_once( dirname(__DIR__).'/scripts/require.php' );
+require_once( dirname(__DIR__).'/vendor/autoload.php' );

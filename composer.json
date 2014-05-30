@@ -12,8 +12,8 @@
 
     },
     "autoload": {
-        "psr-0": {
-            "WScore\\Validation": "src/"
+        "psr-4": {
+            "WScore\\Validation\\": "src/"
         }
     }
 
