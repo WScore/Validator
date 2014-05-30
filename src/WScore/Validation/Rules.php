@@ -71,65 +71,68 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     protected $filter = array();
 
     /**
-     * @Inject
      * @var Rules
      */
     protected static $_rules;
 
     /**
-     * @Inject
-     * @var Locale
+     * @var string
      */
-    public $locale = 'en';
+    static $locale = 'en';
 
     // +----------------------------------------------------------------------+
     //  managing object
     // +----------------------------------------------------------------------+
     /**
-     * @param string|null $locale
      */
-    public function __construct( $locale=null )
+    public function __construct()
     {
-        if( $locale ) $this->locale = $locale;
-        $this->loadFilter();
-        $this->loadFilterType();
         static::$_rules = $this;
     }
 
     /**
-     * @param null|string $filename
+     * @param array $filters
      */
-    public function loadFilter( $filename=null )
+    public function setFilter( $filters )
     {
-        if( !$filename ) {
-            $locale = strtolower( locale_get_primary_language( $this->locale ) );
-            $filename = __DIR__ . "/Locale/Filter.{$locale}.php";
-        }
-        /** @noinspection PhpIncludeInspection */
-        $this->baseFilters = include( $filename );
-        $this->filter      = $this->baseFilters;
+        $this->baseFilters = $filters;
+        $this->filter      = $filters;
     }
 
     /**
-     * @param null|string $filename
+     * @param array $types
      */
-    public function loadFilterType( $filename=null )
+    public function setTypes( $types )
     {
-        if( !$filename ) {
-            $locale = strtolower( locale_get_primary_language( $this->locale ) );
-            $filename = __DIR__ . "/Locale/FilterType.{$locale}.php";
-        }
-        /** @noinspection PhpIncludeInspection */
-        $this->filterTypes = include( $filename );
+        $this->filterTypes = $types;
     }
-    
+
+    /**
+     * @param string $locale
+     */
+    public static function locale( $locale=null )
+    {
+        if( !$locale ) $locale = 'en';
+        static::$locale = strtolower( locale_get_primary_language( $locale ) );
+    }
+
     /**
      * @param null|string|Locale $locale
+     * @param null $dir
      * @return static
      */
-    public static function getInstance( $locale=null )
+    public static function getInstance( $locale=null, $dir=null )
     {
-        return new static( $locale );
+        if( !$locale ) $locale = static::$locale;
+        if( !$dir ) $dir = __DIR__ . '/Locale/';
+        $dir .= $locale . '/';
+        /** @var Rules $rules */
+        $rules = new static();
+        /** @noinspection PhpIncludeInspection */
+        $rules->setFilter( include($dir."validation.filters.php" ) );
+        /** @noinspection PhpIncludeInspection */
+        $rules->setTypes( include($dir."validation.types.php" ) );
+        return $rules;
     }
 
     /**
@@ -164,17 +167,6 @@ class Rules implements \ArrayAccess, \IteratorAggregate
         }
         $this->filter = array_merge( $this->baseFilters, $this->filterTypes[ $type ] );
         $this->filter[ 'type' ] = $type;
-    }
-
-    /**
-     * @param string $type
-     * @param mixed $filter
-     * @return $this
-     */
-    public function addFilterType( $type, $filter )
-    {
-        $this->filterTypes[ $type ] = $filter;
-        return $this;
     }
 
     /**
