@@ -41,7 +41,7 @@ class Validate
     public static function getInstance( $locale=null )
     {
         return new static(
-            new Filter(), new ValueTO(), new Message( $locale )
+            new Filter(), new ValueTO(), Message::getInstance( $locale )
         );
     }
 

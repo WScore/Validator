@@ -11,26 +11,48 @@ class Message
     public $messages = array();
 
     /**
-     * @Inject
-     * @var Locale
+     * @var string
      */
-    public $locale = 'en';
+    protected static $locale = 'en';
 
     // +----------------------------------------------------------------------+
-    public function __construct( $locale=null )
+    public function __construct()
     {
-        if( $locale ) $this->locale = $locale;
-        $this->loadMessage();
     }
-    
-    public function loadMessage( $filename=null )
+
+    /**
+     * @param string $locale
+     */
+    public static function locale( $locale=null )
     {
-        if( !$filename ) {
-            $locale = strtolower( locale_get_primary_language( $this->locale ) );
-            $filename = __DIR__ . "/Locale/Lang.{$locale}.php";
-        }
+        if( !$locale ) $locale = 'en';
+        static::$locale = strtolower( locale_get_primary_language( $locale ) );
+    }
+
+    /**
+     * @param null $locale
+     * @param null $dir
+     * @return Message
+     */
+    public static function getInstance( $locale=null, $dir=null )
+    {
+        if( !$locale ) $locale = static::$locale;
+        if( !$dir ) $dir = __DIR__ . '/Locale/';
+        $dir .= $locale . '/';
+
+        /** @var Message $message */
+        $message = new static();
         /** @noinspection PhpIncludeInspection */
-        $this->messages = include( $filename );
+        $message->loadMessage( include($dir."validation.messages.php" ) );
+        return $message;
+    }
+
+    /**
+     * @param $messages
+     */
+    protected function loadMessage( $messages )
+    {
+        $this->messages = $messages;
     }
 
     /**

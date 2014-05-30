@@ -12,27 +12,27 @@ class ValueTO
     /**
      * @var mixed
      */
-    private $value;
+    protected $value;
 
     /**
      * @var string
      */
-    private $type = 'text'; 
+    protected $type = 'text';
 
     /**
      * @var bool|array
      */
-    private $error = false;
+    protected $error = false;
 
     /**
      * @var string
      */
-    private $message;
+    protected $message;
 
     /**
      * @var bool
      */
-    private $break = false;
+    protected $break = false;
 
     /**
      * @param $value
@@ -129,6 +129,9 @@ class ValueTO
      */
     public function getMessage()
     {
+        if( !$this->message ) {
+
+        }
         return $this->message;
     }
 
