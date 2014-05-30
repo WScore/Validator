@@ -1,17 +1,18 @@
 WScore.Validation
 =================
 
-A simple validation and filtration component.
+A simple validation component with many multi-byte support.
 
-Simple to create rules, easy to write logic (i.e. if statements),
-lots of default error messages.
+Easy to use, enjoyable to write code,
+lots of default error messages,
+lots of pre-defined validation types, and
+works great with multi-byte characters (Japanese that is).
 
+Others are:
 
-
-*   filteration:
-    may change the input value. For instace, string:lower filter may change alphabets to lower character.
-*   validation:
-    will only validates the value (no changes to the value).
+*   preset order of rules to apply. essential to handle Japanese characters.
+*   multiple values combined to a single value (ex: bd_y, bd_m, bd_d to bd).
+*   easy to code logic.
 
 
 Simple Usage That Should Be
