@@ -36,11 +36,11 @@ class Message_Test extends \PHPUnit_Framework_TestCase
     {
         // error happened in filter_required method.
         $this->value->setError( 'required' );
-        $this->assertEquals( null, $this->value->getMessage() );
+        $this->assertEquals( null, $this->value->message() );
 
         // now message is set for required method.
         $this->message->set( $this->value );
-        $this->assertEquals( 'required item', $this->value->getMessage() );
+        $this->assertEquals( 'required item', $this->value->message() );
     }
 
     /**
@@ -49,15 +49,15 @@ class Message_Test extends \PHPUnit_Framework_TestCase
     function not_new_message_is_set_if_already_set()
     {
         // no message.
-        $this->assertEquals( null, $this->value->getMessage() );
+        $this->assertEquals( null, $this->value->message() );
 
         // set message, 'tested'
         $this->value->setMessage( 'tested' );
-        $this->assertEquals( 'tested', $this->value->getMessage() );
+        $this->assertEquals( 'tested', $this->value->message() );
 
         // message is the same as before.
         $this->message->set( $this->value );
-        $this->assertEquals( 'tested', $this->value->getMessage() );
+        $this->assertEquals( 'tested', $this->value->message() );
     }
 
     /**
@@ -67,10 +67,10 @@ class Message_Test extends \PHPUnit_Framework_TestCase
     {
         // error happened in filter_required method.
         $this->value->setError( 'a_generic_error' );
-        $this->assertEquals( null, $this->value->getMessage() );
+        $this->assertEquals( null, $this->value->message() );
 
         // now message is set for required method.
         $this->message->set( $this->value );
-        $this->assertEquals( $this->message->messages[0], $this->value->getMessage() );
+        $this->assertEquals( $this->message->messages[0], $this->value->message() );
     }
 }

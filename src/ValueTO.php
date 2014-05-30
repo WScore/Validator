@@ -7,7 +7,7 @@ namespace WScore\Validation;
  *
  * @package WScore\Validation
  */
-class ValueTO
+class ValueTO implements ValueToInterface
 {
     /**
      * @var mixed
@@ -87,11 +87,10 @@ class ValueTO
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
-    public function getError()
-    {
-        return $this->error;
+    public function fails() {
+        return $this->error ? true: false;
     }
 
     /**
@@ -117,7 +116,7 @@ class ValueTO
      */
     public function getParameter()
     {
-        if( isset( $this->error[ 'parameter' ] ) ) {
+        if( $this->error && isset( $this->error[ 'parameter' ] ) ) {
             return $this->error[ 'parameter' ];
         }
         return null;
@@ -140,7 +139,7 @@ class ValueTO
      *
      * @return string
      */
-    public function getMessage()
+    public function message()
     {
         if( !$this->message ) {
             $method = $this->getErrorMethod();

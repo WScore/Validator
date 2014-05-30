@@ -41,7 +41,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( 'WScore\Validation\Validate', get_class( $this->validate ) );
         $this->assertEquals( 'text', $value->getValue() );
         $this->assertEquals( 'text', $value );
-        $this->assertEquals( 'invalid input', $value->getMessage() );
+        $this->assertEquals( 'invalid input', $value->message() );
     }
 
     /**
@@ -50,7 +50,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
     function apply_filter_message()
     {
         $value = $this->validate->applyFilters( 'text', [ 'message' => 'tested' ] );
-        $this->assertEquals( 'tested', $value->getMessage() );        
+        $this->assertEquals( 'tested', $value->message() );
     }
 
     /**
@@ -59,7 +59,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
     function message_is_set_if_required_fails()
     {
         $value = $this->validate->applyFilters( '', [ 'required' => true ] );
-        $this->assertEquals( 'required item', $value->getMessage() );
+        $this->assertEquals( 'required item', $value->message() );
     }
 
     // +----------------------------------------------------------------------+
@@ -95,7 +95,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
         $value = $this->validate->applyFilters( ' text ', $rules( 'text' ) );
         $this->assertEquals( 'WScore\Validation\Validate', get_class( $this->validate ) );
         $this->assertEquals( 'text', $value->getValue() );
-        $this->assertEquals( 'invalid input', $value->getMessage() );
+        $this->assertEquals( 'invalid input', $value->message() );
     }
 
     /**

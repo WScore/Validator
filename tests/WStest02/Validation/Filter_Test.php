@@ -33,7 +33,7 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
     function err_msg_sets_message()
     {
         $value = $this->validate->applyFilters( 'test', [ 'err_msg' => 'err-msg' ] );
-        $this->assertEquals( 'err-msg', $value->getMessage() );
+        $this->assertEquals( 'err-msg', $value->message() );
     }
 
     /**
@@ -99,7 +99,7 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
         $bad = 'bad' . chr( 11111111 );
         $value = $this->validate->applyFilters( $bad, [ 'encoding' => true ] );
         $this->assertEquals( '', $value->getValue() );
-        $this->assertEquals( 'invalid encoding', $value->getMessage() );
+        $this->assertEquals( 'invalid encoding', $value->message() );
         $this->assertTrue( !!$value->getError() );
     }
     // +----------------------------------------------------------------------+

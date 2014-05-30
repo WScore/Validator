@@ -4,16 +4,19 @@ namespace WScore\Validation;
 class Validate
 {
     /**
-     * @Inject
      * @var Filter
      */
     public $filter;
 
     /**
-     * @Inject
      * @var ValueTO
      */
     public $valueTO;
+
+    /**
+     * @var ValueTO
+     */
+    protected $lastValue;
 
     // +----------------------------------------------------------------------+
     /**
@@ -28,12 +31,13 @@ class Validate
 
     /**
      * @param null|string $locale
+     * @param null $dir
      * @return static
      */
-    public static function getInstance( $locale=null )
+    public static function getInstance( $locale=null, $dir=null )
     {
         return new static(
-            new Filter(), new ValueTO( Message::getInstance( $locale ) )
+            new Filter(), new ValueTO( Message::getInstance( $locale, $dir ) )
         );
     }
 
@@ -62,8 +66,8 @@ class Validate
             return $result;
         }
         $valTO = $this->applyFilters( $value, $rules );
-        if( $valTO->getError() ) {
-            $errors = $valTO->getMessage();
+        if( $valTO->fails() ) {
+            $errors = $valTO->message();
         }
         return $valTO->getValue();
     }
@@ -80,18 +84,25 @@ class Validate
     public function is( $value, $rules, $message=null ) 
     {
         if( $message ) $rules['message'] = $message;
-        $this->applyFilters( $value, $rules );
-        if( !$this->valueTO->getError() ) {
-            return $this->valueTO->getValue();
+        $this->lastValue = $this->applyFilters( $value, $rules );
+        if( !$this->lastValue->fails() ) {
+            return $this->lastValue->getValue();
         }
         return false;
+    }
+
+    /**
+     * @return ValueToInterface
+     */
+    public function result() {
+        return $this->lastValue;
     }
 
     /**
      * @return bool
      */
     public function isValid() {
-        if( $this->valueTO->getError() ) {
+        if( $this->valueTO->fails() ) {
             return false;
         }
         return true;
@@ -110,8 +121,8 @@ class Validate
      */
     public function getMessage()
     {
-        if( $this->valueTO->getError() ) {
-            return $this->valueTO->getMessage();
+        if( $this->valueTO->fails() ) {
+            return $this->valueTO->message();
         }
         return null;
     }

@@ -42,11 +42,11 @@ class MessageJa_Test extends \PHPUnit_Framework_TestCase
     {
         // error happened in filter_required method.
         $this->value->setError( 'required' );
-        $this->assertEquals( null, $this->value->getMessage() );
+        $this->assertEquals( null, $this->value->message() );
 
         // now message is set for required method.
         $this->message->set( $this->value );
-        $this->assertEquals( $this->msg[ 'required' ], $this->value->getMessage() );
+        $this->assertEquals( $this->msg[ 'required' ], $this->value->message() );
     }
 
     /**
@@ -56,11 +56,11 @@ class MessageJa_Test extends \PHPUnit_Framework_TestCase
     {
         // error happened in filter_required method.
         $this->value->setError( 'matches', 'number' );
-        $this->assertEquals( null, $this->value->getMessage() );
+        $this->assertEquals( null, $this->value->message() );
 
         // now message is set for required method.
         $this->message->set( $this->value );
-        $this->assertEquals( $this->msg[ 'matches' ][ 'number' ], $this->value->getMessage() );
+        $this->assertEquals( $this->msg[ 'matches' ][ 'number' ], $this->value->message() );
         
     }
 }
