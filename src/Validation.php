@@ -99,7 +99,7 @@ class Validation
      */
     public function set( $name, $value, $key=null )
     {
-        if( !$key ) {
+        if( is_null($key) ) {
             $this->found[ $name ] = $value;
             return $this;
         }
@@ -164,7 +164,7 @@ class Validation
      */
     public function isError( $name, $error, $value=false, $key=null )
     {
-        if( !$key ) {
+        if( is_null($key) ) {
             $this->messages[ $name ] = $error;
         } else {
             if( !isset( $this->messages[$name] ) ) {
@@ -173,7 +173,7 @@ class Validation
             if( !is_array( $this->messages[$name] ) ) {
                 throw new \InvalidArgumentException("not an array: {$name} with key:{$key}");
             }
-            $this->messages[$name][$key] = $value;
+            $this->messages[$name][$key] = $error;
         }
         if( $value !== false ) $this->set( $name, $value, $key );
         $this->err_num ++;

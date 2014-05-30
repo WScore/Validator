@@ -44,6 +44,7 @@ use Traversable;
  * @method static Rules integer( array $filters=array() )
  * @method static Rules float(   array $filters=array() )
  * @method static Rules date(    array $filters=array() )
+ * @method static Rules datetime(array $filters=array() )
  * @method static Rules dateYM(  array $filters=array() )
  * @method static Rules time(    array $filters=array() )
  * @method static Rules timeHi(  array $filters=array() )
