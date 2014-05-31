@@ -62,11 +62,12 @@ class Message
      * 3. use message for a method/parameter set.
      * 4. use general error message.
      *
+     * @param $type
      * @param $method
      * @param $parameter
      * @return string
      */
-    public function find( $method, $parameter )
+    public function find( $type, $method, $parameter )
     {
         if( strpos( $method, '::filter_' ) !== false ) {
             $method = substr( $method, strpos( $method, '::filter_' )+9 );

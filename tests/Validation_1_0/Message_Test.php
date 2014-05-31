@@ -35,7 +35,7 @@ class Message_Test extends \PHPUnit_Framework_TestCase
      */
     function find_generic_message()
     {
-        $message = $this->m->find( 'no-such-method', null );
+        $message = $this->m->find( 'text', 'no-such-method', null );
         $this->assertEquals( $this->msg[0], $message );
     }
 
@@ -44,7 +44,7 @@ class Message_Test extends \PHPUnit_Framework_TestCase
      */
     function find_method_message_of_required()
     {
-        $message = $this->m->find( 'required', null );
+        $message = $this->m->find( 'text', 'required', null );
         $this->assertEquals( $this->msg['required'], $message );
     }
 
@@ -53,7 +53,7 @@ class Message_Test extends \PHPUnit_Framework_TestCase
      */
     function find_method_message_of_required_with_filter()
     {
-        $message = $this->m->find( 'what-ever::filter_required', null );
+        $message = $this->m->find( 'text', 'what-ever::filter_required', null );
         $this->assertEquals( $this->msg['required'], $message );
     }
 
@@ -62,7 +62,7 @@ class Message_Test extends \PHPUnit_Framework_TestCase
      */
     function find_method_and_parameter_message()
     {
-        $message = $this->m->find( 'matches', 'code' );
+        $message = $this->m->find( 'text', 'matches', 'code' );
         $this->assertEquals( $this->msg['matches']['code'], $message );
     }
 
@@ -71,7 +71,7 @@ class Message_Test extends \PHPUnit_Framework_TestCase
      */
     function find_method_and_parameter_but_not_matched_message()
     {
-        $message = $this->m->find( 'matches', 'not-valid' );
+        $message = $this->m->find( 'text', 'matches', 'not-valid' );
         $this->assertEquals( $this->msg[0], $message );
     }
 }

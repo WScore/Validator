@@ -144,9 +144,10 @@ class ValueTO implements ValueToInterface
     public function message()
     {
         if( !$this->message ) {
+            $type = $this->getType();
             $method = $this->getErrorMethod();
             $parameter = $this->getParameter();
-            $this->message = $this->messenger->find( $method, $parameter );
+            $this->message = $this->messenger->find( $type, $method, $parameter );
         }
         return $this->message;
     }
