@@ -81,7 +81,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
     function get_message_based_type()
     {
         $value = $this->validate->applyFilters( '', ['type'=>'mail'] );
-        $this->assertEquals( 'invalid input', $value->message() );
+        $this->assertEquals( 'invalid mail format', $value->message() );
     }
 
     /**
@@ -121,7 +121,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
 
         // message based on type
         $value = $v->applyFilters( '', ['type'=>'mail'] );
-        $this->assertEquals( '入力内容を確認して下さい', $value->message() );
+        $this->assertEquals( 'メールアドレスが間違ってます', $value->message() );
 
         // message based on method/parameter
         $value = $v->applyFilters( '', ['matches'=>'number'] );

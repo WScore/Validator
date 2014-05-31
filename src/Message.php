@@ -57,9 +57,9 @@ class Message
 
     /**
      * find messages based on error type.
-     * 1. use message if set.
+     * 1. use message for a method/parameter set.
      * 2. use message for a specific method.
-     * 3. use message for a method/parameter set.
+     * 3. use message for a type. 
      * 4. use general error message.
      *
      * @param $type
@@ -74,14 +74,17 @@ class Message
         }
         if( isset( $this->messages[ $method ] ) )
         {
-            // 2. use message for a specific method.
+            // 1. use message for a specific method.
             if( !is_array($this->messages[ $method ]) ) {
                 return $this->messages[ $method ];
             }
-            // 3. use message for a method/parameter set.
+            // 2. use message for a method/parameter set.
             if( isset( $this->messages[ $method ][ $parameter ] ) ) {
                 return $this->messages[ $method ][ $parameter ];
             }
+        }
+        if( isset( $this->messages['_type_'][$type] ) ) {
+            return $this->messages['_type_'][$type];
         }
         // 4. use general error message.
         return $this->messages[ 0 ];

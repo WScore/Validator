@@ -74,4 +74,13 @@ class Message_Test extends \PHPUnit_Framework_TestCase
         $message = $this->m->find( 'text', 'matches', 'not-valid' );
         $this->assertEquals( $this->msg[0], $message );
     }
+
+    /**
+     * @test
+     */
+    function find_message_by_mail_type()
+    {
+        $message = $this->m->find( 'mail', 'no-method', 'not-valid' );
+        $this->assertEquals( $this->msg['_type_']['mail'], $message );
+    }
 }

@@ -15,4 +15,16 @@ return array(
         'code'   => 'only alpha-numeric characters',
         'mail'   => 'not a valid mail address',
     ],
+    '_type_' => [
+        'mail'     => 'invalid mail format',
+        'number'   => 'not a number',
+        'integer'  => 'not an integer',
+        'float'    => 'not a float',
+        'date'     => 'invalid date',
+        'datetime' => 'invalid date-time',
+        'dateYM'   => 'invalid year-month',
+        'time'     => 'invalid time',
+        'timeHI'   => 'invalid hour-minute',
+        'tel'      => 'invalid tel number',
+    ],
 );
