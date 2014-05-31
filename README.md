@@ -45,10 +45,11 @@ form input, the source would be ```$_POST``` as in the example.
 use \WScore\Validation\Factory;
 use \WScore\Validation\Rules;
 
-Factory::setLocale('ja');          // use Japanese rules and messages.
-$input = Factory::getValidator();  // get validator.
-$input->source( $_POST );       // validating post input.
+Factory::setLocale('ja');       // use Japanese rules and messages.
+$input = Factory::input();      // get validator.
+// $input->source( $_POST );    // default is to validate post input.
 ```
+
 
 ### Validating an input data
 
@@ -76,12 +77,18 @@ if( $status == '1' ) { // add some message?!
 }
 
 if( $input->fails() ) {
-    $badData = $input->get();
-    $message = $input->message();
+    $onlyGoodData    = $input->getSafe();
+    $containsBadData = $input->get();
+    $message         = $input->message();
 } else {
     $goodData = $input->get();
 }
 ```
+
+When finishing the validation process, retrieve the validated value 
+by ```get``` method. In other words, this method does not return 
+values that are not validated. 
+
 
 ### Validating a single value
 
