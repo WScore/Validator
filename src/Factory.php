@@ -68,13 +68,15 @@ class Factory
     }
 
     /**
+     * @param string $locale
+     * @param string $dir
      * @return ValueTO
      */
-    public static function buildValueTO()
+    public static function buildValueTO( $locale=null, $dir=null )
     {
         /** @var ValueTO $class */
         $class = static::$valueTO;
-        return new $class( static::buildMessage() );
+        return new $class( static::buildMessage( $locale, $dir ) );
     }
 
     /**
@@ -88,32 +90,38 @@ class Factory
     }
 
     /**
+     * @param string $locale
+     * @param string $dir
      * @return Validate
      */
-    public static function buildValidate()
+    public static function buildValidate( $locale=null, $dir=null )
     {
         /** @var Validate $class */
         $class = static::$validate;
-        return new $class( static::buildFilter(), static::buildValueTO() );
+        return new $class( static::buildFilter(), static::buildValueTO( $locale, $dir ) );
     }
 
     /**
+     * @param string $locale
+     * @param string $dir
      * @return Validation
      */
-    public static function buildValidation()
+    public static function buildValidation( $locale=null, $dir=null )
     {
         /** @var Validation $class */
         $class = static::$validation;
-        return new $class( static::buildValidate() );
+        return new $class( static::buildValidate( $locale, $dir ) );
     }
 
     /**
+     * @param string $locale
+     * @param string $dir
      * @return Rules
      */
     public static function buildRules()
     {
         /** @var Rules $class */
         $class = static::$rules;
-        return $class::getInstance( static::getLocale(), static::getDir() );
+        return new $class( static::getLocale(), static::getDir() );
     }
 }

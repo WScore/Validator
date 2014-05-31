@@ -35,18 +35,6 @@ class Validate
         if( isset( $valueTO ) ) $this->valueTO = $valueTO;
     }
 
-    /**
-     * @param null|string $locale
-     * @param null $dir
-     * @return static
-     */
-    public static function getInstance( $locale=null, $dir=null )
-    {
-        return new static(
-            new Filter(), new ValueTO( new Message( $locale, $dir ) )
-        );
-    }
-
     // +----------------------------------------------------------------------+
     //  validation: for a single value.
     // +----------------------------------------------------------------------+

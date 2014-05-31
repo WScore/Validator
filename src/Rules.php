@@ -87,9 +87,20 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     //  managing object
     // +----------------------------------------------------------------------+
     /**
+     * @param null|string $locale
+     * @param null $dir
      */
-    public function __construct()
+    public function __construct( $locale=null, $dir=null )
     {
+        if( !$locale ) $locale = static::$locale;
+        if( !$dir ) {
+            $dir = static::$dir ?: __DIR__ . '/Locale/';
+        }
+        $dir .= $locale . '/';
+        /** @noinspection PhpIncludeInspection */
+        $this->setFilter( include($dir."validation.filters.php" ) );
+        /** @noinspection PhpIncludeInspection */
+        $this->setTypes( include($dir."validation.types.php" ) );
         static::$_rules = $this;
     }
 
@@ -112,10 +123,10 @@ class Rules implements \ArrayAccess, \IteratorAggregate
 
     /**
      * @param string $locale
-     * @internal param string $dir
+     * @param null   $dir
      * @return string
      */
-    public static function locale( $locale=null )
+    public static function locale( $locale=null, $dir=null )
     {
         if( func_num_args() > 1 ) {
             static::$dir = func_get_arg(1); // second one 
@@ -123,27 +134,6 @@ class Rules implements \ArrayAccess, \IteratorAggregate
         if( !$locale ) return static::$locale;
         static::$locale = strtolower( locale_get_primary_language( $locale ) );
         return static::$locale;
-    }
-    
-    /**
-     * @param null|string $locale
-     * @param null $dir
-     * @return static
-     */
-    public static function getInstance( $locale=null, $dir=null )
-    {
-        if( !$locale ) $locale = static::$locale;
-        if( !$dir ) {
-            $dir = static::$dir ?: __DIR__ . '/Locale/';
-        }
-        $dir .= $locale . '/';
-        /** @var Rules $rules */
-        $rules = new static();
-        /** @noinspection PhpIncludeInspection */
-        $rules->setFilter( include($dir."validation.filters.php" ) );
-        /** @noinspection PhpIncludeInspection */
-        $rules->setTypes( include($dir."validation.types.php" ) );
-        return $rules;
     }
 
     /**
@@ -154,7 +144,7 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     public static function __callStatic( $method, $args )
     {
         if( !static::$_rules ) {
-            static::getInstance();
+            new static();
         }
         $rules = static::$_rules->applyType( $method );
         foreach( $args as $arg ) {

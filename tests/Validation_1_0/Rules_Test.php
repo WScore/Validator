@@ -73,7 +73,7 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
      */
     function object__is_equivalent_as_static_text_required()
     {
-        $rules = Rules::getInstance();
+        $rules = new Rules();
         $rules = $rules->applyType('text');
         $this->assertEquals( 'text', $rules['type'] );
         $this->assertEquals( 'text', $rules->getType() );
@@ -102,7 +102,7 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( 'text', $rules->getType() );
         $this->assertEquals( null, $rules['mbConvert'] );
         Rules::locale('ja');
-        Rules::getInstance();
+        new Rules();
         $rules = Rules::text();
         $this->assertEquals( 'text', $rules->getType() );
         $this->assertEquals( 'standard', $rules['mbConvert'] );

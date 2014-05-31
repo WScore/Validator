@@ -46,7 +46,7 @@ class Factory_Test extends \PHPUnit_Framework_TestCase
     
     function test_rules_with_default_locale()
     {
-        $rules = Rules::getInstance();
+        $rules = new Rules();
         $this->assertEquals( 'WScore\Validation\Rules', get_class( $rules ) );
         $this->assertEquals( null, $rules['mbConvert'] );
     }
@@ -54,7 +54,7 @@ class Factory_Test extends \PHPUnit_Framework_TestCase
     function test_rules_with_Japanese_locale()
     {
         Factory::setLocale( 'ja' );
-        $rules = Rules::getInstance();
+        $rules = new Rules();
         $this->assertEquals( 'WScore\Validation\Rules', get_class( $rules ) );
         $this->assertEquals( 'standard', $rules['mbConvert'] );
     }
