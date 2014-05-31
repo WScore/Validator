@@ -45,16 +45,6 @@ class Validation
     }
 
     /**
-     * @param null|string $locale
-     * @param null|string $dir
-     * @return static
-     */
-    public static function getInstance( $locale=null, $dir=null )
-    {
-        return new static( Validate::getInstance( $locale, $dir ) );
-    }
-
-    /**
      * @param array $data
      */
     public function source( $data=array() )

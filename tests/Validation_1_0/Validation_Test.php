@@ -1,6 +1,7 @@
 <?php
 namespace tests\Validation_1_0;
 
+use WScore\Validation\Factory;
 use WScore\Validation\Rules;
 use WScore\Validation\Validation;
 
@@ -19,7 +20,8 @@ class Validation_Test extends \PHPUnit_Framework_TestCase
     }
     
     function make($locale='en') {
-        $this->validate = Validation::getInstance($locale);
+        Factory::setLocale($locale);
+        $this->validate = Factory::buildValidation();
     }
 
     function test0()

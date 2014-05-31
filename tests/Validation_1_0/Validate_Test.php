@@ -1,6 +1,7 @@
 <?php
 namespace tests\Validation_1_0;
 
+use WScore\Validation\Factory;
 use WScore\Validation\Validate;
 
 require_once( dirname( __DIR__ ) . '/autoloader.php' );
@@ -14,7 +15,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
 
     function setup()
     {
-        $this->validate = Validate::getInstance();
+        $this->validate = Factory::buildValidate();
     }
 
     function test0()

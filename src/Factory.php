@@ -99,4 +99,14 @@ class Factory
         $class = static::$validation;
         return new $class( static::buildValidate() );
     }
+
+    /**
+     * @return Rules
+     */
+    public static function buildRules()
+    {
+        /** @var Rules $class */
+        $class = static::$rules;
+        return $class::getInstance( static::getLocale(), static::getDir() );
+    }
 }

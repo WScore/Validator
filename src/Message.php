@@ -8,25 +8,9 @@ class Message
      */
     public $messages = array();
 
-    /**
-     * @var string
-     */
-    protected static $locale = 'en';
-
     // +----------------------------------------------------------------------+
     public function __construct()
     {
-    }
-
-    /**
-     * @param string $locale
-     * @return string
-     */
-    public static function locale( $locale=null )
-    {
-        if( !$locale ) return static::$locale;
-        static::$locale = strtolower( locale_get_primary_language( $locale ) );
-        return static::$locale;
     }
 
     /**
@@ -36,7 +20,7 @@ class Message
      */
     public static function getInstance( $locale=null, $dir=null )
     {
-        if( !$locale ) $locale = static::$locale;
+        if( !$locale ) $locale = 'en';
         if( !$dir ) $dir = __DIR__ . '/Locale/';
         $dir .= $locale . '/';
 

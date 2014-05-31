@@ -1,6 +1,7 @@
 <?php
 namespace tests\Validation_1_0;
 
+use WScore\Validation\Factory;
 use WScore\Validation\Rules;
 
 require_once( dirname( __DIR__ ) . '/autoloader.php' );
@@ -9,7 +10,7 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
 {
     function test0()
     {
-        $rules = Rules::text();
+        $rules = Factory::buildRules();
         $this->assertEquals( 'WScore\Validation\Rules', get_class( $rules ) );
     }
 

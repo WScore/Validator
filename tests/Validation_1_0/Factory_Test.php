@@ -64,4 +64,10 @@ class Factory_Test extends \PHPUnit_Framework_TestCase
         $v = Factory::buildValidation();
         $this->assertEquals( 'WScore\Validation\Validation', get_class( $v ) );
     }
+    
+    function test_rules_builder()
+    {
+        $r = Factory::buildRules();
+        $this->assertEquals( 'WScore\Validation\Rules', get_class( $r ) );
+    }
 }
