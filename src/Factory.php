@@ -133,10 +133,12 @@ class Factory
      * @param string $dir
      * @return Rules
      */
-    public static function buildRules()
+    public static function buildRules( $locale=null, $dir=null )
     {
+        if( !$locale ) $locale = static::getLocale();
+        if( !$dir ) $dir = static::getDir();
         /** @var Rules $class */
         $class = static::$rules;
-        return new $class( static::getLocale(), static::getDir() );
+        return new $class( $locale, $dir );
     }
 }
