@@ -78,6 +78,11 @@ class Rules implements \ArrayAccess, \IteratorAggregate
      */
     protected static $locale = 'en';
 
+    /**
+     * @var string
+     */
+    protected static $dir;
+
     // +----------------------------------------------------------------------+
     //  managing object
     // +----------------------------------------------------------------------+
@@ -107,15 +112,19 @@ class Rules implements \ArrayAccess, \IteratorAggregate
 
     /**
      * @param string $locale
+     * @internal param string $dir
      * @return string
      */
     public static function locale( $locale=null )
     {
+        if( func_num_args() > 1 ) {
+            static::$dir = func_get_arg(1); // second one 
+        }
         if( !$locale ) return static::$locale;
         static::$locale = strtolower( locale_get_primary_language( $locale ) );
         return static::$locale;
     }
-
+    
     /**
      * @param null|string $locale
      * @param null $dir
@@ -124,7 +133,9 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     public static function getInstance( $locale=null, $dir=null )
     {
         if( !$locale ) $locale = static::$locale;
-        if( !$dir ) $dir = __DIR__ . '/Locale/';
+        if( !$dir ) {
+            $dir = static::$dir ?: __DIR__ . '/Locale/';
+        }
         $dir .= $locale . '/';
         /** @var Rules $rules */
         $rules = new static();

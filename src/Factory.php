@@ -20,22 +20,18 @@ class Factory
     static $rules = '\WScore\Validation\Rules';
 
     /**
+     * @param string $locale
      * @param string $dir
      */
-    public static function setDir( $dir )
+    public static function setLocale( $locale, $dir=null )
     {
-        static::$dir = $dir;
-    }
-
-    /**
-     * @param string $locale
-     */
-    public static function setLocale( $locale )
-    {
-        static::$locale = locale_get_primary_language( $locale );
+        static::$locale = strtolower( locale_get_primary_language( $locale ) );
+        /*
+         * set up locale for Rules, which is often called by static. 
+         */
         /** @var Rules $class */
-        $class = static::$message;
-        $class::getInstance( $locale, static::getDir() );
+        $class = static::$rules;
+        $class::locale( $locale, static::getDir() );
     }
     
     /**
@@ -43,10 +39,15 @@ class Factory
      */
     public static function getDir()
     {
-        if( !static::$dir ) {
-            static::$dir = __DIR__ . '/Locale';
-        }
         return static::$dir;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getLocale()
+    {
+        return static::$locale;
     }
 
     /**
