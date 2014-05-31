@@ -9,26 +9,19 @@ class Message
     public $messages = array();
 
     // +----------------------------------------------------------------------+
-    public function __construct()
-    {
-    }
-
     /**
      * @param null $locale
      * @param null $dir
      * @return Message
      */
-    public static function getInstance( $locale=null, $dir=null )
+    public function __construct( $locale=null, $dir=null )
     {
         if( !$locale ) $locale = 'en';
         if( !$dir ) $dir = __DIR__ . '/Locale/';
         $dir .= $locale . '/';
 
-        /** @var Message $message */
-        $message = new static();
         /** @noinspection PhpIncludeInspection */
-        $message->setMessages( include($dir."validation.messages.php" ) );
-        return $message;
+        $this->setMessages( include($dir."validation.messages.php" ) );
     }
 
     /**

@@ -43,7 +43,7 @@ class Validate
     public static function getInstance( $locale=null, $dir=null )
     {
         return new static(
-            new Filter(), new ValueTO( Message::getInstance( $locale, $dir ) )
+            new Filter(), new ValueTO( new Message( $locale, $dir ) )
         );
     }
 

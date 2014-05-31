@@ -21,11 +21,14 @@ class Factory
 
     /**
      * @param string $locale
-     * @param string $dir
+     * @internal param string $dir
      */
-    public static function setLocale( $locale, $dir=null )
+    public static function setLocale( $locale )
     {
         static::$locale = strtolower( locale_get_primary_language( $locale ) );
+        if( func_num_args() > 1 ) {
+            static::$dir = func_get_arg(1);
+        }
         /*
          * set up locale for Rules, which is often called by static. 
          */
@@ -51,13 +54,17 @@ class Factory
     }
 
     /**
+     * @param string $locale
+     * @param string $dir
      * @return Message
      */
-    public static function buildMessage()
+    public static function buildMessage( $locale=null, $dir=null )
     {
+        if( !$locale ) $locale = static::getLocale();
+        if( !$dir ) $dir = static::getDir();
         /** @var Message $class */
         $class = static::$message;
-        return $class::getInstance( static::$locale, static::getDir() );
+        return new $class( $locale, $dir );
     }
 
     /**
