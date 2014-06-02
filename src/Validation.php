@@ -165,17 +165,21 @@ class Validation
     public function result() {
         return $this->validate->result();
     }
-    
+
     /**
      * pushes the $name.
      * returns the found value, or false if validation fails.
      *
      * @param string $name
      * @param array|Rules $rules
+     * @throws \InvalidArgumentException
      * @return mixed
      */
     public function is( $name, $rules )
     {
+        if( !is_string($name) ) {
+            throw new \InvalidArgumentException( "name must be a string" );
+        }
         $found = $this->find( $name, $rules );
         $this->validate->is( $found, $rules );
 

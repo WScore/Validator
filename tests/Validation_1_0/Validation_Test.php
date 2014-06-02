@@ -269,4 +269,17 @@ class Validation_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( array( 'mail1'=>'required item' ), $this->validate->message() );
     }
 
+    /**
+     * @test
+     */
+    function multiple_input()
+    {
+        $input = [ 'a_y1'=>'2014', 'a_m1'=>'05', 'a_d1'=>'01', 'a_y2'=>'2014', 'a_m2'=>'07' ];
+        $this->validate->source($input);
+        $found = $this->validate->is( 'a', Rules::text()->multiple( [
+            'suffix' => 'y1,m1,y2,m2',
+            'format' => '%04d/%02d - %04d/%02d'
+        ] ) );
+        $this->assertEquals( '2014/05 - 2014/07', $found );
+    }
 }

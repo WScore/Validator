@@ -1,7 +1,7 @@
 WScore.Validation
 =================
 
-簡単で多彩なマルチバイトサポートがあるバリデーション・コンポーネント。
+簡単に使えるマルチバイトサポートが豊富なValidationコンポーネント。
 
 簡単に使える、コードを書くのが楽しい、
 沢山のエラーメッセージがデフォルトで設定されている、
@@ -11,7 +11,8 @@ WScore.Validation
 その他の特徴は：
 
 *   適用するルールの順番が設定されている。日本語処理に大事な要素。
-*   複数の値を一つにまとめる(例： bd_y, bd_m, bd_d to bd)。
+*   配列入力もバリデーション可能。
+*   複数の値を一つにまとめる(例： bd_y, bd_m, bd_d → bd)。
 *   ロジックを書きやすい。
 
 
@@ -57,7 +58,23 @@ $input = Factory::input();      // get validator.
 
 バリデーションの ```is``` メソッドは、バリデーションを行った結果の値を返します。
 内容チェックでエラーが有った場合は ```false``` を返します。
-これで返り値を使って簡単にロジックを組むことが出来ます。
+
+スタティッククラス、```Rules``` を使って簡単にルールを構築できます。
+
+```php
+$input( 'name', Rules::text()->required() );
+$input( 'mail', Rules::mail()->required() );
+$found = $input->get(); // [ 'name' => some name... ]
+```
+
+バリデーションが
+終了したら、```get``` メソッドで値を取得します。
+
+
+#### example code
+
+この ```is``` メソッドはバリデーションに失敗した場合は```false```を返すため、
+返り値を使って簡単にロジックを組むことが出来ます。
 
 ```php
 // check if name or nickname is set
@@ -74,8 +91,8 @@ $input->is( 'mail', Rules::mail()->sameWith( 'mail2' )->required() );
 $status = $input->is( 'status', Rules::int()->in( '1', '2', '3' )->required()->message('must be 1-3.') );
 if( $status == '1' ) { // add some message?!
     $input->setValue( 'notice', 'how do you like it?' );
-} elseif( false === $status ) {
-    echo $input->message('status'); // echo 'must be 1-3'
+} elseif( false === $status ) { // maybe get some reasons...
+    echo $input->is('reason', Rules::text()->required() );
 }
 
 if( $input->fails() ) {
@@ -87,8 +104,8 @@ if( $input->fails() ) {
 }
 ```
 
-全ての処理が終了したら、バリデーションされた値は ```get``` メソッドで取得します。
-つまり、バリデートされていない値は帰ってこないことになります。
+注意すべき点は、```get``` メソッドで取得した値にはバリデーションに失敗した
+値も含まれるという点です。
 
 
 ### 値のバリデーション
@@ -124,6 +141,20 @@ if( !$input->is( 'list', Rules::int() ) ) {
  * $errors = array( 'list' => [ 2 => 'not an integer' ] );
  */
 ```
+
+自作の配列入力フィルターを作る場合は、```multiple``` を使います。
+
+```php
+Rules::text()->multiple( [
+    'suffix' => 'y1,m1,y2,m2',
+    'format' => '%04d/%02d - %04d/%02d'
+] );
+```
+
+ここで、```suffix``` は入力の最後のサフィックス部分、
+そして ```format``` が配列を文字列に変換するフォーマット
+（sprintfを利用）になります。.
+
 
 
 ### 複数フィールドの入力
@@ -195,7 +226,7 @@ Rules::text()->custom( $filter );
 4.   タイプで指定されたメッセージ。
 5.   一般的なメッセージ。
 
-#### 例１）```message```フィルターでメッセージを指定します。
+### 例１）```message```フィルターでメッセージを指定します。
 
 メッセージを指定します。
 
@@ -204,7 +235,7 @@ $validate->verify( '', Rules::text()->required()->message('Oops!') );
 echo $validate->result()->message(); // 'Oops!'
 ```
 
-#### 例２）フィルター名とパラメターの定義済みメッセージ
+### 例２）フィルター名とパラメターの定義済みメッセージ
 
 例えば、```matches```というフィルターはパラメータと組み合わせたメッセージが
 指定されています。
@@ -214,7 +245,7 @@ $validate->verify( '', Rules::text()->required()->matches('code') );
 echo $validate->result()->message(); // 'only alpha-numeric characters'
 ```
 
-#### 例３）フィルター名の定義済みメッセージ
+### 例３）フィルター名の定義済みメッセージ
 
 例えば ```required``` や ```sameWith``` は
 フィルター名でメッセージが指定されています。
@@ -224,14 +255,14 @@ $validate->verify( '', Rules::text()->required() );
 echo $validate->result()->message(); // 'required input'
 ```
 
-#### 例４）タイプで指定されたメッセージ
+### 例４）タイプで指定されたメッセージ
 
 ```php
 $validate->verify( '', Rules::date()->required() );
 echo $validate->result()->message(); // 'invalid date'
 ```
 
-#### 例５）一般的なメッセージ
+### 例５）一般的なメッセージ
 
 上記のどれにも該当しない場合は、一般的なメッセージを使います。
 
