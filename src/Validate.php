@@ -48,38 +48,37 @@ class Validate
      */
     public function is( $value, $rules )
     {
-        // --------------
-        // validating for an array input.
-        if( is_array( $value ) ) {
-
-            $result = array();
-            $errors = array();
-            $failed = false;
-            foreach( $value as $key => $val ) {
-                $valTO = $this->applyFilters( $val, $rules );
-                $result[$key] = $valTO->getValue();
-                if( $valTO->fails() ) {
-                    $failed = true;
-                    $errors[$key] = $valTO->message();
-                }
-            }
-            // done validation for an array.
-            // hack the lastValue to have the array of result!
-            $this->lastValue->setValue( $result );
-            if( $failed ) {
-                $this->lastValue->setMessage( $errors );
-                $this->lastValue->setError( 'input=array' );
+        // -------------------------------
+        // validating a single value.
+        if( !is_array( $value ) ) {
+            $valTO = $this->applyFilters( $value, $rules );
+            if( $valTO->fails() ) {
                 return false;
             }
-            return $result;
-        }
-        // --------------
-        // validating a single value.
-        $valTO = $this->applyFilters( $value, $rules );
-        if( !$valTO->fails() ) {
             return $valTO->getValue();
         }
-        return false;
+        // -------------------------------
+        // validating for an array input.
+        $result = array();
+        $errors = array();
+        $failed = false;
+        foreach( $value as $key => $val ) {
+            $valTO = $this->applyFilters( $val, $rules );
+            $result[$key] = $valTO->getValue();
+            if( $valTO->fails() ) {
+                $failed = true;
+                $errors[$key] = $valTO->message();
+            }
+        }
+        // done validation for an array.
+        // hack the lastValue to have the array of result!
+        $this->lastValue->setValue( $result );
+        if( $failed ) {
+            $this->lastValue->setMessage( $errors );
+            $this->lastValue->setError( 'input=array' ); // ouch!
+            return false;
+        }
+        return $result;
     }
 
     /**
