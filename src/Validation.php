@@ -83,23 +83,11 @@ class Validation
     /**
      * @param string $name
      * @param mixed $value
-     * @param string|null $key
-     * @throws \InvalidArgumentException
      * @return Validation
      */
-    public function set( $name, $value, $key=null )
+    public function set( $name, $value )
     {
-        if( is_null($key) ) {
-            $this->found[ $name ] = $value;
-            return $this;
-        }
-        if( !isset( $this->found[$name] ) ) {
-            $this->found[$name] = array();
-        }
-        if( !is_array( $this->found[$name] ) ) {
-            throw new \InvalidArgumentException("not an array: {$name} with key:{$key}");
-        }
-        $this->found[$name][$key] = $value;
+        $this->found[ $name ] = $value;
         return $this;
     }
 
@@ -148,24 +136,12 @@ class Validation
      * @param string $name
      * @param mixed $error
      * @param bool|mixed $value
-     * @param null $key
-     * @throws \InvalidArgumentException
      * @return Validation
      */
-    public function isError( $name, $error, $value=false, $key=null )
+    public function isError( $name, $error, $value=false )
     {
-        if( is_null($key) ) {
-            $this->messages[ $name ] = $error;
-        } else {
-            if( !isset( $this->messages[$name] ) ) {
-                $this->messages[$name] = array();
-            }
-            if( !is_array( $this->messages[$name] ) ) {
-                throw new \InvalidArgumentException("not an array: {$name} with key:{$key}");
-            }
-            $this->messages[$name][$key] = $error;
-        }
-        if( $value !== false ) $this->set( $name, $value, $key );
+        $this->messages[ $name ] = $error;
+        if( $value !== false ) $this->set( $name, $value );
         $this->err_num ++;
         return $this;
     }
@@ -201,22 +177,17 @@ class Validation
     public function is( $name, $rules )
     {
         $found = $this->find( $name, $rules );
-        if( is_array( $found ) ) {
-            $result = array();
-            foreach( $found as $key=>$value ) {
-                $valTO = $this->validate->applyFilters( $value, $rules );
-                if( $valTO->fails() ) {
-                    $this->isError( $name, $valTO->message(), $valTO->getValue(), $key );
-                } else {
-                    $this->set( $name, $valTO->getValue(), $key );
-                    $result[$key] = $valTO->getValue();
-                }
-            }
-            return $result;
-        }
-        $valTO = $this->validate->applyFilters( $found, $rules );
+        $this->validate->is( $found, $rules );
+
+        $valTO = $this->validate->result();
         if( $valTO->fails() ) {
-            $this->isError( $name, $valTO->message(), $valTO->getValue() );
+            $found = $valTO->getValue();
+            $message = $valTO->message();
+            $this->isError( $name, $message, $found );
+            if( is_array( $found ) ) {
+                $this->_findClean( $found, $message );
+                return $found;
+            }
             return false;
         }
         $this->set( $name, $valTO->getValue() );

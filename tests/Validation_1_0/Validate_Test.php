@@ -2,6 +2,7 @@
 namespace tests\Validation_1_0;
 
 use WScore\Validation\Factory;
+use WScore\Validation\Rules;
 use WScore\Validation\Validate;
 
 require_once( dirname( __DIR__ ) . '/autoloader.php' );
@@ -131,5 +132,47 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( '整数を入力してください', $value->message() );
         $value = $v->applyFilters( '', ['matches'=>'not-valid'] );
         $this->assertEquals( '入力内容を確認して下さい', $value->message() );
+    }
+
+    /**
+     * @test
+     */
+    function is_for_array_input_lowers_character()
+    {
+        $input = [ 'abc', 'ABC', 'Abc' ];
+        $found = $this->validate->is( $input, ['string'=>'lower'] );
+        $this->assertFalse( $this->validate->result()->fails() );
+        $this->assertEquals( 'abc', $found[0] );
+        $this->assertEquals( 'abc', $found[1] );
+        $this->assertEquals( 'abc', $found[2] );
+
+        $found = $this->validate->result()->getValue();
+        $this->assertEquals( 'abc', $found[0] );
+        $this->assertEquals( 'abc', $found[1] );
+        $this->assertEquals( 'abc', $found[2] );
+    }
+
+    /**
+     * @test
+     */
+    function is_for_array_input_validates_bad_integer()
+    {
+        $input = [ '1', '2', 'bad', '3' ];
+
+        $returned = $this->validate->is( $input, ['matches'=>'number'] );
+        $this->assertTrue( $this->validate->result()->fails() );
+        $this->assertFalse( $returned );
+
+        $found   = $this->validate->result()->getValue();
+        $this->assertEquals( '1', $found[0] );
+        $this->assertEquals( '2', $found[1] );
+        $this->assertEquals( 'bad', $found[2] );
+        $this->assertEquals( '3', $found[3] );
+
+        $messages = $this->validate->result()->message();
+        $this->assertArrayNotHasKey( 0, $messages );
+        $this->assertArrayNotHasKey( 1, $messages );
+        $this->assertArrayNotHasKey( 3, $messages );
+        $this->assertEquals( 'only numbers (0-9)', $messages[2] );
     }
 }

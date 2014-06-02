@@ -39,7 +39,7 @@ class Validate
     //  validation: for a single value.
     // +----------------------------------------------------------------------+
     /**
-     * validates a single text value.
+     * validates a text value, or an array of text values.
      * returns the filtered value, or false if validation fails.
      *
      * @param string $value
@@ -48,9 +48,36 @@ class Validate
      */
     public function is( $value, $rules )
     {
-        $this->applyFilters( $value, $rules );
-        if( !$this->result()->fails() ) {
-            return $this->result()->getValue();
+        // --------------
+        // validating for an array input.
+        if( is_array( $value ) ) {
+
+            $result = array();
+            $errors = array();
+            $failed = false;
+            foreach( $value as $key => $val ) {
+                $valTO = $this->applyFilters( $val, $rules );
+                $result[$key] = $valTO->getValue();
+                if( $valTO->fails() ) {
+                    $failed = true;
+                    $errors[$key] = $valTO->message();
+                }
+            }
+            // done validation for an array.
+            // hack the lastValue to have the array of result!
+            $this->lastValue->setValue( $result );
+            if( $failed ) {
+                $this->lastValue->setMessage( $errors );
+                $this->lastValue->setError( 'input=array' );
+                return false;
+            }
+            return $result;
+        }
+        // --------------
+        // validating a single value.
+        $valTO = $this->applyFilters( $value, $rules );
+        if( !$valTO->fails() ) {
+            return $valTO->getValue();
         }
         return false;
     }
