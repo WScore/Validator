@@ -157,12 +157,33 @@ echo $validate->verify( 'ABC', Rules::text()->pattern('[a-c]*')->string('lower')
 ### Many predefined error messages
 
 Error message is determined as follows:
-1.   method and parameter specific message, 
-2.   method specific message, then,
-3.   general message
+1.   message to specify by message rule,
+2.   method and parameter specific message,
+3.   method specific message,
+4.   type specific message, then,
+5.   general message
+
+#### example 1) message to specify by message rule
+
+for tailored message, use ```message``` method to set its messag.e
+
+```php
+$validate->verify( '', $rule('text')->required()->message('Oops!') );
+echo $validate->result()->message(); // 'Oops!'
+```
+
+#### example 2) method and parameter specific message
 
 filter, ```matches``` has its message based on the parameter. 
-Other filters such as ```required``` and ```sameWith``` has message. 
+
+```php
+$validate->verify( '', Rules::text()->required()->matches('code') );
+echo $validate->result()->message(); // 'only alpha-numeric characters'
+```
+
+#### method specific message
+
+filters such as ```required``` and ```sameWith``` has message.
 And lastly, there is a generic message for general errors. 
 
 ```php
@@ -170,13 +191,21 @@ $validate->verify( '', $rule('text')->required() );
 echo $validate->result()->message(); // 'required input'
 ```
 
-for tailored message, use ```message``` method to set its messag.e 
+#### type specific message
 
 ```php
-$validate->verify( '', $rule('text')->required()->message('Oops!') );
-echo $validate->result()->message(); // 'Oops!'
+$validate->verify( '', Rules::date()->required() );
+echo $validate->result()->message(); // 'invalid date'
 ```
 
+#### general message
+
+uses generic message, if all of the above rules fails.
+
+```php
+$validate->verify( '123', Rules::text()->pattern('[abc]') );
+echo $validate->result()->message(); // 'invalid input'
+```
 
 Predefined Types
 ----------------

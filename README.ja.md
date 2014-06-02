@@ -158,7 +158,6 @@ echo $validate->verify( 'ABC', Rules::text()->pattern('[a-c]*')->string('lower')
 ### デフォルトのエラーメッセージ
 
 次の手順で、エラーメッセージが決定されます。
-Error message is determined as follows:
 1.   messageルールで指定されたメッセージ。あれば必ず使います。
 2.   フィルター名とパラメターで指定されたメッセージ。
 3.   フィルター名で指定されたメッセージ。
