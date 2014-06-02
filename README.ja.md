@@ -152,7 +152,7 @@ $input->source( [ 'bd_y' => '2001', 'bd_m' => '09', 'bd_d' => '25' ] );
 echo $validation->is( 'bd', Rules::date() ); // 2001-09-25
 ```
 
-自作の配列入力フィルターを作る場合は、```multiple``` を使います。
+自作の複数フィールドの入力フィルターを作る場合は、```multiple``` を使います。
 
 ```php
 Rules::text()->multiple( [
