@@ -164,7 +164,7 @@ echo $validate->verify( 'ABC', Rules::text()->pattern('[a-c]*')->string('lower')
 4.   タイプで指定されたメッセージ。
 5.   一般的なメッセージ。
 
-例１）```message```フィルターでメッセージを指定します。
+#### 例１）```message```フィルターでメッセージを指定します。
 
 メッセージを指定します。
 
@@ -173,7 +173,7 @@ $validate->verify( '', Rules::text()->required()->message('Oops!') );
 echo $validate->result()->message(); // 'Oops!'
 ```
 
-例２）フィルター名とパラメターの定義済みメッセージ
+#### 例２）フィルター名とパラメターの定義済みメッセージ
 
 例えば、```matches```というフィルターはパラメータと組み合わせたメッセージが
 指定されています。
@@ -183,7 +183,7 @@ $validate->verify( '', Rules::text()->required()->matches('code') );
 echo $validate->result()->message(); // 'only alpha-numeric characters'
 ```
 
-例３）フィルター名の定義済みメッセージ
+#### 例３）フィルター名の定義済みメッセージ
 
 例えば ```required``` や ```sameWith``` は
 フィルター名でメッセージが指定されています。
@@ -193,14 +193,14 @@ $validate->verify( '', Rules::text()->required() );
 echo $validate->result()->message(); // 'required input'
 ```
 
-例４）タイプで指定されたメッセージ
+#### 例４）タイプで指定されたメッセージ
 
 ```php
 $validate->verify( '', Rules::date()->required() );
 echo $validate->result()->message(); // 'invalid date'
 ```
 
-例５）一般的なメッセージ
+#### 例５）一般的なメッセージ
 
 上記のどれにも該当しない場合は、一般的なメッセージを使います。
 

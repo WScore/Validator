@@ -181,7 +181,7 @@ $validate->verify( '', Rules::text()->required()->matches('code') );
 echo $validate->result()->message(); // 'only alpha-numeric characters'
 ```
 
-#### method specific message
+#### example 3 ) method specific message
 
 filters such as ```required``` and ```sameWith``` has message.
 And lastly, there is a generic message for general errors. 
@@ -191,14 +191,14 @@ $validate->verify( '', $rule('text')->required() );
 echo $validate->result()->message(); // 'required input'
 ```
 
-#### type specific message
+#### example 4) type specific message
 
 ```php
 $validate->verify( '', Rules::date()->required() );
 echo $validate->result()->message(); // 'invalid date'
 ```
 
-#### general message
+#### example 5) general message
 
 uses generic message, if all of the above rules fails.
 
