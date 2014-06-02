@@ -2,8 +2,8 @@
 namespace tests\Validation_1_0;
 
 use WScore\Validation\Factory;
-use WScore\Validation\Rules;
 use WScore\Validation\Validate;
+use WScore\Validation\ValueTO;
 
 require_once( dirname( __DIR__ ) . '/autoloader.php' );
 
@@ -174,5 +174,47 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
         $this->assertArrayNotHasKey( 1, $messages );
         $this->assertArrayNotHasKey( 3, $messages );
         $this->assertEquals( 'only numbers (0-9)', $messages[2] );
+    }
+
+    /**
+     * @test
+     */
+    function closure_as_filter()
+    {
+        /**
+         * @param ValueTO $v
+         */
+        $filter = function( $v ) {
+            $val = $v->getValue();
+            $val .= ':closure';
+            $v->setValue( $val );
+        };
+        $found = $this->validate->is( 'test', ['my'=>$filter] );
+        $this->assertEquals( 'test:closure', $found );
+    }
+
+    /**
+     * @test
+     */
+    function closure_with_error()
+    {
+        /**
+         * @param ValueTO $v
+         */
+        $filter = function( $v ) {
+            $val = $v->getValue();
+            $val .= ':bad';
+            $v->setValue( $val );
+            $v->setError(__METHOD__);
+            $v->setMessage('Closure with Error');
+        };
+        $found = $this->validate->is( 'test', ['my'=>$filter] );
+        $this->assertEquals( false, $found );
+        /** @var ValueTO $valTo */
+        $valTo = $this->validate->result();
+        $this->assertTrue( $valTo->fails() );
+        $this->assertTrue( $valTo->getBreak() );
+        $this->assertEquals( 'test:bad', $valTo->getValue() );
+        $this->assertEquals( 'Closure with Error', $valTo->message() );
     }
 }

@@ -2,6 +2,7 @@
 namespace tests\Validation_1_0;
 
 use WScore\Validation\Factory;
+use WScore\Validation\ValueTO;
 
 require_once( dirname( __DIR__ ) . '/autoloader.php' );
 
@@ -168,8 +169,13 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
      */
     function closure_works()
     {
+        /**
+         * @param ValueTO $v
+         * @return string
+         */
         $closure = function( $v ) {
-            return $v . ':closured';
+            $val = $v->getValue();
+            $v->setValue( $val . ':closured' );
         };
         $value = $this->validate->applyFilters( 'test', [ 'some' => $closure ] );
         $this->assertEquals( 'test:closured', $value->getValue() );

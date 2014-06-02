@@ -18,8 +18,7 @@ class Filter
      */
     public function applyClosure( $v, $closure ) 
     {
-        $val = $closure( $v->getValue() );
-        $v->setValue( $val );
+        $val = $closure( $v );
     }
     
     // +----------------------------------------------------------------------+
