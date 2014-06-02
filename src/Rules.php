@@ -34,6 +34,7 @@ use Traversable;
  * @method Rules max(       int $max )
  * @method Rules range(     array $range )
  * @method Rules checkdate( bool $check=true )
+ * @method Rules in(        array $choices )
  * @method Rules sameWith(  string $name )
  * @method Rules sameAs(    string $name )
  * @method Rules sameEmpty( bool $check=true )

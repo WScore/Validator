@@ -5,7 +5,7 @@ return array(
     0           => 'invalid input',         // general error message 
     'encoding'  => 'invalid encoding',      // specific messages for method
     'required'  => 'required item',
-    'choice'    => 'invalid choice',
+    'in'        => 'invalid choice',
     'sameAs'    => 'value not the same',
     'sameEmpty' => 'missing value to compare',
     'matches'   => [                        // message for matches and parameter

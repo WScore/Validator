@@ -253,7 +253,7 @@ class Filter
      * @param ValueTO $v
      * @param $p
      */
-    public function filter_choice( $v, $p )
+    public function filter_in( $v, $p )
     {
         if( !is_array( $p ) ) $p = array( $p );
         if( !in_array( $v->getValue(), $p ) ) {

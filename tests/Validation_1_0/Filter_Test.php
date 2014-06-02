@@ -187,7 +187,7 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
     function choice_works()
     {
         $choice = array( '1', '3' );
-        $value = $this->validate->is( '1', array( 'choice' => $choice ) );
+        $value = $this->validate->is( '1', array( 'in' => $choice ) );
         $this->assertEquals( '1', $value );
         $this->assertEquals( false, $this->validate->result()->fails() );
     }
@@ -198,7 +198,7 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
     function choice_fails()
     {
         $choice = array( '1', '3' );
-        $value = $this->validate->is( '2', array( 'choice' => $choice ) );
+        $value = $this->validate->is( '2', array( 'in' => $choice ) );
         $this->assertEquals( false, $value );
         $this->assertEquals( true, $this->validate->result()->fails() );
         $this->assertEquals( 'invalid choice', $this->validate->result()->message() );
