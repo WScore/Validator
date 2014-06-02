@@ -1,27 +1,28 @@
 WScore.Validation
 =================
 
-A simple validation component with many multi-byte support.
+簡単で多彩なマルチバイトサポートがあるバリデーション・コンポーネント。
 
-Easy to use, enjoyable to write code,
-lots of default error messages,
-lots of pre-defined validation types, and
-works great with multi-byte characters (Japanese that is).
+簡単に使える、コードを書くのが楽しい、
+沢山のエラーメッセージがデフォルトで設定されている、
+沢山のバリデーションタイプがデフォルトで存在する、
+そしてマルチバイトキャラクター（日本語のこと）を扱いやすい。
 
-Others are:
+その他の特徴は：
 
-*   preset order of rules to apply. essential to handle Japanese characters.
-*   multiple values combined to a single value (ex: bd_y, bd_m, bd_d to bd).
-*   easy to code logic.
+*   適用するルールの順番が設定されている。日本語処理に大事な要素。
+*   複数の値を一つにまとめる(例： bd_y, bd_m, bd_d to bd)。
+*   ロジックを書きやすい。
 
 
-### License
+### ライセンス
 
 MIT License
 
-### Installation
+### インストール
 
-use composer. only dev-master is available...
+コンポーザーを使ってください。
+まだ「dev-master」だけしかありませんが…
 
 ```json
 "require": {
@@ -30,16 +31,17 @@ use composer. only dev-master is available...
 ```
 
 
-Simple Usage
-------------
+簡単な使い方
+----------
 
-This package **almost** works like this.
+コンポーネントの使い方は、**大体**、こんな感じです。
 
-### Factory Validation object
+### Factoryクラス（Validationオブジェクトの生成）
 
-use ```Factory``` to construct validation object (not ready yet). 
-set the data to validate using ```source``` method. For verifying 
-form input, the source would be ```$_POST``` as in the example. 
+コンポーネント内の ```Factory``` クラスを使ってバリデーション用オブジェクトを
+生成してください。
+バリデーションする入力（配列）は ```source``` メソッドで設定します。フォーム
+からの入力を確認するなら、例にあるように ```$_POST``` を使います。
 
 ```php
 use \WScore\Validation\Factory;
@@ -51,11 +53,11 @@ $input = Factory::input();      // get validator.
 ```
 
 
-### Validating an input data
+### 入力データのバリデーション
 
-```is``` method validates and returns the found value, or returns 
-false if fails to validate. This makes it easy to write a simple 
-logic based the returned value. 
+バリデーションの ```is``` メソッドは、バリデーションを行った結果の値を返します。
+内容チェックでエラーが有った場合は ```false``` を返します。
+これで返り値を使って簡単にロジックを組むことが出来ます。
 
 ```php
 // check if name or nickname is set
@@ -85,14 +87,13 @@ if( $input->fails() ) {
 }
 ```
 
-When finishing the validation process, retrieve the validated value 
-by ```get``` method. In other words, this method does not return 
-values that are not validated. 
+全ての処理が終了したら、バリデーションされた値は ```get``` メソッドで取得します。
+つまり、バリデートされていない値は帰ってこないことになります。
 
 
-### Validating a single value
+### 値のバリデーション
 
-use ```verify``` method to validate a single value. 
+ひとつの値をバリデーションするには、```verify``` メソッドを使います。
 
 ```php
 $name  = $input->verify( 'WScore', Rules::text()->string('lower') ); // returns 'wscore'
@@ -102,12 +103,12 @@ if( false === $input->verify( 'Bad', Rules::int() ) { // returns false
 ```
 
 
-Advanced Features
------------------
+その他の高度な機能
+--------------
 
-### Validating Array Input
+### 配列のバリデーション
 
-validation on array is easy. so is the error message. 
+入力が配列の場合でも対応できます。エラーメッセージも配列になります。
 
 ```php
 $input->source( array( 'list' => [ '1', '2', 'bad', '4' ] ) );
@@ -125,19 +126,19 @@ if( !$input->is( 'list', Rules::int() ) ) {
 ```
 
 
-### Multiple inputs
+### 複数フィールドの入力
 
-to treat separate input fields as one input, such as date. 
+例えば日付のように、複数に分割された入力を一つのように扱えます。
 
 ```php
 $input->source( [ 'bd_y' => '2001', 'bd_m' => '09', 'bd_d' => '25' ] );
 echo $validation->is( 'bd', Rules::date() ); // 2001-09-25
 ```
 
-### SameWith to compare values
+### 入力を比較する（SameWith）
 
-for password or email validation with two input fields 
-to compare each other. 
+パスワードやメールアドレスを入力する際に、
+別項目として入力された値と比較することがあります。
 
 ```php
 $input->source([ 'text1' => '123ABC', 'text2' => '123abc' ] );
@@ -145,37 +146,70 @@ echo $validation->is( 'text1', Rules::text()->string('lower')->sameWith('text2')
 ```
 
 
-### Order of filter
+### フィルターの順番
 
-some filter must be applied in certain order... 
+チェックを行う前に、フィルターする必要がありますよね…
 
 ```php
 echo $validate->verify( 'ABC', Rules::text()->pattern('[a-c]*')->string('lower'); // 'abc'
 ## should lower the string first, then check for pattern...
 ```
 
-### Many predefined error messages
+### デフォルトのエラーメッセージ
 
+次の手順で、エラーメッセージが決定されます。
 Error message is determined as follows:
-1.   method and parameter specific message, 
-2.   method specific message, then,
-3.   general message
+1.   messageルールで指定されたメッセージ。あれば必ず使います。
+2.   フィルター名とパラメターで指定されたメッセージ。
+3.   フィルター名で指定されたメッセージ。
+4.   タイプで指定されたメッセージ。
+5.   一般的なメッセージ。
 
-filter, ```matches``` has its message based on the parameter. 
-Other filters such as ```required``` and ```sameWith``` has message. 
-And lastly, there is a generic message for general errors. 
+例１）```message```フィルターでメッセージを指定します。
+
+メッセージを指定します。
 
 ```php
-$validate->verify( '', $rule('text')->required() );
+$validate->verify( '', Rules::text()->required()->message('Oops!') );
+echo $validate->result()->message(); // 'Oops!'
+```
+
+例２）フィルター名とパラメターの定義済みメッセージ
+
+例えば、```matches```というフィルターはパラメータと組み合わせたメッセージが
+指定されています。
+
+```php
+$validate->verify( '', Rules::text()->required()->matches('code') );
+echo $validate->result()->message(); // 'only alpha-numeric characters'
+```
+
+例３）フィルター名の定義済みメッセージ
+
+例えば ```required``` や ```sameWith``` は
+フィルター名でメッセージが指定されています。
+
+```php
+$validate->verify( '', Rules::text()->required() );
 echo $validate->result()->message(); // 'required input'
 ```
 
-for tailored message, use ```message``` method to set its messag.e 
+例４）タイプで指定されたメッセージ
 
 ```php
-$validate->verify( '', $rule('text')->required()->message('Oops!') );
-echo $validate->result()->message(); // 'Oops!'
+$validate->verify( '', Rules::date()->required() );
+echo $validate->result()->message(); // 'invalid date'
 ```
+
+例５）一般的なメッセージ
+
+上記のどれにも該当しない場合は、一般的なメッセージを使います。
+
+```php
+$validate->verify( '123', Rules::text()->pattern('[abc]') );
+echo $validate->result()->message(); // 'invalid input'
+```
+
 
 
 Predefined Types
