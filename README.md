@@ -157,6 +157,7 @@ echo $validate->verify( 'ABC', Rules::text()->pattern('[a-c]*')->string('lower')
 ### Many predefined error messages
 
 Error message is determined as follows:
+
 1.   message to specify by message rule,
 2.   method and parameter specific message,
 3.   method specific message,
