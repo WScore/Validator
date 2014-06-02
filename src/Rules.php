@@ -19,6 +19,9 @@ use Traversable;
  * @method Rules trim( bool $trim=true )
  * @method Rules sanitize(  string $type )
  * @method Rules string(    string $type )
+ * @method Rules custom(    \Closure $filter)
+ * @method Rules custom2(   \Closure $filter)
+ * @method Rules custom3(   \Closure $filter)
  * @method Rules default(   string $value )
  * @method Rules required(  bool $required=true )
  * @method Rules loopBreak( bool $break=true )
@@ -139,7 +142,7 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     /**
      * @param $method
      * @param $args
-     * @return \WScore\Validation\Rules
+     * @return Rules
      */
     public static function __callStatic( $method, $args )
     {
@@ -209,6 +212,21 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     // +----------------------------------------------------------------------+
     //  getting information about Rule
     // +----------------------------------------------------------------------+
+    /**
+     * adds the custom filter to the rules.
+     * the name, 'custom', 'custom2', and 'custom3', are reserved
+     * for the filters (before the validation).
+     *
+     * @param string   $name
+     * @param \Closure $filter
+     * @return Rules
+     */
+    public function addCustom( $name, $filter )
+    {
+        $this->filter[$name] = $filter;
+        return $this;
+    }
+
     /**
      * @return null|string
      */

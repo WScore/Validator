@@ -17,6 +17,9 @@ return array(
     'trim'        => true,       // trims value.
     'sanitize'    => false,      // done, kind of
     'string'      => false,      // converts value to upper/lower/etc.
+    'custom'      => false,      // custom filter #1
+    'custom2'     => false,      // custom filter #2
+    'custom3'     => false,      // custom filter #3
     'default'     => '',         // sets default if value is empty.
     // validators (only checks the value).
     'required'    => false,      // fails if value is empty.

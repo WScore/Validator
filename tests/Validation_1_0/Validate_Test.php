@@ -2,6 +2,7 @@
 namespace tests\Validation_1_0;
 
 use WScore\Validation\Factory;
+use WScore\Validation\Rules;
 use WScore\Validation\Validate;
 use WScore\Validation\ValueTO;
 
@@ -189,7 +190,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
             $val .= ':closure';
             $v->setValue( $val );
         };
-        $found = $this->validate->is( 'test', ['my'=>$filter] );
+        $found = $this->validate->is( 'test', Rules::text()->addCustom( 'my', $filter ) );
         $this->assertEquals( 'test:closure', $found );
     }
 
@@ -208,7 +209,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
             $v->setError(__METHOD__);
             $v->setMessage('Closure with Error');
         };
-        $found = $this->validate->is( 'test', ['my'=>$filter] );
+        $found = $this->validate->is( 'test', Rules::text()->custom($filter) );
         $this->assertEquals( false, $found );
         /** @var ValueTO $valTo */
         $valTo = $this->validate->result();

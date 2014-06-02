@@ -155,7 +155,37 @@ echo $validate->verify( 'ABC', Rules::text()->pattern('[a-c]*')->string('lower')
 ## should lower the string first, then check for pattern...
 ```
 
-### デフォルトのエラーメッセージ
+
+### 自作バリデーションフィルター
+
+自作のフィルターを利用するには ```closure``` 関数を利用します。
+
+```php
+/**
+ * @param ValueTO $v
+ */
+$filter = function( $v ) {
+    $val = $v->getValue();
+    $val .= ':customized!';
+    $v->setValue( $val );
+    $v->setError(__METHOD__);
+    $v->setMessage('Closure with Error');
+};
+Rules::text()->custom( $filter );
+```
+
+自作フィルターにはクロージャー以外のパラメターは渡せません
+（クロージャー自体がパラメタです）。引数はひとつで、ValueTO
+オブジェクトになります。これを利用して、値・エラー・メッセージ
+などを操作してください。
+
+エラーを設定したら（値は文字なら何でもいいのですが、
+```__METHOD__``` が適当かもしれません）。これでフィルターのループ
+が途切れ、これ以降のバリデーションは行いません。
+
+
+デフォルトのエラーメッセージ
+----------------------
 
 次の手順で、エラーメッセージが決定されます。
 

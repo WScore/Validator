@@ -154,7 +154,37 @@ echo $validate->verify( 'ABC', Rules::text()->pattern('[a-c]*')->string('lower')
 ## should lower the string first, then check for pattern...
 ```
 
-### Many predefined error messages
+### Custom Validation
+
+Use a closure as custom validation filter.
+
+```php
+/**
+ * @param ValueTO $v
+ */
+$filter = function( $v ) {
+    $val = $v->getValue();
+    $val .= ':customized!';
+    $v->setValue( $val );
+    $v->setError(__METHOD__);
+    $v->setMessage('Closure with Error');
+};
+Rules::text()->addCustom( 'myFilter', $filter );
+Rules::text()->custom( $filter );
+```
+
+You cannot pass parameter (the closure is the parameter).
+argument is the ValueTO object which can be used to handle
+error and messages.
+
+setting error with, well, actually, any string,
+but ```__METHOD__``` maybe helpful. this will break the
+filter loop, i.e. no filter will be evaluated.
+
+
+
+Predefined Messages
+-------------------
 
 Error message is determined as follows:
 
