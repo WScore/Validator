@@ -22,7 +22,7 @@ MIT License
 
 ### Installation
 
-use composer. only dev-master is available...
+Use composer. only dev-master is available...
 
 ```json
 "require": {
@@ -38,8 +38,8 @@ This package **almost** works like this.
 
 ### factory object
 
-use ```Factory``` to construct validation object.
-set the data to validate using ```source``` method. For verifying 
+Use ```Factory``` to construct validation object.
+Set the data to validate using ```source``` method. For verifying
 form input, the source would be ```$_POST``` as in the example. 
 
 ```php
@@ -60,18 +60,18 @@ false if fails to validate.
 Use static class, ```Rules```, to compose a rules (ala Facade).
 
 ```php
-$input( 'name', Rules::text()->required() );
-$input( 'mail', Rules::mail()->required() );
+$input->is( 'name', Rules::text()->required() );
+$input->is( 'mail', Rules::mail()->required() );
 $found = $input->get(); // [ 'name' => some name... ]
 ```
 
-When the validation process is completed, retrieve the validated
-value by ```get``` method.
+When the validation process is completed, retrieve the
+ values by ```get``` method.
 
 #### example code
 
-Because ```is``` returns false when validation fails, it is easy to
-write a logic based the returned value.
+Because ```is``` returns ```false``` when validation fails,
+ it is easy to write a logic based the returned value.
 
 
 ```php
@@ -102,12 +102,14 @@ if( $input->fails() ) {
 }
 ```
 
-Please note that ```get``` method may return values that are not validated.
+Please note that ```get``` method may return values that
+are __not__ validated. To get __only__ the validated values,
+use ```getSafe``` method.
 
 
-### Validating a single value
+### validating a single value
 
-use ```verify``` method to validate a single value. 
+Use ```verify``` method to validate a single value.
 
 ```php
 $name  = $input->verify( 'WScore', Rules::text()->string('lower') ); // returns 'wscore'
@@ -122,7 +124,8 @@ Advanced Features
 
 ### validating array as input
 
-validation on array is easy. so is the error message. 
+Validating an array of data is easy. When the validation fails,
+ it returns the error message as array.
 
 ```php
 $input->source( array( 'list' => [ '1', '2', 'bad', '4' ] ) );
@@ -171,6 +174,9 @@ to compare each other.
 $input->source([ 'text1' => '123ABC', 'text2' => '123abc' ] );
 echo $validation->is( 'text1', Rules::text()->string('lower')->sameWith('text2') ); // 123abc
 ```
+
+Please note that the actual input strings are different.
+They become identical after lowering the strings.
 
 
 ### order of filter
