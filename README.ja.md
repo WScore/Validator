@@ -1,5 +1,5 @@
-WScore.Validation
-=================
+Validation
+==========
 
 簡単に使えるマルチバイトサポートが豊富なValidationコンポーネント。
 

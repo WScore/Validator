@@ -1,19 +1,16 @@
-WScore.Validation
-=================
+Validation
+==========
 
-A simple validation component with many multi-byte support.
+A simple validation component with many multi-byte (i.e. Japanese language) support.
 
-Easy to use, enjoyable to write code,
-lots of default error messages,
-lots of pre-defined validation types, and
-works great with multi-byte characters (Japanese that is).
+Features includes, such as:
 
-Others are:
-
-*   preset order of rules to apply. essential to handle Japanese characters.
-*   possigle to validate an array as input.
+*   validate an array as input.
 *   multiple values combined to a single value (ex: bd_y, bd_m, bd_d to bd).
+*   preset order of rules to apply. essential to handle Japanese characters.
 *   easy to code logic.
+
+Designed to take full advantage of code completion of modern IDE (i.e. PhpStorm).
 
 
 ### License
