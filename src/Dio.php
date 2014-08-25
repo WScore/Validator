@@ -55,6 +55,25 @@ class Dio
         $this->source = $data;
     }
 
+    /**
+     * @param string|int $idx
+     * @param bool       $useUnIndexed
+     * @return $this
+     */
+    public function onIndex( $idx, $useUnIndexed=false )
+    {
+        $input = array();
+        foreach( $this->source as $key => $data ) {
+            if( !is_array($data) && $useUnIndexed ) {
+                $input[$key] = $data;
+            } elseif( isset($data[$idx]) ) {
+                $input[$key] = $data[$idx];
+            }
+        }
+        $this->source = $input;
+        return $this;
+    }
+
     // +----------------------------------------------------------------------+
     //  getting found values
     // +----------------------------------------------------------------------+

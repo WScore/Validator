@@ -3,6 +3,13 @@ namespace WScore\Validation;
 
 class Validation
 {
+    static $dio = null;
+
+    public static function useInstance( $obj )
+    {
+        static::$dio = $obj;
+    }
+
     /**
      * @param string $locale
      * @param string|null $dir
@@ -18,38 +25,8 @@ class Validation
      */
     public static function on( $source )
     {
-        $v = Factory::buildValidation();
+        $v = static::$dio ?: Factory::buildValidation();
         $v->source( $source );
         return $v;
-    }
-
-    /**
-     * @param array  $source
-     * @param string $idx
-     * @param bool   $useUnIndexed
-     * @return Dio
-     */
-    public static function onIndex( $source, $idx, $useUnIndexed=false )
-    {
-        $input = array();
-        foreach( $source as $key => $data ) {
-            if( !is_array($data) && $useUnIndexed ) {
-                $input[$key] = $data;
-            } elseif( isset($data[$idx]) ) {
-                $input[$key] = $data[$idx];
-            }
-        }
-        return static::on($input);
-    }
-
-    /**
-     * @param string $type
-     * @return Rules
-     */
-    public static function rule( $type='text' )
-    {
-        $rule = Factory::buildRules();
-        $rule->applyType( $type );
-        return $rule;
     }
 }
