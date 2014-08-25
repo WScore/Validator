@@ -1,14 +1,14 @@
 <?php
 namespace WStest02\Validation;
 
-use WScore\Validation\Validate;
+use WScore\Validation\Verify;
 use WScore\Validation\Rules;
 
 require_once( dirname( dirname( __DIR__ ) ) . '/autoloader.php' );
 
 class Validate_Test extends \PHPUnit_Framework_TestCase
 {
-    /** @var \WScore\Validation\Validate */
+    /** @var \WScore\Validation\Verify */
     var $validate;
 
     /** @var  Rules */
@@ -16,7 +16,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->validate = Validate::getInstance();
+        $this->validate = Verify::getInstance();
         $this->rules    = new Rules();
     }
 

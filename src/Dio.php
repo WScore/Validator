@@ -31,14 +31,14 @@ class Dio
     protected $err_num = 0;
 
     /**
-     * @var Validate
+     * @var Verify
      */
     public $validate = null;
 
     // +----------------------------------------------------------------------+
     /**
      * @Inject
-     * @param \WScore\Validation\Validate   $validate
+     * @param \WScore\Validation\Verify   $validate
      */
     public function __construct( $validate )
     {

@@ -9,7 +9,7 @@ require_once( dirname( __DIR__ ) . '/autoloader.php' );
 class Filter_Test extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \WScore\Validation\Validate
+     * @var \WScore\Validation\Verify
      */
     var $validate;
 
@@ -24,7 +24,7 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
      */
     function basic_class_type()
     {
-        $this->assertEquals( 'WScore\Validation\Validate', get_class( $this->validate ) );
+        $this->assertEquals( 'WScore\Validation\Verify', get_class( $this->validate ) );
         $value = $this->validate->applyFilters( 'test' );
         $this->assertEquals( 'WScore\Validation\ValueTO', get_class( $value ) );
         $this->assertEquals( 'test', (string) $value );

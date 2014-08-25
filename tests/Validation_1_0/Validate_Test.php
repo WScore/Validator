@@ -3,7 +3,7 @@ namespace tests\Validation_1_0;
 
 use WScore\Validation\Factory;
 use WScore\Validation\Rules;
-use WScore\Validation\Validate;
+use WScore\Validation\Verify;
 use WScore\Validation\ValueTO;
 
 require_once( dirname( __DIR__ ) . '/autoloader.php' );
@@ -11,7 +11,7 @@ require_once( dirname( __DIR__ ) . '/autoloader.php' );
 class Validate_Test extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Validate
+     * @var Verify
      */
     public $validate;
 
@@ -22,7 +22,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
 
     function test0()
     {
-        $this->assertEquals( 'WScore\Validation\Validate', get_class( $this->validate ) );
+        $this->assertEquals( 'WScore\Validation\Verify', get_class( $this->validate ) );
     }
 
     // +----------------------------------------------------------------------+
@@ -34,7 +34,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
     function apply_filter_trim()
     {
         $value = $this->validate->applyFilters( ' text ', [ 'trim' => true ] );
-        $this->assertEquals( 'WScore\Validation\Validate', get_class( $this->validate ) );
+        $this->assertEquals( 'WScore\Validation\Verify', get_class( $this->validate ) );
         $this->assertEquals( false, $value->fails() );
         $this->assertEquals( 'text', $value->getValue() );
         $this->assertEquals( 'text', $value );
@@ -108,7 +108,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
         $v = Factory::buildValidate('ja');
 
         $value = $v->applyFilters( ' text ', [ 'trim' => true ] );
-        $this->assertEquals( 'WScore\Validation\Validate', get_class( $v ) );
+        $this->assertEquals( 'WScore\Validation\Verify', get_class( $v ) );
 
         $this->assertEquals( 'text', $value->getValue() );
         $this->assertEquals( 'text', $value );

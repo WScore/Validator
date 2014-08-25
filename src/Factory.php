@@ -9,7 +9,7 @@ class Factory
 
     static $message = '\WScore\Validation\Message';
 
-    static $validate = '\WScore\Validation\Validate';
+    static $validate = '\WScore\Validation\Verify';
 
     static $validation = '\WScore\Validation\Dio';
 
@@ -107,11 +107,11 @@ class Factory
     /**
      * @param string $locale
      * @param string $dir
-     * @return Validate
+     * @return Verify
      */
     public static function buildValidate( $locale=null, $dir=null )
     {
-        /** @var Validate $class */
+        /** @var Verify $class */
         $class = static::$validate;
         return new $class( static::buildFilter(), static::buildValueTO( $locale, $dir ) );
     }
