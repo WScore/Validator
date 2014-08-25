@@ -150,7 +150,8 @@ class Rules implements \ArrayAccess, \IteratorAggregate
         if( !static::$_rules ) {
             new static();
         }
-        $rules = static::$_rules->applyType( $method );
+        $rules = clone( static::$_rules );
+        $rules = $rules->applyType( $method );
         foreach( $args as $arg ) {
             $rules->apply( $arg );
         }
