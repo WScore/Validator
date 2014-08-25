@@ -44,21 +44,6 @@ class Factory
     }
 
     /**
-     * @param null|array $data
-     * @return Dio
-     */
-    public static function input( $data=null )
-    {
-        $input = static::buildDio();
-        if( $data && is_array($data) ) {
-            $input->source( $data );
-        } else {
-            $input->source( $_POST );
-        }
-        return $input;
-    }
-    
-    /**
      * @param string $locale
      * @param string $dir
      * @return Utils\Message
