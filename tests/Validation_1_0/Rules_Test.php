@@ -3,6 +3,7 @@ namespace tests\Validation_1_0;
 
 use WScore\Validation\Factory;
 use WScore\Validation\Rules;
+use WScore\Validation\Validation;
 
 require_once( dirname( __DIR__ ) . '/autoloader.php' );
 
@@ -106,5 +107,16 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
         $rules = Rules::text();
         $this->assertEquals( 'text', $rules->getType() );
         $this->assertEquals( 'standard', $rules['mbConvert'] );
+    }
+
+    /**
+     * @test
+     */
+    function test2()
+    {
+        $rule0 = Validation::rule();
+        $rule1 = $rule0::text();
+        $this->assertEquals( $rule0, $rule1 );
+        $this->assertNotSame( $rule0, $rule1 );
     }
 }

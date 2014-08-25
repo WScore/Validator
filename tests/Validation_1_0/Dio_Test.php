@@ -7,7 +7,7 @@ use WScore\Validation\Dio;
 
 require_once( dirname( __DIR__ ) . '/autoloader.php' );
 
-class Validation_Test extends \PHPUnit_Framework_TestCase
+class Dio_Test extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var Dio
