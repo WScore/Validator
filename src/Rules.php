@@ -150,7 +150,8 @@ class Rules implements \ArrayAccess, \IteratorAggregate
         if( !static::$_rules ) {
             new static();
         }
-        $rules = static::$_rules->applyType( $method );
+        $rules = clone( static::$_rules );
+        $rules = $rules->applyType( $method );
         foreach( $args as $arg ) {
             $rules->apply( $arg );
         }
@@ -184,7 +185,7 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     public function apply( $filters )
     {
         if( is_string( $filters ) ) {
-            $filters = Utils::convertFilter( $filters );
+            $filters = Utils\Helper::convertFilter( $filters );
         }
         if( !is_array( $filters ) ) {
             throw new \InvalidArgumentException( "filters must be an array or a text string. " );

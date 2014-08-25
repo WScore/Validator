@@ -1,18 +1,18 @@
 <?php
 namespace WStest02\Validation;
 
-use WScore\Validation\Validate;
+use WScore\Validation\Verify;
 
 require_once( dirname( dirname( __DIR__ ) ) . '/autoloader.php' );
 
 class Filter_Test extends \PHPUnit_Framework_TestCase
 {
-    /** @var \WScore\Validation\Validate */
+    /** @var \WScore\Validation\Verify */
     var $validate;
 
     public function setUp()
     {
-        $this->validate = Validate::getInstance();
+        $this->validate = Verify::getInstance();
     }
 
     // +----------------------------------------------------------------------+

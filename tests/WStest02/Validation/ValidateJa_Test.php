@@ -1,14 +1,14 @@
 <?php
 namespace WStest02\Validation;
 
-use WScore\Validation\Validate;
+use WScore\Validation\Verify;
 use WScore\Validation\Rules;
 
 require_once( dirname( dirname( __DIR__ ) ) . '/autoloader.php' );
 
 class ValidateJa_Test extends \PHPUnit_Framework_TestCase
 {
-    /** @var \WScore\Validation\Validate */
+    /** @var \WScore\Validation\Verify */
     var $validate;
 
     /** @var  Rules */
@@ -21,7 +21,7 @@ class ValidateJa_Test extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->validate = Validate::getInstance( 'ja' );
+        $this->validate = Verify::getInstance( 'ja' );
         $this->rules    = new Rules();
         $this->msg     = include( __DIR__ . '/../../../src/WScore/Validation/Locale/Lang.ja.php' );
     }

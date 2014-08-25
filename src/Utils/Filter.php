@@ -1,5 +1,5 @@
 <?php
-namespace WScore\Validation;
+namespace WScore\Validation\Utils;
 
 class Filter
 {
@@ -18,7 +18,7 @@ class Filter
      */
     public function applyClosure( $v, $closure ) 
     {
-        $val = $closure( $v );
+        $closure( $v );
     }
     
     // +----------------------------------------------------------------------+
@@ -93,7 +93,7 @@ class Filter
      */
     public function filter_sanitize( $v, $p ) 
     {
-        $option = Utils::arrGet( $this->sanitizes, $p, $p );
+        $option = Helper::arrGet( $this->sanitizes, $p, $p );
         $v->setValue( filter_var( $v->getValue(), $option ) );
     }
 
@@ -124,7 +124,7 @@ class Filter
      */
     public function filter_mbConvert( $v, $p ) 
     {
-        $convert = Utils::arrGet( $this->mvConvert, $p, 'KV' );
+        $convert = Helper::arrGet( $this->mvConvert, $p, 'KV' );
         $v->setValue( mb_convert_kana( $v->getValue(), $convert, static::$charCode ) );
     }
 
@@ -210,7 +210,7 @@ class Filter
      */
     public function filter_matches( $v, $p ) 
     {
-        $option  = Utils::arrGet( $this->matchType, $p, $p );
+        $option  = Helper::arrGet( $this->matchType, $p, $p );
         if( !preg_match( "/^{$option}\$/", $v->getValue() ) ) {
             $v->setError( __METHOD__, $p );
         }
@@ -222,7 +222,7 @@ class Filter
      */
     public function filter_kanaType( $v, $p )
     {
-        $option  = Utils::arrGet( $this->kanaType, $p, $p );
+        $option  = Helper::arrGet( $this->kanaType, $p, $p );
         if( !preg_match( "/^{$option}\$/u", $v->getValue() ) ) {
             $v->setError( __METHOD__, $p );
         }

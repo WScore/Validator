@@ -1,5 +1,5 @@
 <?php
-namespace WScore\Validation;
+namespace WScore\Validation\Utils;
 
 class Message
 {
@@ -17,7 +17,7 @@ class Message
     public function __construct( $locale=null, $dir=null )
     {
         if( !$locale ) $locale = 'en';
-        if( !$dir ) $dir = __DIR__ . '/Locale/';
+        if( !$dir ) $dir = dirname(__DIR__) . '/Locale/';
         $dir .= $locale . '/';
 
         /** @noinspection PhpIncludeInspection */

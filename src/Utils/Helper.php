@@ -1,7 +1,10 @@
 <?php
-namespace WScore\Validation;
+namespace WScore\Validation\Utils;
 
-class Utils
+use WScore\Validation\Dio;
+use WScore\Validation\Rules;
+
+class Helper
 {
     /**
      * @param      $arr
@@ -114,7 +117,7 @@ class Utils
      * prepares filter for sameWith rule.
      * get another value to compare in sameWith, and compare it with the value using sameAs rule.
      *
-     * @param Validation $dio
+     * @param Dio $dio
      * @param array|Rules  $filters
      * @return array
      */
@@ -131,7 +134,7 @@ class Utils
         $sub_filter[ 'sameWith' ] = false;
         $sub_filter[ 'required' ] = false;
         $value = $dio->find( $sub_name, $sub_filter );
-        $value = $dio->validate->is( $value, $sub_filter );
+        $value = $dio->verify->is( $value, $sub_filter );
 
         // reset sameWith filter, and set same{As|Empty} filter.
         $filters[ 'sameWith' ] = false;

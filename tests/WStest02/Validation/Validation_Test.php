@@ -2,13 +2,13 @@
 namespace WStest02\Validation;
 
 use WScore\Validation\Rules;
-use WScore\Validation\Validation;
+use WScore\Validation\Dio;
 
 require_once( dirname( dirname( __DIR__ ) ) . '/autoloader.php' );
 
 class Validation_Test extends \PHPUnit_Framework_TestCase
 {
-    /** @var \WScore\Validation\Validation */
+    /** @var \WScore\Validation\Dio */
     var $validate;
 
     /** @var  Rules */
@@ -16,7 +16,7 @@ class Validation_Test extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->validate = Validation::getInstance();
+        $this->validate = Dio::getInstance();
         $this->rules = new Rules();
     }
 
@@ -106,7 +106,7 @@ class Validation_Test extends \PHPUnit_Framework_TestCase
         // validation should become inValid.
         $this->assertEquals( false, $this->validate->isValid() );
         $errors =  $this->validate->popError();
-        $this->assertEquals( $this->validate->validate->message->messages['matches']['number'], $errors[ 'test' ][1] );
+        $this->assertEquals( $this->validate->verify->message->messages['matches']['number'], $errors[ 'test' ][1] );
 
         // popSafe returns data without error value.
         $this->assertEquals( $collect, $this->validate->popSafe() );

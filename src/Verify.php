@@ -5,20 +5,20 @@ namespace WScore\Validation;
  * Class Validate
  * @package WScore\Validation
  */
-class Validate
+class Verify
 {
     /**
-     * @var Filter
+     * @var Utils\Filter
      */
     public $filter;
 
     /**
-     * @var ValueTO
+     * @var Utils\ValueTO
      */
     public $valueTO;
 
     /**
-     * @var ValueTO
+     * @var Utils\ValueTO
      */
     protected $lastValue;
 
@@ -26,8 +26,8 @@ class Validate
     //  construction
     // +----------------------------------------------------------------------+
     /**
-     * @param Filter  $filter
-     * @param ValueTO $valueTO
+     * @param Utils\Filter  $filter
+     * @param Utils\ValueTO $valueTO
      */
     public function __construct( $filter=null, $valueTO=null )
     {
@@ -82,7 +82,7 @@ class Validate
     }
 
     /**
-     * @return ValueToInterface
+     * @return Utils\ValueToInterface
      */
     public function result() {
         return $this->lastValue;
@@ -93,12 +93,12 @@ class Validate
      *
      * @param string $value
      * @param array $rules
-     * @return null|ValueTO
+     * @return null|Utils\ValueTO
      */
     public function applyFilters( $value, $rules=array() )
     {
-        /** @var $filter Filter */
-        $valueTO = $this->valueTO->reset( $value );
+        /** @var $filter Utils\Filter */
+        $valueTO = $this->valueTO->forge( $value );
         // loop through all the rules to validate $value.
         foreach( $rules as $rule => $parameter )
         {

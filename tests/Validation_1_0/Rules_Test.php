@@ -107,4 +107,15 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( 'text', $rules->getType() );
         $this->assertEquals( 'standard', $rules['mbConvert'] );
     }
+
+    /**
+     * @test
+     */
+    function test2()
+    {
+        $rule0 = Rules::text();
+        $rule1 = $rule0::text();
+        $this->assertEquals( $rule0, $rule1 );
+        $this->assertNotSame( $rule0, $rule1 );
+    }
 }

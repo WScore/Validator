@@ -2,7 +2,7 @@
 namespace tests\Validation_1_0;
 
 use WScore\Validation\Factory;
-use WScore\Validation\Message;
+use WScore\Validation\Utils\Message;
 
 require_once( dirname( __DIR__ ) . '/autoloader.php' );
 
@@ -29,7 +29,7 @@ class Message_Test extends \PHPUnit_Framework_TestCase
 
     function test0()
     {
-        $this->assertEquals( 'WScore\Validation\Message', get_class( $this->m ) );
+        $this->assertEquals( 'WScore\Validation\Utils\Message', get_class( $this->m ) );
     }
 
     /**

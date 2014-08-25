@@ -1,23 +1,15 @@
 <?php
 namespace WScore\Validation;
 
+use WScore\Validation\Utils\Filter;
+use WScore\Validation\Utils\Message;
+use WScore\Validation\Utils\ValueTO;
+
 class Factory
 {
     static $locale = 'en';
     
     static $dir = null;
-
-    static $message = '\WScore\Validation\Message';
-
-    static $validate = '\WScore\Validation\Validate';
-
-    static $validation = '\WScore\Validation\Validation';
-
-    static $filter = '\WScore\Validation\Filter';
-
-    static $valueTO = '\WScore\Validation\ValueTO';
-    
-    static $rules = '\WScore\Validation\Rules';
 
     /**
      * @param string $locale
@@ -32,9 +24,7 @@ class Factory
         /*
          * set up locale for Rules, which is often called by static. 
          */
-        /** @var Rules $class */
-        $class = static::$rules;
-        $class::locale( $locale, static::getDir() );
+        Rules::locale( $locale, static::getDir() );
     }
     
     /**
@@ -54,78 +44,53 @@ class Factory
     }
 
     /**
-     * @param null|array $data
-     * @return Validation
-     */
-    public static function input( $data=null )
-    {
-        $input = static::buildValidation();
-        if( $data && is_array($data) ) {
-            $input->source( $data );
-        } else {
-            $input->source( $_POST );
-        }
-        return $input;
-    }
-    
-    /**
      * @param string $locale
      * @param string $dir
-     * @return Message
+     * @return Utils\Message
      */
     public static function buildMessage( $locale=null, $dir=null )
     {
         if( !$locale ) $locale = static::getLocale();
         if( !$dir ) $dir = static::getDir();
-        /** @var Message $class */
-        $class = static::$message;
-        return new $class( $locale, $dir );
+        return new Message( $locale, $dir );
     }
 
     /**
      * @param string $locale
      * @param string $dir
-     * @return ValueTO
+     * @return Utils\ValueTO
      */
     public static function buildValueTO( $locale=null, $dir=null )
     {
-        /** @var ValueTO $class */
-        $class = static::$valueTO;
-        return new $class( static::buildMessage( $locale, $dir ) );
+        return new ValueTO( static::buildMessage( $locale, $dir ) );
     }
 
     /**
-     * @return Filter
+     * @return Utils\Filter
      */
     public static function buildFilter()
     {
-        /** @var Filter $class */
-        $class = static::$filter;
-        return new $class();
+        return new Filter();
     }
 
     /**
      * @param string $locale
      * @param string $dir
-     * @return Validate
+     * @return Verify
      */
-    public static function buildValidate( $locale=null, $dir=null )
+    public static function buildVerify( $locale=null, $dir=null )
     {
-        /** @var Validate $class */
-        $class = static::$validate;
-        return new $class( static::buildFilter(), static::buildValueTO( $locale, $dir ) );
+        return new Verify( static::buildFilter(), static::buildValueTO( $locale, $dir ) );
     }
 
     /**
      * @param string $locale
      * @param string $dir
-     * @return Validation
+     * @return Dio
      */
-    public static function buildValidation( $locale=null, $dir=null )
+    public static function buildDio( $locale=null, $dir=null )
     {
-        /** @var Validation $class */
-        $class = static::$validation;
-        return new $class( static::buildValidate( $locale, $dir ) );
+        return new Dio( static::buildVerify( $locale, $dir ) );
     }
 
     /**
@@ -137,8 +102,6 @@ class Factory
     {
         if( !$locale ) $locale = static::getLocale();
         if( !$dir ) $dir = static::getDir();
-        /** @var Rules $class */
-        $class = static::$rules;
-        return new $class( $locale, $dir );
+        return new Rules( $locale, $dir );
     }
 }

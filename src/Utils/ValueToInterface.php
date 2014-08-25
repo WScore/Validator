@@ -5,7 +5,7 @@
  * Date: 2014/05/30
  * Time: 16:39
  */
-namespace WScore\Validation;
+namespace WScore\Validation\Utils;
 
 
 /**

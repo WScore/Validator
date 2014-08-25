@@ -45,12 +45,10 @@ MIT License
 からの入力を確認するなら、例にあるように ```$_POST``` を使います。
 
 ```php
-use \WScore\Validation\Factory;
-use \WScore\Validation\Rules;
+use \WScore\Validation\Validation;
 
-Factory::setLocale('ja');       // use Japanese rules and messages.
-$input = Factory::input();      // get validator.
-// $input->source( $_POST );    // default is to validate post input.
+Validation::setLocale('ja');         // use Japanese rules and messages.
+$input = Validation::on( $_POST );   // get validator.
 ```
 
 
@@ -62,13 +60,27 @@ $input = Factory::input();      // get validator.
 スタティッククラス、```Rules``` を使って簡単にルールを構築できます。
 
 ```php
-$input( 'name', Rules::text()->required() );
-$input( 'mail', Rules::mail()->required() );
+use \WScore\Validation\Validation;
+use \WScore\Validation\Rules;
+
+$input = Validation::on( $_POST );   // get validator.
+$input->is( 'name', Rules::text()->required() );
+$input->is( 'mail', Rules::mail()->required() );
 $found = $input->get(); // [ 'name' => some name... ]
+if( $input->fails() ) {
+    $onlyGoodData    = $input->getSafe();
+    $containsBadData = $input->get();
+} else {
+    $onlyGoodData    = $input->get();
+}
 ```
 
-バリデーションが
-終了したら、```get``` メソッドで値を取得します。
+バリデーションが成功したかどうか ```fails()``` を
+使って確認できます。
+
+処理完了後、```get``` メソッドで値を取得します。ただし不正な
+値も全て含まれるので、正しい値だけを取得するには ```getSafe()```
+を使って下さい。
 
 
 #### example code
@@ -91,7 +103,7 @@ $input->is( 'mail', Rules::mail()->sameWith( 'mail2' )->required() );
 $status = $input->is( 'status', Rules::int()->in( '1', '2', '3' )->required()->message('must be 1-3.') );
 if( $status == '1' ) { // add some message?!
     $input->setValue( 'notice', 'how do you like it?' );
-} elseif( false === $status ) { // maybe get some reasons...
+} elseif( $status === '3' ) { // maybe get some reasons...
     echo $input->is('reason', Rules::text()->required() );
 }
 
@@ -103,9 +115,6 @@ if( $input->fails() ) {
     $goodData = $input->get();
 }
 ```
-
-注意すべき点は、```get``` メソッドで取得した値にはバリデーションに失敗した
-値も含まれるという点です。
 
 
 ### 値のバリデーション
@@ -185,6 +194,20 @@ echo $validation->is( 'text1', Rules::text()->string('lower')->sameWith('text2')
 echo $validate->verify( 'ABC', Rules::text()->pattern('[a-c]*')->string('lower'); // 'abc'
 ## should lower the string first, then check for pattern...
 ```
+
+
+### インデックス配列
+
+次のような入力の場合…
+
+```php
+$input = [ 0 => [ 'name' => 'john', ...],
+           1 => [ 'name' => 'paul', ...],
+            ... ];
+$input = Validation::on( $input )->onIndex('1');
+```
+
+とすると、「paul」のみについて確認します。
 
 
 ### 自作バリデーションフィルター
