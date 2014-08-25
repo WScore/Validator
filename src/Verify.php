@@ -98,7 +98,7 @@ class Verify
     public function applyFilters( $value, $rules=array() )
     {
         /** @var $filter Utils\Filter */
-        $valueTO = $this->valueTO->reset( $value );
+        $valueTO = $this->valueTO->forge( $value );
         // loop through all the rules to validate $value.
         foreach( $rules as $rule => $parameter )
         {
