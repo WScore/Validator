@@ -3,14 +3,14 @@ namespace tests\Validation_1_0;
 
 use WScore\Validation\Factory;
 use WScore\Validation\Rules;
-use WScore\Validation\Validation;
+use WScore\Validation\Dio;
 
 require_once( dirname( __DIR__ ) . '/autoloader.php' );
 
 class Validation_Test extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Validation
+     * @var Dio
      */
     public $validate;
 
@@ -26,7 +26,7 @@ class Validation_Test extends \PHPUnit_Framework_TestCase
 
     function test0()
     {
-        $this->assertEquals( 'WScore\Validation\Validation', get_class( $this->validate ) );
+        $this->assertEquals( 'WScore\Validation\Dio', get_class( $this->validate ) );
     }
 
     /**

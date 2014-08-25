@@ -2,12 +2,13 @@
 namespace WScore\Validation;
 
 /**
- * Class Validation
+ * Class Dio
  * @package WScore\Validation
  *
- * validates an array of values (i.e. input from html form).
+ * Data Import Object
+ * for validating a adata, an array of values (i.e. input from html form).
  */
-class Validation
+class Dio
 {
     /**
      * @var array                 source of data to read from
@@ -83,7 +84,7 @@ class Validation
     /**
      * @param string $name
      * @param mixed $value
-     * @return Validation
+     * @return Dio
      */
     public function set( $name, $value )
     {
@@ -136,7 +137,7 @@ class Validation
      * @param string $name
      * @param mixed $error
      * @param bool|mixed $value
-     * @return Validation
+     * @return Dio
      */
     public function isError( $name, $error, $value=false )
     {

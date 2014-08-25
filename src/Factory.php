@@ -11,7 +11,7 @@ class Factory
 
     static $validate = '\WScore\Validation\Validate';
 
-    static $validation = '\WScore\Validation\Validation';
+    static $validation = '\WScore\Validation\Dio';
 
     static $filter = '\WScore\Validation\Filter';
 
@@ -55,7 +55,7 @@ class Factory
 
     /**
      * @param null|array $data
-     * @return Validation
+     * @return Dio
      */
     public static function input( $data=null )
     {
@@ -119,11 +119,11 @@ class Factory
     /**
      * @param string $locale
      * @param string $dir
-     * @return Validation
+     * @return Dio
      */
     public static function buildValidation( $locale=null, $dir=null )
     {
-        /** @var Validation $class */
+        /** @var Dio $class */
         $class = static::$validation;
         return new $class( static::buildValidate( $locale, $dir ) );
     }
