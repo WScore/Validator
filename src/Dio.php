@@ -1,6 +1,8 @@
 <?php
 namespace WScore\Validation;
 
+use WScore\Validation\Utils\ValueTO;
+
 /**
  * Class Dio
  * @package WScore\Validation
@@ -65,7 +67,7 @@ class Dio
      */
     public function get( $key=null )
     {
-        if( $key ) return Utils::arrGet( $this->found, $key );
+        if( $key ) return Utils\Helper::arrGet( $this->found, $key );
         return $this->found;
     }
 
@@ -129,7 +131,7 @@ class Dio
      */
     public function message( $name=null )
     {
-        if( $name ) return Utils::arrGet( $this->messages, $name );
+        if( $name ) return Utils\Helper::arrGet( $this->messages, $name );
         return $this->messages;
     }
 
@@ -161,7 +163,7 @@ class Dio
     }
 
     /**
-     * @return ValueToInterface
+     * @return Utils\ValueToInterface
      */
     public function result() {
         return $this->validate->result();
@@ -210,16 +212,16 @@ class Dio
     {
         // find a value from data source.
         $value = null;
-        if( Utils::arrGet( $rules, 'multiple' ) ) {
+        if( Utils\Helper::arrGet( $rules, 'multiple' ) ) {
             // check for multiple case i.e. Y-m-d.
-            $value = Utils::prepare_multiple( $name, $this->source, $rules[ 'multiple' ] );
+            $value = Utils\Helper::prepare_multiple( $name, $this->source, $rules[ 'multiple' ] );
         }
         if( !$value && array_key_exists( $name, $this->source ) ) {
             // simplest case.
             $value = $this->source[ $name ];
         }
         // prepares filter for sameWith.
-        $rules = Utils::prepare_sameWith( $this, $rules );
+        $rules = Utils\Helper::prepare_sameWith( $this, $rules );
         return $value;
     }
     // +----------------------------------------------------------------------+

@@ -1,5 +1,5 @@
 <?php
-namespace WScore\Validation;
+namespace WScore\Validation\Utils;
 
 /**
  * value transfer object. 

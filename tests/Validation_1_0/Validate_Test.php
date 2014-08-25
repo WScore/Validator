@@ -4,7 +4,7 @@ namespace tests\Validation_1_0;
 use WScore\Validation\Factory;
 use WScore\Validation\Rules;
 use WScore\Validation\Verify;
-use WScore\Validation\ValueTO;
+use WScore\Validation\Utils\ValueTO;
 
 require_once( dirname( __DIR__ ) . '/autoloader.php' );
 

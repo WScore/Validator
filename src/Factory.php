@@ -7,15 +7,15 @@ class Factory
     
     static $dir = null;
 
-    static $message = '\WScore\Validation\Message';
+    static $message = '\WScore\Validation\Utils\Message';
 
     static $validate = '\WScore\Validation\Verify';
 
     static $validation = '\WScore\Validation\Dio';
 
-    static $filter = '\WScore\Validation\Filter';
+    static $filter = '\WScore\Validation\Utils\Filter';
 
-    static $valueTO = '\WScore\Validation\ValueTO';
+    static $valueTO = '\WScore\Validation\Utils\ValueTO';
     
     static $rules = '\WScore\Validation\Rules';
 
@@ -71,13 +71,13 @@ class Factory
     /**
      * @param string $locale
      * @param string $dir
-     * @return Message
+     * @return Utils\Message
      */
     public static function buildMessage( $locale=null, $dir=null )
     {
         if( !$locale ) $locale = static::getLocale();
         if( !$dir ) $dir = static::getDir();
-        /** @var Message $class */
+        /** @var Utils\Message $class */
         $class = static::$message;
         return new $class( $locale, $dir );
     }
@@ -85,21 +85,21 @@ class Factory
     /**
      * @param string $locale
      * @param string $dir
-     * @return ValueTO
+     * @return Utils\ValueTO
      */
     public static function buildValueTO( $locale=null, $dir=null )
     {
-        /** @var ValueTO $class */
+        /** @var Utils\ValueTO $class */
         $class = static::$valueTO;
         return new $class( static::buildMessage( $locale, $dir ) );
     }
 
     /**
-     * @return Filter
+     * @return Utils\Filter
      */
     public static function buildFilter()
     {
-        /** @var Filter $class */
+        /** @var Utils\Filter $class */
         $class = static::$filter;
         return new $class();
     }

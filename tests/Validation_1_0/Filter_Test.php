@@ -2,7 +2,7 @@
 namespace tests\Validation_1_0;
 
 use WScore\Validation\Factory;
-use WScore\Validation\ValueTO;
+use WScore\Validation\Utils\ValueTO;
 
 require_once( dirname( __DIR__ ) . '/autoloader.php' );
 
@@ -26,7 +26,7 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals( 'WScore\Validation\Verify', get_class( $this->validate ) );
         $value = $this->validate->applyFilters( 'test' );
-        $this->assertEquals( 'WScore\Validation\ValueTO', get_class( $value ) );
+        $this->assertEquals( 'WScore\Validation\Utils\ValueTO', get_class( $value ) );
         $this->assertEquals( 'test', (string) $value );
     }
 

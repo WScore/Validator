@@ -32,7 +32,7 @@ class Factory_Test extends \PHPUnit_Framework_TestCase
     function test_message_default_loads_english_texts()
     {
         $message = Factory::buildMessage();
-        $this->assertEquals( 'WScore\Validation\Message', get_class( $message ) );
+        $this->assertEquals( 'WScore\Validation\Utils\Message', get_class( $message ) );
         $this->assertEquals( 'invalid input', $message->find('no',null, null) );
     }
     
@@ -40,7 +40,7 @@ class Factory_Test extends \PHPUnit_Framework_TestCase
     {
         Factory::setLocale( 'ja' );
         $message = Factory::buildMessage();
-        $this->assertEquals( 'WScore\Validation\Message', get_class( $message ) );
+        $this->assertEquals( 'WScore\Validation\Utils\Message', get_class( $message ) );
         $this->assertEquals( '入力内容を確認して下さい', $message->find('no',null, null) );
     }
     

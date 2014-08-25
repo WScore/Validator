@@ -1,7 +1,10 @@
 <?php
-namespace WScore\Validation;
+namespace WScore\Validation\Utils;
 
-class Utils
+use WScore\Validation\Dio;
+use WScore\Validation\Rules;
+
+class Helper
 {
     /**
      * @param      $arr

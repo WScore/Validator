@@ -8,17 +8,17 @@ namespace WScore\Validation;
 class Verify
 {
     /**
-     * @var Filter
+     * @var Utils\Filter
      */
     public $filter;
 
     /**
-     * @var ValueTO
+     * @var Utils\ValueTO
      */
     public $valueTO;
 
     /**
-     * @var ValueTO
+     * @var Utils\ValueTO
      */
     protected $lastValue;
 
@@ -26,8 +26,8 @@ class Verify
     //  construction
     // +----------------------------------------------------------------------+
     /**
-     * @param Filter  $filter
-     * @param ValueTO $valueTO
+     * @param Utils\Filter  $filter
+     * @param Utils\ValueTO $valueTO
      */
     public function __construct( $filter=null, $valueTO=null )
     {
@@ -82,7 +82,7 @@ class Verify
     }
 
     /**
-     * @return ValueToInterface
+     * @return Utils\ValueToInterface
      */
     public function result() {
         return $this->lastValue;
@@ -93,11 +93,11 @@ class Verify
      *
      * @param string $value
      * @param array $rules
-     * @return null|ValueTO
+     * @return null|Utils\ValueTO
      */
     public function applyFilters( $value, $rules=array() )
     {
-        /** @var $filter Filter */
+        /** @var $filter Utils\Filter */
         $valueTO = $this->valueTO->reset( $value );
         // loop through all the rules to validate $value.
         foreach( $rules as $rule => $parameter )
