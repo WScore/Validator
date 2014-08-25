@@ -59,7 +59,7 @@ class Factory
      */
     public static function input( $data=null )
     {
-        $input = static::buildValidation();
+        $input = static::buildDio();
         if( $data && is_array($data) ) {
             $input->source( $data );
         } else {
@@ -109,7 +109,7 @@ class Factory
      * @param string $dir
      * @return Verify
      */
-    public static function buildValidate( $locale=null, $dir=null )
+    public static function buildVerify( $locale=null, $dir=null )
     {
         /** @var Verify $class */
         $class = static::$validate;
@@ -121,11 +121,11 @@ class Factory
      * @param string $dir
      * @return Dio
      */
-    public static function buildValidation( $locale=null, $dir=null )
+    public static function buildDio( $locale=null, $dir=null )
     {
         /** @var Dio $class */
         $class = static::$validation;
-        return new $class( static::buildValidate( $locale, $dir ) );
+        return new $class( static::buildVerify( $locale, $dir ) );
     }
 
     /**

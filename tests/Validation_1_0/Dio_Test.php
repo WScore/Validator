@@ -21,7 +21,7 @@ class Dio_Test extends \PHPUnit_Framework_TestCase
     
     function make($locale='en') {
         Factory::setLocale($locale);
-        $this->validate = Factory::buildValidation();
+        $this->validate = Factory::buildDio();
     }
 
     function test0()

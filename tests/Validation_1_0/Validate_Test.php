@@ -17,7 +17,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
 
     function setup()
     {
-        $this->validate = Factory::buildValidate();
+        $this->validate = Factory::buildVerify();
     }
 
     function test0()
@@ -105,7 +105,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
      */
     function locale_ja_returns_japanese_message()
     {
-        $v = Factory::buildValidate('ja');
+        $v = Factory::buildVerify('ja');
 
         $value = $v->applyFilters( ' text ', [ 'trim' => true ] );
         $this->assertEquals( 'WScore\Validation\Verify', get_class( $v ) );

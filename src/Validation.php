@@ -25,7 +25,7 @@ class Validation
      */
     public static function on( $source )
     {
-        $v = static::$dio ?: Factory::buildValidation();
+        $v = static::$dio ?: Factory::buildDio();
         $v->source( $source );
         return $v;
     }

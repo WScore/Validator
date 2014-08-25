@@ -15,7 +15,7 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->validate = Factory::buildValidate();
+        $this->validate = Factory::buildVerify();
     }
 
     // +----------------------------------------------------------------------+

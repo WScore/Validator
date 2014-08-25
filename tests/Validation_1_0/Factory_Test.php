@@ -61,7 +61,7 @@ class Factory_Test extends \PHPUnit_Framework_TestCase
 
     function test_validation_builder()
     {
-        $v = Factory::buildValidation();
+        $v = Factory::buildDio();
         $this->assertEquals( 'WScore\Validation\Dio', get_class( $v ) );
     }
     
