@@ -43,30 +43,46 @@ Set the data to validate using ```source``` method. For verifying
 form input, the source would be ```$_POST``` as in the example. 
 
 ```php
-use \WScore\Validation\Factory;
-use \WScore\Validation\Rules;
+use \WScore\Validation\Validation;
 
-Factory::setLocale('ja');       // use Japanese rules and messages.
-$input = Factory::input();      // get validator.
-// $input->source( $_POST );    // default is to validate post input.
+Validation::setLocale('ja');         // use Japanese rules and messages.
+$input = Validation::on( $_POST );   // get validator.
 ```
 
 
-### validating data
+### validation rule
 
 The ```is``` method validates and returns the found value, or returns
 false if fails to validate.
 
-Use static class, ```Rules```, to compose a rules (ala Facade).
+To set the validation rule, use static class,
+ ```Rules```, to compose a rules.
 
 ```php
+use \WScore\Validation\Validation;
+use \WScore\Validation\Rules;
+
+$input = Validation::on( $_POST );   // get validator.
 $input->is( 'name', Rules::text()->required() );
 $input->is( 'mail', Rules::mail()->required() );
 $found = $input->get(); // [ 'name' => some name... ]
+if( $input->fails() ) {
+    $onlyGoodData    = $input->getSafe();
+    $containsBadData = $input->get();
+} else {
+    $onlyGoodData    = $input->get();
+}
 ```
 
-When the validation process is completed, retrieve the
- values by ```get``` method.
+Check if the validation failes or not using ```fails()```
+ method.
+
+To retrieve the validated (or unvalidated) values
+ by ```get()``` method, which returns all the values
+ (validated and invalidated values).
+
+To retrieve __only the validated values__,
+ use ```getSafe()``` method.
 
 #### example code
 
@@ -89,7 +105,7 @@ $input->is( 'mail', Rules::mail()->sameWith( 'mail2' )->required() );
 $status = $input->is( 'status', Rules::int()->in( '1', '2', '3' )->required()->message('must be 1-3.') );
 if( $status == '1' ) { // add some message?!
     $input->setValue( 'notice', 'how do you like it?' );
-} elseif( false === $status ) { // maybe get some reasons...
+} elseif( $status === '3' ) { // maybe get some reasons...
     echo $input->is('reason', Rules::text()->required() );
 }
 
@@ -101,10 +117,6 @@ if( $input->fails() ) {
     $goodData = $input->get();
 }
 ```
-
-Please note that ```get``` method may return values that
-are __not__ validated. To get __only__ the validated values,
-use ```getSafe``` method.
 
 
 ### validating a single value
@@ -187,6 +199,21 @@ some filter must be applied in certain order...
 echo $validate->verify( 'ABC', Rules::text()->pattern('[a-c]*')->string('lower'); // 'abc'
 ## should lower the string first, then check for pattern...
 ```
+
+
+### indexed array
+
+To validate data such as follows...
+
+```php
+$input = [ 0 => [ 'name' => 'john', ...],
+           1 => [ 'name' => 'paul', ...],
+            ... ];
+$input = Validation::on( $input )->onIndex('1');
+```
+
+will validate on 'paul'.
+
 
 ### custom validation
 
