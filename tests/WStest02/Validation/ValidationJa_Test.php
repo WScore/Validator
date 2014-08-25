@@ -112,7 +112,7 @@ class ValidationJa_Test extends \PHPUnit_Framework_TestCase
         // validation should become inValid.
         $this->assertEquals( false, $this->validate->isValid() );
         $errors =  $this->validate->popError();
-        $this->assertEquals( $this->validate->validate->message->messages['matches']['number'], $errors[ 'test' ][1] );
+        $this->assertEquals( $this->validate->verify->message->messages['matches']['number'], $errors[ 'test' ][1] );
 
         // popSafe returns data without error value.
         $this->assertEquals( $collect, $this->validate->popSafe() );

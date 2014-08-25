@@ -35,16 +35,16 @@ class Dio
     /**
      * @var Verify
      */
-    public $validate = null;
+    public $verify = null;
 
     // +----------------------------------------------------------------------+
     /**
      * @Inject
-     * @param \WScore\Validation\Verify   $validate
+     * @param \WScore\Validation\Verify   $verify
      */
-    public function __construct( $validate )
+    public function __construct( $verify )
     {
-        $this->validate = $validate;
+        $this->verify = $verify;
     }
 
     /**
@@ -178,14 +178,14 @@ class Dio
      */
     public function verify( $value, $rules )
     {
-        return $this->validate->is( $value, $rules );
+        return $this->verify->is( $value, $rules );
     }
 
     /**
      * @return Utils\ValueToInterface
      */
     public function result() {
-        return $this->validate->result();
+        return $this->verify->result();
     }
 
     /**
@@ -203,9 +203,9 @@ class Dio
             throw new \InvalidArgumentException( "name must be a string" );
         }
         $found = $this->find( $name, $rules );
-        $this->validate->is( $found, $rules );
+        $this->verify->is( $found, $rules );
 
-        $valTO = $this->validate->result();
+        $valTO = $this->verify->result();
         if( $valTO->fails() ) {
             $found = $valTO->getValue();
             $message = $valTO->message();

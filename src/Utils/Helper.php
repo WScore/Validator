@@ -134,7 +134,7 @@ class Helper
         $sub_filter[ 'sameWith' ] = false;
         $sub_filter[ 'required' ] = false;
         $value = $dio->find( $sub_name, $sub_filter );
-        $value = $dio->validate->is( $value, $sub_filter );
+        $value = $dio->verify->is( $value, $sub_filter );
 
         // reset sameWith filter, and set same{As|Empty} filter.
         $filters[ 'sameWith' ] = false;
