@@ -3,7 +3,7 @@ namespace WScore\Validation;
 
 class Validation
 {
-    static $dio = null;
+    protected static $dio = null;
 
     public static function useInstance( $obj )
     {

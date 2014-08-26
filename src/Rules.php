@@ -132,9 +132,7 @@ class Rules implements \ArrayAccess, \IteratorAggregate
      */
     public static function locale( $locale=null, $dir=null )
     {
-        if( func_num_args() > 1 ) {
-            static::$dir = func_get_arg(1); // second one 
-        }
+        static::$dir = $dir;
         if( !$locale ) return static::$locale;
         static::$locale = strtolower( locale_get_primary_language( $locale ) );
         return static::$locale;

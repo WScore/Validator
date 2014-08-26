@@ -43,8 +43,8 @@ class Verify
      * returns the filtered value, or false if validation fails.
      *
      * @param string $value
-     * @param array  $rules
-     * @return bool|mixed
+     * @param array|Rules  $rules
+     * @return bool|string
      */
     public function is( $value, $rules )
     {
@@ -92,7 +92,7 @@ class Verify
      * apply filters on a single value.
      *
      * @param string $value
-     * @param array $rules
+     * @param array|Rules $rules
      * @return null|Utils\ValueTO
      */
     public function applyFilters( $value, $rules=array() )

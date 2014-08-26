@@ -114,8 +114,8 @@ class Dio
     }
 
     /**
-     * @param array      $data
-     * @param array|null $error
+     * @param array        $data
+     * @param array|string $error
      */
     protected function _findClean( &$data, $error )
     {
@@ -225,7 +225,7 @@ class Dio
      *
      * @param string $name
      * @param array|Rules $rules
-     * @return ValueTO|ValueTO[]
+     * @return string
      */
     public function find( $name, &$rules )
     {

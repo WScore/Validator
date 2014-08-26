@@ -139,7 +139,7 @@ class ValueTO implements ValueToInterface
      * gets message regardless of the error state of this ValueTO.
      * use this message ONLY WHEN valueTO is error.
      *
-     * @return string
+     * @return string|array
      */
     public function message()
     {
@@ -153,7 +153,7 @@ class ValueTO implements ValueToInterface
     }
 
     /**
-     * @param string $message
+     * @param string|array $message
      */
     public function setMessage( $message )
     {

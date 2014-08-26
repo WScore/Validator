@@ -7,9 +7,9 @@ use WScore\Validation\Utils\ValueTO;
 
 class Factory
 {
-    static $locale = 'en';
-    
-    static $dir = null;
+    protected static $locale = 'en';
+
+    protected static $dir = null;
 
     /**
      * @param string $locale

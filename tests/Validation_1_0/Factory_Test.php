@@ -20,7 +20,7 @@ class Factory_Test extends \PHPUnit_Framework_TestCase
 
     function test_default_locale_is_en()
     {
-        $this->assertEquals( 'en', Factory::$locale );
+        $this->assertEquals( 'en', Factory::getLocale() );
     }
     
     function test_setting_locale()
