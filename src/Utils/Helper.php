@@ -9,8 +9,8 @@ class Helper
     /**
      * @param      $arr
      * @param      $key
-     * @param null $default
-     * @return null
+     * @param null|mixed $default
+     * @return mixed
      */
     public static function arrGet( $arr, $key, $default=null )
     {
