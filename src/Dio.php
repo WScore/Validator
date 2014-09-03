@@ -1,8 +1,6 @@
 <?php
 namespace WScore\Validation;
 
-use WScore\Validation\Utils\ValueTO;
-
 /**
  * Class Dio
  * @package WScore\Validation
