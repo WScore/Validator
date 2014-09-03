@@ -17,7 +17,10 @@ class Factory
      */
     public static function setLocale( $locale )
     {
-        static::$locale = strtolower( locale_get_primary_language( $locale ) );
+        if( class_exists( 'Locale' ) ) {
+            $locale = strtolower( \Locale::getPrimaryLanguage( $locale ) );
+        }
+        static::$locale = $locale;
         if( func_num_args() > 1 ) {
             static::$dir = func_get_arg(1);
         }
