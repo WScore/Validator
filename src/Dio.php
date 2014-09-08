@@ -112,6 +112,18 @@ class Dio
     }
 
     /**
+     * @param $key
+     * @return $this
+     */
+    public function del( $key )
+    {
+        if( isset( $this->found[$key]) ) {
+            unset( $this->found[$key] );
+        }
+        return $this;
+    }
+
+    /**
      * @param array        $data
      * @param array|string $error
      */
