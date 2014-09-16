@@ -190,6 +190,15 @@ class Dio
     //  find and validate and save it to found
     // +----------------------------------------------------------------------+
     /**
+     * @param string $name
+     * @return bool
+     */
+    public function exists( $name )
+    {
+        return array_key_exists( $name, $this->source );
+    }
+
+    /**
      * @param string      $value
      * @param Rules|array $rules
      * @return bool|string
