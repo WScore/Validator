@@ -155,6 +155,14 @@ class Dio
     }
 
     /**
+     * @return bool
+     */
+    public function passes()
+    {
+        return $this->err_num ? false : true;
+    }
+
+    /**
      * @param null|string $name
      * @return array|mixed
      */
