@@ -254,7 +254,7 @@ class Dio
      * @param array|Rules $rules
      * @return string
      */
-    public function find( $name, &$rules )
+    public function find( $name, &$rules=[] )
     {
         // find a value from data source.
         $value = null;
