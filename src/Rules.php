@@ -122,7 +122,9 @@ class Rules implements \ArrayAccess, \IteratorAggregate
      */
     protected function setTypes( $types )
     {
-        $this->filterTypes = $types;
+        foreach( $types as $key => $info ) {
+            $this->filterTypes[strtolower($key)] = $info;
+        }
     }
 
     /**
