@@ -7,7 +7,7 @@ return array(
     'text'     => [],
     'mail'     => [ 'string' => 'lower', 'matches' => 'mail', 'sanitize' => 'mail' ],
     'number'   => [ 'matches' => 'number' ],
-    'integer'  => [ 'matches' => 'int' ],
+    'integer'  => [ 'sanitize'  => 'int', 'matches' => 'int', 'max' => PHP_INT_MAX ],
     'float'    => [ 'matches' => 'float' ],
     'date'     => [ 'multiple' => 'YMD', 'pattern' => '[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}' ],
     'dateYM'   => [ 'multiple' => 'YM',  'pattern' => '[0-9]{4}-[0-9]{1,2}' ],

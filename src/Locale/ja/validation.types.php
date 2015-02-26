@@ -9,7 +9,7 @@ return array(
     'katakana' => [ 'mbConvert' => 'katakana', 'kanaType' => 'katakana' ],
     'mail'     => [ 'mbConvert' => 'hankaku', 'string' => 'lower', 'matches' => 'mail', 'sanitize' => 'mail' ],
     'number'   => [ 'mbConvert' => 'hankaku', 'matches' => 'number' ],
-    'integer'  => [ 'mbConvert' => 'hankaku', 'matches' => 'int' ],
+    'integer'  => [ 'sanitize'  => 'int', 'mbConvert' => 'hankaku', 'matches' => 'int', 'max' => PHP_INT_MAX ],
     'float'    => [ 'mbConvert' => 'hankaku', 'matches' => 'float' ],
     'date'     => [ 'datetime' => true, 'multiple' => 'YMD', 'mbConvert' => 'hankaku', 'pattern' => '[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}' ],
     'dateYM'   => [ 'multiple' => 'YM',  'mbConvert' => 'hankaku', 'pattern' => '[0-9]{4}-[0-9]{1,2}' ],

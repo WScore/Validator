@@ -97,6 +97,11 @@ class Filter
     {
         $option = Helper::arrGet( $this->sanitizes, $p, $p );
         $v->setValue( filter_var( $v->getValue(), $option ) );
+        if( $p === 'int') {
+            if( (int) $v->getValue() !== (int) (float) $v->getValue() ) {
+                $v->setValue( '' );
+            }
+        }
     }
 
     /**
@@ -294,6 +299,18 @@ class Filter
     {
         $val = $v->getValue();
         if( "{$val}" !== "" ) {
+            $v->setError( __METHOD__ );
+        }
+    }
+
+    /**
+     * @param ValueTO $v
+     * @param $p
+     */
+    public function filter_max( $v, $p )
+    {
+        $val = (int) $v->getValue();
+        if( $val > (int) $p ) {
             $v->setError( __METHOD__ );
         }
     }
