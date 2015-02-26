@@ -14,6 +14,7 @@ return array(
     'encoding'    => 'UTF-8',    // checks the encoding of value.
     'trim'        => true,       // trims value.
     'sanitize'    => false,      // done, kind of
+    'datetime'    => false,      // check for valid datetime object
     'string'      => false,      // converts value to upper/lower/etc.
     'custom'      => false,      // custom filter #1
     'custom2'     => false,      // custom filter #2

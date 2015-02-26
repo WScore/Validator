@@ -260,4 +260,14 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( $text, (string) $value );
         $this->assertEquals( false, $this->validate->result()->fails() );
     }
+
+    /**
+     * @test
+     */
+    function datetime_filter_removes_value_for_invalid_datetime_string()
+    {
+        $bad = '1234567890123456789012345678901234567890';
+        $value = $this->validate->is( $bad, array( 'datetime'=>true));
+        $this->assertEquals( '', (string) $value );
+    }
 }

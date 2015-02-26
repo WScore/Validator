@@ -16,6 +16,7 @@ return array(
     'mbConvert'   => 'standard', // converts Kana set (Japanese)
     'trim'        => true,       // trims value.
     'sanitize'    => false,      // done, kind of
+    'datetime'    => false,      // check for valid datetime object
     'string'      => false,      // converts value to upper/lower/etc.
     'custom'      => false,      // custom filter #1
     'custom2'     => false,      // custom filter #2
