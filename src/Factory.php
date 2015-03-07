@@ -93,7 +93,7 @@ class Factory
      */
     public static function buildDio( $locale=null, $dir=null )
     {
-        return new Dio( static::buildVerify( $locale, $dir ) );
+        return new Dio( static::buildVerify( $locale, $dir ), static::buildRules($locale) );
     }
 
     /**

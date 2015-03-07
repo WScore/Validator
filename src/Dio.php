@@ -6,7 +6,7 @@ namespace WScore\Validation;
  * @package WScore\Validation
  *
  * Data Import Object
- * for validating a adata, an array of values (i.e. input from html form).
+ * for validating a a data, an array of values (i.e. input from html form).
  */
 class Dio
 {
@@ -40,14 +40,21 @@ class Dio
      */
     public $verify = null;
 
+    /**
+     * @var Rules
+     */
+    private $ruler;
+
     // +----------------------------------------------------------------------+
     /**
      * @Inject
-     * @param \WScore\Validation\Verify   $verify
+     * @param Verify $verify
+     * @param Rules  $rules
      */
-    public function __construct( $verify )
+    public function __construct( $verify, $rules )
     {
         $this->verify = $verify;
+        $this->ruler  = $rules;
     }
 
     /**

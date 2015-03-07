@@ -76,6 +76,6 @@ class ValidationFactory
             new Filter(),
             new ValueTO(new Message($this->locale, $this->dir))
         );
-        $this->dio    = new Dio($this->verify);
+        $this->dio    = new Dio($this->verify, $this->rules);
     }
 }
