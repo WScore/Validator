@@ -1,8 +1,6 @@
 <?php
 namespace WScore\Validation\Utils;
 
-use Cpe\Tools\DateTime;
-
 class Filter
 {
     public static $charCode = 'UTF-8';
@@ -111,7 +109,7 @@ class Filter
     public function filter_datetime( $v )
     {
         try {
-            $d = new DateTime($v);
+            $d = new \DateTime($v);
         } catch (\Exception $e) {
             $v->setValue('');
         }
