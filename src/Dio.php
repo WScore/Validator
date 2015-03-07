@@ -16,6 +16,11 @@ class Dio
     protected $source = array();
 
     /**
+     * @var Rules[]
+     */
+    protected $rules = [];
+    
+    /**
      * @var array                 validated and invalidated data
      */
     protected $found = array();
@@ -213,6 +218,17 @@ class Dio
      */
     public function result() {
         return $this->verify->result();
+    }
+
+    /**
+     * @param $name
+     * @param $type
+     * @return Rules
+     */
+    public function setRule($name, $type)
+    {
+        $this->rules[$name] = Rules::$type();
+        return $this->rules[$name];
     }
 
     /**
