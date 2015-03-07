@@ -1,9 +1,9 @@
 <?php
 namespace tests\Validation_1_0;
 
-use WScore\Validation\Factory;
 use WScore\Validation\Rules;
 use WScore\Validation\Dio;
+use WScore\Validation\ValidationFactory;
 
 require_once( dirname( __DIR__ ) . '/autoloader.php' );
 
@@ -20,8 +20,8 @@ class Dio_Test extends \PHPUnit_Framework_TestCase
     }
     
     function make($locale='en') {
-        Factory::setLocale($locale);
-        $this->validate = Factory::buildDio();
+        $factory = new ValidationFactory($locale);
+        $this->validate = $factory->on();
     }
 
     function test0()

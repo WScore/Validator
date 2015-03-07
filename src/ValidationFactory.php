@@ -7,8 +7,14 @@ use WScore\Validation\Utils\ValueTO;
 
 class ValidationFactory
 {
+    /**
+     * @var string      default locale.
+     */
     private $locale = 'en';
 
+    /**
+     * @var string      default language directory.
+     */
     private $dir = __DIR__ . '/Locale/';
 
     /**
@@ -27,22 +33,48 @@ class ValidationFactory
     private $dio;
 
     /**
-     * @param null $locale
-     * @param null $dir
+     * @param null|string $locale
+     * @param null|string $dir
      */
     public function __construct($locale = null, $dir = null)
     {
-        if($locale) {
+        if ($locale) {
             $this->setLocale($locale, $dir);
         }
     }
 
-    public function setLocale($locale=null, $dir = null)
+    /**
+     * @param null|string $locale
+     * @param null|string $dir
+     */
+    public function setLocale($locale = null, $dir = null)
     {
-        $this->rules  = new Rules($locale, $dir);
+        $this->locale = $locale ?: $this->locale;
+        $this->dir    = $dir ?: $this->dir;
+
+        $this->factory();
+    }
+
+    /**
+     * @param array $data
+     * @return Dio
+     */
+    public function on(array $data = [])
+    {
+        if (!$this->dio) {
+            $this->factory();
+        }
+        $dio = clone($this->dio);
+        $dio->source($data);
+        return $dio;
+    }
+
+    private function factory()
+    {
+        $this->rules  = new Rules($this->locale, $this->dir);
         $this->verify = new Verify(
-            new Filter(), 
-            new ValueTO(new Message($locale, $dir))
+            new Filter(),
+            new ValueTO(new Message($this->locale, $this->dir))
         );
         $this->dio    = new Dio($this->verify);
     }
