@@ -109,7 +109,7 @@ class Filter
     public function filter_datetime( $v )
     {
         try {
-            $d = new \DateTime($v);
+            new \DateTime($v);
         } catch (\Exception $e) {
             $v->setValue('');
         }
