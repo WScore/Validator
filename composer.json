@@ -1,6 +1,7 @@
 {
     "name": "wscore/validation",
     "description": "Validation and filtration for values such as form input.",
+    "license": "MIT",
     "authors": [
         {
             "name": "Asao Kamei",
