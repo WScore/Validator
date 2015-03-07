@@ -77,6 +77,17 @@ class Dio
         return $this;
     }
 
+    /**
+     * @param $name
+     * @param $type
+     * @return Rules
+     */
+    public function setRule($name, $type)
+    {
+        $this->rules[$name] = Rules::$type();
+        return $this->rules[$name];
+    }
+
     // +----------------------------------------------------------------------+
     //  getting found values
     // +----------------------------------------------------------------------+
@@ -89,8 +100,29 @@ class Dio
      */
     public function get( $key=null )
     {
-        if( $key ) return Utils\Helper::arrGet( $this->found, $key );
-        return $this->found;
+        if(!$key) {
+            return $this->found;
+        }
+        if (array_key_exists($key, $this->found)) {
+            return $this->found[$key];
+        }
+        $rules = array_key_exists($key, $this->rules) ? $this->rules[$key] : Rules::text();
+        $found = $this->find( $key, $rules );
+        $this->verify->is( $found, $rules );
+
+        $valTO = $this->verify->result();
+        if( $valTO->fails() ) {
+            $found = $valTO->getValue();
+            $message = $valTO->message();
+            $this->isError( $key, $message, $found );
+            if( is_array( $found ) ) {
+                $this->_findClean( $found, $message );
+                return $found;
+            }
+            return false;
+        }
+        $this->set( $key, $valTO->getValue() );
+        return $valTO->getValue();
     }
 
     /**
@@ -221,17 +253,6 @@ class Dio
     }
 
     /**
-     * @param $name
-     * @param $type
-     * @return Rules
-     */
-    public function setRule($name, $type)
-    {
-        $this->rules[$name] = Rules::$type();
-        return $this->rules[$name];
-    }
-
-    /**
      * pushes the $name.
      * returns the found value, or false if validation fails.
      *
@@ -245,22 +266,8 @@ class Dio
         if( !is_string($name) ) {
             throw new \InvalidArgumentException( "name must be a string" );
         }
-        $found = $this->find( $name, $rules );
-        $this->verify->is( $found, $rules );
-
-        $valTO = $this->verify->result();
-        if( $valTO->fails() ) {
-            $found = $valTO->getValue();
-            $message = $valTO->message();
-            $this->isError( $name, $message, $found );
-            if( is_array( $found ) ) {
-                $this->_findClean( $found, $message );
-                return $found;
-            }
-            return false;
-        }
-        $this->set( $name, $valTO->getValue() );
-        return $valTO->getValue();
+        $this->rules[$name] = $rules;
+        return $this->get($name);
     }
 
     /**
