@@ -93,25 +93,6 @@ class ValidationFactory
     }
 
     /**
-     * @param array  $input
-     * @param string $idx
-     * @param bool   $useUnIndexed
-     * @return array
-     */
-    public function extractData(array $input, $idx, $useUnIndexed = false)
-    {
-        $extracted = array();
-        foreach ($input as $key => $data) {
-            if (!is_array($data) && $useUnIndexed) {
-                $extracted[$key] = $data;
-            } elseif (isset($data[$idx])) {
-                $extracted[$key] = $data[$idx];
-            }
-        }
-        return $extracted;
-    }
-
-    /**
      * @return Rules
      */
     public function rules()
