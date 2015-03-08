@@ -24,6 +24,7 @@ use Traversable;
  * @method Rules custom3(\Closure $filter)
  * @method Rules default(string $value)
  * @method Rules required(bool $required = true)
+ * @method Rules requiredIf(string $key, array $in=[])
  * @method Rules loopBreak(bool $break = true)
  * @method Rules code(string $type)
  * @method Rules maxlength(int $length)
@@ -154,7 +155,13 @@ class Rules implements \ArrayAccess, \IteratorAggregate
      */
     public function __call($rule, $args)
     {
-        $value               = isset($args[0]) ? $args[0] : true;
+        if(empty($args)) {
+            $value = true;
+        } elseif(count($args) === 1) {
+            $value = $args[0];
+        } else {
+            $value = $args;
+        }
         $this->filter[$rule] = $value;
 
         return $this;

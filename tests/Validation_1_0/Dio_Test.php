@@ -321,4 +321,76 @@ class Dio_Test extends \PHPUnit_Framework_TestCase
         $found = $this->validate->get('a');
         $this->assertEquals( '2014/05 - 2014/07', $found );
     }
+
+    /**
+     * @test
+     */
+    function requiredIf_simple_case()
+    {
+        $input = [
+            'flag' => 'a',
+            'done' => '',
+        ];
+        $this->validate->source($input);
+        $this->validate->asText('flag');
+        $this->validate->asText('done')->requiredIf('flag');
+        $this->assertEquals( true, $this->validate->fails() );
+        $this->assertEquals( 'required item', $this->validate->message('done') );
+    }
+
+    /**
+     * @test
+     */
+    function requiredIf_with_possible_values()
+    {
+        $input = [
+            'flag' => 'a',
+            'done' => '',
+        ];
+        $this->validate->source($input);
+        $this->validate->asText('flag');
+        $this->validate->asText('done')->requiredIf('flag', ['a']);
+        $this->assertEquals( true, $this->validate->fails() );
+        $this->assertEquals( 'required item', $this->validate->message('done') );
+    }
+
+    /**
+     * @test
+     */
+    function requiredIf_without_possible_values()
+    {
+        $input = [
+            'flag' => 'a',
+            'done' => '',
+        ];
+        $this->validate->source($input);
+        $this->validate->asText('flag');
+        $this->validate->asText('done')->requiredIf('flag', ['b']);
+        $this->assertEquals( true, $this->validate->passes() );
+    }
+
+    /**
+     * @test
+     */
+    function requiredIf_after_rule_is_applyed()
+    {
+        $input = [
+            'flag' => 'A',
+            'done' => '',
+        ];
+        $this->validate->source($input);
+        $this->validate->asText('flag');
+        $this->validate->asText('done')->requiredIf('flag', ['a']);
+        $this->assertEquals( true, $this->validate->passes() );
+
+        $input = [
+            'flag' => 'A',
+            'done' => '',
+        ];
+        $validation = $this->factory->on($input);
+        $validation->asText('flag')->string('lower');
+        $validation->asText('done')->requiredIf('flag', ['a']);
+        $this->assertEquals( true, $validation->fails() );
+        $this->assertEquals( 'required item', $validation->message('done') );
+    }
 }

@@ -126,20 +126,20 @@ class Helper
      * get another value to compare in sameWith, and compare it with the value using sameAs rule.
      *
      * @param Dio         $dio
-     * @param array|Rules $filters
-     * @return array
+     * @param array|Rules $rules
+     * @return array|Rules
      */
-    public static function prepare_sameWith($dio, $filters)
+    public static function prepare_sameWith($dio, $rules)
     {
-        if (!self::arrGet($filters, 'sameWith')) {
-            return $filters;
+        if (!self::arrGet($rules, 'sameWith')) {
+            return $rules;
         }
         // find the same with value.
-        $sub_name = $filters['sameWith'];
-        if (is_object($filters)) {
-            $sub_filter = clone $filters;
+        $sub_name = $rules['sameWith'];
+        if (is_object($rules)) {
+            $sub_filter = clone $rules;
         } else {
-            $sub_filter = $filters;
+            $sub_filter = $rules;
         }
         $sub_filter['sameWith'] = false;
         $sub_filter['required'] = false;
@@ -147,14 +147,44 @@ class Helper
         $value                  = $dio->verify->is($value, $sub_filter);
 
         // reset sameWith filter, and set same{As|Empty} filter.
-        $filters['sameWith'] = false;
+        $rules['sameWith'] = false;
         if ($value) {
-            $filters['sameAs'] = $value;
+            $rules['sameAs'] = $value;
         } else {
-            $filters['sameEmpty'] = true;
+            $rules['sameEmpty'] = true;
         }
 
-        return $filters;
+        return $rules;
+    }
+
+    /**
+     * @param Dio         $dio
+     * @param array|Rules $rules
+     * @return array|Rules
+     */
+    public static function prepare_requiredIf($dio, $rules)
+    {
+        if (!self::arrGet($rules, 'requiredIf')) {
+            return $rules;
+        }
+        $args = $rules['requiredIf'];
+        if (!is_array($args)) {
+            $flag_name = $args;
+            $flags_in  = null;
+        } else {
+            $flag_name = $args[0];
+            $flags_in  = array_key_exists(1, $args) ? (array)$args[1] : null;
+        }
+        $flag_value = $dio->get($flag_name);
+        if ((string)$flag_value === '') {
+            return $rules;
+        }
+        if ($flags_in && !in_array($flag_value, $flags_in)) {
+            return $rules;
+        }
+        $rules['required'] = true;
+
+        return $rules;
     }
 
 }

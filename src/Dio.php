@@ -320,6 +320,9 @@ class Dio
             // simplest case.
             $value = $this->source[$name];
         }
+        // prepares filter for requiredIf
+        $rules = Utils\Helper::prepare_requiredIf($this, $rules);
+        
         // prepares filter for sameWith.
         $rules = Utils\Helper::prepare_sameWith($this, $rules);
 
