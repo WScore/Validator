@@ -1,6 +1,8 @@
 <?php
 namespace WScore\Validation;
 
+use WScore\Validation\Utils\ValueToInterface;
+
 /**
  * Class Validate
  * @package WScore\Validation
@@ -10,17 +12,12 @@ class Verify
     /**
      * @var Utils\Filter
      */
-    public $filter;
+    private $filter;
 
     /**
      * @var Utils\ValueTO
      */
-    public $valueTO;
-
-    /**
-     * @var Utils\ValueTO
-     */
-    protected $lastValue;
+    private $valueTO;
 
     // +----------------------------------------------------------------------+
     //  construction
@@ -48,14 +45,24 @@ class Verify
      */
     public function is( $value, $rules )
     {
+        $valTO = $this->apply($value, $rules);
+        if($valTO->fails()) {
+            return false;
+        }
+        return $valTO->getValue();
+    }
+
+    /**
+     * @param string $value
+     * @param array|Rules  $rules
+     * @return ValueToInterface
+     */
+    public function apply($value, $rules)
+    {
         // -------------------------------
         // validating a single value.
         if( !is_array( $value ) ) {
-            $valTO = $this->applyFilters( $value, $rules );
-            if( $valTO->fails() ) {
-                return false;
-            }
-            return $valTO->getValue();
+            return $this->applyFilters( $value, $rules );
         }
         // -------------------------------
         // validating for an array input.
@@ -70,22 +77,12 @@ class Verify
                 $errors[$key] = $valTO->message();
             }
         }
-        // done validation for an array.
-        // hack the lastValue to have the array of result!
-        $this->lastValue->setValue( $result );
+        $valTO = $this->valueTO->forge($result);
         if( $failed ) {
-            $this->lastValue->setMessage( $errors );
-            $this->lastValue->setError( 'input=array' ); // ouch!
-            return false;
+            $valTO->setMessage( $errors );
+            $valTO->setError( 'input=array' ); // ouch!
         }
-        return $result;
-    }
-
-    /**
-     * @return Utils\ValueToInterface
-     */
-    public function result() {
-        return $this->lastValue;
+        return $valTO;
     }
 
     /**
@@ -114,7 +111,6 @@ class Verify
             // loop break.
             if( $valueTO->getBreak() ) break;
         }
-        $this->lastValue = $valueTO;
         return $valueTO;
     }
     // +----------------------------------------------------------------------+

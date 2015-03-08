@@ -3,26 +3,28 @@ namespace tests\Validation_1_0;
 
 use WScore\Validation\Factory;
 use WScore\Validation\Rules;
+use WScore\Validation\ValidationFactory;
 use WScore\Validation\Verify;
 use WScore\Validation\Utils\ValueTO;
 
 require_once( dirname( __DIR__ ) . '/autoloader.php' );
 
-class Validate_Test extends \PHPUnit_Framework_TestCase
+class Verify_Test extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var Verify
      */
-    public $validate;
+    public $verify;
 
     function setup()
     {
-        $this->validate = Factory::buildVerify();
+        $factory = new ValidationFactory();
+        $this->verify = $factory->verify();
     }
 
     function test0()
     {
-        $this->assertEquals( 'WScore\Validation\Verify', get_class( $this->validate ) );
+        $this->assertEquals( 'WScore\Validation\Verify', get_class( $this->verify ) );
     }
 
     // +----------------------------------------------------------------------+
@@ -33,8 +35,8 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
      */
     function apply_filter_trim()
     {
-        $value = $this->validate->applyFilters( ' text ', [ 'trim' => true ] );
-        $this->assertEquals( 'WScore\Validation\Verify', get_class( $this->validate ) );
+        $value = $this->verify->applyFilters( ' text ', [ 'trim' => true ] );
+        $this->assertEquals( 'WScore\Validation\Verify', get_class( $this->verify ) );
         $this->assertEquals( false, $value->fails() );
         $this->assertEquals( 'text', $value->getValue() );
         $this->assertEquals( 'text', $value );
@@ -44,18 +46,9 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    function result_returns_last_value()
-    {
-        $value = $this->validate->applyFilters( ' text ', [ 'trim' => true ] );
-        $this->assertSame( $value, $this->validate->result() );
-    }
-
-    /**
-     * @test
-     */
     function apply_filter_message()
     {
-        $value = $this->validate->applyFilters( 'text', [ 'message' => 'tested' ] );
+        $value = $this->verify->applyFilters( 'text', [ 'message' => 'tested' ] );
         $this->assertEquals( 'tested', $value->message() );
     }
 
@@ -64,7 +57,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
      */
     function message_is_set_if_required_fails()
     {
-        $value = $this->validate->applyFilters( '', [ 'required' => true ] );
+        $value = $this->verify->applyFilters( '', [ 'required' => true ] );
         $this->assertEquals( true, $value->fails() );
         $this->assertEquals( 'required item', $value->message() );
     }
@@ -74,7 +67,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
      */
     function get_general_error_message()
     {
-        $value = $this->validate->applyFilters( '', [] );
+        $value = $this->verify->applyFilters( '', [] );
         $this->assertEquals( 'invalid input', $value->message() );
     }
 
@@ -83,7 +76,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
      */
     function get_message_based_type()
     {
-        $value = $this->validate->applyFilters( '', ['type'=>'mail'] );
+        $value = $this->verify->applyFilters( '', ['type'=>'mail'] );
         $this->assertEquals( 'invalid mail format', $value->message() );
     }
 
@@ -92,11 +85,11 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
      */
     function match_message()
     {
-        $value = $this->validate->applyFilters( '', ['matches'=>'number'] );
+        $value = $this->verify->applyFilters( '', ['matches'=>'number'] );
         $this->assertEquals( 'only numbers (0-9)', $value->message() );
-        $value = $this->validate->applyFilters( '', ['matches'=>'int'] );
+        $value = $this->verify->applyFilters( '', ['matches'=>'int'] );
         $this->assertEquals( 'not an integer', $value->message() );
-        $value = $this->validate->applyFilters( '', ['matches'=>'not-valid'] );
+        $value = $this->verify->applyFilters( '', ['matches'=>'not-valid'] );
         $this->assertEquals( 'invalid input', $value->message() );
     }
 
@@ -141,16 +134,13 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
     function is_for_array_input_lowers_character()
     {
         $input = [ 'abc', 'ABC', 'Abc' ];
-        $found = $this->validate->is( $input, ['string'=>'lower'] );
-        $this->assertFalse( $this->validate->result()->fails() );
+        $found = $this->verify->is( $input, ['string'=>'lower'] );
         $this->assertEquals( 'abc', $found[0] );
         $this->assertEquals( 'abc', $found[1] );
         $this->assertEquals( 'abc', $found[2] );
 
-        $found = $this->validate->result()->getValue();
-        $this->assertEquals( 'abc', $found[0] );
-        $this->assertEquals( 'abc', $found[1] );
-        $this->assertEquals( 'abc', $found[2] );
+        $valTO = $this->verify->apply( $input, ['string'=>'lower'] );
+        $this->assertFalse( $valTO->fails() );
     }
 
     /**
@@ -160,17 +150,17 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
     {
         $input = [ '1', '2', 'bad', '3' ];
 
-        $returned = $this->validate->is( $input, ['matches'=>'number'] );
-        $this->assertTrue( $this->validate->result()->fails() );
+        $returned = $this->verify->is( $input, ['matches'=>'number'] );
+        $valTO    = $this->verify->apply( $input, ['matches'=>'number'] );
         $this->assertFalse( $returned );
 
-        $found   = $this->validate->result()->getValue();
+        $found   = $valTO->getValue();
         $this->assertEquals( '1', $found[0] );
         $this->assertEquals( '2', $found[1] );
         $this->assertEquals( 'bad', $found[2] );
         $this->assertEquals( '3', $found[3] );
 
-        $messages = $this->validate->result()->message();
+        $messages = $valTO->message();
         $this->assertArrayNotHasKey( 0, $messages );
         $this->assertArrayNotHasKey( 1, $messages );
         $this->assertArrayNotHasKey( 3, $messages );
@@ -190,7 +180,7 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
             $val .= ':closure';
             $v->setValue( $val );
         };
-        $found = $this->validate->is( 'test', Rules::text()->addCustom( 'my', $filter ) );
+        $found = $this->verify->is( 'test', Rules::text()->addCustom( 'my', $filter ) );
         $this->assertEquals( 'test:closure', $found );
     }
 
@@ -209,10 +199,10 @@ class Validate_Test extends \PHPUnit_Framework_TestCase
             $v->setError(__METHOD__);
             $v->setMessage('Closure with Error');
         };
-        $found = $this->validate->is( 'test', Rules::text()->custom($filter) );
+        $found = $this->verify->is( 'test', Rules::text()->custom($filter) );
         $this->assertEquals( false, $found );
         /** @var ValueTO $valTo */
-        $valTo = $this->validate->result();
+        $valTo = $this->verify->apply( 'test', Rules::text()->custom($filter) );
         $this->assertTrue( $valTo->fails() );
         $this->assertTrue( $valTo->getBreak() );
         $this->assertEquals( 'test:bad', $valTo->getValue() );

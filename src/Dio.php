@@ -170,9 +170,8 @@ class Dio
         }
         $rules = array_key_exists($key, $this->rules) ? $this->rules[$key] : Rules::text();
         $found = $this->find( $key, $rules );
-        $this->verify->is( $found, $rules );
+        $valTO = $this->verify->apply( $found, $rules );
 
-        $valTO = $this->verify->result();
         if( $valTO->fails() ) {
             $found = $valTO->getValue();
             $message = $valTO->message();
@@ -305,13 +304,6 @@ class Dio
     public function verify( $value, $rules )
     {
         return $this->verify->is( $value, $rules );
-    }
-
-    /**
-     * @return Utils\ValueToInterface
-     */
-    public function result() {
-        return $this->verify->result();
     }
 
     /**

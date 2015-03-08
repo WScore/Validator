@@ -69,6 +69,17 @@ class ValidationFactory
         return $dio;
     }
 
+    /**
+     * @return Verify
+     */
+    public function verify()
+    {
+        if (!$this->verify) {
+            $this->factory();
+        }
+        return $this->verify;
+    }
+
     private function factory()
     {
         $this->rules  = new Rules($this->locale, $this->dir);
