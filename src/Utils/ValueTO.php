@@ -25,7 +25,7 @@ class ValueTO implements ValueToInterface
     protected $error = false;
 
     /**
-     * @var string
+     * @var string|array
      */
     protected $message;
 

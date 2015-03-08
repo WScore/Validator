@@ -160,11 +160,11 @@ class Dio
      * this method returns values that maybe invalid.
      *
      * @param null|string $key
-     * @return array
+     * @return array|string|bool
      */
     public function get($key = null)
     {
-        if (!$key) {
+        if (is_null($key)) {
             return $this->found;
         }
         if (array_key_exists($key, $this->found)) {
@@ -264,7 +264,7 @@ class Dio
      */
     public function message($name = null)
     {
-        if ($name) {
+        if (!is_null($name)) {
             return Utils\Helper::arrGet($this->messages, $name);
         }
 

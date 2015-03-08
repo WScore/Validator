@@ -38,7 +38,7 @@ class ValidationFactory
      */
     public function __construct($locale = null, $dir = null)
     {
-        if ($locale) {
+        if (!is_null($locale)) {
             $this->setLocale($locale, $dir);
         }
     }

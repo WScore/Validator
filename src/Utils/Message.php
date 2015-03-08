@@ -10,9 +10,8 @@ class Message
 
     // +----------------------------------------------------------------------+
     /**
-     * @param null $locale
-     * @param null $dir
-     * @return Message
+     * @param null|string $locale
+     * @param null|string $dir
      */
     public function __construct($locale = null, $dir = null)
     {

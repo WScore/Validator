@@ -94,7 +94,7 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     // +----------------------------------------------------------------------+
     /**
      * @param null|string $locale
-     * @param null        $dir
+     * @param null|string $dir
      */
     public function __construct($locale = null, $dir = null)
     {
