@@ -80,26 +80,6 @@ class Dio
     }
 
     /**
-     * @param string|int $idx
-     * @param bool       $useUnIndexed
-     * @return $this
-     */
-    public function onIndex($idx, $useUnIndexed = false)
-    {
-        $input = array();
-        foreach ($this->source as $key => $data) {
-            if (!is_array($data) && $useUnIndexed) {
-                $input[$key] = $data;
-            } elseif (isset($data[$idx])) {
-                $input[$key] = $data[$idx];
-            }
-        }
-        $this->source = $input;
-
-        return $this;
-    }
-
-    /**
      * @param $name
      * @param $type
      * @return Rules
@@ -305,15 +285,6 @@ class Dio
     // +----------------------------------------------------------------------+
     //  find and validate and save it to found
     // +----------------------------------------------------------------------+
-    /**
-     * @param string $name
-     * @return bool
-     */
-    public function exists($name)
-    {
-        return array_key_exists($name, $this->source);
-    }
-
     /**
      * @param string      $value
      * @param Rules|array $rules

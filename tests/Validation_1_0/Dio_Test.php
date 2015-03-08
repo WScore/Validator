@@ -135,7 +135,7 @@ class Dio_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( '2013-11-08', $got );
         $this->assertEquals( '2013-11-08', $this->validate->get( 'test' ) );
         $this->assertEquals( array( 'test' => '2013-11-08'), $this->validate->get() );
-        $this->assertEquals( false, $this->validate->fails() );
+        $this->assertEquals( true, $this->validate->passes() );
         $this->assertEquals( array(), $this->validate->message() );
     }
 
