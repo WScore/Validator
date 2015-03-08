@@ -1,12 +1,11 @@
 Validation
 ==========
 
-簡単に使えるマルチバイトサポートが豊富なValidationコンポーネント。
+マルチバイトサポート（というより日本語）が豊富なValidationコンポーネント。
 
-簡単に使える、コードを書くのが楽しい、
-沢山のエラーメッセージがデフォルトで設定されている、
-沢山のバリデーションタイプがデフォルトで存在する、
-そしてマルチバイトキャラクター（日本語のこと）を扱いやすい。
+*   できるだけコード補完、
+*   沢山のバリデーションタイプがデフォルトで存在する、
+*   そしてマルチバイトキャラクター（日本語のこと）を扱いやすい。
 
 その他の特徴は：
 
@@ -39,33 +38,37 @@ MIT License
 
 ### Factoryクラス（Validationオブジェクトの生成）
 
-コンポーネント内の ```Factory``` クラスを使ってバリデーション用オブジェクトを
-生成してください。
-バリデーションする入力（配列）は ```source``` メソッドで設定します。フォーム
-からの入力を確認するなら、例にあるように ```$_POST``` を使います。
+コンポーネント内の ```ValidationFactory``` クラスを使ってバリデーション用オブジェクトを生成してください。
 
 ```php
-use \WScore\Validation\Validation;
+use \WScore\Validation\ValidationFactory;
 
-Validation::setLocale('ja');         // use Japanese rules and messages.
-$input = Validation::on( $_POST );   // get validator.
+$factory = ValidationFactory();     // use English rules and messages.
+$factory = ValidationFactory('ja'); // use Japanese rules and messages.
+```
+
+データ配列のバリデーションは```on```メソッドから。
+
+```php
+$input = $factory->on($_POST);
+$input->asText('name');
+$input->asInteger('age');
+$input->asDate('bate');
+if($v->fails()) {
+   $messages = $input->messages();
+}
+$values = $input->get();
 ```
 
 
 ### 入力データのバリデーション
 
-バリデーションの ```is``` メソッドは、バリデーションを行った結果の値を返します。
-内容チェックでエラーが有った場合は ```false``` を返します。
-
-スタティッククラス、```Rules``` を使って簡単にルールを構築できます。
+バリデーションの ```as{Type}($name)``` メソッドは、データの中の```$name```に対してバリデーションルールを設定します。
 
 ```php
-use \WScore\Validation\Validation;
-use \WScore\Validation\Rules;
-
-$input = Validation::on( $_POST );   // get validator.
-$input->is( 'name', Rules::text()->required() );
-$input->is( 'mail', Rules::mail()->required() );
+$input = $factory->on( $_POST );   // get validator.
+$input->asText('name')->required() );
+$input->asMail('mail')->required()->sameWith('mail2'));
 $found = $input->get(); // [ 'name' => some name... ]
 if( $input->fails() ) {
     $onlyGoodData    = $input->getSafe();
@@ -76,45 +79,12 @@ if( $input->fails() ) {
 ```
 
 バリデーションが成功したかどうか ```fails()``` を
-使って確認できます。
+使って確認できます（```passes()```メソッドもあります）。
 
 処理完了後、```get``` メソッドで値を取得します。ただし不正な
 値も全て含まれるので、正しい値だけを取得するには ```getSafe()```
 を使って下さい。
 
-
-#### example code
-
-この ```is``` メソッドはバリデーションに失敗した場合は```false```を返すため、
-返り値を使って簡単にロジックを組むことが出来ます。
-
-```php
-// check if name or nickname is set
-if( !$input->is( 'name', Rules::text() ) ) {
-    if( !$input->is( 'nickname', Rules::text() ) ) {
-        $input->isError( 'name', 'requires name or nickname' );
-    }
-}
-
-// check mail with confirmation
-$input->is( 'mail', Rules::mail()->sameWith( 'mail2' )->required() );
-
-// check value of input, and do more stuff.
-$status = $input->is( 'status', Rules::int()->in( '1', '2', '3' )->required()->message('must be 1-3.') );
-if( $status == '1' ) { // add some message?!
-    $input->setValue( 'notice', 'how do you like it?' );
-} elseif( $status === '3' ) { // maybe get some reasons...
-    echo $input->is('reason', Rules::text()->required() );
-}
-
-if( $input->fails() ) {
-    $onlyGoodData    = $input->getSafe();
-    $containsBadData = $input->get();
-    $message         = $input->message();
-} else {
-    $goodData = $input->get();
-}
-```
 
 
 ### 値のバリデーション
@@ -138,8 +108,8 @@ if( false === $input->verify( 'Bad', Rules::int() ) { // returns false
 
 ```php
 $input->source( array( 'list' => [ '1', '2', 'bad', '4' ] ) );
-
-if( !$input->is( 'list', Rules::int() ) ) {
+$input->asInteger('list');
+if( !$input->passes() ) {
     $values = $validation->get('list');
     $goods  = $validation->getSafe();
     $errors = $validation->message();
@@ -150,6 +120,7 @@ if( !$input->is( 'list', Rules::int() ) ) {
  * $errors = array( 'list' => [ 2 => 'not an integer' ] );
  */
 ```
+
 
 
 ### 複数フィールドの入力
@@ -164,7 +135,7 @@ echo $validation->is( 'bd', Rules::date() ); // 2001-09-25
 自作の複数フィールドの入力フィルターを作る場合は、```multiple``` を使います。
 
 ```php
-Rules::text()->multiple( [
+$input->asText('ranges')->multiple( [
     'suffix' => 'y1,m1,y2,m2',
     'format' => '%04d/%02d - %04d/%02d'
 ] );
@@ -182,7 +153,9 @@ Rules::text()->multiple( [
 
 ```php
 $input->source([ 'text1' => '123ABC', 'text2' => '123abc' ] );
-echo $validation->is( 'text1', Rules::text()->string('lower')->sameWith('text2') ); // 123abc
+echo $validation->asText('text1')
+	->string('lower')
+	->sameWith('text2') ); // 123abc
 ```
 
 
@@ -195,19 +168,6 @@ echo $validate->verify( 'ABC', Rules::text()->pattern('[a-c]*')->string('lower')
 ## should lower the string first, then check for pattern...
 ```
 
-
-### インデックス配列
-
-次のような入力の場合…
-
-```php
-$input = [ 0 => [ 'name' => 'john', ...],
-           1 => [ 'name' => 'paul', ...],
-            ... ];
-$input = Validation::on( $input )->onIndex('1');
-```
-
-とすると、「paul」のみについて確認します。
 
 
 ### 自作バリデーションフィルター
