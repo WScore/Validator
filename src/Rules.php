@@ -74,21 +74,6 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     protected $filter = array();
 
     /**
-     * @var Rules
-     */
-    protected static $_rules;
-
-    /**
-     * @var string
-     */
-    protected static $locale = 'en';
-
-    /**
-     * @var string
-     */
-    protected static $dir;
-
-    /**
      * @var string
      */
     private $type;
@@ -102,13 +87,10 @@ class Rules implements \ArrayAccess, \IteratorAggregate
      */
     public function __construct($locale = null, $dir = null)
     {
-        if (!$locale) {
-            $locale = static::$locale;
-        }
-        if (!$dir) {
-            $dir = static::$dir ?: __DIR__ . '/Locale/';
-        }
-        $dir .= $locale . '/';
+        $locale = $locale ?: 'en';
+        $dir    = $dir ?: __DIR__ . '/Locale/';
+        $dir   .= $locale . '/';
+        
         /** @noinspection PhpIncludeInspection */
         $this->baseFilters = include($dir . "validation.filters.php");
         $this->filter      = $this->baseFilters;
