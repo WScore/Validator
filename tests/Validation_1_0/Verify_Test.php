@@ -1,7 +1,6 @@
 <?php
 namespace tests\Validation_1_0;
 
-use WScore\Validation\Rules;
 use WScore\Validation\ValidationFactory;
 use WScore\Validation\Verify;
 use WScore\Validation\Utils\ValueTO;
@@ -15,10 +14,15 @@ class Verify_Test extends \PHPUnit_Framework_TestCase
      */
     public $verify;
 
+    /**
+     * @var ValidationFactory
+     */
+    private $factory;
+
     function setup()
     {
-        $factory = new ValidationFactory();
-        $this->verify = $factory->verify();
+        $this->factory = new ValidationFactory();
+        $this->verify = $this->factory->verify();
     }
 
     function test0()
@@ -180,7 +184,7 @@ class Verify_Test extends \PHPUnit_Framework_TestCase
             $val .= ':closure';
             $v->setValue( $val );
         };
-        $found = $this->verify->is( 'test', Rules::text()->addCustom( 'my', $filter ) );
+        $found = $this->verify->is( 'test', $this->factory->rules()->withType('text')->addCustom( 'my', $filter ) );
         $this->assertEquals( 'test:closure', $found );
     }
 
@@ -199,10 +203,10 @@ class Verify_Test extends \PHPUnit_Framework_TestCase
             $v->setError(__METHOD__);
             $v->setMessage('Closure with Error');
         };
-        $found = $this->verify->is( 'test', Rules::text()->custom($filter) );
+        $found = $this->verify->is( 'test', $this->factory->rules()->withType('text')->custom($filter) );
         $this->assertEquals( false, $found );
         /** @var ValueTO $valTo */
-        $valTo = $this->verify->apply( 'test', Rules::text()->custom($filter) );
+        $valTo = $this->verify->apply( 'test', $this->factory->rules()->withType('text')->custom($filter) );
         $this->assertTrue( $valTo->fails() );
         $this->assertTrue( $valTo->getBreak() );
         $this->assertEquals( 'test:bad', $valTo->getValue() );

@@ -118,12 +118,11 @@ class Rules implements \ArrayAccess, \IteratorAggregate
         foreach ($types as $key => $info) {
             $this->filterTypes[$key] = $info;
         }
-        static::$_rules = $this;
     }
     
     /**
      * @param $type
-     * @return $this
+     * @return Rules|$this
      */
     public function withType($type)
     {
@@ -131,44 +130,6 @@ class Rules implements \ArrayAccess, \IteratorAggregate
         $rule->applyType($type);
 
         return $rule;
-    }
-
-    /**
-     * @param string $locale
-     * @param null   $dir
-     * @return string
-     */
-    public static function locale($locale = null, $dir = null)
-    {
-        static::$dir = $dir;
-        if (!$locale) {
-            return static::$locale;
-        }
-        if (class_exists('Locale')) {
-            $locale = strtolower(\Locale::getPrimaryLanguage($locale));
-        }
-        static::$locale = $locale;
-
-        return static::$locale;
-    }
-
-    /**
-     * @param $method
-     * @param $args
-     * @return Rules
-     */
-    public static function __callStatic($method, $args)
-    {
-        if (!static::$_rules) {
-            new static();
-        }
-        $rules = clone(static::$_rules);
-        $rules = $rules->applyType($method);
-        foreach ($args as $arg) {
-            $rules->apply($arg);
-        }
-
-        return $rules;
     }
     // +----------------------------------------------------------------------+
     //  setting rule

@@ -8,10 +8,18 @@ require_once( dirname( __DIR__ ) . '/autoloader.php' );
 
 class Rules_Test extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var ValidationFactory
+     */
+    private $factory;
+
+    function setup()
+    {
+        $this->factory = new ValidationFactory();
+    }
     function test0()
     {
-        $factory = new ValidationFactory();
-        $rules = $factory->rules();
+        $rules = $this->factory->rules();
         $this->assertEquals( 'WScore\Validation\Rules', get_class( $rules ) );
     }
 
@@ -20,7 +28,7 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
      */
     function text_required_sets_type_and_required()
     {
-        $rules = Rules::text();
+        $rules = $this->factory->rules()->withType('text');
         $this->assertEquals( 'text', $rules['type'] );
         $this->assertEquals( 'text', $rules->getType() );
         $this->assertEquals( false, $rules['required'] );
@@ -29,7 +37,8 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( 'text', $array['type'] );
         $this->assertEquals( false, $array['required'] );
 
-        $rules = Rules::text()->required();
+        /** @var Rules $rules */
+        $rules = $rules->withType('text')->required();
         $this->assertEquals( 'text', $rules['type'] );
         $this->assertEquals( true, $rules['required'] );
         $this->assertEquals( true, $rules->isRequired() );
@@ -43,7 +52,8 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
      */
     function int_with_rules_sets_type_and_max()
     {
-        $rules = Rules::integer( 'required|max:10' );
+        $rules = $this->factory->rules()->withType('integer'); 
+        $rules->apply( 'required|max:10' );
         $this->assertEquals( 'integer', $rules['type'] );
         $this->assertEquals( 'integer', $rules->getType() );
         $this->assertEquals( 10, $rules['max'] );
@@ -54,7 +64,8 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
      */
     function mail_with_array_rules_sets_type_and_string()
     {
-        $rules = Rules::mail( ['required','string'=>'lower'] );
+        $rules = $this->factory->rules()->withType('mail');
+        $rules->apply( ['required','string'=>'lower'] );
         $this->assertEquals( 'mail', $rules['type'] );
         $this->assertEquals( 'lower', $rules['string'] );
     }
@@ -65,8 +76,7 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
      */
     function invalid_type_throws_BadMethodCallException()
     {
-        /** @noinspection PhpUndefinedMethodInspection */
-        Rules::badType();
+        $this->factory->rules()->withType('bad');
     }
 
     /**
@@ -99,12 +109,11 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
      */
     function locale_ja_loads_filters_and_types_in_ja()
     {
-        $rules = Rules::text();
+        $rules = $this->factory->rules()->withType('text');
         $this->assertEquals( 'text', $rules->getType() );
         $this->assertEquals( null, $rules['mbConvert'] );
-        Rules::locale('ja');
-        new Rules();
-        $rules = Rules::text();
+        
+        $rules = (new ValidationFactory('ja'))->rules()->withType('text');
         $this->assertEquals( 'text', $rules->getType() );
         $this->assertEquals( 'standard', $rules['mbConvert'] );
     }
@@ -114,8 +123,8 @@ class Rules_Test extends \PHPUnit_Framework_TestCase
      */
     function test2()
     {
-        $rule0 = Rules::text();
-        $rule1 = $rule0::text();
+        $rule0 = $this->factory->rules()->withType('text');
+        $rule1 = $this->factory->rules()->withType('text');
         $this->assertEquals( $rule0, $rule1 );
         $this->assertNotSame( $rule0, $rule1 );
     }

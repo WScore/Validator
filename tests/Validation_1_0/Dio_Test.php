@@ -1,7 +1,6 @@
 <?php
 namespace tests\Validation_1_0;
 
-use WScore\Validation\Rules;
 use WScore\Validation\Dio;
 use WScore\Validation\ValidationFactory;
 
@@ -14,14 +13,19 @@ class Dio_Test extends \PHPUnit_Framework_TestCase
      */
     public $validate;
 
+    /**
+     * @var ValidationFactory
+     */
+    private $factory;
+
     function setup()
     {
         $this->make();
     }
     
     function make($locale='en') {
-        $factory = new ValidationFactory($locale);
-        $this->validate = $factory->on();
+        $this->factory = new ValidationFactory($locale);
+        $this->validate = $this->factory->on();
     }
 
     function test0()
@@ -68,9 +72,10 @@ class Dio_Test extends \PHPUnit_Framework_TestCase
      */
     function verify_validates_a_value()
     {
-        $this->assertEquals( 'test', $this->validate->verify( 'test', Rules::text() ) );
-        $this->assertEquals( 'test', $this->validate->verify( 'TEST', Rules::text()->string('lower') ) );
-        $this->assertEquals( false,  $this->validate->verify( 'b@d', Rules::text()->pattern('[a-z]*') ) );
+        $rule = $this->factory->rules();
+        $this->assertEquals( 'test', $this->validate->verify( 'test', $rule->withType('text') ) );
+        $this->assertEquals( 'test', $this->validate->verify( 'TEST', $rule->withType('text')->string('lower') ) );
+        $this->assertEquals( false,  $this->validate->verify( 'b@d',  $rule->withType('text')->pattern('[a-z]*') ) );
     }
     // +----------------------------------------------------------------------+
     //  test for array input
