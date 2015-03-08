@@ -36,6 +36,27 @@ class Dio_Test extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    function Dio_normal_usage()
+    {
+        $source = array( 'test' => 'tested', 'more' => 'done' );
+        $input  = $this->factory->on($source);
+        $input->asText('test');
+        $input->asText('more');
+        $this->assertEquals(false, $input->fails());
+        $this->assertEquals(true,  $input->passes());
+        $this->assertEquals($source,  $input->get());
+        
+        $input->asText('bad')->required();
+        $this->assertEquals(true, $input->fails());
+        $this->assertEquals(false,  $input->passes());
+        $source['bad'] = null;
+        $this->assertEquals($source,  $input->get());
+        $this->assertEquals(['bad'=>'required item'],  $input->message());
+    }
+
+    /**
+     * @test
+     */
     function is_validates_and_returns_the_value()
     {
         $source = array( 'test' => 'tested' );

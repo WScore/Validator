@@ -27,27 +27,32 @@ class Dio
     /**
      * @var array                 source of data to read from
      */
-    protected $source = array();
+    private $source = array();
 
     /**
      * @var Rules[]
      */
-    protected $rules = [];
+    private $rules = [];
+
+    /**
+     * @var bool
+     */
+    private $isEvaluated = false;
 
     /**
      * @var array                 validated and invalidated data
      */
-    protected $found = array();
+    private $found = array();
 
     /**
      * @var array                 invalidated error messages
      */
-    protected $messages = array();
+    private $messages = array();
 
     /**
      * @var int                   number of errors (invalids)
      */
-    protected $err_num = 0;
+    private $err_num = 0;
 
     /**
      * @var Verify
@@ -77,6 +82,7 @@ class Dio
     public function source($data = array())
     {
         $this->source = $data;
+        $this->isEvaluated = false;
     }
 
     /**
@@ -87,6 +93,7 @@ class Dio
     public function setRule($name, $type)
     {
         $this->rules[$name] = $this->ruler->withType($type);
+        $this->isEvaluated = false;
 
         return $this->rules[$name];
     }
@@ -112,6 +119,7 @@ class Dio
     public function is($name, $rules)
     {
         $this->rules[$name] = $rules;
+        $this->isEvaluated = false;
 
         return $this->get($name);
     }
@@ -134,6 +142,16 @@ class Dio
         throw new \BadMethodCallException;
     }
 
+    private function evaluate()
+    {
+        if($this->isEvaluated) {
+            return;
+        }
+        foreach($this->rules as $key => $rule) {
+            if(array_key_exists($key, $this->found)) continue;
+            $this->found[$key] = $this->get($key);
+        }
+    }
     // +----------------------------------------------------------------------+
     //  getting found values
     // +----------------------------------------------------------------------+
@@ -152,7 +170,7 @@ class Dio
         if (array_key_exists($key, $this->found)) {
             return $this->found[$key];
         }
-        $rules = array_key_exists($key, $this->rules) ? $this->rules[$key] : Rules::text();
+        $rules = array_key_exists($key, $this->rules) ? $this->rules[$key] : $this->ruler->withType('text');
         $found = $this->find($key, $rules);
         $valTO = $this->verify->apply($found, $rules);
 
@@ -227,6 +245,7 @@ class Dio
      */
     public function fails()
     {
+        $this->evaluate();
         return $this->err_num ? true : false;
     }
 
@@ -235,6 +254,7 @@ class Dio
      */
     public function passes()
     {
+        $this->evaluate();
         return $this->err_num ? false : true;
     }
 
