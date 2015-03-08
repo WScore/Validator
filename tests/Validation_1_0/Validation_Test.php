@@ -51,4 +51,25 @@ class Validation_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( 'exceeds max value', $v->message('big') );
         $this->assertEquals( 'required item', $v->message('bad') );
     }
+
+    /**
+     * @test
+     */
+    function filter_min_value()
+    {
+        $factory = new ValidationFactory();
+        $v = $factory->on([
+            'int' => '100',
+            'big' => '101',
+            'bad' => '12345678901234567890123456789012345678901234567890',
+        ]);
+        $v->asInteger('int')->min(101);
+        $v->asInteger('big')->min(101);
+        $value1 = $v->get('int');
+        $value2 = $v->get('big');
+
+        $this->assertEquals(false,  $value1);
+        $this->assertEquals( '101', $value2);
+        $this->assertEquals( 'below min value', $v->message('int') );
+    }
 }

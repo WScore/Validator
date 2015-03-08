@@ -9,6 +9,7 @@ return array(
     'sameAs'    => 'value not the same',
     'sameEmpty' => 'missing value to compare',
     'max'      => 'exceeds max value',
+    'min'      => 'below min value',
     'matches'   => [                        // message for matches and parameter
         'number' => 'only numbers (0-9)',
         'int'    => 'not an integer',

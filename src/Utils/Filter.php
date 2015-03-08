@@ -325,5 +325,17 @@ class Filter
             $v->setError(__METHOD__);
         }
     }
+
+    /**
+     * @param ValueTO $v
+     * @param         $p
+     */
+    public function filter_min($v, $p)
+    {
+        $val = (int)$v->getValue();
+        if ($val < (int)$p) {
+            $v->setError(__METHOD__);
+        }
+    }
     // +----------------------------------------------------------------------+
 }
