@@ -43,6 +43,30 @@ use Traversable;
  */
 class Rules implements \ArrayAccess, \IteratorAggregate
 {
+    /*
+     * convert string to... 
+     */
+    const STRING_LOWER = 'lower';
+    const STRING_UPPER = 'upper';
+    const STRING_CAPITAL = 'capital';
+    
+    /*
+     * converts mb character to...
+     */
+    const MB_HANKAKU = 'han_kaku';
+    const MB_ZENKAKU = 'zen_kaku';
+    const MB_HAN_KANA = 'han_kana';
+    const MB_HIRAGANA = 'hiragana';
+    const MB_KATAKANA = 'katakana';
+
+    /*
+     * validates the mb character type.
+     */
+    const ONLY_KATAKANA = 'katakana';
+    const ONLY_HIRAGANA = 'hiragana';
+    const ONLY_HANKAKU = 'hankaku';
+    const ONLY_HANKAKU_KANA = 'hankana';
+
     /**
      * this is the mother of $filter.
      *

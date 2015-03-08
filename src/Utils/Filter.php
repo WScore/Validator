@@ -1,6 +1,8 @@
 <?php
 namespace WScore\Validation\Utils;
 
+use WScore\Validation\Rules;
+
 class Filter
 {
     public static $charCode = 'UTF-8';
@@ -135,11 +137,11 @@ class Filter
     }
 
     public $mvConvert = array(
-        'hankaku'  => 'aKVs',
-        'zenkaku'  => 'AKVS',
-        'han_kana' => 'khs',
-        'hiragana' => 'HVcS',
-        'katakana' => 'KVCS',
+        Rules::MB_HANKAKU  => 'aKVs',
+        Rules::MB_ZENKAKU  => 'AKVS',
+        Rules::MB_HAN_KANA => 'khs',
+        Rules::MB_HIRAGANA => 'HVcS',
+        Rules::MB_KATAKANA => 'KVCS',
     );
 
     /**
@@ -159,11 +161,11 @@ class Filter
     public function filter_string($v, $p)
     {
         $val = $v->getValue();
-        if ($p == 'lower') {
+        if ($p == Rules::STRING_LOWER) {
             $val = strtolower($val);
-        } elseif ($p == 'upper') {
+        } elseif ($p == Rules::STRING_UPPER) {
             $val = strtoupper($val);
-        } elseif ($p == 'capital') {
+        } elseif ($p == Rules::STRING_CAPITAL) {
             $val = ucwords($val);
         }
         $v->setValue($val);
@@ -259,10 +261,10 @@ class Filter
      * @var array
      */
     public $kanaType = array(
-        'katakana' => '[　ーァ-ヶ・ーヽヾ]*',
-        'hiragana' => '[　ぁ-ん゛-ゞ]+',
-        'hankana'  => '[ ｦ-ﾝﾞﾟ]+',
-        'hankaku'  => '[ -~]+',
+        Rules::ONLY_KATAKANA => '[　ーァ-ヶ・ーヽヾ]*',
+        Rules::ONLY_HIRAGANA => '[　ぁ-ん゛-ゞ]+',
+        Rules::ONLY_HANKAKU_KANA  => '[ ｦ-ﾝﾞﾟ]+',
+        Rules::ONLY_HANKAKU  => '[ -~]+',
     );
 
     /**
