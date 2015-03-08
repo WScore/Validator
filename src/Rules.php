@@ -39,20 +39,6 @@ use Traversable;
  * @method Rules sameAs(string $name)
  * @method Rules sameEmpty(bool $check = true)
  *
- * below are static methods for types.
- *
- * @method static Rules text(array $filters = array())
- * @method static Rules mail(array $filters = array())
- * @method static Rules binary(array $filters = array())
- * @method static Rules number(array $filters = array())
- * @method static Rules integer(array $filters = array())
- * @method static Rules float(array $filters = array())
- * @method static Rules date(array $filters = array())
- * @method static Rules datetime(array $filters = array())
- * @method static Rules dateYM(array $filters = array())
- * @method static Rules time(array $filters = array())
- * @method static Rules timeHi(array $filters = array())
- * @method static Rules tel(array $filters = array())
  */
 class Rules implements \ArrayAccess, \IteratorAggregate
 {
