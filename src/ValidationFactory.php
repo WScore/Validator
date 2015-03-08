@@ -66,6 +66,7 @@ class ValidationFactory
         }
         $dio = clone($this->dio);
         $dio->source($data);
+
         return $dio;
     }
 
@@ -77,6 +78,7 @@ class ValidationFactory
         if (!$this->verify) {
             $this->factory();
         }
+
         return $this->verify;
     }
 

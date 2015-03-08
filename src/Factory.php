@@ -15,21 +15,21 @@ class Factory
      * @param string $locale
      * @internal param string $dir
      */
-    public static function setLocale( $locale )
+    public static function setLocale($locale)
     {
-        if( class_exists( 'Locale' ) ) {
-            $locale = strtolower( \Locale::getPrimaryLanguage( $locale ) );
+        if (class_exists('Locale')) {
+            $locale = strtolower(\Locale::getPrimaryLanguage($locale));
         }
         static::$locale = $locale;
-        if( func_num_args() > 1 ) {
+        if (func_num_args() > 1) {
             static::$dir = func_get_arg(1);
         }
         /*
          * set up locale for Rules, which is often called by static. 
          */
-        Rules::locale( $locale, static::getDir() );
+        Rules::locale($locale, static::getDir());
     }
-    
+
     /**
      * @return string
      */
@@ -51,11 +51,16 @@ class Factory
      * @param string $dir
      * @return Utils\Message
      */
-    public static function buildMessage( $locale=null, $dir=null )
+    public static function buildMessage($locale = null, $dir = null)
     {
-        if( !$locale ) $locale = static::getLocale();
-        if( !$dir ) $dir = static::getDir();
-        return new Message( $locale, $dir );
+        if (!$locale) {
+            $locale = static::getLocale();
+        }
+        if (!$dir) {
+            $dir = static::getDir();
+        }
+
+        return new Message($locale, $dir);
     }
 
     /**
@@ -63,9 +68,9 @@ class Factory
      * @param string $dir
      * @return Utils\ValueTO
      */
-    public static function buildValueTO( $locale=null, $dir=null )
+    public static function buildValueTO($locale = null, $dir = null)
     {
-        return new ValueTO( static::buildMessage( $locale, $dir ) );
+        return new ValueTO(static::buildMessage($locale, $dir));
     }
 
     /**
@@ -81,9 +86,9 @@ class Factory
      * @param string $dir
      * @return Verify
      */
-    public static function buildVerify( $locale=null, $dir=null )
+    public static function buildVerify($locale = null, $dir = null)
     {
-        return new Verify( static::buildFilter(), static::buildValueTO( $locale, $dir ) );
+        return new Verify(static::buildFilter(), static::buildValueTO($locale, $dir));
     }
 
     /**
@@ -91,9 +96,9 @@ class Factory
      * @param string $dir
      * @return Dio
      */
-    public static function buildDio( $locale=null, $dir=null )
+    public static function buildDio($locale = null, $dir = null)
     {
-        return new Dio( static::buildVerify( $locale, $dir ), static::buildRules($locale) );
+        return new Dio(static::buildVerify($locale, $dir), static::buildRules($locale));
     }
 
     /**
@@ -101,10 +106,15 @@ class Factory
      * @param string $dir
      * @return Rules
      */
-    public static function buildRules( $locale=null, $dir=null )
+    public static function buildRules($locale = null, $dir = null)
     {
-        if( !$locale ) $locale = static::getLocale();
-        if( !$dir ) $dir = static::getDir();
-        return new Rules( $locale, $dir );
+        if (!$locale) {
+            $locale = static::getLocale();
+        }
+        if (!$dir) {
+            $dir = static::getDir();
+        }
+
+        return new Rules($locale, $dir);
     }
 }

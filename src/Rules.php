@@ -9,55 +9,56 @@ namespace WScore\Validation;
  */
 use Traversable;
 
-/** 
- * @method Rules err_msg(   string $error_message )
- * @method Rules message(   string $message )
- * @method Rules multiple(  array $parameter )
- * @method Rules noNull(    bool $not=true )
- * @method Rules encoding(  string $encoding )
- * @method Rules mbConvert( string $type )
- * @method Rules trim( bool $trim=true )
- * @method Rules sanitize(  string $type )
- * @method Rules string(    string $type )
- * @method Rules custom(    \Closure $filter)
- * @method Rules custom2(   \Closure $filter)
- * @method Rules custom3(   \Closure $filter)
- * @method Rules default(   string $value )
- * @method Rules required(  bool $required=true )
- * @method Rules loopBreak( bool $break=true )
- * @method Rules code(      string $type )
- * @method Rules maxlength( int $length )
- * @method Rules pattern(   string $reg_expression )
- * @method Rules matches(   string $match_type )
- * @method Rules kanaType(  string $match_type )
- * @method Rules min(       int $min )
- * @method Rules max(       int $max )
- * @method Rules range(     array $range )
- * @method Rules checkdate( bool $check=true )
- * @method Rules in(        array $choices )
- * @method Rules sameWith(  string $name )
- * @method Rules sameAs(    string $name )
- * @method Rules sameEmpty( bool $check=true )
+/**
+ * @method Rules err_msg(string $error_message)
+ * @method Rules message(string $message)
+ * @method Rules multiple(array $parameter)
+ * @method Rules noNull(bool $not = true)
+ * @method Rules encoding(string $encoding)
+ * @method Rules mbConvert(string $type)
+ * @method Rules trim(bool $trim = true)
+ * @method Rules sanitize(string $type)
+ * @method Rules string(string $type)
+ * @method Rules custom(\Closure $filter)
+ * @method Rules custom2(\Closure $filter)
+ * @method Rules custom3(\Closure $filter)
+ * @method Rules default(string $value)
+ * @method Rules required(bool $required = true)
+ * @method Rules loopBreak(bool $break = true)
+ * @method Rules code(string $type)
+ * @method Rules maxlength(int $length)
+ * @method Rules pattern(string $reg_expression)
+ * @method Rules matches(string $match_type)
+ * @method Rules kanaType(string $match_type)
+ * @method Rules min(int $min)
+ * @method Rules max(int $max)
+ * @method Rules range(array $range)
+ * @method Rules checkdate(bool $check = true)
+ * @method Rules in(array $choices)
+ * @method Rules sameWith(string $name)
+ * @method Rules sameAs(string $name)
+ * @method Rules sameEmpty(bool $check = true)
  *
  * below are static methods for types.
  *
- * @method static Rules text(    array $filters=array() )
- * @method static Rules mail(    array $filters=array() )
- * @method static Rules binary(  array $filters=array() )
- * @method static Rules number(  array $filters=array() )
- * @method static Rules integer( array $filters=array() )
- * @method static Rules float(   array $filters=array() )
- * @method static Rules date(    array $filters=array() )
- * @method static Rules datetime(array $filters=array() )
- * @method static Rules dateYM(  array $filters=array() )
- * @method static Rules time(    array $filters=array() )
- * @method static Rules timeHi(  array $filters=array() )
- * @method static Rules tel(     array $filters=array() )
+ * @method static Rules text(array $filters = array())
+ * @method static Rules mail(array $filters = array())
+ * @method static Rules binary(array $filters = array())
+ * @method static Rules number(array $filters = array())
+ * @method static Rules integer(array $filters = array())
+ * @method static Rules float(array $filters = array())
+ * @method static Rules date(array $filters = array())
+ * @method static Rules datetime(array $filters = array())
+ * @method static Rules dateYM(array $filters = array())
+ * @method static Rules time(array $filters = array())
+ * @method static Rules timeHi(array $filters = array())
+ * @method static Rules tel(array $filters = array())
  */
 class Rules implements \ArrayAccess, \IteratorAggregate
 {
     /**
      * this is the mother of $filter.
+     *
      * @var array
      */
     protected $baseFilters = array();
@@ -97,26 +98,28 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     // +----------------------------------------------------------------------+
     /**
      * @param null|string $locale
-     * @param null $dir
+     * @param null        $dir
      */
-    public function __construct( $locale=null, $dir=null )
+    public function __construct($locale = null, $dir = null)
     {
-        if( !$locale ) $locale = static::$locale;
-        if( !$dir ) {
+        if (!$locale) {
+            $locale = static::$locale;
+        }
+        if (!$dir) {
             $dir = static::$dir ?: __DIR__ . '/Locale/';
         }
         $dir .= $locale . '/';
         /** @noinspection PhpIncludeInspection */
-        $this->setFilter( include($dir."validation.filters.php" ) );
+        $this->setFilter(include($dir . "validation.filters.php"));
         /** @noinspection PhpIncludeInspection */
-        $this->setTypes( include($dir."validation.types.php" ) );
+        $this->setTypes(include($dir . "validation.types.php"));
         static::$_rules = $this;
     }
 
     /**
      * @param array $filters
      */
-    protected function setFilter( $filters )
+    protected function setFilter($filters)
     {
         $this->baseFilters = $filters;
         $this->filter      = $filters;
@@ -130,15 +133,16 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     {
         $rule = clone($this);
         $rule->applyType($type);
+
         return $rule;
     }
 
     /**
      * @param array $types
      */
-    protected function setTypes( $types )
+    protected function setTypes($types)
     {
-        foreach( $types as $key => $info ) {
+        foreach ($types as $key => $info) {
             $this->filterTypes[strtolower($key)] = $info;
         }
     }
@@ -148,14 +152,17 @@ class Rules implements \ArrayAccess, \IteratorAggregate
      * @param null   $dir
      * @return string
      */
-    public static function locale( $locale=null, $dir=null )
+    public static function locale($locale = null, $dir = null)
     {
         static::$dir = $dir;
-        if( !$locale ) return static::$locale;
-        if( class_exists( 'Locale' ) ) {
-            $locale = strtolower( \Locale::getPrimaryLanguage( $locale ) );
+        if (!$locale) {
+            return static::$locale;
+        }
+        if (class_exists('Locale')) {
+            $locale = strtolower(\Locale::getPrimaryLanguage($locale));
         }
         static::$locale = $locale;
+
         return static::$locale;
     }
 
@@ -164,16 +171,17 @@ class Rules implements \ArrayAccess, \IteratorAggregate
      * @param $args
      * @return Rules
      */
-    public static function __callStatic( $method, $args )
+    public static function __callStatic($method, $args)
     {
-        if( !static::$_rules ) {
+        if (!static::$_rules) {
             new static();
         }
-        $rules = clone( static::$_rules );
-        $rules = $rules->applyType( $method );
-        foreach( $args as $arg ) {
-            $rules->apply( $arg );
+        $rules = clone(static::$_rules);
+        $rules = $rules->applyType($method);
+        foreach ($args as $arg) {
+            $rules->apply($arg);
         }
+
         return $rules;
     }
     // +----------------------------------------------------------------------+
@@ -184,16 +192,19 @@ class Rules implements \ArrayAccess, \IteratorAggregate
      * @return Rules|$this
      * @throws \BadMethodCallException
      */
-    public function applyType( $type )
+    public function applyType($type)
     {
-        $type = strtolower( $type );
+        $type       = strtolower($type);
         $this->type = $type;
-        if( $type == 'email' ) $type = 'mail';
-        if( !array_key_exists( $type, $this->filterTypes ) ) {
-            throw new \BadMethodCallException( "undefined type: {$type}" );
+        if ($type == 'email') {
+            $type = 'mail';
         }
-        $this->filter = array_merge( $this->baseFilters, $this->filterTypes[ $type ] );
-        $this->filter[ 'type' ] = $type;
+        if (!array_key_exists($type, $this->filterTypes)) {
+            throw new \BadMethodCallException("undefined type: {$type}");
+        }
+        $this->filter         = array_merge($this->baseFilters, $this->filterTypes[$type]);
+        $this->filter['type'] = $type;
+
         return $this;
     }
 
@@ -202,21 +213,22 @@ class Rules implements \ArrayAccess, \IteratorAggregate
      * @return $this
      * @throws \InvalidArgumentException
      */
-    public function apply( $filters )
+    public function apply($filters)
     {
-        if( is_string( $filters ) ) {
-            $filters = Utils\Helper::convertFilter( $filters );
+        if (is_string($filters)) {
+            $filters = Utils\Helper::convertFilter($filters);
         }
-        if( !is_array( $filters ) ) {
-            throw new \InvalidArgumentException( "filters must be an array or a text string. " );
+        if (!is_array($filters)) {
+            throw new \InvalidArgumentException("filters must be an array or a text string. ");
         }
-        foreach( $filters as $rule => $parameter ) {
-            if( is_numeric( $rule ) ) {
-                $rule = $parameter;
+        foreach ($filters as $rule => $parameter) {
+            if (is_numeric($rule)) {
+                $rule      = $parameter;
                 $parameter = true;
             }
             $this->filter[$rule] = $parameter;
         }
+
         return $this;
     }
 
@@ -225,10 +237,11 @@ class Rules implements \ArrayAccess, \IteratorAggregate
      * @param $args
      * @return $this
      */
-    public function __call( $rule, $args )
+    public function __call($rule, $args)
     {
-        $value = isset( $args[0] ) ? $args[0] : true;
-        $this->filter[ $rule ] = $value;
+        $value               = isset($args[0]) ? $args[0] : true;
+        $this->filter[$rule] = $value;
+
         return $this;
     }
     // +----------------------------------------------------------------------+
@@ -243,37 +256,42 @@ class Rules implements \ArrayAccess, \IteratorAggregate
      * @param \Closure $filter
      * @return Rules
      */
-    public function addCustom( $name, $filter )
+    public function addCustom($name, $filter)
     {
         $this->filter[$name] = $filter;
+
         return $this;
     }
 
     /**
      * @return null|string
      */
-    public function getType() {
-        return $this->filter[ 'type' ];
+    public function getType()
+    {
+        return $this->filter['type'];
     }
 
     /**
      * @return bool
      */
-    public function isRequired() {
-        return !!$this->filter[ 'required' ];
+    public function isRequired()
+    {
+        return !!$this->filter['required'];
     }
 
     /**
      * @return mixed
      */
-    public function getPattern() {
-        return $this->filter[ 'pattern' ];
+    public function getPattern()
+    {
+        return $this->filter['pattern'];
     }
 
     /**
      * @return array
      */
-    public function toArray() {
+    public function toArray()
+    {
         return $this->filter;
     }
     // +----------------------------------------------------------------------+
@@ -281,47 +299,58 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     // +----------------------------------------------------------------------+
     /**
      * Whether a offset exists
-     * @param mixed $offset   An offset to check for.
+     *
+     * @param mixed $offset An offset to check for.
      * @return boolean true on success or false on failure.
      */
-    public function offsetExists( $offset ) {
-        return array_key_exists( $offset, $this->filter );
+    public function offsetExists($offset)
+    {
+        return array_key_exists($offset, $this->filter);
     }
 
     /**
      * Offset to retrieve
-     * @param mixed $offset   The offset to retrieve.
+     *
+     * @param mixed $offset The offset to retrieve.
      * @return mixed Can return all value types.
      */
-    public function offsetGet( $offset ) {
-        return array_key_exists( $offset, $this->filter )? $this->filter[ $offset ] : null;
+    public function offsetGet($offset)
+    {
+        return array_key_exists($offset, $this->filter) ? $this->filter[$offset] : null;
     }
 
     /**
      * Offset to set
-     * @param mixed $offset   The offset to assign the value to.
-     * @param mixed $value    The value to set.
+     *
+     * @param mixed $offset The offset to assign the value to.
+     * @param mixed $value  The value to set.
      * @return void
      */
-    public function offsetSet( $offset, $value ) {
-        $this->filter[ $offset ] = $value;
+    public function offsetSet($offset, $value)
+    {
+        $this->filter[$offset] = $value;
     }
 
     /**
      * Offset to unset
-     * @param mixed $offset   The offset to unset.
+     *
+     * @param mixed $offset The offset to unset.
      * @return void
      */
-    public function offsetUnset( $offset ) {
-        if( array_key_exists( $offset, $this->filter ) ) unset( $this->filter[ $offset ] );
+    public function offsetUnset($offset)
+    {
+        if (array_key_exists($offset, $this->filter)) {
+            unset($this->filter[$offset]);
+        }
     }
 
     /**
      * Retrieve an external iterator
+     *
      * @return Traversable
      */
     public function getIterator()
     {
-        return new \ArrayIterator( $this->filter );
+        return new \ArrayIterator($this->filter);
     }
 }
