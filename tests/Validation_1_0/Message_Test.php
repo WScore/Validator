@@ -1,7 +1,6 @@
 <?php
 namespace tests\Validation_1_0;
 
-use WScore\Validation\Factory;
 use WScore\Validation\Utils\Message;
 
 require_once( dirname( __DIR__ ) . '/autoloader.php' );
@@ -21,8 +20,7 @@ class Message_Test extends \PHPUnit_Framework_TestCase
     }
 
     function make($locale='en') {
-        Factory::setLocale( $locale );
-        $this->m = Factory::buildMessage();
+        $this->m = new Message($locale);
         /** @noinspection PhpIncludeInspection */
         $this->msg = include( dirname(dirname(__DIR__))."/src/Locale/{$locale}/validation.messages.php");
     }

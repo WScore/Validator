@@ -1,7 +1,6 @@
 <?php
 namespace tests\Validation_1_0;
 
-use WScore\Validation\Factory;
 use WScore\Validation\Rules;
 use WScore\Validation\ValidationFactory;
 use WScore\Validation\Verify;
@@ -98,7 +97,8 @@ class Verify_Test extends \PHPUnit_Framework_TestCase
      */
     function locale_ja_returns_japanese_message()
     {
-        $v = Factory::buildVerify('ja');
+        $factory = new ValidationFactory('ja');
+        $v = $factory->verify();
 
         $value = $v->applyFilters( ' text ', [ 'trim' => true ] );
         $this->assertEquals( 'WScore\Validation\Verify', get_class( $v ) );

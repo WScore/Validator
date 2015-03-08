@@ -1,8 +1,8 @@
 <?php
 namespace tests\Validation_1_0;
 
-use WScore\Validation\Factory;
 use WScore\Validation\Utils\ValueTO;
+use WScore\Validation\ValidationFactory;
 
 require_once( dirname( __DIR__ ) . '/autoloader.php' );
 
@@ -15,7 +15,8 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->validate = Factory::buildVerify();
+        $factory = new ValidationFactory();
+        $this->validate = $factory->verify();
     }
 
     // +----------------------------------------------------------------------+

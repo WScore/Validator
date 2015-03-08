@@ -84,7 +84,7 @@ class ValidationFactory
 
     private function factory()
     {
-        $this->rules  = new Rules($this->locale, $this->dir);
+        $this->rules  = $this->rules();
         $this->verify = new Verify(
             new Filter(),
             new ValueTO(new Message($this->locale, $this->dir))
@@ -109,5 +109,13 @@ class ValidationFactory
             }
         }
         return $extracted;
+    }
+
+    /**
+     * @return Rules
+     */
+    public function rules()
+    {
+        return new Rules($this->locale, $this->dir);
     }
 }
