@@ -111,15 +111,14 @@ class Dio
      */
     public function is($name, $rules)
     {
-        if (!is_string($name)) {
-            throw new \InvalidArgumentException("name must be a string");
-        }
         $this->rules[$name] = $rules;
 
         return $this->get($name);
     }
 
     /**
+     * for as{Type} methods.
+     *
      * @param string $method
      * @param array  $args
      * @return Rules
@@ -130,7 +129,7 @@ class Dio
             $type = strtolower(substr($method, 2));
             $name = $args[0];
 
-            return $this->rules[$name] = $this->getRule($type);
+            return $this->setRule($name, $type);
         }
         throw new \BadMethodCallException;
     }
@@ -195,19 +194,6 @@ class Dio
     public function set($name, $value)
     {
         $this->found[$name] = $value;
-
-        return $this;
-    }
-
-    /**
-     * @param $key
-     * @return $this
-     */
-    public function del($key)
-    {
-        if (isset($this->found[$key])) {
-            unset($this->found[$key]);
-        }
 
         return $this;
     }

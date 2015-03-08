@@ -110,21 +110,17 @@ class Rules implements \ArrayAccess, \IteratorAggregate
         }
         $dir .= $locale . '/';
         /** @noinspection PhpIncludeInspection */
-        $this->setFilter(include($dir . "validation.filters.php"));
+        $this->baseFilters = include($dir . "validation.filters.php");
+        $this->filter      = $this->baseFilters;
+        
         /** @noinspection PhpIncludeInspection */
-        $this->setTypes(include($dir . "validation.types.php"));
+        $types = include($dir . "validation.types.php");
+        foreach ($types as $key => $info) {
+            $this->filterTypes[$key] = $info;
+        }
         static::$_rules = $this;
     }
-
-    /**
-     * @param array $filters
-     */
-    protected function setFilter($filters)
-    {
-        $this->baseFilters = $filters;
-        $this->filter      = $filters;
-    }
-
+    
     /**
      * @param $type
      * @return $this
@@ -135,16 +131,6 @@ class Rules implements \ArrayAccess, \IteratorAggregate
         $rule->applyType($type);
 
         return $rule;
-    }
-
-    /**
-     * @param array $types
-     */
-    protected function setTypes($types)
-    {
-        foreach ($types as $key => $info) {
-            $this->filterTypes[strtolower($key)] = $info;
-        }
     }
 
     /**
@@ -277,14 +263,6 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     public function isRequired()
     {
         return !!$this->filter['required'];
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPattern()
-    {
-        return $this->filter['pattern'];
     }
 
     /**
