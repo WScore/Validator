@@ -36,7 +36,7 @@ class Dio_Test extends \PHPUnit_Framework_TestCase
     {
         $source = array( 'test' => 'tested' );
         $this->validate->source( $source);
-        $got = $this->validate->is( 'test', Rules::text() );
+        $got = $this->validate->is( 'test', $this->validate->getRule('text') );
 
         $this->assertEquals( 'tested', $got );
         $this->assertEquals( 'tested', $this->validate->get( 'test' ) );
@@ -52,7 +52,7 @@ class Dio_Test extends \PHPUnit_Framework_TestCase
     {
         $source = array( 'test' => '' );
         $this->validate->source( $source );
-        $got = $this->validate->is( 'test', Rules::text()->required() );
+        $got = $this->validate->is( 'test', $this->validate->getRule('text')->required() );
 
         $this->assertEquals( '', $got );
         $this->assertEquals( '', $this->validate->get( 'test' ) );
@@ -83,7 +83,8 @@ class Dio_Test extends \PHPUnit_Framework_TestCase
         $test = array( 'tested', 'more test' );
         $source = array( 'test' => $test );
         $this->validate->source( $source );
-        $got = $this->validate->is( 'test', Rules::text() );
+        $this->validate->asText( 'test' );
+        $got = $this->validate->get('test');
 
         $this->assertEquals( $test, $got );
         $this->assertEquals( $test, $this->validate->get( 'test' ) );
@@ -101,7 +102,8 @@ class Dio_Test extends \PHPUnit_Framework_TestCase
         $source = array( 'test' => $test );
         $collect = array( 'test' => array( 0=>'123', 2=>'456') );
         $this->validate->source( $source );
-        $got = $this->validate->is( 'test', Rules::number() );
+        $this->validate->asNumber( 'test' );
+        $got = $this->validate->get('test');
 
         // should return the input
         $this->assertEquals( ['123', 2=>'456'], $got );
@@ -127,7 +129,9 @@ class Dio_Test extends \PHPUnit_Framework_TestCase
     {
         $source = array( 'test_y'=>'2013', 'test_m'=>'11', 'test_d'=>'08' );
         $this->validate->source( $source );
-        $got = $this->validate->is( 'test', Rules::date() );
+        $this->validate->asDate( 'test' );
+        $got = $this->validate->get('test');
+
         $this->assertEquals( '2013-11-08', $got );
         $this->assertEquals( '2013-11-08', $this->validate->get( 'test' ) );
         $this->assertEquals( array( 'test' => '2013-11-08'), $this->validate->get() );
@@ -142,7 +146,9 @@ class Dio_Test extends \PHPUnit_Framework_TestCase
     {
         $source = array( 'test_y'=>'2013', 'test_m'=>'11', 'test_d'=>'08', 'test_h'=>'15', 'test_i'=>'13', 'test_s'=>'59' );
         $this->validate->source( $source );
-        $got = $this->validate->is( 'test', Rules::datetime() );
+        $this->validate->asDateTime( 'test' );
+        $got = $this->validate->get('test');
+
         $this->assertEquals( '2013-11-08 15:13:59', $got );
         $this->assertEquals( '2013-11-08 15:13:59', $this->validate->get( 'test' ) );
         $this->assertEquals( array( 'test' => '2013-11-08 15:13:59'), $this->validate->get() );
@@ -163,7 +169,8 @@ class Dio_Test extends \PHPUnit_Framework_TestCase
         );
         $mail = 'email@example.com';
         $this->validate->source( $source );
-        $got = $this->validate->is( 'mail1', Rules::mail() );
+        $this->validate->asMail( 'mail1' );
+        $got = $this->validate->get('mail1');
 
         $this->assertEquals( 'email@example.com', $got );
         $this->assertEquals( 'email@example.com', $this->validate->get( 'mail1' ) );
@@ -183,7 +190,8 @@ class Dio_Test extends \PHPUnit_Framework_TestCase
         );
         $mail = 'email@example.com';
         $this->validate->source( $source );
-        $got = $this->validate->is( 'mail1', Rules::mail()->sameWith( 'mail2') );
+        $this->validate->asMail( 'mail1' )->sameWith( 'mail2');
+        $got = $this->validate->get('mail1');
 
         $this->assertEquals( 'email@example.com', $got );
         $this->assertEquals( 'email@example.com', $this->validate->get( 'mail1' ) );
@@ -202,7 +210,8 @@ class Dio_Test extends \PHPUnit_Framework_TestCase
         );
         $mail = 'email@example.com';
         $this->validate->source( $source );
-        $got = $this->validate->is( 'mail1', Rules::mail()->sameWith( 'mail2') );
+        $this->validate->asMail( 'mail1' )->sameWith( 'mail2');
+        $got = $this->validate->get('mail1');
 
         $this->assertEquals( false, $got );
         $this->assertEquals( $mail, $this->validate->get( 'mail1' ) );
@@ -222,7 +231,8 @@ class Dio_Test extends \PHPUnit_Framework_TestCase
         );
         $mail = 'email@example.com';
         $this->validate->source( $source );
-        $got = $this->validate->is( 'mail1', Rules::mail()->sameWith( 'mail2') );
+        $this->validate->asMail( 'mail1' )->sameWith( 'mail2');
+        $got = $this->validate->get('mail1');
 
         $this->assertEquals( false, $got );
         $this->assertEquals( $mail, $this->validate->get( 'mail1' ) );
@@ -241,7 +251,8 @@ class Dio_Test extends \PHPUnit_Framework_TestCase
             'mail2' => 'Email2@Example.com',
         );
         $this->validate->source( $source );
-        $got = $this->validate->is( 'mail1', Rules::mail()->sameWith( 'mail2') );
+        $this->validate->asMail( 'mail1' )->sameWith( 'mail2');
+        $got = $this->validate->get('mail1');
 
         $this->assertEquals( '', $got );
         $this->assertEquals( '', $this->validate->get( 'mail1' ) );
@@ -260,7 +271,8 @@ class Dio_Test extends \PHPUnit_Framework_TestCase
             'mail2' => 'Email2@Example.com',
         );
         $this->validate->source( $source );
-        $got = $this->validate->is( 'mail1', Rules::mail()->sameWith( 'mail2')->required() );
+        $this->validate->asMail( 'mail1' )->sameWith( 'mail2')->required();
+        $got = $this->validate->get('mail1');
 
         $this->assertEquals( '', $got );
         $this->assertEquals( '', $this->validate->get( 'mail1' ) );
@@ -276,10 +288,11 @@ class Dio_Test extends \PHPUnit_Framework_TestCase
     {
         $input = [ 'a_y1'=>'2014', 'a_m1'=>'05', 'a_d1'=>'01', 'a_y2'=>'2014', 'a_m2'=>'07' ];
         $this->validate->source($input);
-        $found = $this->validate->is( 'a', Rules::text()->multiple( [
+        $this->validate->asText( 'a' )->multiple( [
             'suffix' => 'y1,m1,y2,m2',
             'format' => '%04d/%02d - %04d/%02d'
-        ] ) );
+        ] )->required();
+        $found = $this->validate->get('a');
         $this->assertEquals( '2014/05 - 2014/07', $found );
     }
 }

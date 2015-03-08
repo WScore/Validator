@@ -87,6 +87,11 @@ class Rules implements \ArrayAccess, \IteratorAggregate
      */
     protected static $dir;
 
+    /**
+     * @var string
+     */
+    private $type;
+
     // +----------------------------------------------------------------------+
     //  managing object
     // +----------------------------------------------------------------------+
@@ -115,6 +120,17 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     {
         $this->baseFilters = $filters;
         $this->filter      = $filters;
+    }
+
+    /**
+     * @param $type
+     * @return $this
+     */
+    public function withType($type)
+    {
+        $rule = clone($this);
+        $rule->applyType($type);
+        return $rule;
     }
 
     /**
@@ -171,6 +187,7 @@ class Rules implements \ArrayAccess, \IteratorAggregate
     public function applyType( $type )
     {
         $type = strtolower( $type );
+        $this->type = $type;
         if( $type == 'email' ) $type = 'mail';
         if( !array_key_exists( $type, $this->filterTypes ) ) {
             throw new \BadMethodCallException( "undefined type: {$type}" );

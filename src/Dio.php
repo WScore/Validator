@@ -7,6 +7,19 @@ namespace WScore\Validation;
  *
  * Data Import Object
  * for validating a a data, an array of values (i.e. input from html form).
+ *          
+ * @method Rules asText(       string $key)
+ * @method Rules asMail(       string $key)
+ * @method Rules asBinary(     string $key)
+ * @method Rules asNumber(     string $key)
+ * @method Rules asInteger(    string $key)
+ * @method Rules asFloat(      string $key)
+ * @method Rules asDate(       string $key)
+ * @method Rules asDatetime(   string $key)
+ * @method Rules asDateYM(     string $key)
+ * @method Rules asTime(       string $key)
+ * @method Rules asTimeHi(     string $key)
+ * @method Rules asTel(        string $key)
  */
 class Dio
 {
@@ -91,8 +104,50 @@ class Dio
      */
     public function setRule($name, $type)
     {
-        $this->rules[$name] = Rules::$type();
+        $this->rules[$name] = $this->ruler->withType($type);
         return $this->rules[$name];
+    }
+
+    /**
+     * @param string $type
+     * @return Rules
+     */
+    public function getRule($type)
+    {
+        return $this->ruler->withType($type);
+    }
+
+    /**
+     * pushes the $name.
+     * returns the found value, or false if validation fails.
+     *
+     * @param string $name
+     * @param array|Rules $rules
+     * @throws \InvalidArgumentException
+     * @return mixed
+     */
+    public function is( $name, $rules )
+    {
+        if( !is_string($name) ) {
+            throw new \InvalidArgumentException( "name must be a string" );
+        }
+        $this->rules[$name] = $rules;
+        return $this->get($name);
+    }
+
+    /**
+     * @param string  $method
+     * @param array   $args
+     * @return Rules
+     */
+    public function __call($method, $args)
+    {
+        if(substr($method, 0, 2) === 'as') {
+            $type = strtolower(substr($method, 2));
+            $name = $args[0];
+            return $this->rules[$name] = $this->getRule($type);
+        }
+        throw new \BadMethodCallException;
     }
 
     // +----------------------------------------------------------------------+
@@ -257,24 +312,6 @@ class Dio
      */
     public function result() {
         return $this->verify->result();
-    }
-
-    /**
-     * pushes the $name.
-     * returns the found value, or false if validation fails.
-     *
-     * @param string $name
-     * @param array|Rules $rules
-     * @throws \InvalidArgumentException
-     * @return mixed
-     */
-    public function is( $name, $rules )
-    {
-        if( !is_string($name) ) {
-            throw new \InvalidArgumentException( "name must be a string" );
-        }
-        $this->rules[$name] = $rules;
-        return $this->get($name);
     }
 
     /**
