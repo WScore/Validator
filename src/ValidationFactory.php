@@ -15,7 +15,7 @@ class ValidationFactory
     /**
      * @var string      default language directory.
      */
-    private $dir = __DIR__ . '/Locale/';
+    private $dir = '';
 
     /**
      * @var Rules
@@ -38,6 +38,7 @@ class ValidationFactory
      */
     public function __construct($locale = null, $dir = null)
     {
+        $this->dir = __DIR__ . '/Locale/';
         if (!is_null($locale)) {
             $this->setLocale($locale, $dir);
         }
