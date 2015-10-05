@@ -101,8 +101,8 @@ class Helper
         $suffix = explode(',', $option['suffix']);
         foreach ($suffix as $sfx) {
             $name_sfx = $name . $sep . $sfx;
-            if (array_key_exists($name_sfx, $source)) {
-                $lists[] = $source[$name_sfx];
+            if (array_key_exists($name_sfx, $source) && trim($source[$name_sfx])) {
+                $lists[] = trim($source[$name_sfx]);
             }
         }
         // merge the found list into one value.
