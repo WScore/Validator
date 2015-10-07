@@ -261,9 +261,9 @@ class Filter
      * @var array
      */
     public $kanaType = array(
-        Rules::ONLY_KATAKANA => '[　ーァ-ヶ・ーヽヾ]*',
-        Rules::ONLY_HIRAGANA => '[　ぁ-ん゛-ゞ]+',
-        Rules::ONLY_HANKAKU_KANA  => '[ ｦ-ﾝﾞﾟ]+',
+        Rules::ONLY_KATAKANA => '[　ーァ-ヶ・ーヽヾ1-2１-２]*',
+        Rules::ONLY_HIRAGANA => '[　ぁ-ん゛-ゞ1-2１-２]+',
+        Rules::ONLY_HANKAKU_KANA  => '[ ｦ-ﾝﾞﾟ1-2]+',
         Rules::ONLY_HANKAKU  => '[ -~]+',
     );
 
