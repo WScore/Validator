@@ -22,6 +22,7 @@ return array(
     'default'     => '',         // sets default if value is empty.
     // validators (only checks the value).
     'required'    => false,      // fails if value is empty.
+    'requiredIf'  => false,      // required if other key has value
     'loopBreak'   => true,       // done, skip validations if value is empty.
     'code'        => false,
     'maxlength'   => false,

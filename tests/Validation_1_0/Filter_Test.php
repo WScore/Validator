@@ -1,8 +1,9 @@
 <?php
 namespace tests\Validation_1_0;
 
-use WScore\Validation\Factory;
+use WScore\Validation\Rules;
 use WScore\Validation\Utils\ValueTO;
+use WScore\Validation\ValidationFactory;
 
 require_once( dirname( __DIR__ ) . '/autoloader.php' );
 
@@ -15,7 +16,8 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->validate = Factory::buildVerify();
+        $factory = new ValidationFactory();
+        $this->validate = $factory->verify();
     }
 
     // +----------------------------------------------------------------------+
@@ -122,7 +124,7 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
      */
     function mbConvert_for_han_kana_converts_hankakuKana()
     {
-        $value = $this->validate->applyFilters( "012abcあいうカキクｻﾞｼﾞｽﾞ", [ 'mbConvert' => 'han_kana' ] );
+        $value = $this->validate->applyFilters( "012abcあいうカキクｻﾞｼﾞｽﾞ", [ 'mbConvert' => Rules::MB_HAN_KANA ] );
         $this->assertEquals( '012abcｱｲｳｶｷｸｻﾞｼﾞｽﾞ', $value->getValue() );
     }
 
@@ -131,7 +133,7 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
      */
     function mbConvert_for_hankaku_converts_ascii()
     {
-        $value = $this->validate->applyFilters( "012ABCあいうａｂｃカキクｻﾞｼﾞｽﾞ", [ 'mbConvert' => 'hankaku' ] );
+        $value = $this->validate->applyFilters( "012ABCあいうａｂｃカキクｻﾞｼﾞｽﾞ", [ 'mbConvert' => Rules::MB_HANKAKU ] );
         $this->assertEquals( '012ABCあいうabcカキクザジズ', $value->getValue() );
     }
 
@@ -140,7 +142,7 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
      */
     function mbConvert_for_zenkaku_converts_ascii()
     {
-        $value = $this->validate->applyFilters( "012ABCあいうａｂｃカキクｻﾞｼﾞｽﾞ", [ 'mbConvert' => 'zenkaku' ] );
+        $value = $this->validate->applyFilters( "012ABCあいうａｂｃカキクｻﾞｼﾞｽﾞ", [ 'mbConvert' => Rules::MB_ZENKAKU ] );
         $this->assertEquals( '０１２ＡＢＣあいうａｂｃカキクザジズ', $value->getValue() );
     }
 
@@ -149,7 +151,7 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
      */
     function mbConvert_for_hiragana_converts()
     {
-        $value = $this->validate->applyFilters( "012ABCあいうａｂｃカキクｻﾞｼﾞｽﾞ", [ 'mbConvert' => 'hiragana' ] );
+        $value = $this->validate->applyFilters( "012ABCあいうａｂｃカキクｻﾞｼﾞｽﾞ", [ 'mbConvert' => Rules::MB_HIRAGANA ] );
         $this->assertEquals( '012ABCあいうａｂｃかきくざじず', $value->getValue() );
     }
 
@@ -158,7 +160,7 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
      */
     function mbConvert_for_katakanau_converts()
     {
-        $value = $this->validate->applyFilters( "012ABCあいうａｂｃカキクｻﾞｼﾞｽﾞ", [ 'mbConvert' => 'katakana' ] );
+        $value = $this->validate->applyFilters( "012ABCあいうａｂｃカキクｻﾞｼﾞｽﾞ", [ 'mbConvert' => Rules::MB_KATAKANA ] );
         $this->assertEquals( '012ABCアイウａｂｃカキクザジズ', $value->getValue() );
     }
     // +----------------------------------------------------------------------+
@@ -187,9 +189,9 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
     function choice_works()
     {
         $choice = array( '1', '3' );
-        $value = $this->validate->is( '1', array( 'in' => $choice ) );
-        $this->assertEquals( '1', $value );
-        $this->assertEquals( false, $this->validate->result()->fails() );
+        $value = $this->validate->apply( '1', array( 'in' => $choice ) );
+        $this->assertEquals( '1', $value->getValue() );
+        $this->assertEquals( false, $value->fails() );
     }
 
     /**
@@ -198,10 +200,11 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
     function choice_fails()
     {
         $choice = array( '1', '3' );
-        $value = $this->validate->is( '2', array( 'in' => $choice ) );
-        $this->assertEquals( false, $value );
-        $this->assertEquals( true, $this->validate->result()->fails() );
-        $this->assertEquals( 'invalid choice', $this->validate->result()->message() );
+        $value = $this->validate->apply( '2', array( 'in' => $choice ) );
+        $this->assertEquals( true, $value->fails() );
+        $this->assertEquals( '2', $value->getValue() );
+        $this->assertEquals( true, $value->fails() );
+        $this->assertEquals( 'invalid choice', $value->message() );
     }
 
     /**
@@ -210,9 +213,8 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
     function kanaType_katakana_success_for_text_with_only_katakana()
     {
         $text = '　ァアイウエオヶ・ーヽヾ';
-        $value = $this->validate->is( $text, array( 'kanaType' => 'katakana' ) );
+        $value = $this->validate->is( $text, array( 'kanaType' => Rules::ONLY_KATAKANA ) );
         $this->assertEquals( $text, (string) $value );
-        $this->assertEquals( false, $this->validate->result()->fails() );
     }
 
     /**
@@ -222,20 +224,20 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
     {
         // with hiragana
         $text = 'アイウエオ' . 'あ';
-        $this->validate->is( $text, array( 'kanaType' => 'katakana' ) );
-        $this->assertEquals( true, $this->validate->result()->fails() );
+        $value = $this->validate->apply( $text, array( 'kanaType' => Rules::ONLY_KATAKANA ) );
+        $this->assertEquals( true, $value->fails() );
 //        $this->assertEquals( null, $this->validate->result()->message() );
 
         // with ascii
         $text = 'アイウエオ' . 'a';
-        $this->validate->is( $text, array( 'kanaType' => 'katakana' ) );
-        $this->assertEquals( true, $this->validate->result()->fails() );
+        $value = $this->validate->apply( $text, array( 'kanaType' => Rules::ONLY_KATAKANA ) );
+        $this->assertEquals( true, $value->fails() );
 //        $this->assertEquals( null, $this->validate->result()->message() );
 
         // with space... not sure if this should fail
         $text = 'アイウエオ' . ' ';
-        $this->validate->is( $text, array( 'kanaType' => 'katakana' ) );
-        $this->assertEquals( true, $this->validate->result()->fails() );
+        $value = $this->validate->apply( $text, array( 'kanaType' => Rules::ONLY_KATAKANA ) );
+        $this->assertEquals( true, $value->fails() );
 //        $this->assertEquals( null, $this->validate->result()->message() );
     }
 
@@ -245,9 +247,8 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
     function kanaType_hiragana_success_for_text_with_only_hiragana()
     {
         $text = '　ぁあいうえおん゛ゞ';
-        $value = $this->validate->is( $text, array( 'kanaType' => 'hiragana' ) );
+        $value = $this->validate->is( $text, array( 'kanaType' => Rules::ONLY_HIRAGANA ) );
         $this->assertEquals( $text, (string) $value );
-        $this->assertEquals( false, $this->validate->result()->fails() );
     }
 
     /**
@@ -256,9 +257,8 @@ class Filter_Test extends \PHPUnit_Framework_TestCase
     function kanaType_hankana_success_for_text_with_only_hankaku_katakana()
     {
         $text = ' ｱﾝｧｨｩｪｫｬｭｮｯﾞﾞﾟ';
-        $value = $this->validate->is( $text, array( 'kanaType' => 'hankana' ) );
+        $value = $this->validate->is( $text, array( 'kanaType' => Rules::ONLY_HANKAKU_KANA ) );
         $this->assertEquals( $text, (string) $value );
-        $this->assertEquals( false, $this->validate->result()->fails() );
     }
 
     /**

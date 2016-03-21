@@ -2,7 +2,7 @@
 namespace WScore\Validation\Utils;
 
 /**
- * value transfer object. 
+ * value transfer object.
  * Class ValueTO
  *
  * @package WScore\Validation
@@ -25,7 +25,7 @@ class ValueTO implements ValueToInterface
     protected $error = false;
 
     /**
-     * @var string
+     * @var string|array
      */
     protected $message;
 
@@ -42,7 +42,7 @@ class ValueTO implements ValueToInterface
     /**
      * @param Message $messenger
      */
-    public function __construct( $messenger )
+    public function __construct($messenger)
     {
         $this->messenger = $messenger;
     }
@@ -51,10 +51,11 @@ class ValueTO implements ValueToInterface
      * @param $value
      * @return static
      */
-    public function forge( $value )
+    public function forge($value)
     {
-        $obj = clone( $this );
-        $obj->reset( $value );
+        $obj = clone($this);
+        $obj->reset($value);
+
         return $obj;
     }
 
@@ -62,16 +63,17 @@ class ValueTO implements ValueToInterface
      * @param $value
      * @return $this
      */
-    public function reset( $value )
+    public function reset($value)
     {
         $this->value   = $value;
         $this->type    = 'text';
         $this->error   = false;
         $this->message = null;
         $this->break   = false;
+
         return $this;
     }
-    
+
     /**
      * @return mixed
      */
@@ -83,7 +85,7 @@ class ValueTO implements ValueToInterface
     /**
      * @param mixed $value
      */
-    public function setValue( $value )
+    public function setValue($value)
     {
         $this->value = $value;
     }
@@ -91,25 +93,27 @@ class ValueTO implements ValueToInterface
     /**
      * @return bool
      */
-    public function fails() {
-        return $this->error ? true: false;
+    public function fails()
+    {
+        return $this->error ? true : false;
     }
 
     /**
-     * @param string      $method
-     * @param null|mixed  $p
+     * @param string     $method
+     * @param null|mixed $p
      */
-    public function setError( $method, $p=null )
+    public function setError($method, $p = null)
     {
-        $this->setBreak( true );
-        if( $method === false ) { // reset error to false.
+        $this->setBreak(true);
+        if ($method === false) { // reset error to false.
             $this->error = false;
+
             return;
         }
         $this->error = array(
-            'method' => $method,
+            'method'    => $method,
             'parameter' => $p,
-            $method => $p,
+            $method     => $p,
         );
     }
 
@@ -118,9 +122,10 @@ class ValueTO implements ValueToInterface
      */
     public function getParameter()
     {
-        if( $this->error && isset( $this->error[ 'parameter' ] ) ) {
-            return $this->error[ 'parameter' ];
+        if ($this->error && isset($this->error['parameter'])) {
+            return $this->error['parameter'];
         }
+
         return null;
     }
 
@@ -129,9 +134,10 @@ class ValueTO implements ValueToInterface
      */
     public function getErrorMethod()
     {
-        if( $this->error && isset( $this->error[ 'method' ] ) ) {
-            return $this->error[ 'method' ];
+        if ($this->error && isset($this->error['method'])) {
+            return $this->error['method'];
         }
+
         return null;
     }
 
@@ -143,19 +149,20 @@ class ValueTO implements ValueToInterface
      */
     public function message()
     {
-        if( !$this->message ) {
-            $type = $this->getType();
-            $method = $this->getErrorMethod();
-            $parameter = $this->getParameter();
-            $this->message = $this->messenger->find( $type, $method, $parameter );
+        if (!$this->message) {
+            $type          = $this->getType();
+            $method        = $this->getErrorMethod();
+            $parameter     = $this->getParameter();
+            $this->message = $this->messenger->find($type, $method, $parameter);
         }
+
         return $this->message;
     }
 
     /**
      * @param string|array $message
      */
-    public function setMessage( $message )
+    public function setMessage($message)
     {
         $this->message = $message;
     }
@@ -171,7 +178,7 @@ class ValueTO implements ValueToInterface
     /**
      * @param boolean $break
      */
-    public function setBreak( $break=true )
+    public function setBreak($break = true)
     {
         $this->break = $break;
     }
@@ -187,7 +194,7 @@ class ValueTO implements ValueToInterface
     /**
      * @param string $type
      */
-    public function setType( $type )
+    public function setType($type)
     {
         $this->type = $type;
     }
@@ -197,7 +204,7 @@ class ValueTO implements ValueToInterface
      */
     public function  __toString()
     {
-        return (string) $this->value;
+        return (string)$this->value;
     }
 
 }

@@ -1,16 +1,14 @@
 Validation
 ==========
 
-A simple validation component with many multi-byte (i.e. Japanese language) support.
+A validation component, optimized multi-byte (i.e. Japanese language) support.
 
 Features includes, such as:
 
-*   validate an array as input.
+*   works well with code completion.
 *   multiple values combined to a single value (ex: bd_y, bd_m, bd_d to bd).
 *   preset order of rules to apply. essential to handle Japanese characters.
 *   easy to code logic.
-
-Designed to take full advantage of code completion of modern IDE (i.e. PhpStorm).
 
 
 ### License
@@ -35,33 +33,38 @@ This package **almost** works like this.
 
 ### factory object
 
-Use ```Factory``` to construct validation object.
-Set the data to validate using ```source``` method. For verifying
-form input, the source would be ```$_POST``` as in the example. 
+Use ```ValidationFactory``` to start validating an array.
+For instance, 
 
 ```php
-use \WScore\Validation\Validation;
+use \WScore\Validation\ValidationFactory;
 
-Validation::setLocale('ja');         // use Japanese rules and messages.
-$input = Validation::on( $_POST );   // get validator.
+$factory = new ValidationFactory();    // use English rules and messages.
+$factory = new ValidationFactory('ja); // use Japanese rules and messages.
+```
+
+to validate an array, 
+
+```php
+$input = $factory->on($_POST);
+$input->asText('name');
+$input->asInteger('age');
+$input->asDate('bate');
+if($v->fails()) {
+   $messages = $input->messages();
+}
+$values = $input->get();
 ```
 
 
 ### validation rule
 
-The ```is``` method validates and returns the found value, or returns
-false if fails to validate.
-
-To set the validation rule, use static class,
- ```Rules```, to compose a rules.
+The ```as{Type}($name)``` method sets default rules for the input ```$name```. Use method chaing to add more rules. 
 
 ```php
-use \WScore\Validation\Validation;
-use \WScore\Validation\Rules;
-
-$input = Validation::on( $_POST );   // get validator.
-$input->is( 'name', Rules::text()->required() );
-$input->is( 'mail', Rules::mail()->required() );
+$input = $factory->on( $_POST );   // get validator.
+$input->asText('name')->required() );
+$input->asMail('mail')->required()->sameWith('mail2'));
 $found = $input->get(); // [ 'name' => some name... ]
 if( $input->fails() ) {
     $onlyGoodData    = $input->getSafe();
@@ -72,7 +75,7 @@ if( $input->fails() ) {
 ```
 
 Check if the validation failes or not using ```fails()```
- method.
+ method (or ```passess()``` method).
 
 To retrieve the validated (or unvalidated) values
  by ```get()``` method, which returns all the values
@@ -81,42 +84,10 @@ To retrieve the validated (or unvalidated) values
 To retrieve __only the validated values__,
  use ```getSafe()``` method.
 
-#### example code
-
-Because ```is``` returns ```false``` when validation fails,
- it is easy to write a logic based the returned value.
-
-
-```php
-// check if name or nickname is set
-if( !$input->is( 'name', Rules::text() ) ) {
-    if( !$input->is( 'nickname', Rules::text() ) ) {
-        $input->isError( 'name', 'requires name or nickname' );
-    }
-}
-
-// check mail with confirmation
-$input->is( 'mail', Rules::mail()->sameWith( 'mail2' )->required() );
-
-// check value of input, and do more stuff.
-$status = $input->is( 'status', Rules::int()->in( '1', '2', '3' )->required()->message('must be 1-3.') );
-if( $status == '1' ) { // add some message?!
-    $input->setValue( 'notice', 'how do you like it?' );
-} elseif( $status === '3' ) { // maybe get some reasons...
-    echo $input->is('reason', Rules::text()->required() );
-}
-
-if( $input->fails() ) {
-    $onlyGoodData    = $input->getSafe();
-    $containsBadData = $input->get();
-    $message         = $input->message();
-} else {
-    $goodData = $input->get();
-}
-```
-
 
 ### validating a single value
+
+##### rewrite-this-section.
 
 Use ```verify``` method to validate a single value.
 
@@ -138,8 +109,8 @@ Validating an array of data is easy. When the validation fails,
 
 ```php
 $input->source( array( 'list' => [ '1', '2', 'bad', '4' ] ) );
-
-if( !$input->is( 'list', Rules::int() ) ) {
+$input->asInteger('list');
+if( !$input->passes() ) {
     $values = $validation->get('list');
     $goods  = $validation->getSafe();
     $errors = $validation->message();
@@ -164,7 +135,7 @@ echo $validation->is( 'bd', Rules::date() ); // 2001-09-25
 use ```multiple``` rules to construct own multiple inputs as,
 
 ```php
-Rules::text()->multiple( [
+$input->asText('ranges')->multiple( [
     'suffix' => 'y1,m1,y2,m2',
     'format' => '%04d/%02d - %04d/%02d'
 ] );
@@ -181,7 +152,9 @@ to compare each other.
 
 ```php
 $input->source([ 'text1' => '123ABC', 'text2' => '123abc' ] );
-echo $validation->is( 'text1', Rules::text()->string('lower')->sameWith('text2') ); // 123abc
+echo $validation->asText('text1')
+	->string('lower')
+	->sameWith('text2') ); // 123abc
 ```
 
 Please note that the actual input strings are different.
@@ -196,20 +169,6 @@ some filter must be applied in certain order...
 echo $validate->verify( 'ABC', Rules::text()->pattern('[a-c]*')->string('lower'); // 'abc'
 ## should lower the string first, then check for pattern...
 ```
-
-
-### indexed array
-
-To validate data such as follows...
-
-```php
-$input = [ 0 => [ 'name' => 'john', ...],
-           1 => [ 'name' => 'paul', ...],
-            ... ];
-$input = Validation::on( $input )->onIndex('1');
-```
-
-will validate on 'paul'.
 
 
 ### custom validation
@@ -227,8 +186,7 @@ $filter = function( $v ) {
     $v->setError(__METHOD__);
     $v->setMessage('Closure with Error');
 };
-Rules::text()->addCustom( 'myFilter', $filter );
-Rules::text()->custom( $filter );
+$input->asText('test')->addCustom( 'myFilter', $filter );
 ```
 
 You cannot pass parameter (the closure is the parameter).
