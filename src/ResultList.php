@@ -1,7 +1,7 @@
 <?php
-namespace WScore\FormModel\Validation;
+namespace WScore\Validation;
 
-use WScore\FormModel\Interfaces\FormElementInterface;
+use WScore\Validation\Interfaces\ResultInterface;
 
 class ResultList implements ResultInterface
 {
@@ -36,33 +36,13 @@ class ResultList implements ResultInterface
     private $children = [];
 
     /**
-     * @param FormElementInterface $form
-     * @param ResultInterface[] $results
-     * @return ResultInterface
+     * @var ResultInterface
      */
-    public static function aggregate(FormElementInterface $form, array $results): ResultInterface
-    {
-        if (empty($results)) {
-            throw new \InvalidArgumentException('empty results');
-        }
-        $self = new self();
-        $self->fillResult($form);
-        $isValid = true;
-        foreach ($results as $name => $result) {
-            if (!$result->isValid()) {
-                $isValid = false;
-            }
-            $self->value[$name] = $result->value();
-            $self->message[$name] = $result->getErrorMessage();
-            $self->children[$name] = $result;
-        }
-        $self->isValid = $isValid;
-
-        return $self;
-    }
+    private $parent;
 
     public function addResult(ResultInterface $result, $name = null)
     {
+        $result->setParent($this);
         $name = $name ?? $result->name();
         $this->value[$name] = $result->value();
         $this->message[$name] = $result->getErrorMessage();
@@ -70,12 +50,6 @@ class ResultList implements ResultInterface
         if (!$result->isValid()) {
             $this->isValid = false;
         }
-    }
-
-    private function fillResult(FormElementInterface $element)
-    {
-        $this->name = $element->getName();
-        $this->label = $element->getLabel();
     }
 
     /**
@@ -166,5 +140,21 @@ class ResultList implements ResultInterface
     public function getChildren()
     {
         return $this->children;
+    }
+
+    /**
+     * @return ResultInterface
+     */
+    public function getParent(): ResultInterface
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param ResultInterface $parent
+     */
+    public function setParent(ResultInterface $parent): void
+    {
+        $this->parent = $parent;
     }
 }

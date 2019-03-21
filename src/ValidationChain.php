@@ -1,5 +1,8 @@
 <?php
-namespace WScore\FormModel\Validation;
+namespace WScore\Validation;
+
+use WScore\Validation\Interfaces\ResultInterface;
+use WScore\Validation\Interfaces\ValidationInterface;
 
 class ValidationChain implements ValidationInterface
 {
@@ -19,7 +22,7 @@ class ValidationChain implements ValidationInterface
     /**
      * @param ResultInterface $result
      * @param ResultInterface $rootResults
-     * @return ResultInterface|null
+     * @return ResultInterface
      */
     public function validate($result, $rootResults = null)
     {
@@ -34,5 +37,15 @@ class ValidationChain implements ValidationInterface
             }
         }
         return $result;
+    }
+
+    /**
+     * @param string|array $value
+     * @return ResultInterface|null
+     */
+    public function verify($value)
+    {
+        $result = $this->initialize($value);
+        return $this->validate($result);
     }
 }

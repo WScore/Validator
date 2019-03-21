@@ -1,5 +1,5 @@
 <?php
-namespace WScore\FormModel\Validation;
+namespace WScore\Validation\Interfaces;
 
 interface ResultInterface extends \IteratorAggregate
 {
@@ -59,4 +59,15 @@ interface ResultInterface extends \IteratorAggregate
      * @return self[]
      */
     public function getChildren();
+
+    /**
+     * @return ResultInterface
+     */
+    public function getParent();
+
+    /**
+     * @param ResultInterface $param
+     * @return void
+     */
+    public function setParent(ResultInterface $param);
 }

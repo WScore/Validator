@@ -1,5 +1,9 @@
 <?php
-namespace WScore\FormModel\Validation;
+namespace WScore\Validation;
+
+use WScore\Validation\Interfaces\FilterInterface;
+use WScore\Validation\Interfaces\ValidationInterface;
+use WScore\Validation\Interfaces\ValidatorInterface;
 
 trait ValidationTrait
 {

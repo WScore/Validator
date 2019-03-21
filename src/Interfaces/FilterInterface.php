@@ -1,6 +1,6 @@
 <?php
 
-namespace WScore\FormModel\Validation;
+namespace WScore\Validation\Interfaces;
 
 /**
  * Interface FilterInterface

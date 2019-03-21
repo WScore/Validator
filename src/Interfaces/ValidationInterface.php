@@ -6,7 +6,7 @@
  * Time: 15:31
  */
 
-namespace WScore\FormModel\Validation;
+namespace WScore\Validation\Interfaces;
 
 interface ValidationInterface
 {
@@ -38,7 +38,7 @@ interface ValidationInterface
     /**
      * @param ResultInterface $result
      * @param ResultInterface $rootResults
-     * @return ResultInterface|null
+     * @return ResultInterface
      */
     public function validate($result, $rootResults = null);
 }

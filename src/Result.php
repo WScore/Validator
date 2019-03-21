@@ -1,7 +1,7 @@
 <?php
-namespace WScore\FormModel\Validation;
+namespace WScore\Validation;
 
-use WScore\FormModel\Interfaces\BaseElementInterface;
+use WScore\Validation\Interfaces\ResultInterface;
 
 class Result implements ResultInterface
 {
@@ -31,42 +31,9 @@ class Result implements ResultInterface
     private $label = '';
 
     /**
-     * @param BaseElementInterface $element
-     * @param mixed $value
-     * @return ResultInterface
+     * @var ResultInterface
      */
-    public static function success(BaseElementInterface $element, $value): ResultInterface
-    {
-        $self = new self();
-        $self->fillResult($element);
-        $self->isValid = true;
-        $self->value = $value;
-
-        return $self;
-    }
-
-    /**
-     * @param BaseElementInterface $element
-     * @param mixed $value
-     * @param string $message
-     * @return ResultInterface
-     */
-    public static function fail(?BaseElementInterface $element, $value, $message): ResultInterface
-    {
-        $self = new self();
-        $self->fillResult($element);
-        $self->isValid = false;
-        $self->message = $message;
-        $self->value = $value;
-
-        return $self;
-    }
-
-    private function fillResult(BaseElementInterface $element)
-    {
-        $this->name = $element->getName();
-        $this->label = $element->getLabel();
-    }
+    private $parent;
 
     /**
      * @return string
@@ -156,5 +123,21 @@ class Result implements ResultInterface
     public function getChildren()
     {
         return [];
+    }
+
+    /**
+     * @return ResultInterface
+     */
+    public function getParent(): ResultInterface
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param ResultInterface $parent
+     */
+    public function setParent(ResultInterface $parent): void
+    {
+        $this->parent = $parent;
     }
 }
