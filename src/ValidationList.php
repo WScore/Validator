@@ -11,7 +11,7 @@ class ValidationList implements ValidationInterface
     /**
      * @var ValidationInterface[]
      */
-    private $validators = [];
+    private $validations = [];
 
     /**
      * @var ResultList
@@ -26,9 +26,9 @@ class ValidationList implements ValidationInterface
     {
         $results = new ResultList();
         $results->setValue($inputs);
-        foreach ($this->validators as $name => $validator) {
+        foreach ($this->validations as $name => $validation) {
             $value = $inputs[$name] ?? null;
-            $results->addResult($validator->initialize($value));
+            $results->addResult($validation->initialize($value));
         }
         return $results;
     }
@@ -40,10 +40,25 @@ class ValidationList implements ValidationInterface
      */
     public function validate($result, $rootResults = null)
     {
+        // prepare rootResults
         $rootResults = $rootResults ?? $result;
-        foreach ($this->validators as $name => $validator) {
+
+        // perform pre-filters on all inputs.
+        foreach ($this->filters as $filter) {
+            if ($result = $filter->__invoke($result, $rootResults)) {
+                return $result;
+            }
+        }
+        // perform children's validation.
+        foreach ($this->validations as $name => $validation) {
             $value = $rootResults->getChild($name);
-            $validator->validate($value, $rootResults);
+            $validation->validate($value, $rootResults);
+        }
+        // perform post-validation on all inputs.
+        foreach ($this->validators as $name => $validator) {
+            if ($result = $validator->__invoke($result, $rootResults)) {
+                return $result;
+            }
         }
         return $result;
     }

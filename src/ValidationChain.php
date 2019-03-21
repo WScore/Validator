@@ -27,8 +27,8 @@ class ValidationChain implements ValidationInterface
     public function validate($result, $rootResults = null)
     {
         foreach ($this->filters as $filter) {
-            if ($filter->__invoke($result, $rootResults)) {
-                break;
+            if ($result = $filter->__invoke($result, $rootResults)) {
+                return $result;
             }
         }
         foreach ($this->validators as $name => $validator) {

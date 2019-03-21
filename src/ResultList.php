@@ -36,7 +36,7 @@ class ResultList implements ResultInterface
     private $children = [];
 
     /**
-     * @var ResultInterface
+     * @var ResultList
      */
     private $parent;
 
@@ -44,12 +44,22 @@ class ResultList implements ResultInterface
     {
         $result->setParent($this);
         $name = $name ?? $result->name();
+        $this->children[$name] = $result;
         $this->value[$name] = $result->value();
         $this->message[$name] = $result->getErrorMessage();
-        $this->children[$name] = $result;
         if (!$result->isValid()) {
             $this->isValid = false;
         }
+    }
+
+    /**
+     * @param string $message
+     * @return ResultInterface
+     */
+    public function failed(string $message): ResultInterface
+    {
+        $this->message[] = $message;
+        return $this;
     }
 
     /**
@@ -89,6 +99,12 @@ class ResultList implements ResultInterface
      */
     public function isValid(): bool
     {
+        if ($this->isValid === false) return false;
+        foreach ($this->children as $child) {
+            if (!$child->isValid()) {
+                $this->isValid = false;
+            }
+        }
         return $this->isValid;
     }
 
@@ -111,7 +127,7 @@ class ResultList implements ResultInterface
     }
 
     /**
-     * @return string|string[]|mixed
+     * @return string[]
      */
     public function getErrorMessage()
     {
@@ -143,18 +159,41 @@ class ResultList implements ResultInterface
     }
 
     /**
-     * @return ResultInterface
+     * @return ResultList|null
      */
-    public function getParent(): ResultInterface
+    public function getParent(): ?ResultList
     {
         return $this->parent;
     }
 
     /**
-     * @param ResultInterface $parent
+     * @param ResultList $parent
      */
-    public function setParent(ResultInterface $parent): void
+    public function setParent(ResultList $parent): void
     {
         $this->parent = $parent;
+    }
+
+    public function summarizeValues(): array
+    {
+        return $this->summarizeChildren('value');
+    }
+
+    public function summarizeErrorMessages(): array
+    {
+        return $this->summarizeChildren('getErrorMessage');
+    }
+
+    /**
+     * @param string $method
+     * @return array
+     */
+    private function summarizeChildren(string $method): array
+    {
+        $values = [];
+        foreach ($this->children as $name => $child) {
+            $values[$name] = $child->$method();
+        }
+        return $values;
     }
 }

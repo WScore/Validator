@@ -2,18 +2,15 @@
 
 namespace WScore\Validation\Interfaces;
 
-use WScore\Validation\Result;
-
 /**
- * Interface FilterInterface
- * @package WScore\FormModel\Interfaces
+ * ValidatorInterface is exactly the same as FilterInterface.
  */
 interface ValidatorInterface
 {
     /**
-     * @param ResultInterface $result
-     * @param array $allInput
-     * @return Result|null
+     * @param ResultInterface $input
+     * @param ResultInterface $allInputs
+     * @return ResultInterface|null
      */
-    public function __invoke(ResultInterface $result, $allInput = []): ?Result;
+    public function __invoke(ResultInterface $input, ResultInterface$allInputs): ?ResultInterface;
 }

@@ -1,8 +1,16 @@
 <?php
 namespace WScore\Validation\Interfaces;
 
+use WScore\Validation\ResultList;
+
 interface ResultInterface extends \IteratorAggregate
 {
+    /**
+     * @param string $message
+     * @return $this
+     */
+    public function failed(string $message): ResultInterface;
+
     /**
      * @return string|string[]|mixed
      */
@@ -29,7 +37,7 @@ interface ResultInterface extends \IteratorAggregate
     public function isValid(): bool;
 
     /**
-     * @return string|string[]|mixed
+     * @return string[]
      */
     public function getErrorMessage();
 
@@ -61,13 +69,13 @@ interface ResultInterface extends \IteratorAggregate
     public function getChildren();
 
     /**
-     * @return ResultInterface
+     * @return ResultList|null
      */
-    public function getParent();
+    public function getParent(): ?ResultList;
 
     /**
-     * @param ResultInterface $param
+     * @param ResultList $param
      * @return void
      */
-    public function setParent(ResultInterface $param);
+    public function setParent(ResultList $param): void;
 }

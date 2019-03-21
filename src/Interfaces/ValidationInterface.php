@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wsjp
- * Date: 2019/03/21
- * Time: 15:31
- */
 
 namespace WScore\Validation\Interfaces;
 

@@ -16,9 +16,9 @@ class Result implements ResultInterface
     private $isValid;
 
     /**
-     * @var string
+     * @var string[]
      */
-    private $message = '';
+    private $message = [];
 
     /**
      * @var string
@@ -31,9 +31,19 @@ class Result implements ResultInterface
     private $label = '';
 
     /**
-     * @var ResultInterface
+     * @var ResultList
      */
     private $parent;
+
+    /**
+     * @param string $message
+     * @return ResultInterface
+     */
+    public function failed(string $message): ResultInterface
+    {
+        $this->message[] = $message;
+        return $this;
+    }
 
     /**
      * @return string
@@ -81,7 +91,7 @@ class Result implements ResultInterface
      */
     public function hasChild(string $name): bool
     {
-        return isset($this->children[$name]);
+        return false;
     }
 
     /**
@@ -90,11 +100,11 @@ class Result implements ResultInterface
      */
     public function getChild(string $name): ?ResultInterface
     {
-        return $this->children[$name] ?? null;
+        return null;
     }
 
     /**
-     * @return string|string[]|mixed
+     * @return string[]
      */
     public function getErrorMessage()
     {
@@ -126,17 +136,17 @@ class Result implements ResultInterface
     }
 
     /**
-     * @return ResultInterface
+     * @return ResultList|null
      */
-    public function getParent(): ResultInterface
+    public function getParent(): ?ResultList
     {
         return $this->parent;
     }
 
     /**
-     * @param ResultInterface $parent
+     * @param ResultList $parent
      */
-    public function setParent(ResultInterface $parent): void
+    public function setParent(ResultList $parent): void
     {
         $this->parent = $parent;
     }
