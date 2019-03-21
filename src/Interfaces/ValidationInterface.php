@@ -35,4 +35,11 @@ interface ValidationInterface
      * @return ResultInterface
      */
     public function validate($result, $rootResults = null);
+
+
+    /**
+     * @param string|array $value
+     * @return ResultInterface
+     */
+    public function verify($value);
 }
