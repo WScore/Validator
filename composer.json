@@ -1,21 +1,19 @@
 {
     "name": "wscore/validation",
     "description": "Validation and filtration for values such as form input.",
+    "type": "library",
     "license": "MIT",
     "authors": [
         {
             "name": "Asao Kamei",
-            "email": "kamei@workspot.jp"
+            "email": "asao.kamei@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
 
     },
-    "autoload": {
-        "psr-4": {
-            "WScore\\Validation\\": "src/"
-        }
+    "minimum-stability": "stable",
+    "require-dev": {
+        "phpunit/phpunit": "^8.0"
     }
-
 }
