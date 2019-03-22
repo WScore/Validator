@@ -4,10 +4,8 @@ namespace WScore\Validation;
 use WScore\Validation\Interfaces\ResultInterface;
 use WScore\Validation\Interfaces\ValidationInterface;
 
-class ValidationList implements ValidationInterface
+class ValidationList extends AbstractValidation
 {
-    use ValidationTrait;
-
     /**
      * @var ValidationInterface[]
      */

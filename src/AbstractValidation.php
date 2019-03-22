@@ -5,7 +5,7 @@ use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ValidationInterface;
 use WScore\Validation\Interfaces\ValidatorInterface;
 
-trait ValidationTrait
+abstract class AbstractValidation implements ValidationInterface
 {
     /**
      * @var FilterInterface[]

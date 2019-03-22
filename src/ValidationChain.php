@@ -4,10 +4,8 @@ namespace WScore\Validation;
 use WScore\Validation\Interfaces\ResultInterface;
 use WScore\Validation\Interfaces\ValidationInterface;
 
-class ValidationChain implements ValidationInterface
+class ValidationChain extends AbstractValidation
 {
-    use ValidationTrait;
-
     /**
      * @param string|string[] $value
      * @return ResultInterface
