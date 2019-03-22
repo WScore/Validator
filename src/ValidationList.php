@@ -12,11 +12,6 @@ class ValidationList extends AbstractValidation
     private $validations = [];
 
     /**
-     * @var ResultList
-     */
-    private $results;
-
-    /**
      * @param array $inputs
      * @return ResultList|ResultInterface
      */

@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-
+      "ext-mbstring": "*"
     },
     "minimum-stability": "stable",
     "require-dev": {
