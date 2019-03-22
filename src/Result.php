@@ -31,6 +31,15 @@ class Result implements ResultInterface
     private $parent;
 
     /**
+     * Result constructor.
+     * @param string $message
+     */
+    public function __construct($message = null)
+    {
+        $this->message = $message === null ? []: [$message];
+    }
+
+    /**
      * @param string $message
      * @return ResultInterface
      */
@@ -95,7 +104,7 @@ class Result implements ResultInterface
      */
     public function getErrorMessage()
     {
-        return $this->message;
+        return $this->isValid() ? []: $this->message;
     }
 
     /**

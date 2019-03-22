@@ -6,6 +6,11 @@ use WScore\Validation\Interfaces\ResultInterface;
 class ValidationChain extends AbstractValidation
 {
     /**
+     * @var null|string
+     */
+    private $initialMessage = null;
+
+    /**
      * @param string|string[] $value
      * @return ResultInterface
      */
@@ -44,5 +49,15 @@ class ValidationChain extends AbstractValidation
     {
         $result = $this->initialize($value);
         return $this->validate($result);
+    }
+
+    /**
+     * @param string $initialMessage
+     * @return ValidationChain
+     */
+    public function setInitialMessage(string $initialMessage): self
+    {
+        $this->initialMessage = $initialMessage;
+        return $this;
     }
 }

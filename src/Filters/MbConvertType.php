@@ -19,7 +19,7 @@ class MbConvertType implements FilterInterface
      */
     private $convertType;
 
-    public function __construct(string $convertType)
+    public function __construct(string $convertType = self::MB_ZENKAKU)
     {
         $this->convertType = $convertType;
     }
