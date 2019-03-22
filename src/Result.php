@@ -26,11 +26,6 @@ class Result implements ResultInterface
     private $name = '';
 
     /**
-     * @var string
-     */
-    private $label = '';
-
-    /**
      * @var ResultList
      */
     private $parent;
@@ -67,14 +62,6 @@ class Result implements ResultInterface
     public function setValue($value)
     {
         $this->value = $value;
-    }
-
-    /**
-     * @return string
-     */
-    public function label(): string
-    {
-        return $this->label;
     }
 
     /**

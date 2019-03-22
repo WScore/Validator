@@ -64,7 +64,7 @@ class ValidationList implements ValidationInterface
     }
 
     /**
-     * @param $value
+     * @param array $value
      * @return ResultInterface
      */
     public function verify($value)

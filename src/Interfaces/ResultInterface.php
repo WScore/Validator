@@ -27,11 +27,6 @@ interface ResultInterface extends \IteratorAggregate
     public function name(): string ;
 
     /**
-     * @return string
-     */
-    public function label(): string ;
-
-    /**
      * @return bool
      */
     public function isValid(): bool;
