@@ -37,4 +37,26 @@ class MbConvertType implements FilterInterface
 
         return null;
     }
+
+    /**
+     * returns the priority of the filter.
+     * applies filters with smaller priority, first.
+     *
+     * @return int
+     */
+    public function getPriority(): int
+    {
+        return FilterInterface::PRIORITY_STRING_FILTERS;
+    }
+
+    /**
+     * returns name of the filter;
+     * validation can have only one filter with the same name.
+     *
+     * @return string
+     */
+    public function getFilterName(): string
+    {
+        return __CLASS__;
+    }
 }

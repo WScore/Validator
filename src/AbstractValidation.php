@@ -1,9 +1,9 @@
 <?php
+
 namespace WScore\Validation;
 
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ValidationInterface;
-use WScore\Validation\Interfaces\ValidatorInterface;
 
 abstract class AbstractValidation implements ValidationInterface
 {
@@ -11,11 +11,6 @@ abstract class AbstractValidation implements ValidationInterface
      * @var FilterInterface[]
      */
     protected $filters = [];
-
-    /**
-     * @var ValidatorInterface[]
-     */
-    protected $validators = [];
 
     /**
      * @var ValidationInterface[]
@@ -26,28 +21,30 @@ abstract class AbstractValidation implements ValidationInterface
      * @param callable[]|FilterInterface[] $filters
      * @return $this
      */
-    public function setInputFilter(callable ...$filters)
+    public function addFilters(callable ...$filters)
     {
-        $this->filters = array_merge($this->filters, $filters);
+        foreach ($filters as $filter) {
+            $this->filters[$filter->getFilterName()] = $filter;
+        }
         return $this;
     }
 
     /**
-     * @param callable[]|ValidatorInterface[] $validators
-     * @return $this
-     */
-    public function setValidator(callable ...$validators)
-    {
-        $this->validators = array_merge($this->validators, $validators);
-        return $this;
-    }
-
-    /**
+     * @param string $name
      * @param ValidationInterface $validation
      * @return void
      */
-    public function addChild(ValidationInterface $validation)
+    public function addChild(string $name, ValidationInterface $validation)
     {
-        $this->children[] = $validation;
+        $this->children[$name] = $validation;
+    }
+
+    protected function sortFilters()
+    {
+        usort(
+            $this->filters,
+            function (FilterInterface $a, FilterInterface $b) {
+                return $a->getPriority() <=> $b->getPriority();
+            });
     }
 }

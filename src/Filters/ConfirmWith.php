@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace WScore\Validation\Validators;
+namespace WScore\Validation\Filters;
 
+use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
-use WScore\Validation\Interfaces\ValidatorInterface;
 
-class ConfirmWith implements ValidatorInterface
+class ConfirmWith implements FilterInterface
 {
     /**
      * @var string
@@ -38,5 +38,27 @@ class ConfirmWith implements ValidatorInterface
             return $input->failed('confirmation failed. ');
         }
         return null;
+    }
+
+    /**
+     * returns the priority of the filter.
+     * applies filters with smaller priority, first.
+     *
+     * @return int
+     */
+    public function getPriority(): int
+    {
+        return FilterInterface::PRIORITY_VALIDATIONS;
+    }
+
+    /**
+     * returns name of the filter;
+     * validation can have only one filter with the same name.
+     *
+     * @return string
+     */
+    public function getFilterName(): string
+    {
+        return __CLASS__;
     }
 }

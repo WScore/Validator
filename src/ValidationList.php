@@ -35,20 +35,15 @@ class ValidationList extends AbstractValidation
     {
         // prepare rootResults
         $rootResults = $rootResults ?? $result;
-
-        // perform pre-filters on all inputs.
-        foreach ($this->filters as $filter) {
-            if ($result = $filter->__invoke($result, $rootResults)) {
-                return $result;
-            }
-        }
+        
         // perform children's validation.
         foreach ($this->validations as $name => $validation) {
             $value = $rootResults->getChild($name);
             $validation->validate($value, $rootResults);
         }
         // perform post-validation on all inputs.
-        foreach ($this->validators as $name => $validator) {
+        $this->sortFilters();
+        foreach ($this->filters as $name => $validator) {
             if ($result = $validator->__invoke($result, $rootResults)) {
                 return $result;
             }

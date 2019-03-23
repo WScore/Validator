@@ -10,6 +10,29 @@ namespace WScore\Validation\Interfaces;
  */
 interface FilterInterface
 {
+    const PRIORITY_SECURITY_FILTERS = 100;
+    const PRIORITY_STRING_FILTERS   = 1000;
+    const PRIORITY_USER_FILTERS     = 5000;
+    const PRIORITY_REQUIRED_FILTERS = 10000;
+    const PRIORITY_VALIDATIONS      = 20000;
+    const PRIORITY_USER_VALIDATIONS = 30000;
+
+    /**
+     * returns the priority of the filter.
+     * applies filters with smaller priority, first.
+     *
+     * @return int
+     */
+    public function getPriority(): int;
+
+    /**
+     * returns name of the filter;
+     * validation can have only one filter with the same name.
+     *
+     * @return string
+     */
+    public function getFilterName(): string;
+
     /**
      * @param ResultInterface $input
      * @param ResultInterface $allInputs

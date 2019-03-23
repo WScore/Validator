@@ -16,7 +16,7 @@ class TextType
     {
         $validator = new ValidationChain();
         $validator->setInitialMessage('not a valid text');
-        $validator->setInputFilter(
+        $validator->addFilters(
             new FilterValidUtf8(),
             new MbConvertType()
         );

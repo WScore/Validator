@@ -1,6 +1,7 @@
 <?php
-namespace WScore\Validation\Validators;
+namespace WScore\Validation\Filters;
 
+use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
 class InArray extends AbstractMultipleValidator
@@ -36,5 +37,27 @@ class InArray extends AbstractMultipleValidator
         } else {
             return $value;
         }
+    }
+
+    /**
+     * returns the priority of the filter.
+     * applies filters with smaller priority, first.
+     *
+     * @return int
+     */
+    public function getPriority(): int
+    {
+        return FilterInterface::PRIORITY_VALIDATIONS;
+    }
+
+    /**
+     * returns name of the filter;
+     * validation can have only one filter with the same name.
+     *
+     * @return string
+     */
+    public function getFilterName(): string
+    {
+        return __CLASS__;
     }
 }

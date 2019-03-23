@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace WScore\Validation\Validators;
+namespace WScore\Validation\Filters;
 
+use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
 class StringLength extends AbstractMultipleValidator
@@ -113,5 +114,27 @@ class StringLength extends AbstractMultipleValidator
             return $input;
         }
         return null;
+    }
+
+    /**
+     * returns the priority of the filter.
+     * applies filters with smaller priority, first.
+     *
+     * @return int
+     */
+    public function getPriority(): int
+    {
+        return FilterInterface::PRIORITY_VALIDATIONS;
+    }
+
+    /**
+     * returns name of the filter;
+     * validation can have only one filter with the same name.
+     *
+     * @return string
+     */
+    public function getFilterName(): string
+    {
+        return __CLASS__;
     }
 }

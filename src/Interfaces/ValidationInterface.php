@@ -8,13 +8,7 @@ interface ValidationInterface
      * @param callable[]|FilterInterface[] $filters
      * @return $this
      */
-    public function setInputFilter(callable ...$filters);
-
-    /**
-     * @param callable[]|ValidatorInterface[] $validators
-     * @return $this
-     */
-    public function setValidator(callable ...$validators);
+    public function addFilters(callable ...$filters);
 
     /**
      * @param string $name
