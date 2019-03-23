@@ -32,7 +32,7 @@ interface ResultInterface extends \IteratorAggregate
     public function isValid(): bool;
 
     /**
-     * @return string[]
+     * @return string[]|string
      */
     public function getErrorMessage();
 

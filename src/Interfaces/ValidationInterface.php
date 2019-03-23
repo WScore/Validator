@@ -5,8 +5,14 @@ namespace WScore\Validation\Interfaces;
 interface ValidationInterface
 {
     /**
+     * @param string $message
+     * @return void
+     */
+    public function setErrorMessage(string $message);
+
+    /**
      * @param callable[]|FilterInterface[] $filters
-     * @return $this
+     * @return void
      */
     public function addFilters(callable ...$filters);
 

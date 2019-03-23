@@ -35,6 +35,11 @@ class ResultList implements ResultInterface
      */
     private $parent;
 
+    public function __construct($message = null)
+    {
+        $this->message = $message ? [$message]: [];
+    }
+
     public function addResult(ResultInterface $result, $name = null)
     {
         $result->setParent($this);

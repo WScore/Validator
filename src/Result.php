@@ -16,9 +16,9 @@ class Result implements ResultInterface
     private $isValid;
 
     /**
-     * @var string[]
+     * @var string
      */
-    private $message = [];
+    private $message = null;
 
     /**
      * @var string
@@ -36,7 +36,7 @@ class Result implements ResultInterface
      */
     public function __construct($message = null)
     {
-        $this->message = $message === null ? []: [$message];
+        $this->message = $message;
     }
 
     /**
@@ -45,7 +45,7 @@ class Result implements ResultInterface
      */
     public function failed(string $message): ResultInterface
     {
-        $this->message[] = $message;
+        $this->message = $message;
         return $this;
     }
 
@@ -100,11 +100,11 @@ class Result implements ResultInterface
     }
 
     /**
-     * @return string[]
+     * @return string
      */
     public function getErrorMessage()
     {
-        return $this->isValid() ? []: $this->message;
+        return $this->isValid() ? '': $this->message;
     }
 
     /**

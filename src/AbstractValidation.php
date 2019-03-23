@@ -18,6 +18,16 @@ abstract class AbstractValidation implements ValidationInterface
     protected $children = [];
 
     /**
+     * @var string
+     */
+    protected $message = null;
+
+    public function setErrorMessage(string $message)
+    {
+        $this->message = $message;
+    }
+
+    /**
      * @param callable[]|FilterInterface[] $filters
      * @return $this
      */
@@ -46,5 +56,19 @@ abstract class AbstractValidation implements ValidationInterface
             function (FilterInterface $a, FilterInterface $b) {
                 return $a->getPriority() <=> $b->getPriority();
             });
+    }
+
+    protected function applyFilters(ResultInterface $result, ResultInterface $rootResults = null)
+    {
+        $this->sortFilters();
+        foreach ($this->filters as $filter) {
+            if ($result = $filter->__invoke($result, $rootResults)) {
+                return $result;
+            }
+        }
+        if (!$result->isValid() && $this->message !== null) {
+            $result->failed($this->message);
+        }
+        return $result;
     }
 }
