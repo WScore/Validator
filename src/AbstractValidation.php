@@ -3,6 +3,7 @@
 namespace WScore\Validation;
 
 use WScore\Validation\Interfaces\FilterInterface;
+use WScore\Validation\Interfaces\ResultInterface;
 use WScore\Validation\Interfaces\ValidationInterface;
 
 abstract class AbstractValidation implements ValidationInterface
