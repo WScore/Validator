@@ -28,13 +28,8 @@ class ValidationChain extends AbstractValidation
      */
     public function validate($result, $rootResults = null)
     {
-        $this->sortFilters();
-        foreach ($this->filters as $filter) {
-            if ($result = $filter->__invoke($result, $rootResults)) {
-                return $result;
-            }
-        }
-        return $result;
+        $this->prepareFilters();
+        return $this->applyFilters($result, $rootResults);
     }
 
     /**

@@ -28,27 +28,11 @@ class ValidationMultiple extends AbstractValidation
      */
     public function validate($result, $rootResults = null)
     {
-        $this->sortFilters();
+        $this->prepareFilters();
         foreach ($result->getChildren() as $result) {
-            $this->validateList($result, $rootResults);
+            $this->applyFilters($result, $rootResults);
         }
         return $result;
-    }
-
-
-    /**
-     * @param ResultInterface $results
-     * @param ResultInterface $rootResults
-     * @return ResultInterface
-     */
-    private function validateList($results, $rootResults = null)
-    {
-        foreach ($this->filters as $filter) {
-            if ($result = $filter->__invoke($results, $rootResults)) {
-                return $result;
-            }
-        }
-        return $results;
     }
 
     /**

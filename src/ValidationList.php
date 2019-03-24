@@ -48,13 +48,8 @@ class ValidationList extends AbstractValidation
             $validation->validate($value, $rootResults);
         }
         // perform post-validation on all inputs.
-        $this->sortFilters();
-        foreach ($this->filters as $name => $validator) {
-            if ($result = $validator->__invoke($result, $rootResults)) {
-                return $result;
-            }
-        }
-        return $result;
+        $this->prepareFilters();
+        return $this->applyFilters($result, $rootResults);
     }
 
     /**

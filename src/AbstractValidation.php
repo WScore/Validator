@@ -59,8 +59,13 @@ abstract class AbstractValidation implements ValidationInterface
         $this->children[$name] = $validation;
     }
 
-    protected function sortFilters()
+    protected function prepareFilters()
     {
+        foreach ($this->filters as $name => $filter) {
+            if (!is_object($filter)) {
+                $this->filters[$name] = new $name($filter);
+            }
+        }
         usort(
             $this->filters,
             function (FilterInterface $a, FilterInterface $b) {
@@ -70,7 +75,6 @@ abstract class AbstractValidation implements ValidationInterface
 
     protected function applyFilters(ResultInterface $result, ResultInterface $rootResults = null)
     {
-        $this->sortFilters();
         foreach ($this->filters as $filter) {
             if ($result = $filter->__invoke($result, $rootResults)) {
                 return $result;
