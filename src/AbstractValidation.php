@@ -30,6 +30,14 @@ abstract class AbstractValidation implements ValidationInterface
     protected $message;
 
     /**
+     * @param Messages $message
+     */
+    public function __construct(Messages $message)
+    {
+        $this->message = $message;
+    }
+
+    /**
      * @param string $message
      */
     public function setErrorMessage(string $message)

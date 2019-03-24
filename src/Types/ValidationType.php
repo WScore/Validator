@@ -27,7 +27,7 @@ class ValidationType
     public function text()
     {
         $filters = $this->typeFilter->getFilters('text');
-        $validation = new ValidationChain();
+        $validation = new ValidationChain($this->messages);
         $validation->addFilters(...$filters);
 
         return $validation;
