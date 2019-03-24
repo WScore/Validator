@@ -82,8 +82,7 @@ class StringLength extends AbstractMultipleValidator
     private function checkLength(ResultInterface $input, int $length)
     {
         if ($this->length !== $length) {
-            $input->failed('length must be');
-            return $input;
+            return $input->failed(__CLASS__, ['length' => $this->length]);
         }
         return null;
     }
@@ -96,8 +95,7 @@ class StringLength extends AbstractMultipleValidator
     private function checkMax(ResultInterface $input, int $length)
     {
         if ($this->max < $length) {
-            $input->failed('out of max');
-            return $input;
+            return $input->failed(__CLASS__, ['max' => $this->max]);
         }
         return null;
     }
@@ -110,8 +108,7 @@ class StringLength extends AbstractMultipleValidator
     private function checkMin(ResultInterface $input, int $length)
     {
         if ($length < $this->min) {
-            $input->failed('out of min');
-            return $input;
+            return $input->failed(__CLASS__, ['min' => $this->min]);
         }
         return null;
     }

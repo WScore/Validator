@@ -24,7 +24,7 @@ class FilterValidUtf8 implements FilterInterface
         } else {
             $input->setValue('');
         }
-        $input->failed('invalid encoding');
+        $input->failed(__CLASS__);
         return $input;
     }
 

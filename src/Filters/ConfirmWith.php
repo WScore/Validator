@@ -5,6 +5,7 @@ namespace WScore\Validation\Filters;
 
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
+use WScore\Validation\Result;
 
 class ConfirmWith implements FilterInterface
 {
@@ -29,15 +30,22 @@ class ConfirmWith implements FilterInterface
     public function __invoke(ResultInterface $input, ResultInterface $allInputs): ?ResultInterface
     {
         $confirmName = $this->confirmWith ?? $input->name() . '_confirmation';
-        $confirmInput = $input->getParent()->getChild($confirmName);
-        if (!$confirmInput) {
-            return $input->failed('no input to confirm with: ' . $confirmName);
+        $confirmValue = $input->getParent()->value()[$confirmName] ?? '';
+        if ($confirmValue === $input->value()) {
+            return null;
         }
-        $confirmValue = $confirmInput->value();
-        if ($confirmValue !== $input->value()) {
-            return $input->failed('confirmation failed. ');
+        if ($this->empty($confirmValue)) {
+            $confirmResult = new Result();
+            $confirmResult->failed(Required::class);
+            $input->getParent()->addResult($confirmResult, $confirmName);
+            return $input->failed(__CLASS__);
         }
-        return null;
+        return $input->failed(__CLASS__);
+    }
+
+    private function empty($string)
+    {
+        return '' !== (string) $string;
     }
 
     /**

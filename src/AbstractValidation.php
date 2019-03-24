@@ -5,6 +5,7 @@ namespace WScore\Validation;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 use WScore\Validation\Interfaces\ValidationInterface;
+use WScore\Validation\Locale\Messages;
 
 abstract class AbstractValidation implements ValidationInterface
 {
@@ -21,11 +22,19 @@ abstract class AbstractValidation implements ValidationInterface
     /**
      * @var string
      */
-    protected $message = null;
+    protected $error_message = null;
 
+    /**
+     * @var Messages
+     */
+    protected $message;
+
+    /**
+     * @param string $message
+     */
     public function setErrorMessage(string $message)
     {
-        $this->message = $message;
+        $this->error_message = $message;
     }
 
     /**
@@ -66,9 +75,6 @@ abstract class AbstractValidation implements ValidationInterface
             if ($result = $filter->__invoke($result, $rootResults)) {
                 return $result;
             }
-        }
-        if (!$result->isValid() && $this->message !== null) {
-            $result->failed($this->message);
         }
         return $result;
     }

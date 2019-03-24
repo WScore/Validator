@@ -2,6 +2,7 @@
 namespace WScore\Validation;
 
 use WScore\Validation\Interfaces\ResultInterface;
+use WScore\Validation\Locale\Messages;
 
 class Result implements ResultInterface
 {
@@ -16,7 +17,7 @@ class Result implements ResultInterface
     private $isValid;
 
     /**
-     * @var string
+     * @var Messages
      */
     private $message = null;
 
@@ -31,21 +32,35 @@ class Result implements ResultInterface
     private $parent;
 
     /**
-     * Result constructor.
-     * @param string $message
+     * @var array
      */
-    public function __construct($message = null)
+    private $failed = [];
+
+
+    /**
+     * Result constructor.
+     * @param Messages $message
+     */
+    public function __construct(Messages $message)
     {
         $this->message = $message;
     }
 
     /**
+     * @param string $failedAt
+     * @param array $options
      * @param string $message
-     * @return ResultInterface
+     * @return $this
      */
-    public function failed(string $message): ResultInterface
+    public function failed(string $failedAt, array $options = [], string $message = null): ResultInterface
     {
-        $this->message = $message;
+        $message = $message ?: $this->message->getMessage($failedAt, $options);
+        $this->failed = [
+            'failedAt' => $failedAt,
+            'options' => $options,
+            'message' => $message
+        ];
+        $this->isValid = false;
         return $this;
     }
 
@@ -61,6 +76,14 @@ class Result implements ResultInterface
      * @return string|string[]|mixed
      */
     public function value()
+    {
+        return $this->value;
+    }
+
+    /**
+     * @return string|string[]|array
+     */
+    public function getValidatedValue()
     {
         return $this->value;
     }
@@ -100,11 +123,18 @@ class Result implements ResultInterface
     }
 
     /**
-     * @return string
+     * @return string[]
      */
     public function getErrorMessage()
     {
-        return $this->isValid() ? '': $this->message;
+        if ($this->isValid()) {
+            return [];
+        }
+        $messages = [];
+        foreach ($this->failed as $item) {
+            $messages[] = $item['message'];
+        }
+        return $messages;
     }
 
     /**

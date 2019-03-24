@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace WScore\Validation\Filters;
 
+use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
-use WScore\Validation\Interfaces\ValidatorInterface;
 
 abstract class AbstractMultipleValidator implements FilterInterface
 {

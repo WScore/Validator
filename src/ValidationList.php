@@ -3,6 +3,7 @@ namespace WScore\Validation;
 
 use WScore\Validation\Interfaces\ResultInterface;
 use WScore\Validation\Interfaces\ValidationInterface;
+use WScore\Validation\Locale\Messages;
 
 class ValidationList extends AbstractValidation
 {
@@ -10,6 +11,11 @@ class ValidationList extends AbstractValidation
      * @var ValidationInterface[]
      */
     private $validations = [];
+
+    /**
+     * @var Messages
+     */
+    private $message;
 
     /**
      * @param array $inputs

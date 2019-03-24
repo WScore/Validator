@@ -2,6 +2,7 @@
 namespace WScore\Validation;
 
 use WScore\Validation\Interfaces\ResultInterface;
+use WScore\Validation\Locale\Messages;
 
 class ResultList implements ResultInterface
 {
@@ -16,9 +17,9 @@ class ResultList implements ResultInterface
     private $isValid;
 
     /**
-     * @var array
+     * @var Messages
      */
-    private $message = [];
+    private $message;
 
     /**
      * @var string
@@ -35,9 +36,14 @@ class ResultList implements ResultInterface
      */
     private $parent;
 
-    public function __construct($message = null)
+    /**
+     * @var array
+     */
+    private $failed = [];
+
+    public function __construct(Messages $message)
     {
-        $this->message = $message ? [$message]: [];
+        $this->message = $message;
     }
 
     public function addResult(ResultInterface $result, $name = null)
@@ -45,7 +51,6 @@ class ResultList implements ResultInterface
         $result->setParent($this);
         $name = $name ?? $result->name();
         $this->children[$name] = $result;
-        $this->value[$name] = $result->value();
         $this->message[$name] = $result->getErrorMessage();
         if (!$result->isValid()) {
             $this->isValid = false;
@@ -53,12 +58,20 @@ class ResultList implements ResultInterface
     }
 
     /**
+     * @param string $failedAt
+     * @param array $options
      * @param string $message
-     * @return ResultInterface
+     * @return $this
      */
-    public function failed(string $message): ResultInterface
+    public function failed(string $failedAt, array $options = [], string $message = null): ResultInterface
     {
-        $this->message[] = $message;
+        $message = $message ?: $this->message->getMessage($failedAt, $options);
+        $this->failed = [
+            'failedAt' => $failedAt,
+            'options' => $options,
+            'message' => $message
+        ];
+        $this->isValid = false;
         return $this;
     }
 
@@ -76,6 +89,18 @@ class ResultList implements ResultInterface
     public function value()
     {
         return $this->value;
+    }
+
+    /**
+     * @return string|string[]|array
+     */
+    public function getValidatedValue()
+    {
+        $value = [];
+        foreach ($this->getChildren() as $name => $child) {
+            $value[$name] = $child->value();
+        }
+        return $value;
     }
 
     /**
@@ -123,7 +148,19 @@ class ResultList implements ResultInterface
      */
     public function getErrorMessage()
     {
-        return $this->message;
+        if ($this->isValid()) {
+            return [];
+        }
+        $messages = [];
+        foreach ($this->failed as $item) {
+            $messages[] = $item['message'];
+        }
+        foreach ($this->getChildren() as $name => $child) {
+            if (!$child->isValid()) {
+                $messages[$name] = $child->getErrorMessage();
+            }
+        }
+        return $messages;
     }
 
     /**

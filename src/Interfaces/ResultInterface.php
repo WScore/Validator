@@ -6,15 +6,22 @@ use WScore\Validation\ResultList;
 interface ResultInterface extends \IteratorAggregate
 {
     /**
+     * @param string $failedAt
+     * @param array $options
      * @param string $message
      * @return $this
      */
-    public function failed(string $message): ResultInterface;
+    public function failed(string $failedAt, array $options = [], string $message = null): ResultInterface;
 
     /**
      * @return string|string[]|mixed
      */
     public function value();
+
+    /**
+     * @return string|string[]|array
+     */
+    public function getValidatedValue();
 
     /**
      * @param mixed $value
@@ -32,7 +39,7 @@ interface ResultInterface extends \IteratorAggregate
     public function isValid(): bool;
 
     /**
-     * @return string[]|string
+     * @return string[]
      */
     public function getErrorMessage();
 
