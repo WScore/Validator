@@ -9,6 +9,14 @@
             "email": "asao.kamei@gmail.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "WScore\\Validation\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": { "tests\\": "tests/" }
+    },
     "require": {
       "ext-mbstring": "*"
     },
