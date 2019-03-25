@@ -6,7 +6,7 @@ namespace WScore\Validation\Filters;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class StringLength extends AbstractMultipleValidator
+class StringLength extends AbstractValidator
 {
     /**
      * @var null|int
@@ -22,27 +22,6 @@ class StringLength extends AbstractMultipleValidator
      * @var null|int
      */
     private $length = null;
-
-    /**
-     * @param string $value
-     * @param ResultInterface $input
-     * @param ResultInterface $allInputs
-     * @return string|ResultInterface|null
-     */
-    public function validate($value, ResultInterface $input, ResultInterface $allInputs)
-    {
-        $length = mb_strlen($value);
-        if ($this->length !== null) {
-            return $this->checkLength($input, $length);
-        }
-        if ($this->max !== null) {
-            return $this->checkMax($input, $length);
-        }
-        if ($this->min !== null) {
-            return $this->checkMin($input, $length);
-        }
-        return null;
-    }
 
     /**
      * @param int|null $max
@@ -133,5 +112,26 @@ class StringLength extends AbstractMultipleValidator
     public function getFilterName(): string
     {
         return __CLASS__;
+    }
+
+    /**
+     * @param ResultInterface $input
+     * @param ResultInterface $allInputs
+     * @return ResultInterface|null
+     */
+    public function __invoke(ResultInterface $input, ResultInterface $allInputs): ?ResultInterface
+    {
+        $value = $input->value();
+        $length = mb_strlen($value);
+        if ($this->length !== null) {
+            return $this->checkLength($input, $length);
+        }
+        if ($this->max !== null) {
+            return $this->checkMax($input, $length);
+        }
+        if ($this->min !== null) {
+            return $this->checkMin($input, $length);
+        }
+        return null;
     }
 }

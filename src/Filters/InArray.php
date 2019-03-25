@@ -4,7 +4,7 @@ namespace WScore\Validation\Filters;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class InArray extends AbstractMultipleValidator
+class InArray implements FilterInterface
 {
     /**
      * @var array
@@ -25,21 +25,6 @@ class InArray extends AbstractMultipleValidator
     }
 
     /**
-     * @param string $value
-     * @param ResultInterface $input
-     * @param ResultInterface $allInputs
-     * @return string|null
-     */
-    public function validate($value, ResultInterface $input, ResultInterface $allInputs)
-    {
-        if (in_array($value, $this->inArray, $this->strict)) {
-            return null;
-        } else {
-            return $value;
-        }
-    }
-
-    /**
      * returns the priority of the filter.
      * applies filters with smaller priority, first.
      *
@@ -47,7 +32,7 @@ class InArray extends AbstractMultipleValidator
      */
     public function getPriority(): int
     {
-        return FilterInterface::PRIORITY_VALIDATIONS;
+        return FilterInterface::PRIORITY_STRING_FILTERS;
     }
 
     /**
@@ -59,5 +44,20 @@ class InArray extends AbstractMultipleValidator
     public function getFilterName(): string
     {
         return __CLASS__;
+    }
+
+    /**
+     * @param ResultInterface $input
+     * @param ResultInterface $allInputs
+     * @return ResultInterface|null
+     */
+    public function __invoke(ResultInterface $input, ResultInterface $allInputs): ?ResultInterface
+    {
+        $value = $input->value();
+        if (in_array($value, $this->inArray, $this->strict)) {
+            return null;
+        } else {
+            return $value;
+        }
     }
 }
