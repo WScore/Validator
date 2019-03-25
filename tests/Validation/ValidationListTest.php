@@ -70,6 +70,8 @@ class ValidationListTest extends TestCase
         $result = $list->initialize($input);
         $this->assertEquals(ResultList::class, get_class($result));
         $this->assertEquals($input, $result->value());
+        $this->assertEquals('test', $result->getChild('test')->name());
+        $this->assertEquals('more', $result->getChild('more')->name());
     }
 
     public function testValidate()

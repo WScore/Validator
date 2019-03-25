@@ -5,6 +5,17 @@ namespace WScore\Validation\Interfaces;
 interface ValidationInterface
 {
     /**
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * @param string|null $name
+     * @return $this
+     */
+    public function setName(string $name);
+
+    /**
      * @param string $message
      * @return void
      */

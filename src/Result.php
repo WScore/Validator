@@ -41,14 +41,15 @@ class Result implements ResultInterface
      */
     private $failed = [];
 
-
     /**
      * Result constructor.
      * @param Messages $message
+     * @param null|string $name
      */
-    public function __construct(Messages $message)
+    public function __construct(Messages $message, $name = null)
     {
         $this->message = $message;
+        $this->name = $name;
     }
 
     /**
@@ -72,7 +73,7 @@ class Result implements ResultInterface
     /**
      * @return string
      */
-    public function name(): string
+    public function name(): ?string
     {
         return $this->name;
     }

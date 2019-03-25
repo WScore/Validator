@@ -46,9 +46,15 @@ class ResultList implements ResultInterface
      */
     private $failed = [];
 
-    public function __construct(Messages $message)
+    /**
+     * Result constructor.
+     * @param Messages $message
+     * @param null|string $name
+     */
+    public function __construct(Messages $message, $name = null)
     {
         $this->message = $message;
+        $this->name = $name;
     }
 
     public function addResult(ResultInterface $result, $name = null)
@@ -79,7 +85,7 @@ class ResultList implements ResultInterface
     /**
      * @return string
      */
-    public function name(): string
+    public function name(): ?string
     {
         return $this->name;
     }
