@@ -21,7 +21,7 @@ interface ResultInterface extends \IteratorAggregate
     /**
      * @return string|string[]|array
      */
-    public function getValidatedValue();
+    public function getOriginalValue();
 
     /**
      * @param mixed $value
@@ -80,4 +80,9 @@ interface ResultInterface extends \IteratorAggregate
      * @return void
      */
     public function setParent(ResultList $param): void;
+
+    /**
+     * @return  void
+     */
+    public function finalize();
 }
