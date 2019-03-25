@@ -2,21 +2,9 @@
 namespace WScore\Validation;
 
 use WScore\Validation\Interfaces\ResultInterface;
-use WScore\Validation\Interfaces\ValidationInterface;
-use WScore\Validation\Locale\Messages;
 
 class ValidationList extends AbstractValidation
 {
-    /**
-     * @var ValidationInterface[]
-     */
-    private $validations = [];
-
-    /**
-     * @var Messages
-     */
-    private $message;
-
     /**
      * @param array $inputs
      * @return ResultList|ResultInterface
@@ -25,9 +13,9 @@ class ValidationList extends AbstractValidation
     {
         $results = new ResultList($this->message);
         $results->setValue($inputs);
-        foreach ($this->validations as $name => $validation) {
+        foreach ($this->children as $name => $validation) {
             $value = $inputs[$name] ?? null;
-            $results->addResult($validation->initialize($value));
+            $results->addResult($validation->initialize($value), $name);
         }
         return $results;
     }
@@ -43,7 +31,7 @@ class ValidationList extends AbstractValidation
         $rootResults = $rootResults ?? $result;
 
         // perform children's validation.
-        foreach ($this->validations as $name => $validation) {
+        foreach ($this->children as $name => $validation) {
             $value = $rootResults->getChild($name);
             $validation->validate($value, $rootResults);
         }
