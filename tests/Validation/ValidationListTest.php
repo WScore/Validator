@@ -88,6 +88,12 @@ class ValidationListTest extends TestCase
 
     public function testVerify()
     {
+        $list = $this->buildTestList();
+        $input = ['test' => 'test1', 'more' => 'test2'];
+        $result = $list->verify($input);
 
+        $this->assertEquals('test1-test', $result->getChild('test')->value());
+        $this->assertEquals('test2-more', $result->getChild('more')->value());
+        $this->assertTrue($result->isValid());
     }
 }
