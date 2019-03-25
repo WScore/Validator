@@ -12,9 +12,14 @@ class ResultList implements ResultInterface
     private $value = [];
 
     /**
+     * @var null|array
+     */
+    private $originalValue = [];
+
+    /**
      * @var bool
      */
-    private $isValid;
+    private $isValid = true;
 
     /**
      * @var Messages
@@ -51,10 +56,6 @@ class ResultList implements ResultInterface
         $result->setParent($this);
         $name = $name ?? $result->name();
         $this->children[$name] = $result;
-        $this->message[$name] = $result->getErrorMessage();
-        if (!$result->isValid()) {
-            $this->isValid = false;
-        }
     }
 
     /**
@@ -94,13 +95,9 @@ class ResultList implements ResultInterface
     /**
      * @return string|string[]|array
      */
-    public function getValidatedValue()
+    public function getOriginalValue()
     {
-        $value = [];
-        foreach ($this->getChildren() as $name => $child) {
-            $value[$name] = $child->value();
-        }
-        return $value;
+        return $this->originalValue;
     }
 
     /**
@@ -108,7 +105,7 @@ class ResultList implements ResultInterface
      */
     public function setValue($value)
     {
-        $this->value = $value;
+        $this->value = $this->originalValue = $value;
     }
 
     /**
@@ -155,11 +152,6 @@ class ResultList implements ResultInterface
         foreach ($this->failed as $item) {
             $messages[] = $item['message'];
         }
-        foreach ($this->getChildren() as $name => $child) {
-            if (!$child->isValid()) {
-                $messages[$name] = $child->getErrorMessage();
-            }
-        }
         return $messages;
     }
 
@@ -203,9 +195,19 @@ class ResultList implements ResultInterface
         $this->parent = $parent;
     }
 
-    public function summarizeValues(): array
+    /**
+     * @return  void
+     */
+    public function finalize()
     {
-        return $this->summarizeChildren('value');
+        $this->summarizeChildren('finalize');
+        $this->value = $this->summarizeChildren('value');
+        $this->isValid = true;
+        foreach ($this->children as $name => $child) {
+            if (!$child->isValid()) {
+                $this->isValid = false;
+            }
+        }
     }
 
     public function summarizeErrorMessages(): array

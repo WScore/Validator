@@ -12,9 +12,14 @@ class Result implements ResultInterface
     private $value = null;
 
     /**
+     * @var null|mixed
+     */
+    private $originalValue = null;
+
+    /**
      * @var bool
      */
-    private $isValid;
+    private $isValid = true;
 
     /**
      * @var Messages
@@ -83,9 +88,9 @@ class Result implements ResultInterface
     /**
      * @return string|string[]|array
      */
-    public function getValidatedValue()
+    public function getOriginalValue()
     {
-        return $this->value;
+        return $this->originalValue;
     }
 
     /**
@@ -93,7 +98,7 @@ class Result implements ResultInterface
      */
     public function setValue($value)
     {
-        $this->value = $value;
+        $this->value = $this->originalValue = $value;
     }
 
     /**
@@ -175,5 +180,12 @@ class Result implements ResultInterface
     public function setParent(ResultList $parent): void
     {
         $this->parent = $parent;
+    }
+
+    /**
+     * @return  void
+     */
+    public function finalize()
+    {
     }
 }
