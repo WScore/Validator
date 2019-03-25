@@ -11,8 +11,7 @@ class ValidationList extends AbstractValidation
      */
     public function initialize($inputs)
     {
-        $results = new ResultList($this->message, $this->name);
-        $results->setValue($inputs);
+        $results = new ResultList($this->message, $inputs, $this->name);
         foreach ($this->children as $name => $validation) {
             $value = $inputs[$name] ?? null;
             $results->addResult($validation->initialize($value), $name);

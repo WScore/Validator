@@ -11,18 +11,16 @@ class ValidationMultiple extends AbstractValidation
      */
     public function initialize($value)
     {
-        $results = new ResultList($this->message, $this->name);
-        $results->setValue($value);
+        $results = new ResultList($this->message, $value, $this->name);
         foreach ($value as $key => $val) {
-            $result = new Result($this->message, $key);
-            $result->setValue($val);
+            $result = new Result($this->message, $val, $key);
             $results->addResult($result, $key);
         }
         return $results;
     }
 
     /**
-     * @param ResultInterface $result
+     * @param ResultInterface $results
      * @param ResultInterface $rootResults
      * @return ResultInterface
      */

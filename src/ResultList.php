@@ -48,15 +48,21 @@ class ResultList implements ResultInterface
 
     /**
      * Result constructor.
-     * @param Messages $message
+     * @param Messages|null $message
+     * @param string $value
      * @param null|string $name
      */
-    public function __construct(Messages $message, $name = null)
+    public function __construct(?Messages $message, $value, $name = null)
     {
         $this->message = $message;
+        $this->value = $this->originalValue = $value;
         $this->name = $name;
     }
 
+    /**
+     * @param ResultInterface $result
+     * @param null $name
+     */
     public function addResult(ResultInterface $result, $name = null)
     {
         $result->setParent($this);
@@ -72,8 +78,10 @@ class ResultList implements ResultInterface
      */
     public function failed(string $failedAt, array $options = [], string $message = null): ResultInterface
     {
-        $message = $message ?: $this->message->getMessage($failedAt, $options);
-        $this->failed = [
+        if ($message === null && $this->message) {
+            $message = $this->message->getMessage($failedAt, $options);
+        }
+        $this->failed[] = [
             'failedAt' => $failedAt,
             'options' => $options,
             'message' => $message
@@ -111,7 +119,7 @@ class ResultList implements ResultInterface
      */
     public function setValue($value)
     {
-        $this->value = $this->originalValue = $value;
+        $this->value = $value;
     }
 
     /**
@@ -218,7 +226,9 @@ class ResultList implements ResultInterface
 
     public function summarizeErrorMessages(): array
     {
-        return $this->summarizeChildren('getErrorMessage');
+        $messages = $this->summarizeChildren('getErrorMessage');
+        $messages = array_merge($this->getErrorMessage(), $messages);
+        return $messages;
     }
 
     /**

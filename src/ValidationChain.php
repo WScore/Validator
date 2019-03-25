@@ -16,8 +16,7 @@ class ValidationChain extends AbstractValidation
      */
     public function initialize($value)
     {
-        $result = new Result($this->message, $this->name);
-        $result->setValue($value);
+        $result = new Result($this->message, $value, $this->name);
         return $result;
     }
 

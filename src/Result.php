@@ -22,7 +22,7 @@ class Result implements ResultInterface
     private $isValid = true;
 
     /**
-     * @var Messages
+     * @var null|Messages
      */
     private $message = null;
 
@@ -43,12 +43,14 @@ class Result implements ResultInterface
 
     /**
      * Result constructor.
-     * @param Messages $message
+     * @param null|Messages $message
+     * @param string $value
      * @param null|string $name
      */
-    public function __construct(Messages $message, $name = null)
+    public function __construct(?Messages $message, $value, $name = null)
     {
         $this->message = $message;
+        $this->value = $this->originalValue = $value;
         $this->name = $name;
     }
 
@@ -60,8 +62,10 @@ class Result implements ResultInterface
      */
     public function failed(string $failedAt, array $options = [], string $message = null): ResultInterface
     {
-        $message = $message ?: $this->message->getMessage($failedAt, $options);
-        $this->failed = [
+        if ($message === null && $this->message) {
+            $message = $this->message->getMessage($failedAt, $options);
+        }
+        $this->failed[] = [
             'failedAt' => $failedAt,
             'options' => $options,
             'message' => $message
@@ -99,7 +103,7 @@ class Result implements ResultInterface
      */
     public function setValue($value)
     {
-        $this->value = $this->originalValue = $value;
+        $this->value = $value;
     }
 
     /**
