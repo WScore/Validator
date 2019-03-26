@@ -35,9 +35,6 @@ class ValidationMultipleTest extends TestCase
         $result = $list->initialize($input);
         $this->assertEquals(ResultList::class, get_class($result));
         $this->assertEquals($input, $result->value());
-        $this->assertTrue($result->hasChildren());
-        $this->assertEquals('test1', $result->getChild('test')->value());
-        $this->assertEquals('test2', $result->getChild('more')->value());
     }
 
     public function testValidate()
@@ -50,6 +47,7 @@ class ValidationMultipleTest extends TestCase
         $result = $list->initialize($input);
         $result = $list->validate($result);
         $result->finalize();
+        $this->assertTrue($result->hasChildren());
         $this->assertEquals('test1-multi', $result->getChild('test')->value());
         $this->assertEquals('test2-multi', $result->getChild('more')->value());
     }

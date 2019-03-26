@@ -40,14 +40,15 @@ class TypeFilters
      * @param string $type
      * @return FilterInterface[]
      */
-    public function getFilters($type): string
+    public function getFilters($type): array
     {
         if (!isset($this->typeFilters[$type])) {
             throw new \InvalidArgumentException('unknown type: ' . $type);
         }
-        $filters = $this->typeFilters[$type];
-        foreach ($filters as $name => $option) {
-            $filters[$name] = new $name($option);
+        $rawFilters = $this->typeFilters[$type];
+        $filters = [];
+        foreach ($rawFilters as $name => $option) {
+            $filters[] = new $name($option);
         }
 
         return $filters;

@@ -15,27 +15,25 @@ class ValidationRepeat extends AbstractValidation
 {
     /**
      * @param string[] $value
-     * @return ResultInterface
+     * @return ResultInterface|ResultList
      */
     public function initialize($value)
     {
         $results = new ResultList($this->message, $value, $this->name);
-        foreach ($value as $key => $val) {
-            $result = new Result($this->message, $val, $key);
-            $results->addResult($result, $key);
-        }
         return $results;
     }
 
     /**
-     * @param ResultInterface $results
+     * @param ResultInterface|ResultList $results
      * @return ResultInterface
      */
     public function validate($results)
     {
-        foreach ($results as $result) {
+        $values = $results->value();
+        foreach ($values as $key => $val) {
             foreach ($this->children as $name => $validation) {
-                $validation->validate($result);
+                $result = $validation->verify($val);
+                $results->addResult($result, $key);
             }
         }
         $this->prepareFilters();
@@ -52,6 +50,8 @@ class ValidationRepeat extends AbstractValidation
     public function verify($value)
     {
         $result = $this->initialize($value);
-        return $this->validate($result);
+        $result = $this->validate($result);
+        $result->finalize();
+        return $result;
     }
 }

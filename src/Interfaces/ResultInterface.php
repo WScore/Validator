@@ -50,10 +50,10 @@ interface ResultInterface extends \IteratorAggregate
     public function hasChild(string $name): bool;
 
     /**
-     * @param string $name
+     * @param string|int $name
      * @return ResultInterface
      */
-    public function getChild(string $name): ?ResultInterface;
+    public function getChild($name): ?ResultInterface;
 
     /**
      * @return self[]

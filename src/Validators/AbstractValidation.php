@@ -74,7 +74,7 @@ abstract class AbstractValidation implements ValidationInterface
      * @param callable[]|FilterInterface[] $filters
      * @return $this
      */
-    public function addFilters(callable ...$filters)
+    public function addFilters(FilterInterface ...$filters): ValidationInterface
     {
         foreach ($filters as $filter) {
             $this->filters[$filter->getFilterName()] = $filter;
@@ -85,12 +85,13 @@ abstract class AbstractValidation implements ValidationInterface
     /**
      * @param string $name
      * @param ValidationInterface $validation
-     * @return void
+     * @return ValidationInterface
      */
-    public function addChild(string $name, ValidationInterface $validation)
+    public function addChild(string $name, ValidationInterface $validation): ValidationInterface
     {
         $validation->setName($name);
         $this->children[$name] = $validation;
+        return $this;
     }
 
     protected function prepareFilters()

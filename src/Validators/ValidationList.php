@@ -33,15 +33,11 @@ class ValidationList extends AbstractValidation
     public function initialize($inputs)
     {
         $results = new ResultList($this->message, $inputs, $this->name);
-        foreach ($this->children as $name => $validation) {
-            $value = $inputs[$name] ?? null;
-            $results->addResult($validation->initialize($value), $name);
-        }
         return $results;
     }
 
     /**
-     * @param ResultInterface $results
+     * @param ResultInterface|ResultList $results
      * @return ResultInterface
      */
     public function validate($results)
@@ -53,9 +49,11 @@ class ValidationList extends AbstractValidation
             }
         }
         // perform children's validation.
+        $inputs = $results->value();
         foreach ($this->children as $name => $validation) {
-            $result = $results->getChild($name);
-            $validation->validate($result);
+            $value = $inputs[$name] ?? null;
+            $result = $validation->verify($value);
+            $results->addResult($result);
         }
         // perform post-validation on all inputs.
         $this->prepareFilters();
@@ -71,6 +69,8 @@ class ValidationList extends AbstractValidation
     public function verify($value)
     {
         $result = $this->initialize($value);
-        return $this->validate($result);
+        $result = $this->validate($result);
+        $result->finalize();
+        return $result;
     }
 }

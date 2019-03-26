@@ -50,23 +50,23 @@ class ValidatorBuilder
         return $self;
     }
 
-    public function form(string $name): ValidationList
+    public function form(string $name = null): ValidationList
     {
         return new ValidationList($this->messages, $name);
     }
 
-    public function repeat(string $name): ValidationRepeat
+    public function repeat(string $name = null): ValidationRepeat
     {
         return new ValidationRepeat($this->messages, $name);
     }
 
-    public function text(string $name): ValidationInterface
+    public function text(string $name = null): ValidationInterface
     {
         $type = 'text';
         return $this->buildByType($name, $type);
     }
 
-    private function buildByType(string $name, string $type): ValidationInterface
+    private function buildByType(?string $name, string $type): ValidationInterface
     {
         if ($this->type === self::TYPE_MULTI) {
             $v = new ValidationMultiple($this->messages, $name);
@@ -74,7 +74,7 @@ class ValidatorBuilder
             $v = new ValidationChain($this->messages, $name);
         }
         $filters = $this->typeFilter->getFilters($type);
-        $v->addFilters($filters);
+        $v->addFilters(...$filters);
         return $v;
     }
 }

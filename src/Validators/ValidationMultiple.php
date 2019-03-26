@@ -14,28 +14,28 @@ class ValidationMultiple extends AbstractValidation
 {
     /**
      * @param string[] $value
-     * @return ResultInterface
+     * @return ResultInterface|ResultList
      */
     public function initialize($value)
     {
         $results = new ResultList($this->message, $value, $this->name);
-        foreach ($value as $key => $val) {
-            $result = new Result($this->message, $val, $key);
-            $results->addResult($result, $key);
-        }
         return $results;
     }
 
     /**
-     * @param ResultInterface $results
+     * @param ResultInterface|ResultList $results
      * @return ResultInterface
      */
     public function validate($results)
     {
         $this->prepareFilters();
-        foreach ($results->getChildren() as $result) {
-            $this->applyFilters($result);
+        $values = $results->value();
+        foreach ($values as $key => $val) {
+            $result = new Result($this->message, $val, $key);
+            $result = $this->applyFilters($result);
+            $results->addResult($result, $key);
         }
+
         return $results;
     }
 

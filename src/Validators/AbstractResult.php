@@ -121,10 +121,10 @@ abstract class AbstractResult implements ResultInterface
     }
 
     /**
-     * @param string $name
+     * @param string|int $name
      * @return ResultInterface
      */
-    public function getChild(string $name): ?ResultInterface
+    public function getChild($name): ?ResultInterface
     {
         return $this->children[$name] ?? null;
     }

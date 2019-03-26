@@ -22,17 +22,17 @@ interface ValidationInterface
     public function setErrorMessage(string $message);
 
     /**
-     * @param callable[]|FilterInterface[] $filters
-     * @return void
+     * @param FilterInterface[] $filters
+     * @return ValidationInterface
      */
-    public function addFilters(callable ...$filters);
+    public function addFilters(FilterInterface ...$filters): ValidationInterface;
 
     /**
      * @param string $name
      * @param ValidationInterface $validation
-     * @return void
+     * @return ValidationInterface
      */
-    public function addChild(string $name, ValidationInterface $validation);
+    public function addChild(string $name, ValidationInterface $validation): ValidationInterface;
 
     /**
      * TODO: initialize and validate methods should be internal methods.
