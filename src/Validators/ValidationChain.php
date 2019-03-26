@@ -14,7 +14,7 @@ class ValidationChain extends AbstractValidation
      * @param string|string[] $value
      * @return ResultInterface
      */
-    public function initialize($value)
+    private function initialize($value)
     {
         $result = new Result($this->message, $value, $this->name);
         return $result;
@@ -24,7 +24,7 @@ class ValidationChain extends AbstractValidation
      * @param ResultInterface $result
      * @return ResultInterface
      */
-    public function validate($result)
+    private function validate($result)
     {
         $this->prepareFilters();
         return $this->applyFilters($result);
@@ -37,7 +37,9 @@ class ValidationChain extends AbstractValidation
     public function verify($value)
     {
         $result = $this->initialize($value);
-        return $this->validate($result);
+        $result = $this->validate($result);
+        $result->finalize();
+        return $result;
     }
 
     /**

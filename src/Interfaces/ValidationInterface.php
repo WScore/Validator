@@ -34,20 +34,6 @@ interface ValidationInterface
      */
     public function addChild(string $name, ValidationInterface $validation): ValidationInterface;
 
-    /**
-     * TODO: initialize and validate methods should be internal methods.
-     *
-     * @param string|array $input
-     * @return ResultInterface
-     */
-    public function initialize($input);
-
-    /**
-     * @param ResultInterface $result
-     * @return ResultInterface
-     */
-    public function validate($result);
-
 
     /**
      * @param string|array $value

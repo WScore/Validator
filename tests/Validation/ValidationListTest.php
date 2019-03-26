@@ -63,37 +63,13 @@ class ValidationListTest extends TestCase
         return $list;
     }
 
-    public function testInitialize()
-    {
-        $list = $this->buildTestList();
-        $input = ['test' => 'test1', 'more' => 'test2'];
-        $result = $list->initialize($input);
-        $this->assertEquals(ResultList::class, get_class($result));
-        $this->assertEquals($input, $result->value());
-    }
-
-    public function testValidate()
-    {
-        $list = $this->buildTestList();
-        $input = ['test' => 'test1', 'more' => 'test2'];
-        $result = $list->initialize($input);
-
-        $input['test'] .= '-test';
-        $input['more'] .= '-more';
-        $result = $list->validate($result);
-        $result->finalize();
-        $this->assertEquals($input, $result->value());
-        $this->assertTrue($result->isValid());
-        $this->assertEquals('test', $result->getChild('test')->name());
-        $this->assertEquals('more', $result->getChild('more')->name());
-    }
-
     public function testVerify()
     {
         $list = $this->buildTestList();
         $input = ['test' => 'test1', 'more' => 'test2'];
         $result = $list->verify($input);
 
+        $this->assertEquals($input, $result->getOriginalValue());
         $this->assertEquals('test1-test', $result->getChild('test')->value());
         $this->assertEquals('test2-more', $result->getChild('more')->value());
         $this->assertTrue($result->isValid());

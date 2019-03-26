@@ -28,30 +28,6 @@ class ValidationMultipleTest extends TestCase
         return $chain;
     }
 
-    public function testInitialize()
-    {
-        $list = $this->buildValidationMultiple();
-        $input = ['test' => 'test1', 'more' => 'test2'];
-        $result = $list->initialize($input);
-        $this->assertEquals(ResultList::class, get_class($result));
-        $this->assertEquals($input, $result->value());
-    }
-
-    public function testValidate()
-    {
-        $list = $this->buildValidationMultiple();
-        $list->addFilters(
-            new AddPostfix('-multi')
-        );
-        $input = ['test' => 'test1', 'more' => 'test2'];
-        $result = $list->initialize($input);
-        $result = $list->validate($result);
-        $result->finalize();
-        $this->assertTrue($result->hasChildren());
-        $this->assertEquals('test1-multi', $result->getChild('test')->value());
-        $this->assertEquals('test2-multi', $result->getChild('more')->value());
-    }
-
     public function testVerify()
     {
         $list = $this->buildValidationMultiple();
@@ -60,6 +36,9 @@ class ValidationMultipleTest extends TestCase
         );
         $input = ['test' => 'test1', 'more' => 'test2'];
         $result = $list->verify($input);
+
+        $this->assertEquals($input, $result->getOriginalValue());
+        $this->assertTrue($result->hasChildren());
         $this->assertEquals('test1-multi', $result->getChild('test')->value());
         $this->assertEquals('test2-multi', $result->getChild('more')->value());
     }

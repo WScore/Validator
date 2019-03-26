@@ -6,8 +6,6 @@ use WScore\Validation\Interfaces\ResultInterface;
 /**
  * validates an repeated validation for one-to-many type forms.
  *
- * TODO: test me!
- *
  * Class ValidationMultiple
  * @package WScore\Validation\Validators
  */
@@ -17,7 +15,7 @@ class ValidationRepeat extends AbstractValidation
      * @param string[] $value
      * @return ResultInterface|ResultList
      */
-    public function initialize($value)
+    private function initialize($value)
     {
         $results = new ResultList($this->message, $value, $this->name);
         return $results;
@@ -27,7 +25,7 @@ class ValidationRepeat extends AbstractValidation
      * @param ResultInterface|ResultList $results
      * @return ResultInterface
      */
-    public function validate($results)
+    private function validate($results)
     {
         $values = $results->value();
         foreach ($values as $key => $val) {

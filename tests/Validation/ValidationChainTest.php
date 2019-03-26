@@ -31,27 +31,6 @@ class ValidationChainTest extends TestCase
         $this->assertEquals(ValidationChain::class,get_class($chain));
     }
 
-    public function testInitialize()
-    {
-        $chain = $this->buildValidationChain();
-        //$chain->addFilters(new AddPostfix());
-        $result = $chain->initialize('test-me');
-        $this->assertEquals(Result::class, get_class($result));
-        $this->assertEquals('test-me', $result->value());
-    }
-
-    public function testValidate()
-    {
-        $chain = $this->buildValidationChain();
-        $chain->addFilters(new AddPostfix('-testInitialize'));
-        $result = $chain->initialize('test-me');
-        $this->assertEquals('test-me', $result->value());
-
-        $result = $chain->validate($result);
-        $this->assertEquals(Result::class, get_class($result));
-        $this->assertEquals('test-me-testInitialize', $result->value());
-    }
-
     public function testVerify()
     {
         $chain = $this->buildValidationChain();

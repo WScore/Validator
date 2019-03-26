@@ -16,7 +16,7 @@ class ValidationMultiple extends AbstractValidation
      * @param string[] $value
      * @return ResultInterface|ResultList
      */
-    public function initialize($value)
+    private function initialize($value)
     {
         $results = new ResultList($this->message, $value, $this->name);
         return $results;
@@ -26,7 +26,7 @@ class ValidationMultiple extends AbstractValidation
      * @param ResultInterface|ResultList $results
      * @return ResultInterface
      */
-    public function validate($results)
+    private function validate($results)
     {
         $this->prepareFilters();
         $values = $results->value();
@@ -46,6 +46,8 @@ class ValidationMultiple extends AbstractValidation
     public function verify($value)
     {
         $result = $this->initialize($value);
-        return $this->validate($result);
+        $result = $this->validate($result);
+        $result->finalize();
+        return $result;
     }
 }

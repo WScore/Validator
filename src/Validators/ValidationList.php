@@ -7,7 +7,7 @@ use WScore\Validation\Interfaces\ResultInterface;
 /**
  * validates a list of input, like form input.
  *
- * TODO: addPreFilter to perform filters before the main validation.
+ * TODO: test addPreFilter that perform filters before the main validation.
  *
  * @package WScore\Validation\Validators
  */
@@ -30,7 +30,7 @@ class ValidationList extends AbstractValidation
      * @param array $inputs
      * @return ResultList|ResultInterface
      */
-    public function initialize($inputs)
+    private function initialize($inputs)
     {
         $results = new ResultList($this->message, $inputs, $this->name);
         return $results;
@@ -40,7 +40,7 @@ class ValidationList extends AbstractValidation
      * @param ResultInterface|ResultList $results
      * @return ResultInterface
      */
-    public function validate($results)
+    private function validate($results)
     {
         // apply pre-filters.
         foreach ($this->preFilters as $filter) {
@@ -61,8 +61,6 @@ class ValidationList extends AbstractValidation
     }
 
     /**
-     * TODO: finalize result when finish validating.
-     *
      * @param array $value
      * @return ResultInterface
      */
