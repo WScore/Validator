@@ -4,7 +4,7 @@ namespace WScore\Validation\Filters;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class InArray implements FilterInterface
+class InArray extends AbstractValidator
 {
     /**
      * @var array
@@ -22,28 +22,7 @@ class InArray implements FilterInterface
     public function __construct(array $inArray)
     {
         $this->inArray = $inArray;
-    }
-
-    /**
-     * returns the priority of the filter.
-     * applies filters with smaller priority, first.
-     *
-     * @return int
-     */
-    public function getPriority(): int
-    {
-        return FilterInterface::PRIORITY_STRING_FILTERS;
-    }
-
-    /**
-     * returns name of the filter;
-     * validation can have only one filter with the same name.
-     *
-     * @return string
-     */
-    public function getFilterName(): string
-    {
-        return __CLASS__;
+        $this->setPriority(FilterInterface::PRIORITY_STRING_FILTERS);
     }
 
     /**

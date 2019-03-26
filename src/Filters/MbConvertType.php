@@ -6,7 +6,7 @@ namespace WScore\Validation\Filters;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class MbConvertType implements FilterInterface
+class MbConvertType extends AbstractValidator
 {
     const MB_HANKAKU = 'aKVs';
     const MB_ZENKAKU = 'AKVS';
@@ -22,6 +22,7 @@ class MbConvertType implements FilterInterface
     public function __construct(string $convertType = self::MB_ZENKAKU)
     {
         $this->convertType = $convertType;
+        $this->setPriority(FilterInterface::PRIORITY_STRING_FILTERS);
     }
 
     /**

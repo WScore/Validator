@@ -7,7 +7,7 @@ use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 use WScore\Validation\Result;
 
-class ConfirmWith implements FilterInterface
+class ConfirmWith extends AbstractValidator
 {
     /**
      * @var string
@@ -45,27 +45,5 @@ class ConfirmWith implements FilterInterface
     private function empty($string)
     {
         return '' !== (string) $string;
-    }
-
-    /**
-     * returns the priority of the filter.
-     * applies filters with smaller priority, first.
-     *
-     * @return int
-     */
-    public function getPriority(): int
-    {
-        return FilterInterface::PRIORITY_VALIDATIONS;
-    }
-
-    /**
-     * returns name of the filter;
-     * validation can have only one filter with the same name.
-     *
-     * @return string
-     */
-    public function getFilterName(): string
-    {
-        return __CLASS__;
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WScore\Validation\Filters;
 
 use WScore\Validation\Interfaces\FilterInterface;
+use WScore\Validation\Interfaces\ResultInterface;
 
 abstract class AbstractValidator implements FilterInterface
 {
@@ -28,7 +29,7 @@ abstract class AbstractValidator implements FilterInterface
      */
     public function getFilterName(): string
     {
-        return __CLASS__;
+        return str_replace(__NAMESPACE__.'\\', '', __CLASS__);
     }
 
     /**
@@ -39,5 +40,16 @@ abstract class AbstractValidator implements FilterInterface
     {
         $this->priority = $priority;
         return $this;
+    }
+
+    /**
+     * @param ResultInterface $result
+     * @param array $option
+     * @param string $messages
+     * @return ResultInterface
+     */
+    protected function failed(ResultInterface $result, $option = [], $messages = null)
+    {
+        return $result->failed(get_class($this), $option, $messages);
     }
 }

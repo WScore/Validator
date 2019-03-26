@@ -6,7 +6,7 @@ namespace WScore\Validation\Filters;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class DefaultValue implements FilterInterface
+class DefaultValue extends AbstractValidator
 {
     /**
      * @var mixed
@@ -20,6 +20,7 @@ class DefaultValue implements FilterInterface
     public function __construct($default)
     {
         $this->default = $default;
+        $this->setPriority(FilterInterface::PRIORITY_USER_FILTERS - 1);
     }
 
     /**
@@ -34,27 +35,5 @@ class DefaultValue implements FilterInterface
         }
         $input->setValue($this->default);
         return null;
-    }
-
-    /**
-     * returns the priority of the filter.
-     * applies filters with smaller priority, first.
-     *
-     * @return int
-     */
-    public function getPriority(): int
-    {
-        return FilterInterface::PRIORITY_USER_FILTERS - 1;
-    }
-
-    /**
-     * returns name of the filter;
-     * validation can have only one filter with the same name.
-     *
-     * @return string
-     */
-    public function getFilterName(): string
-    {
-        return __CLASS__;
     }
 }

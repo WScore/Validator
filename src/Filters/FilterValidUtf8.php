@@ -6,8 +6,13 @@ namespace WScore\Validation\Filters;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class FilterValidUtf8 implements FilterInterface
+class FilterValidUtf8 extends AbstractValidator
 {
+    public function __construct()
+    {
+        $this->setPriority(FilterInterface::PRIORITY_SECURITY_FILTERS);
+    }
+
     /**
      * @param ResultInterface $input
      * @return ResultInterface|null
@@ -25,27 +30,5 @@ class FilterValidUtf8 implements FilterInterface
         }
         $input->failed(__CLASS__);
         return $input;
-    }
-
-    /**
-     * returns the priority of the filter.
-     * applies filters with smaller priority, first.
-     *
-     * @return int
-     */
-    public function getPriority(): int
-    {
-        return FilterInterface::PRIORITY_SECURITY_FILTERS;
-    }
-
-    /**
-     * returns name of the filter;
-     * validation can have only one filter with the same name.
-     *
-     * @return string
-     */
-    public function getFilterName(): string
-    {
-        return __CLASS__;
     }
 }
