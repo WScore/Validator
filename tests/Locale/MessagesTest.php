@@ -41,7 +41,7 @@ class MessagesTest extends TestCase
 
     public function testCreateUsingLocaleFile()
     {
-        $messages = Messages::create(__DIR__ . '/locale-files/validation.message.php');
+        $messages = Messages::create(__DIR__ . '/locale-files');
         $this->assertEquals('test-locale-files', $messages->getMessage('test-me'));
     }
 

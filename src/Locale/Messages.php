@@ -21,9 +21,13 @@ class Messages
      */
     public static function create($locale = 'en'): Messages
     {
-        $message_file = strlen($locale) === 2
-            ? __DIR__ . DIRECTORY_SEPARATOR . $locale . '/validation.message.php'
+        $message_dir = strlen($locale) === 2
+            ? __DIR__ . DIRECTORY_SEPARATOR . $locale
             : $locale;
+        if (!is_dir($message_dir)) {
+            throw new \InvalidArgumentException('message directory not found: ' . $message_dir);
+        }
+        $message_file = $message_dir . DIRECTORY_SEPARATOR . 'validation.message.php';
         if (!file_exists($message_file)) {
             throw new \InvalidArgumentException('message file not found: ' . $message_file);
         }
