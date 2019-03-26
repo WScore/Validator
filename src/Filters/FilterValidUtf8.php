@@ -10,10 +10,9 @@ class FilterValidUtf8 implements FilterInterface
 {
     /**
      * @param ResultInterface $input
-     * @param ResultInterface $allInputs
      * @return ResultInterface|null
      */
-    public function __invoke(ResultInterface $input, ResultInterface $allInputs): ?ResultInterface
+    public function __invoke(ResultInterface $input): ?ResultInterface
     {
         $value = $input->value();
         if (mb_check_encoding($value, 'UTF-8')) {

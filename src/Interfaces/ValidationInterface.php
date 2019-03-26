@@ -42,10 +42,9 @@ interface ValidationInterface
 
     /**
      * @param ResultInterface $result
-     * @param ResultInterface $rootResults
      * @return ResultInterface
      */
-    public function validate($result, $rootResults = null);
+    public function validate($result);
 
 
     /**

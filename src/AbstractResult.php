@@ -49,7 +49,7 @@ abstract class AbstractResult implements ResultInterface
     /**
      * Result constructor.
      * @param Messages|null $message
-     * @param string $value
+     * @param string|array $value
      * @param null|string $name
      */
     public function __construct(?Messages $message, $value, $name = null)
@@ -182,5 +182,20 @@ abstract class AbstractResult implements ResultInterface
     public function setParent(ResultList $parent): void
     {
         $this->parent = $parent;
+    }
+
+    /**
+     * @return ResultInterface|null
+     */
+    public function getRoot(): ?ResultInterface
+    {
+        $root = $this->getParent();
+        while($root) {
+            if(!$newRoot = $root->getParent()) {
+                return $root;
+            }
+            $root = $newRoot;
+        }
+        return $root;
     }
 }

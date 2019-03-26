@@ -21,10 +21,9 @@ class ValidationList extends AbstractValidation
 
     /**
      * @param ResultInterface $result
-     * @param ResultInterface $rootResults
      * @return ResultInterface
      */
-    public function validate($result, $rootResults = null)
+    public function validate($result)
     {
         // prepare rootResults
         $rootResults = $rootResults ?? $result;
@@ -32,11 +31,11 @@ class ValidationList extends AbstractValidation
         // perform children's validation.
         foreach ($this->children as $name => $validation) {
             $value = $rootResults->getChild($name);
-            $validation->validate($value, $rootResults);
+            $validation->validate($value);
         }
         // perform post-validation on all inputs.
         $this->prepareFilters();
-        return $this->applyFilters($result, $rootResults);
+        return $this->applyFilters($result);
     }
 
     /**

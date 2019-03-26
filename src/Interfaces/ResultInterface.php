@@ -82,6 +82,11 @@ interface ResultInterface extends \IteratorAggregate
     public function setParent(ResultList $param): void;
 
     /**
+     * @return ResultInterface|null
+     */
+    public function getRoot(): ?ResultInterface;
+
+    /**
      * @return  void
      */
     public function finalize();

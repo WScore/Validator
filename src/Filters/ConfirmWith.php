@@ -24,10 +24,9 @@ class ConfirmWith implements FilterInterface
 
     /**
      * @param ResultInterface $input
-     * @param ResultInterface $allInputs
      * @return ResultInterface|null
      */
-    public function __invoke(ResultInterface $input, ResultInterface $allInputs): ?ResultInterface
+    public function __invoke(ResultInterface $input): ?ResultInterface
     {
         $confirmName = $this->confirmWith ?? $input->name() . '_confirmation';
         $confirmValue = $input->getParent()->value()[$confirmName] ?? '';
@@ -35,7 +34,7 @@ class ConfirmWith implements FilterInterface
             return null;
         }
         if ($this->empty($confirmValue)) {
-            $confirmResult = new Result(null);
+            $confirmResult = new Result(null, null);
             $confirmResult->failed(Required::class);
             $input->getParent()->addResult($confirmResult, $confirmName);
             return $input->failed(__CLASS__);

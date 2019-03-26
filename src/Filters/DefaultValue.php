@@ -24,10 +24,9 @@ class DefaultValue implements FilterInterface
 
     /**
      * @param ResultInterface $input
-     * @param ResultInterface $allInputs
      * @return ResultInterface|null
      */
-    public function __invoke(ResultInterface $input, ResultInterface $allInputs): ?ResultInterface
+    public function __invoke(ResultInterface $input): ?ResultInterface
     {
         $value = $input->value();
         if ('' !== (string) $value) {

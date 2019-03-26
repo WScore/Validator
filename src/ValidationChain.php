@@ -22,13 +22,12 @@ class ValidationChain extends AbstractValidation
 
     /**
      * @param ResultInterface $result
-     * @param ResultInterface $rootResults
      * @return ResultInterface
      */
-    public function validate($result, $rootResults = null)
+    public function validate($result)
     {
         $this->prepareFilters();
-        return $this->applyFilters($result, $rootResults);
+        return $this->applyFilters($result);
     }
 
     /**

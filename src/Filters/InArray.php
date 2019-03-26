@@ -48,10 +48,9 @@ class InArray implements FilterInterface
 
     /**
      * @param ResultInterface $input
-     * @param ResultInterface $allInputs
      * @return ResultInterface|null
      */
-    public function __invoke(ResultInterface $input, ResultInterface $allInputs): ?ResultInterface
+    public function __invoke(ResultInterface $input): ?ResultInterface
     {
         $value = $input->value();
         if (in_array($value, $this->inArray, $this->strict)) {

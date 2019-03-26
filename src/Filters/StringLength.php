@@ -116,10 +116,9 @@ class StringLength extends AbstractValidator
 
     /**
      * @param ResultInterface $input
-     * @param ResultInterface $allInputs
      * @return ResultInterface|null
      */
-    public function __invoke(ResultInterface $input, ResultInterface $allInputs): ?ResultInterface
+    public function __invoke(ResultInterface $input): ?ResultInterface
     {
         $value = $input->value();
         $length = mb_strlen($value);
