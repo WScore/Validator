@@ -3,6 +3,14 @@ namespace WScore\Validation\Validators;
 
 use WScore\Validation\Interfaces\ResultInterface;
 
+/**
+ * validates a list of input, like form input.
+ *
+ * TODO: addPreFilter to perform filters before the main validation.
+ * TODO: add repeatForm method to add a repeated validator.
+ *
+ * @package WScore\Validation\Validators
+ */
 class ValidationList extends AbstractValidation
 {
     /**
@@ -20,25 +28,24 @@ class ValidationList extends AbstractValidation
     }
 
     /**
-     * @param ResultInterface $result
+     * @param ResultInterface $results
      * @return ResultInterface
      */
-    public function validate($result)
+    public function validate($results)
     {
-        // prepare rootResults
-        $rootResults = $rootResults ?? $result;
-
         // perform children's validation.
         foreach ($this->children as $name => $validation) {
-            $value = $rootResults->getChild($name);
-            $validation->validate($value);
+            $result = $results->getChild($name);
+            $validation->validate($result);
         }
         // perform post-validation on all inputs.
         $this->prepareFilters();
-        return $this->applyFilters($result);
+        return $this->applyFilters($results);
     }
 
     /**
+     * TODO: finalize result when finish validating.
+     *
      * @param array $value
      * @return ResultInterface
      */

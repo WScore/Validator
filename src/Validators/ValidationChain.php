@@ -8,7 +8,7 @@ class ValidationChain extends AbstractValidation
     /**
      * @var null|string
      */
-    private $initialMessage = null;
+    private $errorMessage = null;
 
     /**
      * @param string|string[] $value
@@ -41,12 +41,14 @@ class ValidationChain extends AbstractValidation
     }
 
     /**
-     * @param string $initialMessage
+     * TODO: when invalid, overwrite error messages in $result with errorMessage.
+     *
+     * @param string $errorMessage
      * @return ValidationChain
      */
-    public function setInitialMessage(string $initialMessage): self
+    public function setErrorMessage(string $errorMessage): self
     {
-        $this->initialMessage = $initialMessage;
+        $this->errorMessage = $errorMessage;
         return $this;
     }
 }

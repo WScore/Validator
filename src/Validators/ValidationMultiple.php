@@ -3,6 +3,15 @@ namespace WScore\Validation\Validators;
 
 use WScore\Validation\Interfaces\ResultInterface;
 
+/**
+ * validates an array input.
+ * applies same filters for all inputs in an array.
+ *
+ * TODO: want to merge with ValidationChain with a simple toggle ($v->multiple()).
+ *
+ * Class ValidationMultiple
+ * @package WScore\Validation\Validators
+ */
 class ValidationMultiple extends AbstractValidation
 {
     /**

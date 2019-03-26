@@ -35,6 +35,8 @@ interface ValidationInterface
     public function addChild(string $name, ValidationInterface $validation);
 
     /**
+     * TODO: initialize and validate methods should be internal methods.
+     *
      * @param string|array $input
      * @return ResultInterface
      */
