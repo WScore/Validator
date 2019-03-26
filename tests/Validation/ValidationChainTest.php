@@ -8,8 +8,8 @@
 
 use PHPUnit\Framework\TestCase;
 use tests\Validation\Filters\AddPostfix;
-use WScore\Validation\Result;
-use WScore\Validation\ValidationChain;
+use WScore\Validation\Validators\Result;
+use WScore\Validation\Validators\ValidationChain;
 
 class ValidationChainTest extends TestCase
 {

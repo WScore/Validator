@@ -10,8 +10,8 @@ namespace tests\Validation;
 
 use tests\Validation\Filters\AddPostfix;
 use WScore\Validation\Locale\Messages;
-use WScore\Validation\ResultList;
-use WScore\Validation\ValidationMultiple;
+use WScore\Validation\Validators\ResultList;
+use WScore\Validation\Validators\ValidationMultiple;
 use PHPUnit\Framework\TestCase;
 
 class ValidationMultipleTest extends TestCase

@@ -5,7 +5,7 @@ namespace WScore\Validation\Filters;
 
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
-use WScore\Validation\Result;
+use WScore\Validation\Validators\Result;
 
 class ConfirmWith extends AbstractValidator
 {

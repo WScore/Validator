@@ -1,5 +1,5 @@
 <?php
-namespace WScore\Validation;
+namespace WScore\Validation\Validators;
 
 use WScore\Validation\Interfaces\ResultInterface;
 use WScore\Validation\Locale\Messages;

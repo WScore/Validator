@@ -7,7 +7,7 @@ use WScore\Validation\Filters\FilterValidUtf8;
 use WScore\Validation\Filters\MbConvertType;
 use WScore\Validation\Locale\Messages;
 use WScore\Validation\Locale\TypeFilters;
-use WScore\Validation\ValidationChain;
+use WScore\Validation\Validators\ValidationChain;
 
 class ValidationType
 {

@@ -1,7 +1,7 @@
 <?php
 namespace WScore\Validation\Interfaces;
 
-use WScore\Validation\ResultList;
+use WScore\Validation\Validators\ResultList;
 
 interface ResultInterface extends \IteratorAggregate
 {

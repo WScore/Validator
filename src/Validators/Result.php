@@ -1,5 +1,5 @@
 <?php
-namespace WScore\Validation;
+namespace WScore\Validation\Validators;
 
 class Result extends AbstractResult
 {

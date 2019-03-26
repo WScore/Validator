@@ -8,7 +8,7 @@
 
 namespace tests\Result;
 
-use WScore\Validation\Result;
+use WScore\Validation\Validators\Result;
 use PHPUnit\Framework\TestCase;
 
 class ResultTest extends TestCase

@@ -11,7 +11,7 @@ namespace tests\Filters;
 use WScore\Validation\Filters\Required;
 use PHPUnit\Framework\TestCase;
 use WScore\Validation\Locale\Messages;
-use WScore\Validation\Result;
+use WScore\Validation\Validators\Result;
 
 class RequiredTest extends TestCase
 {

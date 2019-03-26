@@ -10,9 +10,9 @@ namespace tests\Validation;
 
 use PHPUnit\Framework\TestCase;
 use tests\Validation\Filters\AddPostfix;
-use WScore\Validation\ResultList;
-use WScore\Validation\ValidationChain;
-use WScore\Validation\ValidationList;
+use WScore\Validation\Validators\ResultList;
+use WScore\Validation\Validators\ValidationChain;
+use WScore\Validation\Validators\ValidationList;
 
 class ValidationListTest extends TestCase
 {

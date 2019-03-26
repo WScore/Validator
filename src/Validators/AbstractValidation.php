@@ -1,6 +1,6 @@
 <?php
 
-namespace WScore\Validation;
+namespace WScore\Validation\Validators;
 
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;

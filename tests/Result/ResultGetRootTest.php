@@ -8,8 +8,8 @@
 
 namespace tests\Result;
 
-use WScore\Validation\Result;
-use WScore\Validation\ResultList;
+use WScore\Validation\Validators\Result;
+use WScore\Validation\Validators\ResultList;
 use PHPUnit\Framework\TestCase;
 
 class ResultGetRootTest extends TestCase

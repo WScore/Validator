@@ -10,8 +10,8 @@ namespace tests\Filters;
 
 use WScore\Validation\Filters\RequiredIf;
 use PHPUnit\Framework\TestCase;
-use WScore\Validation\Result;
-use WScore\Validation\ResultList;
+use WScore\Validation\Validators\Result;
+use WScore\Validation\Validators\ResultList;
 
 class RequiredIfTest extends TestCase
 {
