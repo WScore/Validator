@@ -1,18 +1,31 @@
 <?php
 namespace WScore\Validation\Validators;
 
+use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
 /**
  * validates a list of input, like form input.
  *
  * TODO: addPreFilter to perform filters before the main validation.
- * TODO: add repeatForm method to add a repeated validator.
  *
  * @package WScore\Validation\Validators
  */
 class ValidationList extends AbstractValidation
 {
+    /**
+     * @var FilterInterface[]
+     */
+    private $preFilters = [];
+
+    public function addPreFilters(FilterInterface ...$filters): self
+    {
+        foreach ($filters as $filter) {
+            $this->preFilters[$filter->getFilterName()] = $filter;
+        }
+        return $this;
+    }
+
     /**
      * @param array $inputs
      * @return ResultList|ResultInterface
@@ -33,6 +46,12 @@ class ValidationList extends AbstractValidation
      */
     public function validate($results)
     {
+        // apply pre-filters.
+        foreach ($this->preFilters as $filter) {
+            if ($returned = $filter->__invoke($results)) {
+                break;
+            }
+        }
         // perform children's validation.
         foreach ($this->children as $name => $validation) {
             $result = $results->getChild($name);

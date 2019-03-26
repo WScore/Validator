@@ -4,13 +4,14 @@ namespace WScore\Validation\Validators;
 use WScore\Validation\Interfaces\ResultInterface;
 
 /**
- * validates an array input.
- * applies same filters for all inputs in an array.
+ * validates an repeated validation for one-to-many type forms.
+ *
+ * TODO: test me!
  *
  * Class ValidationMultiple
  * @package WScore\Validation\Validators
  */
-class ValidationMultiple extends AbstractValidation
+class ValidationRepeat extends AbstractValidation
 {
     /**
      * @param string[] $value
@@ -32,6 +33,11 @@ class ValidationMultiple extends AbstractValidation
      */
     public function validate($results)
     {
+        foreach ($results as $result) {
+            foreach ($this->children as $name => $validation) {
+                $validation->validate($result);
+            }
+        }
         $this->prepareFilters();
         foreach ($results->getChildren() as $result) {
             $this->applyFilters($result);

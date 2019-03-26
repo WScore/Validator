@@ -12,13 +12,15 @@ return [
     ],
     'integer' => [
         \WScore\Validation\Filters\FilterValidUtf8::class => true,
-        \WScore\Validation\Filters\MbConvertType::class => \WScore\Validation\Filters\MbConvertType::MB_ZENKAKU,
+        \WScore\Validation\Filters\MbConvertType::class => \WScore\Validation\Filters\MbConvertType::MB_HANKAKU,
         \WScore\Validation\Filters\DefaultValue::class => null,
+        \WScore\Validation\Filters\StringLength::class => ['max' => 1024],
     ],
     'date' => [
         \WScore\Validation\Filters\FilterValidUtf8::class => true,
-        \WScore\Validation\Filters\MbConvertType::class => \WScore\Validation\Filters\MbConvertType::MB_ZENKAKU,
+        \WScore\Validation\Filters\MbConvertType::class => \WScore\Validation\Filters\MbConvertType::MB_HANKAKU,
         \WScore\Validation\Filters\DefaultValue::class => null,
+        \WScore\Validation\Filters\StringLength::class => ['max' => 1024],
     ],
     'datetime' => [],
     'YearMonth' => [],
