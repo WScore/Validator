@@ -60,18 +60,6 @@ class ValidationChain extends AbstractValidation
     }
 
     /**
-     * TODO: when invalid, overwrite error messages in $result with errorMessage.
-     *
-     * @param string $errorMessage
-     * @return ValidationChain
-     */
-    public function setErrorMessage(string $errorMessage): self
-    {
-        $this->errorMessage = $errorMessage;
-        return $this;
-    }
-
-    /**
      * @param bool $multiple
      * @return ValidationChain
      */

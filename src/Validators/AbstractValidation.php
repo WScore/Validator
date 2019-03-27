@@ -63,6 +63,8 @@ abstract class AbstractValidation implements ValidationInterface
     }
 
     /**
+     * TODO: when invalid, overwrite error messages in $result with errorMessage.
+     *
      * @param string $message
      */
     public function setErrorMessage(string $message)
@@ -87,11 +89,47 @@ abstract class AbstractValidation implements ValidationInterface
      * @param ValidationInterface $validation
      * @return ValidationInterface
      */
-    public function addChild(string $name, ValidationInterface $validation): ValidationInterface
+    public function add(string $name, ValidationInterface $validation): ValidationInterface
     {
         $validation->setName($name);
         $this->children[$name] = $validation;
         return $this;
+    }
+
+    /**
+     * @param string $name
+     * @return ValidationInterface
+     */
+    public function get(string $name): ?ValidationInterface
+    {
+        return $this->children[$name] ?? null;
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function has(string $name): bool
+    {
+        return array_key_exists($name, $this->children);
+    }
+
+    /**
+     * @param string $name
+     * @return ValidationInterface
+     */
+    public function remove(string $name): ValidationInterface
+    {
+        unset($this->children[$name]);
+        return $this;
+    }
+
+    /**
+     * @return ValidationInterface[]
+     */
+    public function all(): array
+    {
+        return $this->children;
     }
 
     protected function prepareFilters()

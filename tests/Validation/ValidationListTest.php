@@ -46,14 +46,14 @@ class ValidationListTest extends TestCase
     public function buildTestList()
     {
         $list = $this->buildValidationList();
-        $list->addChild(
+        $list->add(
             'test',
             $this->buildValidationChain()
                 ->addFilters(
                     new AddPostfix('-test')
                 )
         );
-        $list->addChild(
+        $list->add(
             'more',
             $this->buildValidationChain()
                 ->addFilters(

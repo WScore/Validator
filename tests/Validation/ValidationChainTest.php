@@ -40,4 +40,25 @@ class ValidationChainTest extends TestCase
         $this->assertEquals(Result::class, get_class($result));
         $this->assertEquals('test-verify-verified', $result->value());
     }
+
+    public function testHasGetAllAndRemove()
+    {
+        $vb = new \WScore\Validation\ValidatorBuilder();
+        $form = $vb->form();
+        $this->assertFalse($form->has('name'));
+
+        $form->add( 'name',
+                $vb->text()
+            )
+            ->add( 'corp',
+                $vb->text()
+            )
+            ;
+        $this->assertTrue($form->has('name'));
+        $this->assertEquals('name', $form->get('name')->getName());
+
+        $form->remove('name');
+        $this->assertFalse($form->has('name'));
+        $this->assertTrue($form->has('corp'));
+    }
 }
