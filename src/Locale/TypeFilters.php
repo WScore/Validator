@@ -23,11 +23,15 @@ class TypeFilters
      */
     public static function create($locale = 'en'): self
     {
-        $type_file = strlen($locale) === 2
-            ? __DIR__ . DIRECTORY_SEPARATOR . $locale . '/validation.types.php'
+        $type_dir = strlen($locale) === 2
+            ? __DIR__ . DIRECTORY_SEPARATOR . $locale
             : $locale;
+        if (!is_dir($type_dir)) {
+            throw new \InvalidArgumentException('message directory not found: ' . $type_dir);
+        }
+        $type_file = $type_dir . DIRECTORY_SEPARATOR . 'validation.types.php';
         if (!file_exists($type_file)) {
-            throw new \InvalidArgumentException('type file not found: ' . $type_file);
+            throw new \InvalidArgumentException('message file not found: ' . $type_file);
         }
         /** @noinspection PhpIncludeInspection */
         $types = include($type_file);

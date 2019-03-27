@@ -73,7 +73,7 @@ abstract class AbstractValidation implements ValidationInterface
     }
 
     /**
-     * @param callable[]|FilterInterface[] $filters
+     * @param FilterInterface[] $filters
      * @return $this
      */
     public function addFilters(FilterInterface ...$filters): ValidationInterface
