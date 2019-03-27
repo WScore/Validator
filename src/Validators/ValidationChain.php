@@ -6,11 +6,6 @@ use WScore\Validation\Interfaces\ResultInterface;
 class ValidationChain extends AbstractValidation
 {
     /**
-     * @var null|string
-     */
-    private $errorMessage = null;
-
-    /**
      * @var bool
      */
     private $multiple = false;
