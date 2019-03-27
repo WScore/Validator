@@ -29,7 +29,7 @@ abstract class AbstractValidator implements FilterInterface
      */
     public function getFilterName(): string
     {
-        return str_replace(__NAMESPACE__.'\\', '', __CLASS__);
+        return get_class($this);
     }
 
     /**
