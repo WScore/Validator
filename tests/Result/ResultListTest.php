@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wsjp
- * Date: 2019/03/26
- * Time: 7:19
- */
+declare(strict_types=1);
 
 namespace tests\Result;
 

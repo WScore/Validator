@@ -1,16 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wsjp
- * Date: 2019/03/25
- * Time: 21:29
- */
+declare(strict_types=1);
 
 namespace tests\Validation;
 
 use PHPUnit\Framework\TestCase;
 use tests\Validation\Filters\AddPostfix;
-use WScore\Validation\Validators\ResultList;
 use WScore\Validation\Validators\ValidationChain;
 use WScore\Validation\Validators\ValidationList;
 

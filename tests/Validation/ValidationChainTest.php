@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wsjp
- * Date: 2019/03/25
- * Time: 21:00
- */
+declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use tests\Validation\Filters\AddPostfix;

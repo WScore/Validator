@@ -1,19 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wsjp
- * Date: 2019/03/26
- * Time: 6:22
- */
+declare(strict_types=1);
 
 namespace tests\Validation;
 
 use tests\Validation\Filters\AddPostfix;
 use WScore\Validation\Locale\Messages;
-use WScore\Validation\ValidatorBuilder;
-use WScore\Validation\Validators\ResultList;
 use WScore\Validation\Validators\ValidationChain;
-use WScore\Validation\Validators\ValidationMultiple;
 use PHPUnit\Framework\TestCase;
 
 class ValidationMultipleTest extends TestCase

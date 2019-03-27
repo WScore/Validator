@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: asao
- * Date: 2019-03-26
- * Time: 17:01
- */
+declare(strict_types=1);
 
 namespace tests\Filters;
 
@@ -15,7 +10,6 @@ use WScore\Validation\Validators\Result;
 
 class RequiredTest extends TestCase
 {
-
     public function testRequiredFailed()
     {
         $result = new Result(null, '');

@@ -1,11 +1,5 @@
 <?php
 declare(strict_types=1);
-/**
- * Created by PhpStorm.
- * User: wsjp
- * Date: 2019/03/27
- * Time: 7:15
- */
 
 namespace tests\Validation;
 

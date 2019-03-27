@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wsjp
- * Date: 2019/03/25
- * Time: 20:46
- */
+declare(strict_types=1);
 
 use WScore\Validation\Locale\Messages;
 use PHPUnit\Framework\TestCase;
