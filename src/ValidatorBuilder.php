@@ -68,10 +68,9 @@ class ValidatorBuilder
 
     private function buildByType(?string $name, string $type): ValidationInterface
     {
+        $v = new ValidationChain($this->messages, $name);
         if ($this->type === self::TYPE_MULTI) {
-            $v = new ValidationMultiple($this->messages, $name);
-        } else {
-            $v = new ValidationChain($this->messages, $name);
+            $v = $v->setMultiple(true);
         }
         $filters = $this->typeFilter->getFilters($type);
         $v->addFilters(...$filters);

@@ -10,7 +10,9 @@ namespace tests\Validation;
 
 use tests\Validation\Filters\AddPostfix;
 use WScore\Validation\Locale\Messages;
+use WScore\Validation\ValidatorBuilder;
 use WScore\Validation\Validators\ResultList;
+use WScore\Validation\Validators\ValidationChain;
 use WScore\Validation\Validators\ValidationMultiple;
 use PHPUnit\Framework\TestCase;
 
@@ -18,12 +20,13 @@ class ValidationMultipleTest extends TestCase
 {
     /**
      * @param string $locale
-     * @return ValidationMultiple
+     * @return ValidationChain
      */
     public function buildValidationMultiple($locale = 'en')
     {
         $messages = Messages::create($locale);
-        $chain = new ValidationMultiple($messages);
+        $chain = new ValidationChain($messages);
+        $chain->setMultiple();
 
         return $chain;
     }
