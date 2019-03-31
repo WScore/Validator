@@ -63,8 +63,6 @@ abstract class AbstractValidation implements ValidationInterface
     }
 
     /**
-     * TODO: when invalid, overwrite error messages in $result with errorMessage.
-     *
      * @param string $message
      */
     public function setErrorMessage(string $message)

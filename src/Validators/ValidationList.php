@@ -7,8 +7,6 @@ use WScore\Validation\Interfaces\ResultInterface;
 /**
  * validates a list of input, like form input.
  *
- * TODO: test addPreFilter that perform filters before the main validation.
- *
  * @package WScore\Validation\Validators
  */
 class ValidationList extends AbstractValidation
