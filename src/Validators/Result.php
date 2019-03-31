@@ -1,6 +1,8 @@
 <?php
 namespace WScore\Validation\Validators;
 
+use WScore\Validation\Locale\Messages;
+
 class Result extends AbstractResult
 {
     /**
@@ -12,9 +14,11 @@ class Result extends AbstractResult
     }
 
     /**
+     * @param Messages|null $messages
      * @return  void
      */
-    public function finalize()
-    {
-    }
+        public function finalize(Messages $messages = null)
+        {
+            $this->populateMessages($messages);
+        }
 }

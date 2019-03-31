@@ -17,7 +17,7 @@ class ValidationRepeat extends AbstractValidation
      */
     private function initialize($value)
     {
-        $results = new ResultList($this->message, $value, $this->name);
+        $results = new ResultList($value, $this->name);
         return $results;
     }
 
@@ -49,7 +49,7 @@ class ValidationRepeat extends AbstractValidation
     {
         $result = $this->initialize($value);
         $result = $this->validate($result);
-        $result->finalize();
+        $result->finalize($this->message);
         return $result;
     }
 }

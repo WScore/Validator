@@ -11,14 +11,14 @@ class ResultListTest extends TestCase
 {
     private function buildResult($value = 'root', $name = 'root'): ResultList
     {
-        return new ResultList(null, $value, $name);
+        return new ResultList($value, $name);
     }
 
     private function buildResultWithChildren(): ResultList
     {
         $list = $this->buildResult();
-        $list->addResult(new Result(null, 'test', 'test'));
-        $list->addResult(new Result(null, 'more', 'more'));
+        $list->addResult(new Result('test', 'test'));
+        $list->addResult(new Result('more', 'more'));
         return $list;
     }
 
@@ -101,6 +101,7 @@ class ResultListTest extends TestCase
         $this->assertEquals([], $result->getErrorMessage());
         $result->failed('root1', [], 'failed-message1');
         $result->failed('root2', [], 'failed-message2');
+        $result->finalize();
         $this->assertEquals(['failed-message1', 'failed-message2'], $result->getErrorMessage());
 
         $result->getChild('test')->failed('test', [], 'test-failed');

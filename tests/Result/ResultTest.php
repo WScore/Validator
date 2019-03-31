@@ -10,7 +10,7 @@ class ResultTest extends TestCase
 {
     private function buildResult($value = 'test', $name = 'name')
     {
-        return new Result(null, $value, $name);
+        return new Result($value, $name);
     }
 
     public function testGetIterator()
@@ -90,6 +90,7 @@ class ResultTest extends TestCase
         $this->assertEquals([], $result->getErrorMessage());
         $result->failed('test1', [], 'failed-message1');
         $result->failed('test2', [], 'failed-message2');
+        $result->finalize();
         $this->assertEquals(['failed-message1', 'failed-message2'], $result->getErrorMessage());
     }
 }

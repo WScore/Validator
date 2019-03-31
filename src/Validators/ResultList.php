@@ -2,6 +2,7 @@
 namespace WScore\Validation\Validators;
 
 use WScore\Validation\Interfaces\ResultInterface;
+use WScore\Validation\Locale\Messages;
 
 class ResultList extends AbstractResult
 {
@@ -31,18 +32,19 @@ class ResultList extends AbstractResult
     }
 
     /**
+     * @param Messages|null $messages
      * @return  void
      */
-    public function finalize()
+    public function finalize(Messages $messages = null)
     {
         $this->summarizeChildren('finalize');
         $this->setValue($this->summarizeChildren('value'));
-        $this->isValid = true;
         foreach ($this->children as $name => $child) {
             if (!$child->isValid()) {
                 $this->isValid = false;
             }
         }
+        $this->populateMessages($messages);
     }
 
     public function summarizeErrorMessages(): array

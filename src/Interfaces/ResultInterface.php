@@ -1,6 +1,7 @@
 <?php
 namespace WScore\Validation\Interfaces;
 
+use WScore\Validation\Locale\Messages;
 use WScore\Validation\Validators\ResultList;
 
 interface ResultInterface extends \IteratorAggregate
@@ -87,7 +88,8 @@ interface ResultInterface extends \IteratorAggregate
     public function getRoot(): ?ResultInterface;
 
     /**
+     * @param Messages|null $messages
      * @return  void
      */
-    public function finalize();
+    public function finalize(Messages $messages = null);
 }

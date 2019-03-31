@@ -10,9 +10,13 @@ use WScore\Validation\Validators\ResultList;
 
 class RequiredIfTest extends TestCase
 {
+    private function buildResult($name=null, $value=null)
+    {
+        return new Result($name, $value);
+    }
     public function testRequiredIfWithoutSettingsReturnsFalseWhenValueIsEmpty()
     {
-        $result = new Result(null, '');
+        $result = $this->buildResult('');
         $required = new RequiredIf();
         $required->__invoke($result);
         $this->assertFalse($result->isValid());
@@ -20,7 +24,7 @@ class RequiredIfTest extends TestCase
 
     public function testRequiredIfWithoutSettingsReturnsTrueWhenValueIsSet()
     {
-        $result = new Result(null, 'value');
+        $result = $this->buildResult('value');
         $required = new RequiredIf();
         $required->__invoke($result);
         $this->assertTrue($result->isValid());
@@ -85,9 +89,9 @@ class RequiredIfTest extends TestCase
     public function buildResultList($more = ''): ResultList
     {
         $input = ['some' => '', 'more' => $more];
-        $resultList = new ResultList(null, $input);
+        $resultList = new ResultList($input);
         foreach ($input as $key => $val) {
-            $resultList->addResult(new Result(null, $val, $key));
+            $resultList->addResult($this->buildResult($val, $key));
         }
         return $resultList;
     }

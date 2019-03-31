@@ -22,9 +22,9 @@ abstract class AbstractResult implements ResultInterface
     protected $isValid = true;
 
     /**
-     * @var Messages
+     * @var string[]
      */
-    private $message;
+    protected $messages = [];
 
     /**
      * @var string
@@ -44,17 +44,15 @@ abstract class AbstractResult implements ResultInterface
     /**
      * @var array
      */
-    private $failed = [];
+    protected $failed = [];
 
     /**
      * Result constructor.
-     * @param Messages|null $message
      * @param string|array $value
      * @param null|string $name
      */
-    public function __construct(?Messages $message, $value, $name = null)
+    public function __construct($value, $name = null)
     {
-        $this->message = $message;
         $this->value = $this->originalValue = $value;
         $this->name = $name;
     }
@@ -67,9 +65,6 @@ abstract class AbstractResult implements ResultInterface
      */
     public function failed(string $failedAt, array $options = [], string $message = null): ResultInterface
     {
-        if ($message === null && $this->message) {
-            $message = $this->message->getMessage($failedAt, $options);
-        }
         $this->failed[] = [
             'failedAt' => $failedAt,
             'options' => $options,
@@ -137,11 +132,7 @@ abstract class AbstractResult implements ResultInterface
         if ($this->isValid()) {
             return [];
         }
-        $messages = [];
-        foreach ($this->failed as $item) {
-            $messages[] = $item['message'];
-        }
-        return $messages;
+        return $this->messages;
     }
 
     /**
@@ -197,5 +188,23 @@ abstract class AbstractResult implements ResultInterface
             $root = $newRoot;
         }
         return $root;
+    }
+
+    protected function populateMessages(?Messages $messages)
+    {
+        $this->messages = [];
+        foreach ($this->failed as $item) {
+            $message = $item['message'] ?? null;
+            if ($message === null && $messages) {
+                $options = $item['options'];
+                if ($this->name) {
+                    $options += ['name' => $this->name()];
+                }
+                $message = $messages->getMessage($item['failedAt'], $options);
+            }
+            if ((string) $message !== '') {
+                $this->messages[] = $message;
+            }
+        }
     }
 }

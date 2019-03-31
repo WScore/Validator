@@ -16,10 +16,14 @@ use WScore\Validation\Validators\Result;
 
 class DefaultValueTest extends TestCase
 {
+    private function buildResult($name=null)
+    {
+        return new Result($name);
+    }
     public function testDefaultValueOnNull()
     {
         $default = new DefaultValue('tested');
-        $result = new Result(null, null);
+        $result = $this->buildResult(null);
         $default($result);
         $this->assertEquals('tested', $result->value());
     }
@@ -27,7 +31,7 @@ class DefaultValueTest extends TestCase
     public function testDefaultValueOnEmpty()
     {
         $default = new DefaultValue('tested');
-        $result = new Result(null, '');
+        $result = $this->buildResult('');
         $default($result);
         $this->assertEquals('tested', $result->value());
     }
@@ -35,7 +39,7 @@ class DefaultValueTest extends TestCase
     public function testDefaultValueWhenValueIsSet()
     {
         $default = new DefaultValue('tested');
-        $result = new Result(null, 'test-me');
+        $result = $this->buildResult('test-me');
         $default($result);
         $this->assertEquals('test-me', $result->value());
     }
@@ -43,12 +47,12 @@ class DefaultValueTest extends TestCase
     public function testDefaultNull()
     {
         $default = new DefaultNull();
-        $result = new Result(null, '');
+        $result = $this->buildResult('');
         $default($result);
         $this->assertTrue(null === $result->value());
 
         $default = new DefaultNull();
-        $result = new Result(null, null);
+        $result = $this->buildResult(null);
         $default($result);
         $this->assertTrue(null === $result->value());
     }
@@ -56,12 +60,12 @@ class DefaultValueTest extends TestCase
     public function testDefaultEmpty()
     {
         $default = new DefaultEmpty();
-        $result = new Result(null, '');
+        $result = $this->buildResult('');
         $default($result);
         $this->assertTrue('' === $result->value());
 
         $default = new DefaultEmpty();
-        $result = new Result(null, null);
+        $result = $this->buildResult(null);
         $default($result);
         $this->assertTrue('' === $result->value());
     }

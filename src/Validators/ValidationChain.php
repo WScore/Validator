@@ -16,7 +16,7 @@ class ValidationChain extends AbstractValidation
      */
     private function validateSingle($value)
     {
-        $result = new Result($this->message, $value, $this->name);
+        $result = new Result($value, $this->name);
         $this->prepareFilters();
         return $this->applyFilters($result);
     }
@@ -27,11 +27,11 @@ class ValidationChain extends AbstractValidation
      */
     private function validateMultiple($value)
     {
-        $results = new ResultList($this->message, $value, $this->name);
+        $results = new ResultList($value, $this->name);
         $this->prepareFilters();
         $values = $results->value();
         foreach ($values as $key => $val) {
-            $result = new Result($this->message, $val, $key);
+            $result = new Result($val, $key);
             $result = $this->applyFilters($result);
             $results->addResult($result, $key);
         }
@@ -50,7 +50,7 @@ class ValidationChain extends AbstractValidation
         } else {
             $result = $this->validateSingle($value);
         }
-        $result->finalize();
+        $result->finalize($this->message);
         return $result;
     }
 

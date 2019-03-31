@@ -11,11 +11,11 @@ class ResultGetRootTest extends TestCase
 {
     public function testGetRoot()
     {
-        $root = new ResultList(null, [], 'root');
-        $list1 = new ResultList(null, [], 'list1');
-        $list2 = new ResultList(null, [], 'list2');
-        $form1 = new Result(null, '', 'form1');
-        $form2 = new Result(null, '', 'form2');
+        $root = new ResultList([], 'root');
+        $list1 = new ResultList([], 'list1');
+        $list2 = new ResultList([], 'list2');
+        $form1 = new Result('', 'form1');
+        $form2 = new Result('', 'form2');
         $root->addResult($list1, 'list1');
         $root->addResult($list2, 'list2');
         $list1->addResult($form1, 'form1');

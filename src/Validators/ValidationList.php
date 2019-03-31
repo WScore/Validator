@@ -32,7 +32,7 @@ class ValidationList extends AbstractValidation
      */
     private function initialize($inputs)
     {
-        $results = new ResultList($this->message, $inputs, $this->name);
+        $results = new ResultList($inputs, $this->name);
         return $results;
     }
 
@@ -68,7 +68,7 @@ class ValidationList extends AbstractValidation
     {
         $result = $this->initialize($value);
         $result = $this->validate($result);
-        $result->finalize();
+        $result->finalize($this->message);
         return $result;
     }
 }
