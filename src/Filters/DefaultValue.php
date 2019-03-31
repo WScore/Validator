@@ -6,7 +6,7 @@ namespace WScore\Validation\Filters;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class DefaultValue extends AbstractValidator
+class DefaultValue extends AbstractFilter
 {
     /**
      * @var mixed

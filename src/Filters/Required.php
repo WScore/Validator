@@ -6,7 +6,7 @@ namespace WScore\Validation\Filters;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class Required extends AbstractValidator
+class Required extends AbstractFilter
 {
     public function __construct()
     {

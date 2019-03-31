@@ -5,7 +5,7 @@ namespace WScore\Validation\Filters;
 
 use WScore\Validation\Interfaces\ResultInterface;
 
-class StringLength extends AbstractValidator
+class StringLength extends AbstractFilter
 {
     /**
      * @var null|int

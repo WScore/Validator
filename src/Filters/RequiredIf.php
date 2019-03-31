@@ -6,7 +6,7 @@ namespace WScore\Validation\Filters;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class RequiredIf extends AbstractValidator
+class RequiredIf extends AbstractFilter
 {
     private $name;
     private $value;

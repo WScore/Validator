@@ -6,7 +6,7 @@ namespace WScore\Validation\Filters;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class FilterValidUtf8 extends AbstractValidator
+class FilterValidUtf8 extends AbstractFilter
 {
     public function __construct()
     {

@@ -1,10 +1,10 @@
 <?php
 namespace tests\Validation\Filters;
 
-use WScore\Validation\Filters\AbstractValidator;
+use WScore\Validation\Filters\AbstractFilter;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class AddPostfix extends AbstractValidator
+class AddPostfix extends AbstractFilter
 {
     /**
      * @var string

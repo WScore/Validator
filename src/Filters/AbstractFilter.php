@@ -6,7 +6,7 @@ namespace WScore\Validation\Filters;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-abstract class AbstractValidator implements FilterInterface
+abstract class AbstractFilter implements FilterInterface
 {
     private $priority = FilterInterface::PRIORITY_VALIDATIONS;
 
@@ -34,9 +34,9 @@ abstract class AbstractValidator implements FilterInterface
 
     /**
      * @param int $priority
-     * @return AbstractValidator
+     * @return AbstractFilter
      */
-    public function setPriority(int $priority): AbstractValidator
+    public function setPriority(int $priority): AbstractFilter
     {
         $this->priority = $priority;
         return $this;
