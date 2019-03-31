@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace WScore\Validation\Validators;
 
 use WScore\Validation\Interfaces\FilterInterface;
@@ -16,6 +18,23 @@ class ValidationList extends AbstractValidation
      */
     private $preFilters = [];
 
+    /**
+     * @param string $name
+     * @param ValidationList $form
+     * @return $this
+     */
+    public function addRepeatedForm(string $name, ValidationList $form)
+    {
+        $repeat = new ValidationRepeat($this->message, $name);
+        $repeat->add($name, $form);
+        $this->add($name, $repeat);
+        return $this;
+    }
+
+    /**
+     * @param FilterInterface ...$filters
+     * @return ValidationList
+     */
     public function addPreFilters(FilterInterface ...$filters): self
     {
         foreach ($filters as $filter) {

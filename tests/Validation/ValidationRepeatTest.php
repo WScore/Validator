@@ -62,9 +62,8 @@ class ValidationRepeatTest extends TestCase
             ->add(
                 'title',
                 $vb->text()->addFilters(new AddPostfix('-form'))
-            )->add(
-                'authors',
-                $vb->repeat()->add('author', $formAuthor)
+            )->addRepeatedForm(
+                'authors', $formAuthor
             );
         $input = [
             'title' => 'new validation',
