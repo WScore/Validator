@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WScore\Validation\Interfaces;
 
@@ -11,7 +12,7 @@ interface ValidationInterface
 
     /**
      * @param string|null $name
-     * @return $this
+     * @return ValidationInterface|$this
      */
     public function setName(string $name);
 
@@ -23,14 +24,14 @@ interface ValidationInterface
 
     /**
      * @param FilterInterface[] $filters
-     * @return ValidationInterface
+     * @return ValidationInterface|$this
      */
     public function addFilters(FilterInterface ...$filters): ValidationInterface;
 
     /**
      * @param string $name
      * @param ValidationInterface $validation
-     * @return ValidationInterface
+     * @return ValidationInterface|$this
      */
     public function add(string $name, ValidationInterface $validation): ValidationInterface;
 
@@ -48,7 +49,7 @@ interface ValidationInterface
 
     /**
      * @param string $name
-     * @return ValidationInterface
+     * @return ValidationInterface|$this
      */
     public function remove(string $name): ValidationInterface;
 

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace WScore\Validation\Validators;
 
 use WScore\Validation\Interfaces\ResultInterface;
@@ -148,7 +150,7 @@ abstract class AbstractResult implements ResultInterface
      */
     public function hasChildren(): bool
     {
-        return count($this->children);
+        return !empty($this->children);
     }
 
     /**

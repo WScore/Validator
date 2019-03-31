@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WScore\Validation\Validators;
 
@@ -54,7 +55,7 @@ abstract class AbstractValidation implements ValidationInterface
 
     /**
      * @param string|null $name
-     * @return AbstractValidation
+     * @return ValidationInterface|$this
      */
     public function setName(string $name)
     {
@@ -72,7 +73,7 @@ abstract class AbstractValidation implements ValidationInterface
 
     /**
      * @param FilterInterface[] $filters
-     * @return $this
+     * @return ValidationInterface|$this
      */
     public function addFilters(FilterInterface ...$filters): ValidationInterface
     {
@@ -85,7 +86,7 @@ abstract class AbstractValidation implements ValidationInterface
     /**
      * @param string $name
      * @param ValidationInterface $validation
-     * @return ValidationInterface
+     * @return ValidationInterface|$this
      */
     public function add(string $name, ValidationInterface $validation): ValidationInterface
     {
@@ -114,7 +115,7 @@ abstract class AbstractValidation implements ValidationInterface
 
     /**
      * @param string $name
-     * @return ValidationInterface
+     * @return ValidationInterface|$this
      */
     public function remove(string $name): ValidationInterface
     {
