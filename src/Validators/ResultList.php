@@ -33,9 +33,10 @@ class ResultList extends AbstractResult
 
     /**
      * @param Messages|null $messages
+     * @param string $final_error_message
      * @return  void
      */
-    public function finalize(Messages $messages = null)
+    public function finalize(Messages $messages = null, $final_error_message = '')
     {
         $this->summarizeChildren('finalize');
         $this->setValue($this->summarizeChildren('value'));
@@ -43,6 +44,9 @@ class ResultList extends AbstractResult
             if (!$child->isValid()) {
                 $this->isValid = false;
             }
+        }
+        if (!$this->isValid() && $final_error_message) {
+            $this->failed(__CLASS__, [], $final_error_message);
         }
         $this->populateMessages($messages);
     }

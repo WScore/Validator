@@ -89,7 +89,8 @@ interface ResultInterface extends \IteratorAggregate
 
     /**
      * @param Messages|null $messages
+     * @param string $final_error_message
      * @return  void
      */
-    public function finalize(Messages $messages = null);
+    public function finalize(Messages $messages = null, $final_error_message = '');
 }

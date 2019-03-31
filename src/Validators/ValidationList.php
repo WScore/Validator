@@ -68,7 +68,7 @@ class ValidationList extends AbstractValidation
     {
         $result = $this->initialize($value);
         $result = $this->validate($result);
-        $result->finalize($this->message);
+        $result->finalize($this->message, $this->error_message);
         return $result;
     }
 }

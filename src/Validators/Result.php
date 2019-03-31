@@ -15,10 +15,14 @@ class Result extends AbstractResult
 
     /**
      * @param Messages|null $messages
+     * @param string $final_error_message
      * @return  void
      */
-        public function finalize(Messages $messages = null)
+    public function finalize(Messages $messages = null, $final_error_message = '')
         {
+            if (!$this->isValid() && $final_error_message) {
+                $this->failed(__CLASS__, [], $final_error_message);
+            }
             $this->populateMessages($messages);
         }
 }

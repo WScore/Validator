@@ -50,7 +50,7 @@ class ValidationChain extends AbstractValidation
         } else {
             $result = $this->validateSingle($value);
         }
-        $result->finalize($this->message);
+        $result->finalize($this->message, $this->error_message);
         return $result;
     }
 

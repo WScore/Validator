@@ -56,4 +56,15 @@ class ValidationChainTest extends TestCase
         $this->assertFalse($form->has('name'));
         $this->assertTrue($form->has('corp'));
     }
+
+    public function testErrorMessageInValidation()
+    {
+        $chain = $this->buildValidationChain();
+        $chain->addFilters(new \WScore\Validation\Filters\Required());
+        $chain->setErrorMessage('tested error message');
+        $result = $chain->verify('');
+
+        $this->assertFalse($result->isValid());
+        $this->assertEquals(['required', 'tested error message'], $result->getErrorMessage());
+    }
 }
