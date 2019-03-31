@@ -5,6 +5,7 @@ namespace tests\Validation;
 
 use PHPUnit\Framework\TestCase;
 use tests\Validation\Filters\AddPostfix;
+use WScore\Validation\Filters\Required;
 use WScore\Validation\Validators\ValidationChain;
 use WScore\Validation\Validators\ValidationList;
 
@@ -67,5 +68,20 @@ class ValidationListTest extends TestCase
         $this->assertEquals('test1-test', $result->getChild('test')->value());
         $this->assertEquals('test2-more', $result->getChild('more')->value());
         $this->assertTrue($result->isValid());
+    }
+
+    public function testValidationsErrorMessage()
+    {
+        $list = $this->buildTestList();
+        $list->get('test')->addFilters(new Required());
+        $list->get('more')->addFilters(new Required());
+        $list->setErrorMessage('list failed');
+        $input = ['test' => '', 'more' => 'test2'];
+        $result = $list->verify($input);
+
+        $this->assertFalse($result->isValid());
+        $this->assertFalse($result->isValid());
+        $this->assertEquals(['list failed'], $result->getErrorMessage());
+        $this->assertEquals(['required'], $result->summarizeErrorMessages()['test']);
     }
 }

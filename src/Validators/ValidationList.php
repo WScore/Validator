@@ -62,7 +62,7 @@ class ValidationList extends AbstractValidation
 
     /**
      * @param array $value
-     * @return ResultInterface
+     * @return ResultInterface|ResultList
      */
     public function verify($value)
     {

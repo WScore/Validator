@@ -38,7 +38,7 @@ class ResultList extends AbstractResult
      */
     public function finalize(Messages $messages = null, $final_error_message = '')
     {
-        $this->summarizeChildren('finalize');
+        $this->finalizeChildren($messages);
         $this->setValue($this->summarizeChildren('value'));
         foreach ($this->children as $name => $child) {
             if (!$child->isValid()) {
@@ -69,5 +69,16 @@ class ResultList extends AbstractResult
             $values[$name] = $child->$method();
         }
         return $values;
+    }
+
+    /**
+     * @param Messages|null $messages
+     * @return void
+     */
+    private function finalizeChildren(Messages $messages = null): void
+    {
+        foreach ($this->children as $child) {
+            $child->finalize($messages);
+        }
     }
 }
