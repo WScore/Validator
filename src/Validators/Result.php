@@ -21,10 +21,10 @@ class Result extends AbstractResult
      * @return  void
      */
     public function finalize(Messages $messages = null, $final_error_message = '')
-        {
-            if (!$this->isValid() && $final_error_message) {
-                $this->failed(__CLASS__, [], $final_error_message);
-            }
-            $this->populateMessages($messages);
+    {
+        if (!$this->isValid() && $final_error_message) {
+            $this->failed(__CLASS__, [], $final_error_message);
         }
+        $this->populateMessages($messages);
+    }
 }

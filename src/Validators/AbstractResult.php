@@ -195,6 +195,8 @@ abstract class AbstractResult implements ResultInterface
     protected function populateMessages(?Messages $messages)
     {
         $this->messages = [];
+        if ($this->isValid()) return;
+
         foreach ($this->failed as $item) {
             $message = $item['message'] ?? null;
             if ($message === null && $messages) {
@@ -207,6 +209,9 @@ abstract class AbstractResult implements ResultInterface
             if ((string) $message !== '') {
                 $this->messages[] = $message;
             }
+        }
+        if (empty($this->messages) && $messages) {
+            $this->messages[] = $messages->getMessage(Messages::class, []);
         }
     }
 }

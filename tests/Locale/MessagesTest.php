@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use WScore\Validation\Locale\Messages;
 use PHPUnit\Framework\TestCase;
+use WScore\Validation\Validators\Result;
 
 class MessagesTest extends TestCase
 {
@@ -38,6 +39,17 @@ class MessagesTest extends TestCase
     {
         $messages = Messages::create(__DIR__ . '/locale-files');
         $this->assertEquals('test-locale-files', $messages->getMessage('test-me'));
+    }
+
+    public function testFallBackErrorMessage()
+    {
+        $result = new Result('test-value', 'test');
+        $result->failed('no-such-name', []);
+        $result->finalize(Messages::create('en'));
+
+        $this->assertFalse($result->isValid());
+        $fallbackMessage = $this->getMessages('en')[Messages::class];
+        $this->assertEquals([$fallbackMessage], $result->getErrorMessage());
     }
 
 }

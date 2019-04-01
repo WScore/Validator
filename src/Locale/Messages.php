@@ -45,7 +45,10 @@ class Messages
      */
     public function getMessage($name, $options = []): string
     {
-        $message = isset($this->messages[$name]) ? $this->messages[$name]: $this->messages[__CLASS__];
+        if (!isset($this->messages[$name])) {
+            return '';
+        }
+        $message = $this->messages[$name];
         $search = [];
         $replace = [];
         foreach ($options as $key => $value) {
