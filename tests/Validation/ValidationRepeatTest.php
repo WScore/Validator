@@ -24,7 +24,7 @@ class ValidationRepeatTest extends TestCase
     {
         $vb = $this->ValidationBuilder;
         $repeat = $vb->repeat(['name' => 'test']);
-        $text = $vb->text()->addFilters(new AddPostfix('-repeat'));
+        $text = $vb->text()->addFilters([new AddPostfix('-repeat')]);
         $repeat->add('author', $text);
         $this->assertEquals(ValidationRepeat::class, get_class($repeat));
     }
@@ -33,7 +33,7 @@ class ValidationRepeatTest extends TestCase
     {
         $vb = $this->ValidationBuilder;
         $repeat = $vb->repeat(['name' => 'test'])
-            ->add('author', $vb->text()->addFilters(new AddPostfix('-repeat')));
+            ->add('author', $vb->text()->addFilters([new AddPostfix('-repeat')]));
         $input = [
             'name1',
             'name2'
@@ -54,14 +54,14 @@ class ValidationRepeatTest extends TestCase
         $vb = $this->ValidationBuilder;
         $formAuthor = $vb->form()
             ->add(
-                'name', $vb->text()->addFilters(new AddPostfix('-name'))
+                'name', $vb->text()->addFilters([new AddPostfix('-name')])
             )->add(
-                'corp', $vb->text()->addFilters(new AddPostfix('-corp'))
+                'corp', $vb->text()->addFilters([new AddPostfix('-corp')])
             );
         $form = $vb->form()
             ->add(
                 'title',
-                $vb->text()->addFilters(new AddPostfix('-form'))
+                $vb->text()->addFilters([new AddPostfix('-form')])
             )->addRepeatedForm(
                 'authors', $formAuthor
             );

@@ -78,7 +78,7 @@ class ValidatorBuilder
     {
         $builder = $this->prepareOptions($options);
         $v = new ValidationList($this->messages, $builder->name);
-        $v->addFilters(...$builder->filters);
+        $v->addFilters($builder->filters);
         return $v;
     }
 
@@ -86,7 +86,7 @@ class ValidatorBuilder
     {
         $builder = $this->prepareOptions($options);
         $v = new ValidationRepeat($this->messages, $builder->name);
-        $v->addFilters(...$builder->filters);
+        $v->addFilters($builder->filters);
         return $v;
     }
 
@@ -103,8 +103,8 @@ class ValidatorBuilder
             $v = $v->setMultiple(true);
         }
         $filters = $this->typeFilter->getFilters($type);
-        $v->addFilters(...$filters);
-        $v->addFilters(...$this->filters);
+        $v->addFilters($filters);
+        $v->addFilters($this->filters);
         return $v;
     }
 }

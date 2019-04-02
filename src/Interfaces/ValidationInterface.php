@@ -26,7 +26,7 @@ interface ValidationInterface
      * @param FilterInterface[] $filters
      * @return ValidationInterface|$this
      */
-    public function addFilters(FilterInterface ...$filters): ValidationInterface;
+    public function addFilters(array $filters): ValidationInterface;
 
     /**
      * @param string $name

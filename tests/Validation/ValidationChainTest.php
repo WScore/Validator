@@ -32,7 +32,7 @@ class ValidationChainTest extends TestCase
     public function testVerify()
     {
         $chain = $this->buildValidationChain();
-        $chain->addFilters(new AddPostfix('-verified'));
+        $chain->addFilters([new AddPostfix('-verified')]);
         $result = $chain->verify('test-verify');
 
         $this->assertEquals(Result::class, get_class($result));
@@ -63,11 +63,35 @@ class ValidationChainTest extends TestCase
     public function testErrorMessageInValidation()
     {
         $chain = $this->buildValidationChain();
-        $chain->addFilters(new Required());
+        $chain->addFilters([new Required()]);
         $chain->setErrorMessage('tested error message');
         $result = $chain->verify('');
 
         $this->assertFalse($result->isValid());
         $this->assertEquals(['required', 'tested error message'], $result->getErrorMessage());
+    }
+
+    public function testRemoveFiltersWhenSetToFalse()
+    {
+        $chain = $this->buildValidationChain();
+        $chain->addFilters([new Required()]);
+        $result = $chain->verify('');
+        $this->assertFalse($result->isValid());
+
+        $chain->addFilters([Required::class => false]);
+        $result = $chain->verify('');
+        $this->assertTrue($result->isValid());
+    }
+
+    public function testFilterArguments()
+    {
+        $chain = $this->buildValidationChain();
+        $chain->addFilters([AddPostfix::class => true]);
+        $result = $chain->verify('test');
+        $this->assertEquals('test-tested', $result->value());
+
+        $chain->addFilters([AddPostfix::class => '-more']);
+        $result = $chain->verify('test');
+        $this->assertEquals('test-more', $result->value());
     }
 }

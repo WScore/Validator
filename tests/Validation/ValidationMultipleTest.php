@@ -26,9 +26,7 @@ class ValidationMultipleTest extends TestCase
     public function testVerify()
     {
         $list = $this->buildValidationMultiple();
-        $list->addFilters(
-            new AddPostfix('-multi')
-        );
+        $list->addFilters([new AddPostfix('-multi')]);
         $input = ['test' => 'test1', 'more' => 'test2'];
         $result = $list->verify($input);
 

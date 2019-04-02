@@ -45,16 +45,16 @@ class ValidationListTest extends TestCase
         $list->add(
             'test',
             $this->buildValidationChain()
-                ->addFilters(
+                ->addFilters([
                     new AddPostfix('-test')
-                )
+                ])
         );
         $list->add(
             'more',
             $this->buildValidationChain()
-                ->addFilters(
+                ->addFilters([
                     new AddPostfix('-more')
-                )
+                ])
         );
         return $list;
     }
@@ -74,8 +74,8 @@ class ValidationListTest extends TestCase
     public function testValidationsErrorMessage()
     {
         $list = $this->buildTestList();
-        $list->get('test')->addFilters(new Required());
-        $list->get('more')->addFilters(new Required());
+        $list->get('test')->addFilters([new Required()]);
+        $list->get('more')->addFilters([new Required()]);
         $list->setErrorMessage('list failed');
         $input = ['test' => '', 'more' => 'test2'];
         $result = $list->verify($input);
