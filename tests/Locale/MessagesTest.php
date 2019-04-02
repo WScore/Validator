@@ -13,6 +13,7 @@ class MessagesTest extends TestCase
      */
     private function getMessages($locale = 'en')
     {
+        /** @noinspection PhpIncludeInspection */
         return include __DIR__ . "/../../src/Locale/{$locale}/validation.message.php";
     }
 

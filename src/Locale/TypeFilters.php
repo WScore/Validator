@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WScore\Validation\Locale;
 
+use InvalidArgumentException;
 use WScore\Validation\Interfaces\FilterInterface;
 
 class TypeFilters
@@ -27,11 +28,11 @@ class TypeFilters
             ? __DIR__ . DIRECTORY_SEPARATOR . $locale
             : $locale;
         if (!is_dir($type_dir)) {
-            throw new \InvalidArgumentException('message directory not found: ' . $type_dir);
+            throw new InvalidArgumentException('message directory not found: ' . $type_dir);
         }
         $type_file = $type_dir . DIRECTORY_SEPARATOR . 'validation.types.php';
         if (!file_exists($type_file)) {
-            throw new \InvalidArgumentException('message file not found: ' . $type_file);
+            throw new InvalidArgumentException('message file not found: ' . $type_file);
         }
         /** @noinspection PhpIncludeInspection */
         $types = include($type_file);
@@ -47,7 +48,7 @@ class TypeFilters
     public function getFilters($type): array
     {
         if (!isset($this->typeFilters[$type])) {
-            throw new \InvalidArgumentException('unknown type: ' . $type);
+            throw new InvalidArgumentException('unknown type: ' . $type);
         }
         $rawFilters = $this->typeFilters[$type];
         $filters = [];

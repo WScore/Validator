@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace WScore\Validation\Interfaces;
 
+use IteratorAggregate;
 use WScore\Validation\Locale\Messages;
 use WScore\Validation\Validators\ResultList;
 
-interface ResultInterface extends \IteratorAggregate
+interface ResultInterface extends IteratorAggregate
 {
     /**
      * @param string $failedAt

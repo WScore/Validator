@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use tests\Validation\Filters\AddPostfix;
+use WScore\Validation\Filters\Required;
+use WScore\Validation\Locale\Messages;
+use WScore\Validation\ValidatorBuilder;
 use WScore\Validation\Validators\Result;
 use WScore\Validation\Validators\ValidationChain;
 
@@ -14,7 +17,7 @@ class ValidationChainTest extends TestCase
      */
     public function buildValidationChain($locale = 'en')
     {
-        $messages = \WScore\Validation\Locale\Messages::create($locale);
+        $messages = Messages::create($locale);
         $chain = new ValidationChain($messages);
 
         return $chain;
@@ -38,7 +41,7 @@ class ValidationChainTest extends TestCase
 
     public function testHasGetAllAndRemove()
     {
-        $vb = new \WScore\Validation\ValidatorBuilder();
+        $vb = new ValidatorBuilder();
         $form = $vb->form();
         $this->assertFalse($form->has('name'));
 
@@ -60,7 +63,7 @@ class ValidationChainTest extends TestCase
     public function testErrorMessageInValidation()
     {
         $chain = $this->buildValidationChain();
-        $chain->addFilters(new \WScore\Validation\Filters\Required());
+        $chain->addFilters(new Required());
         $chain->setErrorMessage('tested error message');
         $result = $chain->verify('');
 

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WScore\Validation\Validators;
 
+use ArrayIterator;
 use WScore\Validation\Interfaces\ResultInterface;
 use WScore\Validation\Locale\Messages;
 
@@ -138,11 +139,11 @@ abstract class AbstractResult implements ResultInterface
     }
 
     /**
-     * @return self[]|\iterable
+     * @return self[]|iterable
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->getChildren());
+        return new ArrayIterator($this->getChildren());
     }
 
     /**

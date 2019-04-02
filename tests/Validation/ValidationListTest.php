@@ -6,6 +6,7 @@ namespace tests\Validation;
 use PHPUnit\Framework\TestCase;
 use tests\Validation\Filters\AddPostfix;
 use WScore\Validation\Filters\Required;
+use WScore\Validation\Locale\Messages;
 use WScore\Validation\Validators\ValidationChain;
 use WScore\Validation\Validators\ValidationList;
 
@@ -17,7 +18,7 @@ class ValidationListTest extends TestCase
      */
     public function buildValidationChain($locale = 'en')
     {
-        $messages = \WScore\Validation\Locale\Messages::create($locale);
+        $messages = Messages::create($locale);
         $chain = new ValidationChain($messages);
 
         return $chain;
@@ -29,7 +30,7 @@ class ValidationListTest extends TestCase
      */
     public function buildValidationList($locale = 'en')
     {
-        $messages = \WScore\Validation\Locale\Messages::create($locale);
+        $messages = Messages::create($locale);
         $list = new ValidationList($messages);
 
         return $list;
