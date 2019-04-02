@@ -54,7 +54,7 @@ class Messages
         $search = [];
         $replace = [];
         foreach ($options as $key => $value) {
-            $search[] = "\{{$key}\}";
+            $search[] = "{{$key}}";
             $replace[] = $value;
         }
         $message = str_replace($search, $replace, $message);

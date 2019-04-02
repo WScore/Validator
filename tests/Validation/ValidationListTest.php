@@ -83,6 +83,6 @@ class ValidationListTest extends TestCase
         $this->assertFalse($result->isValid());
         $this->assertFalse($result->isValid());
         $this->assertEquals(['list failed'], $result->getErrorMessage());
-        $this->assertEquals(['required'], $result->summarizeErrorMessages()['test']);
+        $this->assertEquals(['The input field is required.'], $result->summarizeErrorMessages()['test']);
     }
 }

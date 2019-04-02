@@ -16,9 +16,9 @@ use WScore\Validation\Validators\Result;
 
 class DefaultValueTest extends TestCase
 {
-    private function buildResult($name=null)
+    private function buildResult($value=null)
     {
-        return new Result($name);
+        return new Result($value);
     }
     public function testDefaultValueOnNull()
     {

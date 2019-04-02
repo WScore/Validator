@@ -10,9 +10,9 @@ use WScore\Validation\Validators\ResultList;
 
 class RequiredIfTest extends TestCase
 {
-    private function buildResult($name=null, $value=null)
+    private function buildResult($value=null, $name=null)
     {
-        return new Result($name, $value);
+        return new Result($value, $name);
     }
     public function testRequiredIfWithoutSettingsReturnsFalseWhenValueIsEmpty()
     {

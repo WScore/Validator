@@ -68,7 +68,7 @@ class ValidationChainTest extends TestCase
         $result = $chain->verify('');
 
         $this->assertFalse($result->isValid());
-        $this->assertEquals(['required', 'tested error message'], $result->getErrorMessage());
+        $this->assertEquals(['The input field is required.', 'tested error message'], $result->getErrorMessage());
     }
 
     public function testRemoveFiltersWhenSetToFalse()

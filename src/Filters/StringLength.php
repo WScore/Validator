@@ -7,6 +7,10 @@ use WScore\Validation\Interfaces\ResultInterface;
 
 class StringLength extends AbstractFilter
 {
+    const LENGTH = __CLASS__ . '::LENGTH';
+    const MAX = __CLASS__ . '::MAX';
+    const MIN = __CLASS__ . '::MIN';
+
     /**
      * @var null|int
      */
@@ -21,6 +25,16 @@ class StringLength extends AbstractFilter
      * @var null|int
      */
     private $length = null;
+
+    public function __construct($options = [])
+    {
+        foreach ($options as $key => $value) {
+            $method = 'set' . $key;
+            if (method_exists($this, $method)) {
+                $this->$method($value);
+            }
+        }
+    }
 
     /**
      * @param int|null $max
@@ -60,7 +74,7 @@ class StringLength extends AbstractFilter
     private function checkLength(ResultInterface $input, int $length)
     {
         if ($this->length !== $length) {
-            return $input->failed(__CLASS__, ['length' => $this->length]);
+            return $input->failed(self::LENGTH, ['length' => $this->length]);
         }
         return null;
     }
@@ -73,7 +87,7 @@ class StringLength extends AbstractFilter
     private function checkMax(ResultInterface $input, int $length)
     {
         if ($this->max < $length) {
-            return $input->failed(__CLASS__, ['max' => $this->max]);
+            return $input->failed(self::MAX, ['max' => $this->max]);
         }
         return null;
     }
@@ -86,7 +100,7 @@ class StringLength extends AbstractFilter
     private function checkMin(ResultInterface $input, int $length)
     {
         if ($length < $this->min) {
-            return $input->failed(__CLASS__, ['min' => $this->min]);
+            return $input->failed(self::MIN, ['min' => $this->min]);
         }
         return null;
     }
@@ -100,13 +114,13 @@ class StringLength extends AbstractFilter
         $value = $input->value();
         $length = mb_strlen($value);
         if ($this->length !== null) {
-            return $this->checkLength($input, $length);
+            $this->checkLength($input, $length);
         }
         if ($this->max !== null) {
-            return $this->checkMax($input, $length);
+            $this->checkMax($input, $length);
         }
         if ($this->min !== null) {
-            return $this->checkMin($input, $length);
+            $this->checkMin($input, $length);
         }
         return null;
     }

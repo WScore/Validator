@@ -10,9 +10,9 @@ use WScore\Validation\Validators\Result;
 
 class RequiredTest extends TestCase
 {
-    private function buildResult($name=null)
+    private function buildResult($value=null)
     {
-        return new Result($name);
+        return new Result($value);
     }
     public function testRequiredFailed()
     {
@@ -37,6 +37,6 @@ class RequiredTest extends TestCase
         $required = new Required();
         $required($result);
         $result->finalize(Messages::create('en'));
-        $this->assertEquals('required', $result->getErrorMessage()[0]);
+        $this->assertEquals('The input field is required.', $result->getErrorMessage()[0]);
     }
 }
