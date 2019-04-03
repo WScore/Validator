@@ -78,15 +78,44 @@ abstract class AbstractValidation implements ValidationInterface
     public function addFilters(array $filters): ValidationInterface
     {
         foreach ($filters as $key => $filter) {
-            if ($filter === false) {
-                unset($this->filters[$key]);
-                continue;
-            } elseif ($filter === true) {
-                $filter = new $key();
-            } elseif (!$filter instanceof FilterInterface) {
+            if ($filter instanceof FilterInterface) {
+                // $filter = $filter;
+            } elseif (is_numeric($key) && is_string($filter)) {
+                $filter = new $filter();
+            } else {
                 $filter = new $key($filter);
             }
             $this->filters[$filter->getFilterName()] = $filter;
+        }
+        return $this;
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function hasFilter(string $name): bool
+    {
+        return array_key_exists($name, $this->filters);
+    }
+
+    /**
+     * @param string $name
+     * @return FilterInterface
+     */
+    public function getFilter(string $name): FilterInterface
+    {
+        return $this->filters[$name] ?? null;
+    }
+
+    /**
+     * @param string $name
+     * @return ValidationInterface|$this
+     */
+    public function removeFilter(string $name): ValidationInterface
+    {
+        if (isset($this->filters[$name])) {
+            unset($this->filters[$name]);
         }
         return $this;
     }

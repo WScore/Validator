@@ -21,6 +21,14 @@ class AddPostfix extends AbstractFilter
     }
 
     /**
+     * @param $prefix
+     */
+    public function setPrefix($prefix)
+    {
+        $this->prefix = $prefix;
+    }
+
+    /**
      * @param ResultInterface $input
      * @param ResultInterface $allInputs
      * @return ResultInterface|null

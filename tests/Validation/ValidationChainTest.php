@@ -71,22 +71,29 @@ class ValidationChainTest extends TestCase
         $this->assertEquals(['The input field is required.', 'tested error message'], $result->getErrorMessage());
     }
 
-    public function testRemoveFiltersWhenSetToFalse()
+    public function testHasGetAndRemoveFilter()
     {
         $chain = $this->buildValidationChain();
-        $chain->addFilters([new Required()]);
-        $result = $chain->verify('');
-        $this->assertFalse($result->isValid());
+        $chain->addFilters([new AddPostfix('-filter')]);
+        $result = $chain->verify('test');
+        $this->assertEquals('test-filter', $result->value());
 
-        $chain->addFilters([Required::class => false]);
-        $result = $chain->verify('');
-        $this->assertTrue($result->isValid());
+        $this->assertTrue($chain->hasFilter(AddPostfix::class));
+        /** @var AddPostfix $filter */
+        $filter = $chain->getFilter(AddPostfix::class);
+        $filter->setPrefix('-mod-filter');
+        $result = $chain->verify('test');
+        $this->assertEquals('test-mod-filter', $result->value());
+
+        $chain->removeFilter(AddPostfix::class);
+        $result = $chain->verify('test');
+        $this->assertEquals('test', $result->value());
     }
 
     public function testFilterArguments()
     {
         $chain = $this->buildValidationChain();
-        $chain->addFilters([AddPostfix::class => true]);
+        $chain->addFilters([AddPostfix::class]);
         $result = $chain->verify('test');
         $this->assertEquals('test-tested', $result->value());
 

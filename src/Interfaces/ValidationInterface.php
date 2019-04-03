@@ -30,6 +30,24 @@ interface ValidationInterface
 
     /**
      * @param string $name
+     * @return bool
+     */
+    public function hasFilter(string $name): bool;
+
+    /**
+     * @param string $name
+     * @return FilterInterface
+     */
+    public function getFilter(string $name): FilterInterface;
+
+    /**
+     * @param string $name
+     * @return ValidationInterface|$this
+     */
+    public function removeFilter(string $name): ValidationInterface;
+
+    /**
+     * @param string $name
      * @param ValidationInterface $validation
      * @return ValidationInterface|$this
      */
