@@ -11,7 +11,8 @@ namespace WScore\Validation\Interfaces;
  */
 interface FilterInterface
 {
-    const PRIORITY_SECURITY_FILTERS = 100;
+    const PRIORITY_PRE_FILTERS      = 100;
+    const PRIORITY_SECURITY_FILTERS = 500;
     const PRIORITY_STRING_FILTERS   = 1000;
     const PRIORITY_USER_FILTERS     = 5000;
     const PRIORITY_REQUIRED_FILTERS = 10000;

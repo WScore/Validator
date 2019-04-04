@@ -107,4 +107,10 @@ class ValidatorBuilder
         $v->addFilters($this->filters);
         return $v;
     }
+
+    public function chain(array $options = []): ValidationInterface
+    {
+        return $this->prepareOptions($options)
+            ->buildByType('raw');
+    }
 }

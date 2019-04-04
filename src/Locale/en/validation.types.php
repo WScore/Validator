@@ -1,9 +1,13 @@
 <?php
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
 
 /**
  * define filters for each validation type.
  */
 return [
+    // raw type. no filters.
+    'raw' => [],
+
     'text' => [
         \WScore\Validation\Filters\FilterValidUtf8::class => true,
         \WScore\Validation\Filters\DefaultValue::class => "",
