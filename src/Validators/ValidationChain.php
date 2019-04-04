@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WScore\Validation\Validators;
 
+use WScore\Validation\Filters\Required;
 use WScore\Validation\Interfaces\ResultInterface;
 
 class ValidationChain extends AbstractValidation
@@ -20,12 +21,13 @@ class ValidationChain extends AbstractValidation
     {
         $result = new Result($value, $this->name);
         $this->prepareFilters();
-        return $this->applyFilters($result);
+        $result = $this->applyFilters($result);
+        $result->finalize($this->message, $this->error_message);
+
+        return $result;
     }
 
     /**
-     * TODO: Required filter must validate resulting $value, not each $val.
-     * 
      * @param string[] $value
      * @return ResultInterface
      */
@@ -33,11 +35,20 @@ class ValidationChain extends AbstractValidation
     {
         $results = new ResultList($value, $this->name);
         $this->prepareFilters();
+        if ($this->hasFilter(Required::class)) {
+            $required = $this->getFilter(Required::class);
+            $this->removeFilter(Required::class);
+        }
         $values = $results->value();
         foreach ($values as $key => $val) {
+            if ('' === (string) $val) continue;
             $result = new Result($val, $key);
             $result = $this->applyFilters($result);
             $results->addResult($result, $key);
+        }
+        $results->finalize($this->message, $this->error_message);
+        if (isset($required)) {
+            $required->__invoke($results);
         }
 
         return $results;
@@ -54,7 +65,6 @@ class ValidationChain extends AbstractValidation
         } else {
             $result = $this->validateSingle($value);
         }
-        $result->finalize($this->message, $this->error_message);
         return $result;
     }
 

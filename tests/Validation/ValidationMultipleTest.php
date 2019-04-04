@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace tests\Validation;
 
 use tests\Validation\Filters\AddPostfix;
+use WScore\Validation\Filters\Required;
 use WScore\Validation\Locale\Messages;
 use WScore\Validation\Validators\ValidationChain;
 use PHPUnit\Framework\TestCase;
@@ -36,4 +37,22 @@ class ValidationMultipleTest extends TestCase
         $this->assertEquals('test2-multi', $result->getChild('more')->value());
     }
 
+    public function testEmptyInput()
+    {
+        $chain = $this->buildValidationMultiple();
+        $result = $chain->verify(['', null, false]);
+        $this->assertTrue($result->isValid());
+        $this->assertEquals([], $result->value());
+    }
+
+    public function testRequired()
+    {
+        $chain = $this->buildValidationMultiple();
+        $chain->addFilters([
+            new Required(),
+        ]);
+        $result = $chain->verify(['', null, false]);
+        $this->assertFalse($result->isValid());
+        $this->assertEquals([], $result->value());
+    }
 }
