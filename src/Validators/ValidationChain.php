@@ -24,6 +24,8 @@ class ValidationChain extends AbstractValidation
     }
 
     /**
+     * TODO: Required filter must validate resulting $value, not each $val.
+     * 
      * @param string[] $value
      * @return ResultInterface
      */

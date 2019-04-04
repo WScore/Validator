@@ -29,8 +29,8 @@ class RequiredIf extends AbstractFilter
             return null;
         }
         $value = $input->value();
-        if ($value === null || '' === (string) $value) {
-            return $this->failed($input);
+        if ($value === null || '' === (string)$value || empty($value)) {
+            return $input->failed(Required::class);
         }
         return null;
     }
@@ -40,9 +40,9 @@ class RequiredIf extends AbstractFilter
         if (!$this->name) {
             return true;
         }
-        $value = $input->getParent()->value()[$this->name]?? null;
-        if ('' === (string) $this->value) {
-            if ('' === (string) $value) {
+        $value = $input->getParent()->value()[$this->name] ?? null;
+        if ('' === (string)$this->value) {
+            if ('' === (string)$value) {
                 return false;
             }
             return true;
@@ -60,5 +60,16 @@ class RequiredIf extends AbstractFilter
             return true;
         }
         return true;
+    }
+
+    /**
+     * use same name as Required class.
+     * so that only one Required or RequiredIf can be used as filters.
+     *
+     * @return string
+     */
+    public function getFilterName(): string
+    {
+        return Required::class;
     }
 }

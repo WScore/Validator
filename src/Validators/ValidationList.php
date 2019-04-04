@@ -32,7 +32,7 @@ class ValidationList extends AbstractValidation
     }
 
     /**
-     * @param FilterInterface ...$filters
+     * @param FilterInterface[] $filters
      * @return ValidationList
      */
     public function addPreFilters(FilterInterface ...$filters): self

@@ -8,6 +8,9 @@ use WScore\Validation\Interfaces\ResultInterface;
 
 class FilterValidUtf8 extends AbstractFilter
 {
+    const INVALID_CHAR = __CLASS__ . '::INVALID_CHAR';
+    const ARRAY_INPUT = __CLASS__ . '::ARRAY_INPUT';
+
     public function __construct()
     {
         $this->setPriority(FilterInterface::PRIORITY_SECURITY_FILTERS);
@@ -20,15 +23,14 @@ class FilterValidUtf8 extends AbstractFilter
     public function __invoke(ResultInterface $input): ?ResultInterface
     {
         $value = $input->value();
+        if (is_array($value)) {
+            return $input->failed(self::ARRAY_INPUT, []);
+        }
         if (mb_check_encoding($value, 'UTF-8')) {
             return null;
         }
-        if (is_array($value)) {
-            $input->setValue([]);
-        } else {
-            $input->setValue('');
-        }
-        $input->failed(__CLASS__);
+        $input->setValue('');
+        $input->failed(self::INVALID_CHAR);
         return $input;
     }
 }

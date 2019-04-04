@@ -25,4 +25,12 @@ class Required extends AbstractFilter
         }
         return null;
     }
+
+    /**
+     * @return string
+     */
+    public function getFilterName(): string
+    {
+        return __CLASS__;
+    }
 }
