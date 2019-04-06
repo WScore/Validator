@@ -3,8 +3,10 @@ Validation
 
 A validation component for,
 
-- nested and/or one-to-many forms,
-- good multi-byte support (i.e. Japanese), 
+- a single value as well as arrays, 
+- nested form inputs, 
+- one-to-many form inputs, and
+- multi-byte support (i.e. Japanese), 
 
 
 ### License
@@ -45,7 +47,6 @@ if ($result->isValid()) {
 ### Validating a Form Input
 
 ```php
-$vb = new ValidatorBuilder();
 $form = $vb->form('user')
     ->add('name', $vb->text([
         'filters' => [Required::class]
@@ -76,7 +77,6 @@ Simply add another form object in a form object.
 
 
 ```php
-$vb = new ValidatorBuilder();
 $form = $vb->form('user')
     ->add('name', $vb->text([
         'filters' => [Required::class]
@@ -113,6 +113,10 @@ $result = $form->verify($_POST);
 ```
 
 
+### Validating Array
+
+
+
 Locale
 ------
 
@@ -137,76 +141,76 @@ The folder must contain: `validation.message.php` and `validation.types.php` fil
 
 
 Predefined Types
-----------------
+================
 
 t.b.w.
+
+Text Types
+----------
 
 ### Text
 
-*   text
-*   email
-*   number
-*   tel
+### email
+### number
+### tel
 
-### DateTime
+DateTime Types
+--------------
 
-*   date
-*   datetime
-*   month
-*   time
-*   timeHi
+### date
+### datetime
+### month
+### time
+### timeHi
 
-### multiple input
+multiple input
+--------------
 
-*   dateYMD
+### dateYMD
 
 
 Predefined Filters
-------------------
+==================
+
+Filters
+-------
 
 t.b.w.
 
-### Filters
+### FilterArrayToValue
 
-*   FilterArrayToValue
-    * convert array input to a single text value. 
-    * arguments are ['fields' => ['y', 'm'], 'format' => '%d.%d']
-        * `fields`: specify list of array key names. required.
-        * `format`: spritnf format for the array values. 
-        * `implode`: if `format` is not defined, implode values with the character (default is '-').
+- convert array input to a single text value. 
+- arguments are ['fields' => ['y', 'm'], 'format' => '%d.%d']
+    - `fields`: specify list of array key names. required.
+    - `format`: spritnf format for the array values. 
+    - `implode`: if `format` is not defined, implode values with the character (default is '-').
 
-*   FilterValidUtf8
-*   MbConvertKana
-*   StringCases
-*   FilterDateTime
+### FilterValidUtf8
 
 
-*   DefaultValue
-*   DefaultNull
-*   DefaultEmpty
+### MbConvertKana
+
+### StringCases
+
+### FilterDateTime
+
+### DefaultValue, DefaultNull, DefaultEmpty
+
+### trim
+### sanitize
 
 
-### Validations
-
-*   Required
-*   RequiredIf
+Validations
+-----------
 
 
-*   message
-*   multiple
-*   noNull
-*   encoding
-*   mbConvert (Ja only)
-*   trim
-*   sanitize
-*   string
-*   default
-*   required
-*   loopBreak
-*   code
-*   maxlength
-*   pattern
-*   matches
-*   kanaType (ja only)
-*   etc.
+### Required
+### RequiredIf
+### StringLength
+
+
+### code
+### RegEx
+### matches
+### MbCheckKana
 
