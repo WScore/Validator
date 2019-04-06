@@ -48,22 +48,13 @@ class ValidatorBuilderTest extends TestCase
     {
         $vb = new ValidatorBuilder();
         $author = $vb->form()
-            ->add('name', $vb->text([
-                'filters' => [
-                    AddPostfix::class => '-name',
-                ]])
-            )->add('corp', $vb->text([
-                'filters' => [
-                    AddPostfix::class => '-corp',
-                ]])
+            ->add('name', $vb->text([AddPostfix::class => '-name'])
+            )->add('corp', $vb->text([AddPostfix::class => '-corp'])
             );
 
         $form = $vb->form(['name' => 'journal',])
             ->add('title',
-                $vb->text([
-                    'filters' => [
-                        AddPostfix::class => '-title',
-                    ]])
+                $vb->text([AddPostfix::class => '-title'])
             )->add('authors',
                 $vb->repeat()->add('author', $author)
             );

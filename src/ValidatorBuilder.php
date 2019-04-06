@@ -52,8 +52,14 @@ class ValidatorBuilder
     {
         $self = clone($this);
         $self->multiple = $options['multiple'] ?? false;
+        unset($options['multiple']);
         $self->name = $options['name'] ?? null;
-        $self->filters = $self->prepareFilters($options['filters']??[]);
+        unset($options['name']);
+        $filters = $options['filters']??[];
+        unset($options['filters']);
+        $filters = array_merge($filters, $options);
+
+        $self->filters = $self->prepareFilters($filters);
 
         return $self;
     }
