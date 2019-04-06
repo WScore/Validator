@@ -1,19 +1,24 @@
 <?php
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
 
-// filters for various types of input.
+/**
+ * define filters for each validation type.
+ */
+return [
+    // raw type. no filters.
+    'raw' => [],
 
-return array(
-    'binary'   => [ 'noNull' => false, 'encoding' => false, 'mbConvert' => false, 'trim' => false ],
-    'text'     => [],
-    'mail'     => [ 'string' => 'lower', 'matches' => 'mail', 'sanitize' => 'mail' ],
-    'number'   => [ 'matches' => 'number' ],
-    'integer'  => [ 'sanitize'  => 'int', 'matches' => 'int', 'max' => PHP_INT_MAX ],
-    'float'    => [ 'matches' => 'float' ],
-    'date'     => [ 'multiple' => 'YMD', 'pattern' => '[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}' ],
-    'dateYM'   => [ 'multiple' => 'YM',  'pattern' => '[0-9]{4}-[0-9]{1,2}' ],
-    'datetime' => [ 'multiple' => 'datetime', 'pattern' => '[0-9]{4}-[0-9]{1,2}-[0-9]{1,2} [0-9]{2}:[0-9]{2}:[0-9]{2}' ],
-    'time'     => [ 'multiple' => 'His', 'pattern' => '[0-9]{2}:[0-9]{2}:[0-9]{2}' ],
-    'timeHi'   => [ 'multiple' => 'Hi',  'pattern' => '[0-9]{2}:[0-9]{2}' ],
-    'tel'      => [ 'multiple' => 'tel', 'pattern' => '[-0-9()]*' ],
-    'fax'      => [ 'multiple' => 'tel', 'pattern' => '[-0-9()]*' ],
-);
+    'text' => [
+        \WScore\Validation\Filters\FilterValidUtf8::class => true,
+        \WScore\Validation\Filters\DefaultValue::class => "",
+        \WScore\Validation\Filters\StringLength::class => ['max' => 1024*1024],
+    ],
+    'integer' => [
+        \WScore\Validation\Filters\FilterValidUtf8::class => true,
+        \WScore\Validation\Filters\DefaultValue::class => null,
+        \WScore\Validation\Filters\StringLength::class => ['max' => 1024],
+    ],
+    'date' => [],
+    'datetime' => [],
+    'YearMonth' => [],
+];
