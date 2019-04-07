@@ -14,6 +14,7 @@ class DefaultValue extends AbstractFilter
     private $default;
 
     /**
+     * todo: use $option as array.
      * DefaultValue constructor.
      * @param mixed $default
      */

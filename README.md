@@ -175,19 +175,38 @@ t.b.w.
 ### FilterArrayToValue
 
 - convert array input to a single text value. 
-- arguments are ['fields' => ['y', 'm'], 'format' => '%d.%d']
-    - `fields`: specify list of array key names. required.
-    - `format`: spritnf format for the array values. 
-    - `implode`: if `format` is not defined, implode values with the character (default is '-').
+- arguments: ['fields' => ['y', 'm'], 'format' => '%d.%d', 'implode' => '...']
+    - `fields`: required. specify list of array key names. 
+    - `format`: optional. spritnf format for the array values. 
+    - `implode`: optional. if `format` is not defined, implode values with the character (default is '-').
+
+sample code: 
+
+```php
+$filter = new FilterArrayToValue([
+    'fields' => ['y', 'm', 'd'],
+    'format' => '%d.%02d.%02d',
+]);
+```
 
 ### FilterValidUtf8
 
+- checks if the input value is a valid UTF-8 characters. 
+- priority: FilterInterface::PRIORITY_SECURITY_FILTERS
+- errors: on error, replaces the input value with an empty string (''). 
+  - FilterValidUtf8::INVALID_CHAR : invalid UTF-8 characters. 
+  - FilterValidUtf8::ARRAY_INPUT  : input is an array. 
 
-### MbConvertKana
+### ConvertDateTime
 
-### StringCases
+- converts string input into \DateTimeImmutable object. 
+- sets `\DateTimeImmutable` object. 
+- arguments: ['format' => 'YY.m.d'].
+  - format: optional. if set uses `\DateTimeImmutable::createFromFormat`
 
-### FilterDateTime
+### ConvertMbKana
+
+### ConvertStringCases
 
 ### DefaultValue, DefaultNull, DefaultEmpty
 

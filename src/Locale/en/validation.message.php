@@ -1,5 +1,4 @@
 <?php
-/** @noinspection ALL */
 
 /**
  * define default error message for each filter.
@@ -11,6 +10,7 @@ return [
     // fail for invalid charset string.
     \WScore\Validation\Filters\FilterValidUtf8::INVALID_CHAR => 'The input is invalid UTF-8 character.',
     \WScore\Validation\Filters\FilterValidUtf8::ARRAY_INPUT => 'The input is an array. ',
+    \WScore\Validation\Filters\ConvertDateTime::class => 'Invalid DateTime input value.',
 
     // error messages for StringLength.
     \WScore\Validation\Filters\StringLength::LENGTH => "The input must be {length} characters.",

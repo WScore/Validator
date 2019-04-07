@@ -6,7 +6,7 @@ namespace WScore\Validation\Filters;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class MbConvertType extends AbstractFilter
+class ConvertMbType extends AbstractFilter
 {
     const MB_HANKAKU = 'aKVs';
     const MB_ZENKAKU = 'AKVS';
@@ -19,6 +19,10 @@ class MbConvertType extends AbstractFilter
      */
     private $convertType;
 
+    /**
+     * todo: use $option as array.
+     * @param string $convertType
+     */
     public function __construct(string $convertType = self::MB_ZENKAKU)
     {
         $this->convertType = $convertType;

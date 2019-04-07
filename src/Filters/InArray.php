@@ -19,6 +19,7 @@ class InArray extends AbstractFilter
     private $strict = true;
 
     /**
+     * todo: use $option as array.
      * @param array $inArray
      */
     public function __construct(array $inArray)
