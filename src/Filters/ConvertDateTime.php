@@ -38,7 +38,6 @@ class ConvertDateTime extends AbstractFilter
                 : new DateTimeImmutable($value);
             $input->setValue($date);
         } catch (Exception $e) {
-            $input->failed(__CLASS__);
             $input->setValue(null);
             return $input;
         }

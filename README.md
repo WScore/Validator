@@ -172,6 +172,8 @@ Filters
 
 t.b.w.
 
+`Filter*` filters may change the value as well as checks for the validity of the input. 
+
 ### FilterArrayToValue
 
 - convert array input to a single text value. 
@@ -197,6 +199,11 @@ $filter = new FilterArrayToValue([
   - FilterValidUtf8::INVALID_CHAR : invalid UTF-8 characters. 
   - FilterValidUtf8::ARRAY_INPUT  : input is an array. 
 
+Converters
+----------
+
+`Convert*` filters may change the value, but no validation check. 
+
 ### ConvertDateTime
 
 - converts string input into \DateTimeImmutable object. 
@@ -208,19 +215,24 @@ $filter = new FilterArrayToValue([
 
 ### ConvertStringCases
 
-### DefaultValue, DefaultNull, DefaultEmpty
-
 ### trim
 ### sanitize
 
+Default Checks
+--------------
 
-Validations
------------
+### DefaultValue, DefaultNull, DefaultEmpty
 
+
+Require Checks
+--------------
 
 ### Required
 ### RequiredIf
 ### StringLength
+
+Validations
+-----------
 
 
 ### code

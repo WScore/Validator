@@ -65,13 +65,7 @@ class FilterDateTimeTest extends TestCase
         $filter = new ConvertDateTime();
         $input = new Result(mb_convert_encoding('日本語','SJIS', 'UTF-8'));
         $return = $filter->__invoke($input);
-        $this->assertFalse($return->isValid());
+        $this->assertTrue($return->isValid());
         $this->assertNull($input->value());
-
-        $return->finalize(Messages::create());
-        $this->assertEquals(['Invalid DateTime input value.'], $input->getErrorMessage());
-
-        $return->finalize(Messages::create('ja'));
-        $this->assertEquals(['日付と認識できません。'], $input->getErrorMessage());
     }
 }
