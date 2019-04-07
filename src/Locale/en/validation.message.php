@@ -2,6 +2,9 @@
 
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 
+use WScore\Validation\Filters\FilterInteger;
+
+
 /**
  * define default error message for each filter.
  */
@@ -13,6 +16,8 @@ return [
     \WScore\Validation\Filters\FilterValidUtf8::INVALID_CHAR => 'The input is invalid UTF-8 character.',
     \WScore\Validation\Filters\FilterValidUtf8::ARRAY_INPUT => 'The input is an array. ',
     \WScore\Validation\Filters\FilterArrayToValue::MISSING_FIELD => 'The input is missing "{field}" field.',
+    WScore\Validation\Filters\FilterInteger::class => 'The input is not a valid integer. ',
+    WScore\Validation\Filters\FilterFloat::class => 'The input is not a valid float. ',
 
     // error messages for Convert Filters.
     \WScore\Validation\Filters\ConvertDateTime::class => 'Invalid DateTime input value.',

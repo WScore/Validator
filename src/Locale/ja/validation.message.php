@@ -1,6 +1,8 @@
 <?php
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 
+use WScore\Validation\Filters\FilterFloat;
+
 /**
  * フィルターごとのエラーメッセージ設定
  */
@@ -12,6 +14,8 @@ return [
     \WScore\Validation\Filters\FilterValidUtf8::INVALID_CHAR => '不正な文字列です。',
     \WScore\Validation\Filters\FilterValidUtf8::ARRAY_INPUT => '入力が配列です。',
     \WScore\Validation\Filters\FilterArrayToValue::MISSING_FIELD => '配列「{field}」が存在しません。',
+    WScore\Validation\Filters\FilterInteger::class => '整数を入力してください。',
+    WScore\Validation\Filters\FilterFloat::class => '数値を入力してください。',
 
     // error messages for Convert Filters.
     \WScore\Validation\Filters\ConvertDateTime::class => '日付と認識できません。',
