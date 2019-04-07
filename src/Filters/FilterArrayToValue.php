@@ -18,6 +18,8 @@ use WScore\Validation\Interfaces\ResultInterface;
  */
 class FilterArrayToValue extends AbstractFilter
 {
+    const MISSING_FIELD = __CLASS__ . '::MISSING_FIELD';
+
     /**
      * @var array
      */
@@ -53,19 +55,22 @@ class FilterArrayToValue extends AbstractFilter
         $this->checkFields();
         $value = $input->value();
         if (is_array($value)) {
-            $value = $this->arrayToValue($value);
+            $value = $this->arrayToValue($input);
             $input->setValue($value);
         }
         return null;
     }
 
-    private function arrayToValue(array $value): string
+    private function arrayToValue(ResultInterface $input): string
     {
+        $value = $input->value();
         $replace = [];
         foreach ($this->fields as $field) {
-            if (isset($value[$field])) {
-                $replace[] = $value[$field];
+            if (!isset($value[$field])) {
+                $input->failed(self::MISSING_FIELD, ['field' => $field]);
+                return '';
             }
+            $replace[] = $value[$field];
         }
         if (isset($this->format)) {
             return sprintf($this->format, ...$replace);
