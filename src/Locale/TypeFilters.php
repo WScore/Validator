@@ -47,15 +47,9 @@ class TypeFilters
      */
     public function getFilters($type): array
     {
-        if (!isset($this->typeFilters[$type])) {
+        if (!array_key_exists($type, $this->typeFilters)) {
             throw new InvalidArgumentException('unknown type: ' . $type);
         }
-        $rawFilters = $this->typeFilters[$type];
-        $filters = [];
-        foreach ($rawFilters as $name => $option) {
-            $filters[] = new $name($option);
-        }
-
-        return $filters;
+        return $this->typeFilters[$type];
     }
 }
