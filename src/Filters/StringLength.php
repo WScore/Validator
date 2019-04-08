@@ -26,6 +26,11 @@ class StringLength extends AbstractFilter
      */
     private $length = null;
 
+    /**
+     * @var string
+     */
+    private $message = null;
+
     public function __construct($options = [])
     {
         foreach ($options as $key => $value) {
@@ -34,6 +39,12 @@ class StringLength extends AbstractFilter
                 $this->$method($value);
             }
         }
+    }
+
+    public function setMessage(string $message): StringLength
+    {
+        $this->message = $message;
+        return $this;
     }
 
     /**
@@ -74,7 +85,7 @@ class StringLength extends AbstractFilter
     private function checkLength(ResultInterface $input, int $length)
     {
         if ($this->length !== $length) {
-            return $input->failed(self::LENGTH, ['length' => $this->length]);
+            return $input->failed(self::LENGTH, ['length' => $this->length], $this->message);
         }
         return null;
     }
@@ -87,7 +98,7 @@ class StringLength extends AbstractFilter
     private function checkMax(ResultInterface $input, int $length)
     {
         if ($this->max < $length) {
-            return $input->failed(self::MAX, ['max' => $this->max]);
+            return $input->failed(self::MAX, ['max' => $this->max], $this->message);
         }
         return null;
     }
@@ -100,7 +111,7 @@ class StringLength extends AbstractFilter
     private function checkMin(ResultInterface $input, int $length)
     {
         if ($length < $this->min) {
-            return $input->failed(self::MIN, ['min' => $this->min]);
+            return $input->failed(self::MIN, ['min' => $this->min], $this->message);
         }
         return null;
     }

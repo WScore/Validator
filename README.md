@@ -293,10 +293,11 @@ Other Checks
 - checks the input value's character length. 
   set any of the arguments, `length`, `max`, or `min`, 
   but probably does not make sense to set all options. 
-- arguments: `['length' => 5, 'max' => 6, 'min' => 7]`
+- arguments: `['length' => 5, 'max' => 6, 'min' => 7, 'message' => 'error message']`
   - length: optional. specify the exact length of the input string. 
   - max: optional. set the maximum length of the input string. 
   - min: optional. set the minimum length of the input string. 
+  - message: optional. set error message. 
 
 
 ### ConfirmWith
