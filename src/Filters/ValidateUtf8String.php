@@ -6,7 +6,7 @@ namespace WScore\Validation\Filters;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class FilterValidUtf8 extends AbstractFilter
+class ValidateUtf8String extends AbstractFilter
 {
     const INVALID_CHAR = __CLASS__ . '::INVALID_CHAR';
     const ARRAY_INPUT = __CLASS__ . '::ARRAY_INPUT';

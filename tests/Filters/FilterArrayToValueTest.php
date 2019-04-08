@@ -4,7 +4,7 @@ namespace tests\Filters;
 
 use WScore\Validation\Filters\FilterArrayToValue;
 use PHPUnit\Framework\TestCase;
-use WScore\Validation\Filters\FilterValidUtf8;
+use WScore\Validation\Filters\ValidateUtf8String;
 use WScore\Validation\Locale\Messages;
 use WScore\Validation\ValidatorBuilder;
 
@@ -28,7 +28,7 @@ class FilterArrayToValueTest extends TestCase
                 'fields' => ['Y', 'M'],
                 'format' => '%04d.%02d',
             ]),
-            new FilterValidUtf8(),
+            new ValidateUtf8String(),
         ]);
         $result = $chain->verify([
             'Y' => 2019,
@@ -76,10 +76,7 @@ class FilterArrayToValueTest extends TestCase
             'Y' => 2019,
             'D' => 30,
         ]);
-        $this->assertFalse($result->isValid());
-        $this->assertEquals('', $result->value());
-
-        $result->finalize(Messages::create('en'));
-        $this->assertEquals(['The input is missing "M" field.'], $result->getErrorMessage());
+        $this->assertTrue($result->isValid());
+        $this->assertEquals('2019--30', $result->value());
     }
 }

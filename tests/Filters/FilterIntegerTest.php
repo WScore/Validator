@@ -3,7 +3,7 @@
 namespace tests\Filters;
 
 use PHPUnit\Framework\TestCase;
-use WScore\Validation\Filters\FilterInteger;
+use WScore\Validation\Filters\ValidateInteger;
 use WScore\Validation\Locale\Messages;
 use WScore\Validation\Validators\Result;
 
@@ -17,7 +17,7 @@ class FilterIntegerTest extends TestCase
     public function testValidFloatCases($value, $integer)
     {
         $input = new Result($value);
-        $filter = new FilterInteger();
+        $filter = new ValidateInteger();
         $filter($input);
         $this->assertTrue($input->isValid());
         $this->assertEquals($integer, $input->value());
@@ -38,7 +38,7 @@ class FilterIntegerTest extends TestCase
     public function testIntegerAsInput()
     {
         $input = new Result('123');
-        $filter = new FilterInteger();
+        $filter = new ValidateInteger();
         $filter($input);
         $this->assertTrue($input->isValid());
         $this->assertEquals(123, $input->value());
@@ -48,7 +48,7 @@ class FilterIntegerTest extends TestCase
     public function testInvalidString()
     {
         $input = new Result('a12b3c');
-        $filter = new FilterInteger();
+        $filter = new ValidateInteger();
         $filter($input);
         $this->assertFalse($input->isValid());
         $this->assertEquals(null, $input->value());
@@ -60,7 +60,7 @@ class FilterIntegerTest extends TestCase
     public function testFloatIsConvertedToInteger()
     {
         $input = new Result('1.2');
-        $filter = new FilterInteger();
+        $filter = new ValidateInteger();
         $filter($input);
         $this->assertTrue($input->isValid());
         $this->assertEquals(1, $input->value());

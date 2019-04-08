@@ -32,17 +32,12 @@ class ConfirmWith extends AbstractFilter
         if ($confirmValue === $input->value()) {
             return null;
         }
-        if ($this->empty($confirmValue)) {
+        if ($this->isEmpty($confirmValue)) {
             $confirmResult = new Result(null, null);
             $confirmResult->failed(Required::class);
             $input->getParent()->addResult($confirmResult, $confirmName);
             return $input->failed(__CLASS__);
         }
         return $input->failed(__CLASS__);
-    }
-
-    private function empty($string)
-    {
-        return '' !== (string) $string;
     }
 }

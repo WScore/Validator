@@ -3,7 +3,7 @@
 namespace tests\Filters;
 
 use DateTimeImmutable;
-use WScore\Validation\Filters\ConvertDateTime;
+use WScore\Validation\Filters\ValidateDateTime;
 use PHPUnit\Framework\TestCase;
 use WScore\Validation\Locale\Messages;
 use WScore\Validation\Validators\Result;
@@ -13,7 +13,7 @@ class FilterDateTimeTest extends TestCase
 
     public function test__invoke()
     {
-        $filter = new ConvertDateTime();
+        $filter = new ValidateDateTime();
         $input = new Result('2019-04-01');
         $return = $filter->__invoke($input);
         $this->assertNull($return);
@@ -28,7 +28,7 @@ class FilterDateTimeTest extends TestCase
      */
     public function testInputs($value)
     {
-        $filter = new ConvertDateTime();
+        $filter = new ValidateDateTime();
         $input = new Result($value);
         $return = $filter($input);
         $this->assertNull($return);
@@ -51,8 +51,8 @@ class FilterDateTimeTest extends TestCase
 
     public function testCreateDateTimeUsingFormat()
     {
-        $filter = new ConvertDateTime(['format' =>'Y.m.d']);
-        $input = new Result('2019.04.01');
+        $filter = new ValidateDateTime(['format' =>'m/d/Y']);
+        $input = new Result('04/01/2019');
         $return = $filter->__invoke($input);
         $this->assertNull($return);
         $this->assertTrue($input->isValid());
@@ -62,10 +62,13 @@ class FilterDateTimeTest extends TestCase
 
     public function testInvalidUtf8ValueReturnsError()
     {
-        $filter = new ConvertDateTime();
+        $filter = new ValidateDateTime();
         $input = new Result(mb_convert_encoding('日本語','SJIS', 'UTF-8'));
         $return = $filter->__invoke($input);
-        $this->assertTrue($return->isValid());
+        $this->assertFalse($return->isValid());
         $this->assertNull($input->value());
+
+        $input->finalize(Messages::create());
+        $this->assertEquals(['Invalid DateTime input value.'], $input->getErrorMessage());
     }
 }

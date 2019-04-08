@@ -6,7 +6,7 @@ namespace WScore\Validation\Filters;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class FilterInteger extends AbstractFilter
+class ValidateFloat extends AbstractFilter
 {
     const INVALID_CHAR = __CLASS__ . '::INVALID_CHAR';
     const ARRAY_INPUT = __CLASS__ . '::ARRAY_INPUT';
@@ -27,7 +27,7 @@ class FilterInteger extends AbstractFilter
             $input->setValue(null);
             return $input->failed(__CLASS__);
         }
-        $input->setValue((int)$value);
+        $input->setValue((float)$value);
         return null;
     }
 }

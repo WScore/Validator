@@ -20,7 +20,7 @@ class Required extends AbstractFilter
     public function __invoke(ResultInterface $input): ?ResultInterface
     {
         $value = $input->value();
-        if ($value === '' || $value === null || empty($value)) {
+        if ($this->isEmpty($value)) {
             return $this->failed($input);
         }
         return null;

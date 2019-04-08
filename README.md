@@ -167,12 +167,23 @@ multiple input
 Predefined Filters
 ==================
 
+t.b.w.
+
+about priorities
+- Filters that may change the value.
+    - FILTER
+    - VALIDATOR
+    - CONVERTER
+    - DEFAULT
+- Filters that only validates the format.
+    - REQUIRED
+    - CHECKS
+    - USER_CHECK
+
 Filters
 -------
 
-t.b.w.
-
-`Filter*` filters may change the value as well as checks for the validity of the input. 
+`Filter*` filters may change the value but no validity check. 
 
 ### FilterArrayToValue
 
@@ -191,7 +202,15 @@ $filter = new FilterArrayToValue([
 ]);
 ```
 
-### FilterValidUtf8
+### FilterMbKana
+
+
+Validators
+---------
+
+`Validate` filters may change the value as well as checks for the validity of the input. 
+
+### ValidateValidUtf8
 
 - checks if the input value is a valid UTF-8 characters. 
 - priority: FilterInterface::PRIORITY_SECURITY_FILTERS
@@ -199,24 +218,30 @@ $filter = new FilterArrayToValue([
   - FilterValidUtf8::INVALID_CHAR : invalid UTF-8 characters. 
   - FilterValidUtf8::ARRAY_INPUT  : input is an array. 
 
+### ValidateDateTime
+
+- converts string input into `\DateTimeImmutable` object. 
+- arguments: `['format' => 'YY.m.d']`.
+  - format: optional. if set uses `\DateTimeImmutable::createFromFormat`
+  
+```php
+$filter = new ConvertDateTime(['format' => 'm/d/Y']);
+$result = $filter(new Result('04/01/2019'));
+$date = $result->value(); // should be DateTimeImmutable object. 
+```
+
+### ValidateInteger
+
+### ValidateFloat
+
+
 Converters
 ----------
 
-`Convert*` filters may change the value, but no validation check. 
-
-### ConvertDateTime
-
-- converts string input into \DateTimeImmutable object. 
-- sets `\DateTimeImmutable` object. 
-- arguments: `['format' => 'YY.m.d']`.
-  - format: optional. if set uses `\DateTimeImmutable::createFromFormat`
-
-### ConvertMbKana
+`Converter` filter may change the value. 
 
 ### ConvertStringCases
-
-### trim
-### sanitize
+### ConvertTrim
 
 Default Checks
 --------------
@@ -252,21 +277,43 @@ Require Checks
 - validates the input value is not null nor empty string, 
   if the name `field` is set, or if `field` value is `value`.
 - aborts further validations if failed. 
-- arguments: `['if' => '', 'value' => '']`
-  - if: 
+- arguments: `['field' => '', 'value' => '']`
+  - field: required. set other field name to refer to. 
+  - value: optional. set value (or values in array) if the other field has the specified value. 
 
 ```php
 $required = new RequiredIf(['field' => 'type', 'value' => 'check-me']);
 ```
 
+Other Checks
+------------
+
 ### StringLength
 
-Validations
------------
+- checks the input value's character length. 
+  set any of the arguments, `length`, `max`, or `min`, 
+  but probably does not make sense to set all options. 
+- arguments: `['length' => 5, 'max' => 6, 'min' => 7]`
+  - length: optional. specify the exact length of the input string. 
+  - max: optional. set the maximum length of the input string. 
+  - min: optional. set the minimum length of the input string. 
+
+
+### ConfirmWith
+
+- confirm the input value by comparing with another input value. 
+- not tested, yet.
+
+
+### InArray
+
+- checks the input value is defined in the given arrays. 
+- not tested, yet.
 
 
 ### code
 ### RegEx
 ### matches
 ### MbCheckKana
+### Email
 

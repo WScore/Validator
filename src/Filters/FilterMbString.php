@@ -6,7 +6,10 @@ namespace WScore\Validation\Filters;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class ConvertMbType extends AbstractFilter
+/**
+ * todo: this is converter, but should run at the beginning of the validation loop.
+ */
+class FilterMbString extends AbstractFilter
 {
     const MB_HANKAKU = 'aKVs';
     const MB_ZENKAKU = 'AKVS';

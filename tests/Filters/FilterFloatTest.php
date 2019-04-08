@@ -3,7 +3,7 @@
 namespace tests\Filters;
 
 use PHPUnit\Framework\TestCase;
-use WScore\Validation\Filters\FilterFloat;
+use WScore\Validation\Filters\ValidateFloat;
 use WScore\Validation\Locale\Messages;
 use WScore\Validation\Validators\Result;
 
@@ -17,7 +17,7 @@ class FilterFloatTest extends TestCase
     public function testValidFloatCases($value, $float)
     {
         $input = new Result($value);
-        $filter = new FilterFloat();
+        $filter = new ValidateFloat();
         $filter($input);
         $this->assertTrue($input->isValid());
         $this->assertEquals($float, $input->value());
@@ -38,7 +38,7 @@ class FilterFloatTest extends TestCase
     public function testInvalidFloatString()
     {
         $input = new Result('a12.b3c');
-        $filter = new FilterFloat();
+        $filter = new ValidateFloat();
         $filter($input);
         $this->assertFalse($input->isValid());
         $this->assertEquals(null, $input->value());

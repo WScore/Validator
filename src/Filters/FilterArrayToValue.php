@@ -54,10 +54,11 @@ class FilterArrayToValue extends AbstractFilter
     {
         $this->checkFields();
         $value = $input->value();
-        if (is_array($value)) {
-            $value = $this->arrayToValue($input);
-            $input->setValue($value);
-        }
+        if ($this->isEmpty($value)) return null;
+        if (!is_array($value)) return null;
+
+        $value = $this->arrayToValue($input);
+        $input->setValue($value);
         return null;
     }
 
@@ -66,11 +67,7 @@ class FilterArrayToValue extends AbstractFilter
         $value = $input->value();
         $replace = [];
         foreach ($this->fields as $field) {
-            if (!isset($value[$field])) {
-                $input->failed(self::MISSING_FIELD, ['field' => $field]);
-                return '';
-            }
-            $replace[] = $value[$field];
+            $replace[] = $value[$field] ?? '';
         }
         if (isset($this->format)) {
             return sprintf($this->format, ...$replace);
@@ -82,9 +79,6 @@ class FilterArrayToValue extends AbstractFilter
     {
         if (empty($this->fields)) {
             throw new InvalidArgumentException('must set fields');
-        }
-        if (!$this->format && !$this->implode) {
-            throw new InvalidArgumentException('must set either format or implode');
         }
     }
 }

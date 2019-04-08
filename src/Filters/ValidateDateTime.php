@@ -8,7 +8,7 @@ use Exception;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class ConvertDateTime extends AbstractFilter
+class ValidateDateTime extends AbstractFilter
 {
     /**
      * @var string
@@ -32,6 +32,9 @@ class ConvertDateTime extends AbstractFilter
     public function __invoke(ResultInterface $input): ?ResultInterface
     {
         $value = $input->value();
+        if ($this->isEmpty($value)) {
+            return null;
+        }
         try {
             $date = isset($this->format)
                 ? DateTimeImmutable::createFromFormat($this->format, $value)
@@ -39,7 +42,7 @@ class ConvertDateTime extends AbstractFilter
             $input->setValue($date);
         } catch (Exception $e) {
             $input->setValue(null);
-            return $input;
+            return $input->failed(__CLASS__);
         }
         return null;
     }

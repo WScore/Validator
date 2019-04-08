@@ -10,14 +10,14 @@ return [
     \WScore\Validation\Locale\Messages::class => "validation failed",
 
     // fail for invalid charset string.
-    \WScore\Validation\Filters\FilterValidUtf8::INVALID_CHAR => 'The input is invalid UTF-8 character.',
-    \WScore\Validation\Filters\FilterValidUtf8::ARRAY_INPUT => 'The input is an array. ',
+    \WScore\Validation\Filters\ValidateUtf8String::INVALID_CHAR => 'The input is invalid UTF-8 character.',
+    \WScore\Validation\Filters\ValidateUtf8String::ARRAY_INPUT => 'The input is an array. ',
     \WScore\Validation\Filters\FilterArrayToValue::MISSING_FIELD => 'The input is missing "{field}" field.',
-    \WScore\Validation\Filters\FilterInteger::class => 'The input is not a valid integer. ',
-    \WScore\Validation\Filters\FilterFloat::class => 'The input is not a valid float. ',
+    \WScore\Validation\Filters\ValidateInteger::class => 'The input is not a valid integer. ',
+    \WScore\Validation\Filters\ValidateFloat::class => 'The input is not a valid float. ',
 
     // error messages for Convert Filters.
-    \WScore\Validation\Filters\ConvertDateTime::class => 'Invalid DateTime input value.',
+    \WScore\Validation\Filters\ValidateDateTime::class => 'Invalid DateTime input value.',
 
     // error messages for StringLength.
     \WScore\Validation\Filters\StringLength::LENGTH => "The input must be {length} characters.",

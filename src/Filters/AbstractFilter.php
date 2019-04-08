@@ -52,4 +52,18 @@ abstract class AbstractFilter implements FilterInterface
     {
         return $result->failed(get_class($this), $option, $messages);
     }
+
+    protected function isEmpty($value): bool
+    {
+        if (is_array($value)) {
+            if (empty($value)) {
+                return true;
+            }
+            return false;
+        }
+        if ($value === null || (string) $value === '') {
+            return true;
+        }
+        return false;
+    }
 }
