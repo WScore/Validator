@@ -10,7 +10,7 @@ class DefaultEmpty extends DefaultValue
      */
     public function __construct()
     {
-        parent::__construct('');
+        parent::__construct(['default' => '']);
     }
 
     public function getFilterName(): string

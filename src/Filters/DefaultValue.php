@@ -14,13 +14,17 @@ class DefaultValue extends AbstractFilter
     private $default;
 
     /**
-     * todo: use $option as array.
      * DefaultValue constructor.
-     * @param mixed $default
+     * @param array $options
      */
-    public function __construct($default)
+    public function __construct($options = [])
     {
-        $this->default = $default;
+        if (!is_array($options)) {
+            $this->default = $options;
+        } else {
+            $this->default = array_key_exists('default', $options)
+                ? $options['default'] : null;
+        }
         $this->setPriority(FilterInterface::PRIORITY_USER_FILTERS - 1);
     }
 

@@ -177,7 +177,7 @@ t.b.w.
 ### FilterArrayToValue
 
 - convert array input to a single text value. 
-- arguments: ['fields' => ['y', 'm'], 'format' => '%d.%d', 'implode' => '...']
+- arguments: `['fields' => ['y', 'm'], 'format' => '%d.%d', 'implode' => '...']`
     - `fields`: required. specify list of array key names. 
     - `format`: optional. spritnf format for the array values. 
     - `implode`: optional. if `format` is not defined, implode values with the character (default is '-').
@@ -208,7 +208,7 @@ Converters
 
 - converts string input into \DateTimeImmutable object. 
 - sets `\DateTimeImmutable` object. 
-- arguments: ['format' => 'YY.m.d'].
+- arguments: `['format' => 'YY.m.d']`.
   - format: optional. if set uses `\DateTimeImmutable::createFromFormat`
 
 ### ConvertMbKana
@@ -221,14 +221,44 @@ Converters
 Default Checks
 --------------
 
-### DefaultValue, DefaultNull, DefaultEmpty
+### DefaultValue
+
+- set value to a default `$default` if the input is null or empty. 
+- arguments: `['default' => 'some value']`
+  - default: optional. if not set uses empty string ('').
+
+### DefaultNull
+
+- set value to `null` if the input is null or empty. 
+- arguments: none. 
+
+### DefaultEmpty
+
+- set value to `""` (empty string) if the input is null or empty. 
+- arguments: none. 
 
 
 Require Checks
 --------------
 
 ### Required
+
+- validates the input value is not null nor empty string. 
+- aborts further validations if failed. 
+- arguments: none. 
+
 ### RequiredIf
+
+- validates the input value is not null nor empty string, 
+  if the name `field` is set, or if `field` value is `value`.
+- aborts further validations if failed. 
+- arguments: `['if' => '', 'value' => '']`
+  - if: 
+
+```php
+$required = new RequiredIf(['field' => 'type', 'value' => 'check-me']);
+```
+
 ### StringLength
 
 Validations

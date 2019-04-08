@@ -10,7 +10,7 @@ class DefaultNull extends DefaultValue
      */
     public function __construct()
     {
-        parent::__construct(null);
+        parent::__construct(['default' => null]);
     }
 
     public function getFilterName(): string

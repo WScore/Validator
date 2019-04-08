@@ -13,7 +13,7 @@ class RequiredIf extends AbstractFilter
 
     public function __construct($options = [])
     {
-        $this->name = $options['if'] ?? null;
+        $this->name = $options['field'] ?? null;
         $this->value = $options['value'] ?? null;
         $this->setPriority(FilterInterface::PRIORITY_REQUIRED_FILTERS);
     }

@@ -22,7 +22,7 @@ class DefaultValueTest extends TestCase
     }
     public function testDefaultValueOnNull()
     {
-        $default = new DefaultValue('tested');
+        $default = new DefaultValue(['default' => 'tested']);
         $result = $this->buildResult(null);
         $default($result);
         $this->assertEquals('tested', $result->value());
@@ -30,7 +30,7 @@ class DefaultValueTest extends TestCase
 
     public function testDefaultValueOnEmpty()
     {
-        $default = new DefaultValue('tested');
+        $default = new DefaultValue(['default' => 'tested']);
         $result = $this->buildResult('');
         $default($result);
         $this->assertEquals('tested', $result->value());
@@ -38,7 +38,7 @@ class DefaultValueTest extends TestCase
 
     public function testDefaultValueWhenValueIsSet()
     {
-        $default = new DefaultValue('tested');
+        $default = new DefaultValue(['default' => 'tested']);
         $result = $this->buildResult('test-me');
         $default($result);
         $this->assertEquals('test-me', $result->value());
@@ -74,7 +74,7 @@ class DefaultValueTest extends TestCase
     {
         $empty = new DefaultEmpty();
         $null = new DefaultNull();
-        $default = new DefaultValue('tested');
+        $default = new DefaultValue(['default' => 'tested']);
 
         $this->assertEquals($default->getFilterName(), $empty->getFilterName());
         $this->assertEquals($default->getFilterName(), $null->getFilterName());

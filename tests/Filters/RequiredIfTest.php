@@ -33,7 +33,7 @@ class RequiredIfTest extends TestCase
 
     public function testRequiredSetsFalseIfValueIsNotSet()
     {
-        $required = new RequiredIf(['if' => 'more']);
+        $required = new RequiredIf(['field' => 'more']);
 
         $resultList = $this->buildResultList();
         $result = $resultList->getChild('some');
@@ -60,7 +60,7 @@ class RequiredIfTest extends TestCase
         $resultList = $this->buildResultList();
         $result = $resultList->getChild('some');
 
-        $required = new RequiredIf(['if' => 'more']);
+        $required = new RequiredIf(['field' => 'more']);
         $required->__invoke($result);
         $this->assertTrue($result->isValid());
     }
@@ -70,14 +70,14 @@ class RequiredIfTest extends TestCase
         $resultList = $this->buildResultList('not-more');
         $result = $resultList->getChild('some');
 
-        $required = new RequiredIf(['if' => 'more', 'value' => 'more-more']);
+        $required = new RequiredIf(['field' => 'more', 'value' => 'more-more']);
         $required->__invoke($result);
         $this->assertTrue($result->isValid());
 
         $resultList = $this->buildResultList('more-more');
         $result = $resultList->getChild('some');
 
-        $required = new RequiredIf(['if' => 'more', 'value' => 'more-more']);
+        $required = new RequiredIf(['field' => 'more', 'value' => 'more-more']);
         $required->__invoke($result);
         $this->assertFalse($result->isValid());
     }
