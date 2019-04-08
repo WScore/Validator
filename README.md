@@ -232,7 +232,15 @@ $date = $result->value(); // should be DateTimeImmutable object.
 
 ### ValidateInteger
 
+- checks the input value is numeric, and converts the value to an integer. 
+- errors: if the value is not numeric, or the value is an array. 
+- arguments: none.
+
 ### ValidateFloat
+
+- checks the input value is numeric, and converts the value to a float. 
+- errors: if the value is not numeric, or the value is an array. 
+- arguments: none.
 
 
 Converters
@@ -303,17 +311,39 @@ Other Checks
 ### ConfirmWith
 
 - confirm the input value by comparing with another input value. 
-- not tested, yet.
+- [ ] not tested, yet.
 
 
 ### InArray
 
 - checks the input value is defined in the given arrays. 
-- not tested, yet.
+- arguments: `['choices' => ['a' => 'A', 'b' => 'B',...], 'replace' => false, 'strict' => true]`
+  - choices: required. specify the available choices as hash array.
+  - replace: optional. replace the value with the choice. default false. 
+  - strict: optional. strict option when checking the value. default true. 
+- [ ] not tested, yet.
 
+```php
+$filter = new InArray([
+    'choices' => [
+        $obj1->getKey(), $obj1,
+        $obj2->getKey(), $obj2,
+    ],
+    'replace' => true,
+    'strict' => true,
+]);
+```
+
+### RegEx
+
+- checks for regular expression. 
+- arguments: `['pattern' => '[A-D][0-9]{1}', 'message' => 'error message']`
+  - pattern: required. set regular expression pattern. 
+    the pattern is valuated as `/\A{$pattern}\z/us`. 
+  - message: optional. set error message. 
+- [ ] not tested, yet.
 
 ### code
-### RegEx
 ### matches
 ### MbCheckKana
 ### Email

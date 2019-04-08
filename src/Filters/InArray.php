@@ -11,7 +11,7 @@ class InArray extends AbstractFilter
     /**
      * @var array
      */
-    private $inArray;
+    private $choices;
 
     /**
      * @var bool
@@ -19,12 +19,18 @@ class InArray extends AbstractFilter
     private $strict = true;
 
     /**
-     * todo: use $option as array.
-     * @param array $inArray
+     * @var bool
      */
-    public function __construct(array $inArray)
+    private $replace;
+
+    /**
+     * @param array $options
+     */
+    public function __construct($options = [])
     {
-        $this->inArray = $inArray;
+        $this->choices = $options['choices'] ?? [];
+        $this->replace = $options['replace'] ?? false;
+        $this->strict = $options['strict'] ?? true;
         $this->setPriority(FilterInterface::PRIORITY_STRING_FILTERS);
     }
 
@@ -35,7 +41,10 @@ class InArray extends AbstractFilter
     public function __invoke(ResultInterface $input): ?ResultInterface
     {
         $value = $input->value();
-        if (in_array($value, $this->inArray, $this->strict)) {
+        if (in_array($value, $this->choices, $this->strict)) {
+            if ($this->replace) {
+                $input->setValue($this->choices[$value]);
+            }
             return null;
         } else {
             return $value;
