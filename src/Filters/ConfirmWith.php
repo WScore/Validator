@@ -3,22 +3,25 @@ declare(strict_types=1);
 
 namespace WScore\Validation\Filters;
 
+use RuntimeException;
 use WScore\Validation\Interfaces\ResultInterface;
-use WScore\Validation\Validators\Result;
 
 class ConfirmWith extends AbstractFilter
 {
+    const MISSING = __CLASS__ . '::MISSING';
+    const DIFFER = __CLASS__ . '::DIFFER';
+
     /**
      * @var string
      */
     private $confirmWith;
 
     /**
-     * @param string $confirmWith
+     * @param array $option
      */
-    public function __construct($confirmWith = '')
+    public function __construct($option = [])
     {
-        $this->confirmWith = $confirmWith;
+        $this->confirmWith = $option['with'] ?? null;
     }
 
     /**
@@ -27,17 +30,28 @@ class ConfirmWith extends AbstractFilter
      */
     public function __invoke(ResultInterface $input): ?ResultInterface
     {
+        $parentInput = $input->getParent();
+        if (!$parentInput) {
+            throw new RuntimeException('must have parent input');
+        }
         $confirmName = $this->confirmWith ?? $input->name() . '_confirmation';
-        $confirmValue = $input->getParent()->value()[$confirmName] ?? '';
-        if ($confirmValue === $input->value()) {
+        $confirmValue = (string)$parentInput->value()[$confirmName] ?? '';
+        return $this->confirmValue($input, $confirmValue);
+    }
+
+    /**
+     * @param ResultInterface $input
+     * @param string $confirmValue
+     * @return ResultInterface|null
+     */
+    private function confirmValue(ResultInterface $input, string $confirmValue)
+    {
+        if ($confirmValue === (string)$input->value()) {
             return null;
         }
         if ($this->isEmpty($confirmValue)) {
-            $confirmResult = new Result(null, null);
-            $confirmResult->failed(Required::class);
-            $input->getParent()->addResult($confirmResult, $confirmName);
-            return $input->failed(__CLASS__);
+            return $input->failed(self::MISSING);
         }
-        return $input->failed(__CLASS__);
+        return $input->failed(self::DIFFER);
     }
 }
