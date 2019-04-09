@@ -5,9 +5,6 @@
  * define filters for each validation type.
  */
 return [
-    // raw type. no filters.
-    'raw' => [],
-
     'text' => [
         \WScore\Validation\Filters\ValidateUtf8String::class,
         \WScore\Validation\Filters\DefaultEmpty::class,

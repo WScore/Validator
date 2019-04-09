@@ -102,14 +102,16 @@ class ValidatorBuilder
         return $builder->buildByType('text');
     }
 
-    private function buildByType(string $type): ValidationInterface
+    private function buildByType(string $type = null): ValidationInterface
     {
         $v = new ValidationChain($this->messages, $this->name);
         if ($this->multiple) {
             $v = $v->setMultiple(true);
         }
-        $filters = $this->typeFilter->getFilters($type);
-        $v->addFilters($filters);
+        if ($type) {
+            $filters = $this->typeFilter->getFilters($type);
+            $v->addFilters($filters);
+        }
         $v->addFilters($this->filters);
         return $v;
     }
@@ -117,6 +119,6 @@ class ValidatorBuilder
     public function chain(array $options = []): ValidationInterface
     {
         return $this->prepareOptions($options)
-            ->buildByType('raw');
+            ->buildByType(null);
     }
 }
