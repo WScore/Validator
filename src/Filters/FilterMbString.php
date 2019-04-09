@@ -14,6 +14,7 @@ class FilterMbString extends AbstractFilter
     const MB_HANKAKU = 'aKVs';
     const MB_ZENKAKU = 'AKVS';
     const MB_HAN_KANA = 'khs';
+    const MB_ZEN_KANA = 'KV';
     const MB_HIRAGANA = 'HVcS';
     const MB_KATAKANA = 'KVCS';
 
@@ -23,12 +24,11 @@ class FilterMbString extends AbstractFilter
     private $convertType;
 
     /**
-     * todo: use $option as array.
-     * @param string $convertType
+     * @param array $options
      */
-    public function __construct(string $convertType = self::MB_ZENKAKU)
+    public function __construct(array $options = [])
     {
-        $this->convertType = $convertType;
+        $this->convertType = $options['type'] ?? self::MB_ZEN_KANA;
         $this->setPriority(FilterInterface::PRIORITY_STRING_FILTERS);
     }
 

@@ -9,11 +9,17 @@ use WScore\Validation\Interfaces\ResultInterface;
 
 class Match extends AbstractFilter
 {
-    const IP = FILTER_VALIDATE_IP; // IP address
-    const EMAIL = FILTER_VALIDATE_EMAIL; // email address
-    const URL = FILTER_VALIDATE_URL; // URL
-    const MAC = FILTER_VALIDATE_MAC; // MAC Address
+    const IP = __CLASS__ . '::IP'; // IP address
+    const EMAIL = __CLASS__ . '::EMAIL'; // email address
+    const URL = __CLASS__ . '::URL'; // URL
+    const MAC = __CLASS__ . '::MAC'; // MAC Address
 
+    private $type2filter = [
+        self::IP => FILTER_VALIDATE_IP,
+        self::EMAIL => FILTER_VALIDATE_EMAIL,
+        self::URL => FILTER_VALIDATE_URL,
+        self::MAC => FILTER_VALIDATE_MAC,
+    ];
     /**
      * @var string
      */
@@ -44,10 +50,11 @@ class Match extends AbstractFilter
     public function __invoke(ResultInterface $input): ?ResultInterface
     {
         $value = $input->value();
-        if (filter_var($value, $this->type)) {
+        $filter = $this->type2filter[$this->type];
+        if (filter_var($value, $filter)) {
             return null;
         }
-        return $input->failed(__CLASS__, ['type' => $this->type], $this->message);
+        return $input->failed($this->type, [], $this->message);
     }
 
     /**

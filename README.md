@@ -202,8 +202,25 @@ $filter = new FilterArrayToValue([
 ]);
 ```
 
-### FilterMbKana
+### FilterMbString
 
+- convert Japanese kana style. 
+- arguments: `['type' => 'convert']`
+  - type: required. conversion option for `mb_convert_kana`. default is MB_ZEN_KANA. 
+- available type values:
+  - `FilterMbString::MB_ZEN_KANA`: convert han-kaku-kana to zen-kaku-kana.
+  - `FilterMbString::MB_HANKAKU`: convert zen-kaku-alphabets and digits to han-kaku. 
+  - `FilterMbString::MB_MB_ZENKAKU`: convert all characters to zen-kaku.
+  - `FilterMbString::MB_HAN_KANA`: convert all characters to han-kaku, if possible.
+  - `FilterMbString::MB_HIRAGANA`: convert all kana to zen-kaku-hiragana.
+  - `FilterMbString::MB_KATAKANA`: convert all kana to zen-kaku-katakana.
+- [ ] not tested, yet.
+
+```php
+$filter = new FilterMbString(['type' => FilterMbString::MB_HANKAKU]);
+$result = $filter(new Result('ｚｅｎｋａｋｕ＠ｅｘａｍｐｌｅ．ｃｏｍ'));
+echo $result->value(); // zenkaku@example.com
+```
 
 Validators
 ---------
@@ -215,8 +232,8 @@ Validators
 - checks if the input value is a valid UTF-8 characters. 
 - priority: FilterInterface::PRIORITY_SECURITY_FILTERS
 - errors: on error, replaces the input value with an empty string (''). 
-  - FilterValidUtf8::INVALID_CHAR : invalid UTF-8 characters. 
-  - FilterValidUtf8::ARRAY_INPUT  : input is an array. 
+  - `FilterValidUtf8::INVALID_CHAR` : invalid UTF-8 characters. 
+  - `FilterValidUtf8::ARRAY_INPUT`  : input is an array. 
 
 ### ValidateDateTime
 
@@ -311,6 +328,8 @@ Other Checks
 ### ConfirmWith
 
 - confirm the input value by comparing with another input value. 
+- arguments: `['with' => 'field_name_to_confirm_with']`
+  - with: optional. if not set, uses `{name}_confirmation`
 - [ ] not tested, yet.
 
 
@@ -343,8 +362,21 @@ $filter = new InArray([
   - message: optional. set error message. 
 - [ ] not tested, yet.
 
+### Match
+
+- validates input string with predefined types using `filter_var`. 
+- as a default, error message is selected based on the type. 
+- arguments: `['type' => 'filter_var_filter', 'message' => 'error message']`
+  - type: required. 
+  - message: optional. set error message when failed to validate. 
+- types are:
+  - `Match::IP`: validates IP address. 
+  - `Match::EMAIL`: validates email address. 
+  - `Match::URL`: validates URL.
+  - `Match::MAC`: validates MAC address.
+- [ ] not tested, yet.
+
 ### code
-### matches
 ### MbCheckKana
 ### Email
 
