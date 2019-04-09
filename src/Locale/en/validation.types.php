@@ -9,16 +9,17 @@ return [
     'raw' => [],
 
     'text' => [
-        \WScore\Validation\Filters\ValidateUtf8String::class => true,
-        \WScore\Validation\Filters\DefaultValue::class => ['default' => ''],
-        \WScore\Validation\Filters\StringLength::class => ['max' => 1024*1024],
+        \WScore\Validation\Filters\ValidateUtf8String::class,
+        \WScore\Validation\Filters\DefaultEmpty::class,
     ],
     'integer' => [
-        \WScore\Validation\Filters\ValidateUtf8String::class => true,
-        \WScore\Validation\Filters\DefaultValue::class => ['default' => null],
-        \WScore\Validation\Filters\StringLength::class => ['max' => 1024],
+        \WScore\Validation\Filters\ValidateInteger::class,
+        \WScore\Validation\Filters\DefaultNull::class,
     ],
-    'date' => [],
+    'date' => [
+        \WScore\Validation\Filters\ValidateDateTime::class,
+        \WScore\Validation\Filters\DefaultNull::class,
+    ],
     'datetime' => [],
     'YearMonth' => [],
 ];
