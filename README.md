@@ -145,14 +145,45 @@ Text Types
 
 ### Text
 
+|filter|option|
+|----|----|
+|ValidateUtf8String|--|
+|DefaultEmpty|--|
+
 ### email
-### number
+
+|filter|option|
+|----|----|
+|ValidateUtf8String|--|
+|DefaultEmpty|--|
+|Match|type: Match::EMAIL|
+
+### integer
+
+|filter|option|
+|----|----|
+|ValidateInteger|--|
+|DefaultNull|--|
+
+### float
+
+|filter|option|
+|----|----|
+|ValidateFloat|--|
+|DefaultNull|--|
+
 ### tel
 
 DateTime Types
 --------------
 
 ### date
+
+|filter|option|
+|----|----|
+|ValidateDateTime|--|
+|DefaultNull|--|
+
 ### datetime
 ### month
 ### time
