@@ -57,9 +57,7 @@ class ValidatorBuilder
         unset($options['name']);
         $filters = $options['filters']??[];
         unset($options['filters']);
-        $filters = array_merge($filters, $options);
-
-        $self->filters = $self->prepareFilters($filters);
+        $self->filters = array_merge($filters, $options);
 
         return $self;
     }
@@ -120,5 +118,11 @@ class ValidatorBuilder
     {
         return $this->prepareOptions($options)
             ->buildByType(null);
+    }
+
+    public function integer(array $options = []): ValidationInterface
+    {
+        return $this->prepareOptions($options)
+            ->buildByType('integer');
     }
 }

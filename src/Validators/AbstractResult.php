@@ -57,7 +57,7 @@ abstract class AbstractResult implements ResultInterface
     public function __construct($value, $name = null)
     {
         $this->value = $this->originalValue = $value;
-        $this->name = $name;
+        $this->name = (string) $name;
     }
 
     /**

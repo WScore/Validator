@@ -45,7 +45,7 @@ class ValidationRepeat extends AbstractValidation
 
     /**
      * @param string|array $value
-     * @return ResultInterface|null
+     * @return ResultInterface|ResultList
      */
     public function verify($value)
     {

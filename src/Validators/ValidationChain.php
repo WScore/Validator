@@ -56,7 +56,7 @@ class ValidationChain extends AbstractValidation
 
     /**
      * @param string|string[] $value
-     * @return ResultInterface|null
+     * @return ResultInterface|ResultList
      */
     public function verify($value)
     {

@@ -55,7 +55,7 @@ class ValidationList extends AbstractValidation
 
     /**
      * @param ResultInterface|ResultList $results
-     * @return ResultInterface
+     * @return ResultInterface|ResultList
      */
     private function validate($results)
     {

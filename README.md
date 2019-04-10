@@ -75,19 +75,29 @@ Simply add another form object in a form object.
 
 
 ```php
-$form = $vb->form('user')
+$form = $vb->form()
     ->add('name', $vb->text([Required::class]))
-    ->add('age', $vb->number())
-    ->add('address', 
+    ->add('age', $vb->integer())
+    ->add('address',
         $vb->form()
             ->add('address', $vb->text())
-            ->add('countryCode', $vb->text([StringLength=>['length'=>3]))
-
-    )
-;
-$result = $form->verify($_POST);
+            ->add('countryCode', $vb->text([StringLength::class=>['length'=>3]]))
+    );
 ```
 
+A valid input may look like;
+
+```php
+$input = [
+    'name' => 'test-me',
+    'age' => 25,
+    'address' => [
+        'address' => 'PHP City, Validate St.',
+        'countryCode' => 'ABC',
+    ]
+];
+$result = $form->verify($input);
+```
 
 ### One-To-Many Forms
 
@@ -95,16 +105,26 @@ use `addRepeatedForm` method to add a one-to-many form in another form.
 
 ```php
 $vb = new ValidatorBuilder();
-$form = $vb->form('user')
-    ->add('name', $vb->text([Required::class]))
-    ->add('age', $vb->number())
-    ->addRepeatedForm('address', 
+$form = $vb->form()
+    ->add('title', $vb->text([Required::class]))
+    ->addRepeatedForm('authors',
         $vb->form()
-            ->add('address', $vb->text())
-            ->add('country', $vb->text())
-    )
-;
-$result = $form->verify($_POST);
+            ->add('name', $vb->text([Required::class]))
+            ->add('age', $vb->integer())
+    );
+```
+
+A valid input may look like:
+
+```php
+$input = [
+    'title' => 'New Validation',
+    'authors' => [
+        ['name' => 'name1', 'age' => '26'],
+        ['name' => 'name2', 'age' => '27'],
+    ],
+];
+$result = $form->verify($input);
 ```
 
 
