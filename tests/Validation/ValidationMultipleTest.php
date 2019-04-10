@@ -5,6 +5,7 @@ namespace tests\Validation;
 
 use tests\Validation\Filters\AddPostfix;
 use WScore\Validation\Filters\Required;
+use WScore\Validation\Filters\ValidateInteger;
 use WScore\Validation\Locale\Messages;
 use WScore\Validation\Validators\ValidationChain;
 use PHPUnit\Framework\TestCase;
@@ -54,5 +55,25 @@ class ValidationMultipleTest extends TestCase
         $result = $chain->verify(['', null, false]);
         $this->assertFalse($result->isValid());
         $this->assertEquals([], $result->value());
+    }
+
+    public function testFailedCase()
+    {
+        $chain = $this->buildValidationMultiple();
+        $chain->setName('numbers');
+        $chain->addFilters([
+            new ValidateInteger(),
+        ]);
+        $result = $chain->verify([1, 'xxx', 2.0, '1a']);
+        $this->assertFalse($result->isValid());
+        $this->assertEquals([1, null, 2, null], $result->value());
+        $this->assertEquals(['validation failed'], $result->getErrorMessage());
+        $this->assertEquals([
+            [],
+            ['The input is not a valid integer. '],
+            [],
+            ['The input is not a valid integer. '],
+        ], $result->summarizeErrorMessages());
+
     }
 }

@@ -112,6 +112,8 @@ class ResultListTest extends TestCase
         $this->assertEquals([
             'failed-message1',
             'failed-message2',
+        ], $result->getErrorMessage());
+        $this->assertEquals([
             'test' => ['test-failed'],
             'more' => ['more-failed'],
         ], $result->summarizeErrorMessages());

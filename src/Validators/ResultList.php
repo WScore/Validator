@@ -56,7 +56,6 @@ class ResultList extends AbstractResult
     public function summarizeErrorMessages(): array
     {
         $messages = $this->summarizeChildren('getErrorMessage');
-        $messages = array_merge($this->getErrorMessage(), $messages);
         return $messages;
     }
 
