@@ -83,7 +83,7 @@ interface ResultInterface extends IteratorAggregate
      * @param ResultInterface $parent
      * @return void
      */
-    public function setParent(ResultInterface $param = null): void;
+    public function setParent(ResultInterface $parent = null): void;
 
     /**
      * @return ResultInterface|null
