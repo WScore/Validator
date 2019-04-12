@@ -80,10 +80,10 @@ interface ResultInterface extends IteratorAggregate
     public function getParent(): ?ResultList;
 
     /**
-     * @param ResultList $param
+     * @param ResultInterface $parent
      * @return void
      */
-    public function setParent(ResultList $param): void;
+    public function setParent(ResultInterface $param = null): void;
 
     /**
      * @return ResultInterface|null

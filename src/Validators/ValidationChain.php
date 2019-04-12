@@ -15,11 +15,13 @@ class ValidationChain extends AbstractValidation
 
     /**
      * @param string|string[] $value
+     * @param ResultInterface $parentResult
      * @return ResultInterface
      */
-    private function validateSingle($value)
+    private function validateSingle($value, $parentResult = null)
     {
         $result = new Result($value, $this->name);
+        $result->setParent($parentResult);
         $this->prepareFilters();
         $result = $this->applyFilters($result);
         $result->finalize($this->message, $this->error_message);
@@ -29,11 +31,13 @@ class ValidationChain extends AbstractValidation
 
     /**
      * @param string[] $value
+     * @param ResultInterface $parentResult
      * @return ResultInterface
      */
-    private function validateMultiple($value)
+    private function validateMultiple($value, $parentResult = null)
     {
         $results = new ResultList($value, $this->name);
+        $results->setParent($parentResult);
         $this->prepareFilters();
         if ($this->hasFilter(Required::class)) {
             $required = $this->getFilter(Required::class);
@@ -56,14 +60,15 @@ class ValidationChain extends AbstractValidation
 
     /**
      * @param string|string[] $value
+     * @param ResultInterface $parentResult
      * @return ResultInterface|ResultList
      */
-    public function verify($value)
+    public function verify($value, ResultInterface $parentResult = null)
     {
         if ($this->multiple) {
-            $result = $this->validateMultiple($value);
+            $result = $this->validateMultiple($value, $parentResult);
         } else {
-            $result = $this->validateSingle($value);
+            $result = $this->validateSingle($value, $parentResult);
         }
         return $result;
     }

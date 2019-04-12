@@ -171,9 +171,9 @@ abstract class AbstractResult implements ResultInterface
     }
 
     /**
-     * @param ResultList $parent
+     * @param ResultInterface $parent
      */
-    public function setParent(ResultList $parent): void
+    public function setParent(ResultInterface $parent = null): void
     {
         $this->parent = $parent;
     }

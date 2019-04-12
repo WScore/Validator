@@ -32,7 +32,7 @@ class ValidationRepeat extends AbstractValidation
         $values = $results->value();
         foreach ($values as $key => $val) {
             foreach ($this->children as $name => $validation) {
-                $result = $validation->verify($val);
+                $result = $validation->verify($val, $results);
                 $results->addResult($result, $key);
             }
         }
@@ -45,11 +45,13 @@ class ValidationRepeat extends AbstractValidation
 
     /**
      * @param string|array $value
+     * @param ResultInterface|null $parentResult
      * @return ResultInterface|ResultList
      */
-    public function verify($value)
+    public function verify($value, ResultInterface $parentResult = null)
     {
         $result = $this->initialize($value);
+        $result->setParent($parentResult);
         $result = $this->validate($result);
         $result->finalize($this->message, $this->error_message);
         return $result;

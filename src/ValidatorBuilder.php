@@ -62,6 +62,12 @@ class ValidatorBuilder
         return $self;
     }
 
+    public function email(array $options = [])
+    {
+        return $this->prepareOptions($options)
+            ->buildByType('email');
+    }
+
     /**
      * @param array $list
      * @return FilterInterface[]

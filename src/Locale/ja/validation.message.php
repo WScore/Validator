@@ -28,4 +28,8 @@ return [
 
     // required value.
     \WScore\Validation\Filters\Required::class => "必須項目です。",
+
+    // ConfirmWith
+    \WScore\Validation\Filters\ConfirmWith::MISSING => '確認用の項目に入力してください。',
+    \WScore\Validation\Filters\ConfirmWith::DIFFER => '確認用の項目と異なります。',
 ];

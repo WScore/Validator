@@ -69,7 +69,7 @@ class ValidationList extends AbstractValidation
         $inputs = $results->value();
         foreach ($this->children as $name => $validation) {
             $value = $inputs[$name] ?? null;
-            $result = $validation->verify($value);
+            $result = $validation->verify($value, $results);
             $results->addResult($result);
         }
         // perform post-validation on all inputs.
@@ -79,11 +79,13 @@ class ValidationList extends AbstractValidation
 
     /**
      * @param array $value
+     * @param ResultInterface|null $parentResult
      * @return ResultInterface|ResultList
      */
-    public function verify($value)
+    public function verify($value, ResultInterface $parentResult = null)
     {
         $result = $this->initialize($value);
+        $result->setParent($parentResult);
         $result = $this->validate($result);
         $result->finalize($this->message, $this->error_message);
         return $result;

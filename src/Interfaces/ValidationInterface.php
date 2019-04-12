@@ -78,7 +78,8 @@ interface ValidationInterface
 
     /**
      * @param string|array $value
+     * @param ResultInterface $parentResult
      * @return ResultInterface
      */
-    public function verify($value);
+    public function verify($value, ResultInterface $parentResult = null);
 }

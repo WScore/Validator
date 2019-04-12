@@ -29,6 +29,10 @@ return [
 
     // required value.
     \WScore\Validation\Filters\Required::class => "The input field is required.",
+
+    // ConfirmWith
+    \WScore\Validation\Filters\ConfirmWith::MISSING => 'The field for confirmation is empty.',
+    \WScore\Validation\Filters\ConfirmWith::DIFFER => 'The input differs from confirmation.',
 ];
 
 /*
