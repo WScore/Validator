@@ -35,7 +35,7 @@ class ConfirmWith extends AbstractFilter
             throw new RuntimeException('must have parent input');
         }
         $confirmName = $this->confirmWith ?? $input->name() . '_confirmation';
-        $confirmValue = (string)$parentInput->value()[$confirmName] ?? '';
+        $confirmValue = $parentInput->value()[$confirmName] ?? '';
         return $this->confirmValue($input, $confirmValue);
     }
 
