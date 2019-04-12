@@ -8,6 +8,8 @@ use WScore\Validation\Interfaces\ResultInterface;
 
 final class ValidateUtf8String extends AbstractFilter
 {
+    use ValidateUtf8Trait;
+
     const INVALID_CHAR = __CLASS__ . '::INVALID_CHAR';
     const ARRAY_INPUT = __CLASS__ . '::ARRAY_INPUT';
     const INPUT_SIZE_MAX = __CLASS__ . '::INPUT_SIZE_MAX';
@@ -32,19 +34,10 @@ final class ValidateUtf8String extends AbstractFilter
      */
     public function __invoke(ResultInterface $input): ?ResultInterface
     {
-        $value = $input->value();
-        if (is_array($value)) {
-            $input->setValue(null);
-            return $input->failed(self::ARRAY_INPUT);
+        if ($bad = $this->checkUtf8($input, $this->max)) {
+            return $bad;
         }
-        if (!mb_check_encoding($value, 'UTF-8')) {
-            $input->setValue(null);
-            return $input->failed(self::INVALID_CHAR);
-        }
-        if (strlen($value) > $this->max) {
-            $input->setValue(null);
-            return $input->failed(self::INPUT_SIZE_MAX, ['max' => $this->max]);
-        }
+
         return null;
     }
 }

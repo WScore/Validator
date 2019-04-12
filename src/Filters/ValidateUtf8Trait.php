@@ -1,0 +1,38 @@
+<?php
+declare(strict_types=1);
+
+namespace WScore\Validation\Filters;
+
+use WScore\Validation\Interfaces\ResultInterface;
+
+trait ValidateUtf8Trait
+{
+    /**
+     * checks for valid UTF-8 characters, not an array, and length not too long.
+     * returns Result object when fails.
+     * otherwise returns null.
+     *
+     * @param ResultInterface $input
+     * @param int $max
+     * @return ResultInterface|null
+     */
+    public function checkUtf8(ResultInterface $input, int $max = null): ?ResultInterface
+    {
+        $max = $max ?? 1028*1028;
+        $value = $input->value();
+        if (is_array($value)) {
+            $input->setValue(null);
+            return $input->failed(ValidateUtf8String::ARRAY_INPUT);
+        }
+        if (!mb_check_encoding($value, 'UTF-8')) {
+            $input->setValue(null);
+            return $input->failed(ValidateUtf8String::INVALID_CHAR);
+        }
+        if (strlen((string) $value) > $max) {
+            $input->setValue(null);
+            return $input->failed(ValidateUtf8String::INPUT_SIZE_MAX, ['max' => $max]);
+        }
+        return null;
+    }
+
+}

@@ -8,6 +8,8 @@ use WScore\Validation\Interfaces\ResultInterface;
 
 class ValidateInteger extends AbstractFilter
 {
+    use ValidateUtf8Trait;
+
     const INVALID_CHAR = __CLASS__ . '::INVALID_CHAR';
     const ARRAY_INPUT = __CLASS__ . '::ARRAY_INPUT';
 
@@ -22,6 +24,9 @@ class ValidateInteger extends AbstractFilter
      */
     public function __invoke(ResultInterface $input): ?ResultInterface
     {
+        if ($bad = $this->checkUtf8($input)) {
+            return $bad;
+        }
         $value = $input->value();
         if (!is_numeric($value)) {
             $input->setValue(null);

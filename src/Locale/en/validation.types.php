@@ -26,6 +26,10 @@ return [
         \WScore\Validation\Filters\DefaultEmpty::class,
         \WScore\Validation\Filters\Match::class => ['type' => \WScore\Validation\Filters\Match::EMAIL],
     ],
+    'digits' => [
+        \WScore\Validation\Filters\ValidateFilterChar::class,
+        \WScore\Validation\Filters\DefaultEmpty::class,
+    ],
     'datetime' => [],
     'YearMonth' => [],
 ];
