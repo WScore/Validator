@@ -66,4 +66,13 @@ class FilterIntegerTest extends TestCase
         $this->assertEquals(1, $input->value());
         $this->assertTrue(is_integer($input->value()));
     }
+
+    public function testInvalidUtf8()
+    {
+        $input = new Result(mb_convert_encoding('1２．３', 'SJIS', 'UTF-8'));
+        $filter = new ValidateInteger();
+        $filter($input);
+        $this->assertFalse($input->isValid());
+
+    }
 }
