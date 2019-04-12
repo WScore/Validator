@@ -8,7 +8,7 @@ use WScore\Validation\Interfaces\ResultInterface;
 
 abstract class AbstractFilter implements FilterInterface
 {
-    private $priority = FilterInterface::PRIORITY_VALIDATIONS;
+    private $priority = FilterInterface::PRIORITY_VALIDATION_BY_USERS;
 
     /**
      * returns the priority of the filter.

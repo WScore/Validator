@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WScore\Validation\Filters;
 
 use RuntimeException;
+use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
 class ConfirmWith extends AbstractFilter
@@ -22,6 +23,7 @@ class ConfirmWith extends AbstractFilter
     public function __construct($option = [])
     {
         $this->confirmWith = $option['with'] ?? null;
+        $this->setPriority(FilterInterface::PRIORITY_VALIDATIONS);
     }
 
     /**

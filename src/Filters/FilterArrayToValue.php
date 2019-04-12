@@ -43,7 +43,7 @@ class FilterArrayToValue extends AbstractFilter
         $this->fields = $options['fields'] ?? [];
         $this->format = $options['format'] ?? null;
         $this->implode = $options['implode'] ?? '-';
-        $this->setPriority(FilterInterface::PRIORITY_PRE_FILTERS);
+        $this->setPriority(FilterInterface::PRIORITY_FILTER_PREPARE);
     }
 
     /**

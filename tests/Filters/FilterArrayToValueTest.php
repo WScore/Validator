@@ -5,7 +5,6 @@ namespace tests\Filters;
 use WScore\Validation\Filters\FilterArrayToValue;
 use PHPUnit\Framework\TestCase;
 use WScore\Validation\Filters\ValidateUtf8String;
-use WScore\Validation\Locale\Messages;
 use WScore\Validation\ValidatorBuilder;
 
 class FilterArrayToValueTest extends TestCase

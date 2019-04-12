@@ -37,7 +37,7 @@ class StringTrim extends AbstractFilter
     {
         $this->trim = $options['trim'] ?? self::TRIM;
         $this->mask = $options['mask'] ?? null;
-        $this->setPriority(FilterInterface::PRIORITY_STRING_FILTERS);
+        $this->setPriority(FilterInterface::PRIORITY_FILTER_MODIFIER);
         if (!in_array($this->trim, $this->functions)) {
             throw new InvalidArgumentException('No such trim function: ' . $this->trim);
         }

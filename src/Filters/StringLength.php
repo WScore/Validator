@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WScore\Validation\Filters;
 
+use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
 class StringLength extends AbstractFilter
@@ -39,6 +40,7 @@ class StringLength extends AbstractFilter
                 $this->$method($value);
             }
         }
+        $this->setPriority(FilterInterface::PRIORITY_VALIDATIONS);
     }
 
     public function setMessage(string $message): StringLength

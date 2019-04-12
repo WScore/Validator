@@ -23,7 +23,7 @@ final class ValidateUtf8String extends AbstractFilter
     public function __construct(array $options = [])
     {
         $this->max = $options['max'] ?? 1028*1028; // 1MB
-        $this->setPriority(FilterInterface::PRIORITY_SECURITY_FILTERS);
+        $this->setPriority(FilterInterface::PRIORITY_FILTER_SANITIZE);
     }
 
     /**

@@ -11,13 +11,13 @@ namespace WScore\Validation\Interfaces;
  */
 interface FilterInterface
 {
-    const PRIORITY_PRE_FILTERS      = 100;
-    const PRIORITY_SECURITY_FILTERS = 500;
-    const PRIORITY_STRING_FILTERS   = 1000;
-    const PRIORITY_USER_FILTERS     = 5000;
-    const PRIORITY_REQUIRED_FILTERS = 10000;
-    const PRIORITY_VALIDATIONS      = 20000;
-    const PRIORITY_USER_VALIDATIONS = 30000;
+    const PRIORITY_FILTER_PREPARE = 1000;
+    const PRIORITY_FILTER_SANITIZE = 1100;
+    const PRIORITY_FILTER_MODIFIER = 1200;
+    const PRIORITY_FILTER_BY_USERS = 1500;
+    const PRIORITY_REQUIRED_CHECK = 2000;
+    const PRIORITY_VALIDATIONS = 2100;
+    const PRIORITY_VALIDATION_BY_USERS = 3000;
 
     /**
      * returns the priority of the filter.

@@ -15,7 +15,7 @@ class RequiredIf extends AbstractFilter
     {
         $this->name = $options['field'] ?? null;
         $this->value = $options['value'] ?? null;
-        $this->setPriority(FilterInterface::PRIORITY_REQUIRED_FILTERS);
+        $this->setPriority(FilterInterface::PRIORITY_REQUIRED_CHECK);
     }
 
     /**

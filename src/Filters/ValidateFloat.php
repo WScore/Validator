@@ -13,7 +13,7 @@ class ValidateFloat extends AbstractFilter
 
     public function __construct()
     {
-        $this->setPriority(FilterInterface::PRIORITY_SECURITY_FILTERS);
+        $this->setPriority(FilterInterface::PRIORITY_FILTER_SANITIZE);
     }
 
     /**

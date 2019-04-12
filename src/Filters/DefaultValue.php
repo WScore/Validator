@@ -25,7 +25,7 @@ class DefaultValue extends AbstractFilter
             $this->default = array_key_exists('default', $options)
                 ? $options['default'] : null;
         }
-        $this->setPriority(FilterInterface::PRIORITY_USER_FILTERS - 1);
+        $this->setPriority(FilterInterface::PRIORITY_REQUIRED_CHECK - 1);
     }
 
     /**

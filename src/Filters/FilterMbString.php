@@ -29,7 +29,7 @@ class FilterMbString extends AbstractFilter
     public function __construct(array $options = [])
     {
         $this->convertType = $options['type'] ?? self::MB_ZEN_KANA;
-        $this->setPriority(FilterInterface::PRIORITY_STRING_FILTERS);
+        $this->setPriority(FilterInterface::PRIORITY_FILTER_PREPARE);
     }
 
     /**
@@ -43,17 +43,6 @@ class FilterMbString extends AbstractFilter
         $input->setValue($value);
 
         return null;
-    }
-
-    /**
-     * returns the priority of the filter.
-     * applies filters with smaller priority, first.
-     *
-     * @return int
-     */
-    public function getPriority(): int
-    {
-        return FilterInterface::PRIORITY_STRING_FILTERS;
     }
 
     /**

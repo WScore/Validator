@@ -38,7 +38,7 @@ class StringCases extends AbstractFilter
     public function __construct(array $options = [])
     {
         $this->options = $options;
-        $this->setPriority(FilterInterface::PRIORITY_STRING_FILTERS);
+        $this->setPriority(FilterInterface::PRIORITY_FILTER_MODIFIER);
     }
 
     /**
