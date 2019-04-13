@@ -36,7 +36,6 @@ class ValidationRepeat extends AbstractValidation
                 $results->addResult($result, $key);
             }
         }
-        $this->prepareFilters();
         foreach ($results->getChildren() as $result) {
             $this->applyFilters($result);
         }

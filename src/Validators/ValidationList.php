@@ -73,7 +73,6 @@ class ValidationList extends AbstractValidation
             $results->addResult($result);
         }
         // perform post-validation on all inputs.
-        $this->prepareFilters();
         return $this->applyFilters($results);
     }
 

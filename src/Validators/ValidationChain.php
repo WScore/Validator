@@ -22,7 +22,6 @@ class ValidationChain extends AbstractValidation
     {
         $result = new Result($value, $this->name);
         $result->setParent($parentResult);
-        $this->prepareFilters();
         $result = $this->applyFilters($result);
         $result->finalize($this->message, $this->error_message);
 
@@ -38,7 +37,6 @@ class ValidationChain extends AbstractValidation
     {
         $results = new ResultList($value, $this->name);
         $results->setParent($parentResult);
-        $this->prepareFilters();
         if ($this->hasFilter(Required::class)) {
             $required = $this->getFilter(Required::class);
             $this->removeFilter(Required::class);

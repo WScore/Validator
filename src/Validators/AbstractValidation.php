@@ -87,6 +87,11 @@ abstract class AbstractValidation implements ValidationInterface
             }
             $this->filters[$filter->getFilterName()] = $filter;
         }
+        uasort(
+            $this->filters,
+            function (FilterInterface $a, FilterInterface $b) {
+                return $a->getPriority() <=> $b->getPriority();
+            });
         return $this;
     }
 
@@ -166,20 +171,6 @@ abstract class AbstractValidation implements ValidationInterface
     public function all(): array
     {
         return $this->children;
-    }
-
-    protected function prepareFilters()
-    {
-        foreach ($this->filters as $name => $filter) {
-            if (!is_object($filter)) {
-                $this->filters[$name] = new $name($filter);
-            }
-        }
-        uasort(
-            $this->filters,
-            function (FilterInterface $a, FilterInterface $b) {
-                return $a->getPriority() <=> $b->getPriority();
-            });
     }
 
     protected function applyFilters(ResultInterface $result)
