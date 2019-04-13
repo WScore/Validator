@@ -22,7 +22,7 @@ final class ValidateFloat extends AbstractFilter
      * @param ResultInterface $input
      * @return ResultInterface|null
      */
-    public function __invoke(ResultInterface $input): ?ResultInterface
+    public function apply(ResultInterface $input): ?ResultInterface
     {
         if ($bad = $this->checkUtf8($input)) {
             return $bad;

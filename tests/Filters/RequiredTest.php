@@ -18,7 +18,7 @@ class RequiredTest extends TestCase
     {
         $result = $this->buildResult('');
         $required = new Required();
-        $required->__invoke($result);
+        $required->apply($result);
         $this->assertFalse($result->isValid());
     }
 
@@ -26,7 +26,7 @@ class RequiredTest extends TestCase
     {
         $result = $this->buildResult('value');
         $required = new Required();
-        $required->__invoke($result);
+        $required->apply($result);
         $this->assertTrue($result->isValid());
         $this->assertEquals('value', $result->value());
     }
@@ -35,7 +35,7 @@ class RequiredTest extends TestCase
     {
         $result = new Result('');
         $required = new Required();
-        $required($result);
+        $required->apply($result);
         $result->finalize(Messages::create('en'));
         $this->assertEquals('The input field is required.', $result->getErrorMessage()[0]);
     }

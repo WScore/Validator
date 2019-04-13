@@ -50,7 +50,7 @@ class ValidationChain extends AbstractValidation
         }
         $results->finalize($this->message, $this->error_message);
         if (isset($required)) {
-            $required->__invoke($results);
+            $required->apply($results);
         }
 
         return $results;

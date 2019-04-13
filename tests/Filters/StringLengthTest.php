@@ -31,7 +31,7 @@ class StringLengthTest extends TestCase
     {
         $result = $this->buildResult();
         $length = new StringLength(['length' => 8]);
-        $length($result);
+        $length->apply($result);
         $result->finalize(Messages::create('en'));
         $this->assertFalse($result->isValid());
         $this->assertEquals('The input must be 8 characters.', $result->getErrorMessage()[0]);
@@ -41,7 +41,7 @@ class StringLengthTest extends TestCase
     {
         $result = $this->buildResult();
         $length = new StringLength(['length' => 5]);
-        $length($result);
+        $length->apply($result);
         $result->finalize(Messages::create('en'));
         $this->assertTrue($result->isValid());
         $this->assertEquals([], $result->getErrorMessage());
@@ -51,7 +51,7 @@ class StringLengthTest extends TestCase
     {
         $result = $this->buildResult();
         $length = $this->buildStringLength();
-        $length($result);
+        $length->apply($result);
         $result->finalize(Messages::create('en'));
         $this->assertTrue($result->isValid());
         $this->assertEquals([], $result->getErrorMessage());
@@ -61,7 +61,7 @@ class StringLengthTest extends TestCase
     {
         $result = $this->buildResult('1234567');
         $length = $this->buildStringLength();
-        $length($result);
+        $length->apply($result);
         $result->finalize(Messages::create('en'));
         $this->assertFalse($result->isValid());
         $this->assertEquals('The input is more than 6 characters.', $result->getErrorMessage()[0]);
@@ -71,7 +71,7 @@ class StringLengthTest extends TestCase
     {
         $result = $this->buildResult('123456');
         $length = $this->buildStringLength();
-        $length($result);
+        $length->apply($result);
         $result->finalize(Messages::create('en'));
         $this->assertTrue($result->isValid());
     }
@@ -80,7 +80,7 @@ class StringLengthTest extends TestCase
     {
         $result = $this->buildResult('12');
         $length = $this->buildStringLength();
-        $length($result);
+        $length->apply($result);
         $result->finalize(Messages::create('en'));
         $this->assertFalse($result->isValid());
         $this->assertEquals('The input is less than 3 characters.', $result->getErrorMessage()[0]);
@@ -90,7 +90,7 @@ class StringLengthTest extends TestCase
     {
         $result = $this->buildResult('123');
         $length = $this->buildStringLength();
-        $length($result);
+        $length->apply($result);
         $result->finalize(Messages::create('en'));
         $this->assertTrue($result->isValid());
     }

@@ -36,7 +36,7 @@ final class FilterMbString extends AbstractFilter
      * @param ResultInterface $input
      * @return ResultInterface|null
      */
-    public function __invoke(ResultInterface $input): ?ResultInterface
+    public function apply(ResultInterface $input): ?ResultInterface
     {
         $value = $input->value();
         $value = mb_convert_kana($value, $this->convertType, 'UTF-8');

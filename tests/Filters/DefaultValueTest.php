@@ -24,7 +24,7 @@ class DefaultValueTest extends TestCase
     {
         $default = new DefaultValue(['default' => 'tested']);
         $result = $this->buildResult(null);
-        $default($result);
+        $default->apply($result);
         $this->assertEquals('tested', $result->value());
     }
 
@@ -32,7 +32,7 @@ class DefaultValueTest extends TestCase
     {
         $default = new DefaultValue(['default' => 'tested']);
         $result = $this->buildResult('');
-        $default($result);
+        $default->apply($result);
         $this->assertEquals('tested', $result->value());
     }
 
@@ -40,7 +40,7 @@ class DefaultValueTest extends TestCase
     {
         $default = new DefaultValue(['default' => 'tested']);
         $result = $this->buildResult('test-me');
-        $default($result);
+        $default->apply($result);
         $this->assertEquals('test-me', $result->value());
     }
 
@@ -48,12 +48,12 @@ class DefaultValueTest extends TestCase
     {
         $default = new DefaultNull();
         $result = $this->buildResult('');
-        $default($result);
+        $default->apply($result);
         $this->assertTrue(null === $result->value());
 
         $default = new DefaultNull();
         $result = $this->buildResult(null);
-        $default($result);
+        $default->apply($result);
         $this->assertTrue(null === $result->value());
     }
 
@@ -61,12 +61,12 @@ class DefaultValueTest extends TestCase
     {
         $default = new DefaultEmpty();
         $result = $this->buildResult('');
-        $default($result);
+        $default->apply($result);
         $this->assertTrue('' === $result->value());
 
         $default = new DefaultEmpty();
         $result = $this->buildResult(null);
-        $default($result);
+        $default->apply($result);
         $this->assertTrue('' === $result->value());
     }
 

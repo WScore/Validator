@@ -18,7 +18,7 @@ class RequiredIfTest extends TestCase
     {
         $result = $this->buildResult('');
         $required = new RequiredIf();
-        $required->__invoke($result);
+        $required->apply($result);
         $this->assertFalse($result->isValid());
     }
 
@@ -26,7 +26,7 @@ class RequiredIfTest extends TestCase
     {
         $result = $this->buildResult('value');
         $required = new RequiredIf();
-        $required->__invoke($result);
+        $required->apply($result);
         $this->assertTrue($result->isValid());
         $this->assertEquals('value', $result->value());
     }
@@ -38,13 +38,13 @@ class RequiredIfTest extends TestCase
         $resultList = $this->buildResultList();
         $result = $resultList->getChild('some');
 
-        $required($result);
+        $required->apply($result);
         $this->assertTrue($result->isValid());
 
         $resultList = $this->buildResultList('more-value');
         $result = $resultList->getChild('some');
 
-        $required($result);
+        $required->apply($result);
         $this->assertFalse($result->isValid());
     }
 
@@ -54,14 +54,14 @@ class RequiredIfTest extends TestCase
         $result = $resultList->getChild('some');
 
         $required = new RequiredIf();
-        $required->__invoke($result);
+        $required->apply($result);
         $this->assertFalse($result->isValid());
 
         $resultList = $this->buildResultList();
         $result = $resultList->getChild('some');
 
         $required = new RequiredIf(['field' => 'more']);
-        $required->__invoke($result);
+        $required->apply($result);
         $this->assertTrue($result->isValid());
     }
 
@@ -71,14 +71,14 @@ class RequiredIfTest extends TestCase
         $result = $resultList->getChild('some');
 
         $required = new RequiredIf(['field' => 'more', 'value' => 'more-more']);
-        $required->__invoke($result);
+        $required->apply($result);
         $this->assertTrue($result->isValid());
 
         $resultList = $this->buildResultList('more-more');
         $result = $resultList->getChild('some');
 
         $required = new RequiredIf(['field' => 'more', 'value' => 'more-more']);
-        $required->__invoke($result);
+        $required->apply($result);
         $this->assertFalse($result->isValid());
     }
 

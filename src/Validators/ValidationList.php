@@ -61,7 +61,7 @@ class ValidationList extends AbstractValidation
     {
         // apply pre-filters.
         foreach ($this->preFilters as $filter) {
-            if ($returned = $filter->__invoke($results)) {
+            if ($returned = $filter->apply($results)) {
                 break;
             }
         }

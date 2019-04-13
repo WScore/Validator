@@ -18,7 +18,7 @@ class FilterIntegerTest extends TestCase
     {
         $input = new Result($value);
         $filter = new ValidateInteger();
-        $filter($input);
+        $filter->apply($input);
         $this->assertTrue($input->isValid());
         $this->assertEquals($integer, $input->value());
         $this->assertTrue(is_int($input->value()));
@@ -39,7 +39,7 @@ class FilterIntegerTest extends TestCase
     {
         $input = new Result('123');
         $filter = new ValidateInteger();
-        $filter($input);
+        $filter->apply($input);
         $this->assertTrue($input->isValid());
         $this->assertEquals(123, $input->value());
         $this->assertTrue(is_integer($input->value()));
@@ -49,7 +49,7 @@ class FilterIntegerTest extends TestCase
     {
         $input = new Result('a12b3c');
         $filter = new ValidateInteger();
-        $filter($input);
+        $filter->apply($input);
         $this->assertFalse($input->isValid());
         $this->assertEquals(null, $input->value());
 
@@ -61,7 +61,7 @@ class FilterIntegerTest extends TestCase
     {
         $input = new Result('1.2');
         $filter = new ValidateInteger();
-        $filter($input);
+        $filter->apply($input);
         $this->assertTrue($input->isValid());
         $this->assertEquals(1, $input->value());
         $this->assertTrue(is_integer($input->value()));
@@ -71,7 +71,7 @@ class FilterIntegerTest extends TestCase
     {
         $input = new Result(mb_convert_encoding('1２．３', 'SJIS', 'UTF-8'));
         $filter = new ValidateInteger();
-        $filter($input);
+        $filter->apply($input);
         $this->assertFalse($input->isValid());
 
     }

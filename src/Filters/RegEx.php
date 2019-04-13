@@ -36,7 +36,7 @@ final class RegEx extends AbstractFilter
      * @param ResultInterface $input
      * @return ResultInterface|null
      */
-    public function __invoke(ResultInterface $input): ?ResultInterface
+    public function apply(ResultInterface $input): ?ResultInterface
     {
         $pattern = '/\\A' . $this->pattern . '\\z/us';
         $value = $input->value();

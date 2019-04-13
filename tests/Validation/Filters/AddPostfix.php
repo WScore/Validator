@@ -33,7 +33,7 @@ class AddPostfix extends AbstractFilter
      * @param ResultInterface $allInputs
      * @return ResultInterface|null
      */
-    public function __invoke(ResultInterface $input, ResultInterface $allInputs = null): ?ResultInterface
+    public function apply(ResultInterface $input, ResultInterface $allInputs = null): ?ResultInterface
     {
         $value = $input->value();
         $input->setValue($value . $this->prefix);

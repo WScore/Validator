@@ -15,7 +15,7 @@ class FilterDateTimeTest extends TestCase
     {
         $filter = new ValidateDateTime();
         $input = new Result('2019-04-01');
-        $return = $filter->__invoke($input);
+        $return = $filter->apply($input);
         $this->assertNull($return);
         $this->assertTrue($input->isValid());
         $this->assertEquals(DateTimeImmutable::class, get_class($input->value()));
@@ -30,7 +30,7 @@ class FilterDateTimeTest extends TestCase
     {
         $filter = new ValidateDateTime();
         $input = new Result($value);
-        $return = $filter($input);
+        $return = $filter->apply($input);
         $this->assertNull($return);
         $this->assertTrue($input->isValid());
         $this->assertEquals(DateTimeImmutable::class, get_class($input->value()));
@@ -53,7 +53,7 @@ class FilterDateTimeTest extends TestCase
     {
         $filter = new ValidateDateTime(['format' =>'m/d/Y']);
         $input = new Result('04/01/2019');
-        $return = $filter->__invoke($input);
+        $return = $filter->apply($input);
         $this->assertNull($return);
         $this->assertTrue($input->isValid());
         $this->assertEquals(DateTimeImmutable::class, get_class($input->value()));
@@ -64,7 +64,7 @@ class FilterDateTimeTest extends TestCase
     {
         $filter = new ValidateDateTime();
         $input = new Result(mb_convert_encoding('日本語','SJIS', 'UTF-8'));
-        $return = $filter->__invoke($input);
+        $return = $filter->apply($input);
         $this->assertFalse($return->isValid());
         $this->assertNull($input->value());
 

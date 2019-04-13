@@ -18,7 +18,7 @@ class FilterFloatTest extends TestCase
     {
         $input = new Result($value);
         $filter = new ValidateFloat();
-        $filter($input);
+        $filter->apply($input);
         $this->assertTrue($input->isValid());
         $this->assertEquals($float, $input->value());
         $this->assertTrue(is_float($input->value()));
@@ -39,7 +39,7 @@ class FilterFloatTest extends TestCase
     {
         $input = new Result('a12.b3c');
         $filter = new ValidateFloat();
-        $filter($input);
+        $filter->apply($input);
         $this->assertFalse($input->isValid());
         $this->assertEquals(null, $input->value());
 

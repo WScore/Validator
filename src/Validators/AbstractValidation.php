@@ -176,7 +176,7 @@ abstract class AbstractValidation implements ValidationInterface
     protected function applyFilters(ResultInterface $result)
     {
         foreach ($this->filters as $filter) {
-            if ($returned = $filter->__invoke($result)) {
+            if ($returned = $filter->apply($result)) {
                 return $returned;
             }
         }

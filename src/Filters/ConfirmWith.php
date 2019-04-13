@@ -30,7 +30,7 @@ final class ConfirmWith extends AbstractFilter
      * @param ResultInterface $input
      * @return ResultInterface|null
      */
-    public function __invoke(ResultInterface $input): ?ResultInterface
+    public function apply(ResultInterface $input): ?ResultInterface
     {
         $parentInput = $input->getParent();
         if (!$parentInput) {

@@ -47,7 +47,7 @@ final class Match extends AbstractFilter
      * @param ResultInterface $input
      * @return ResultInterface|null
      */
-    public function __invoke(ResultInterface $input): ?ResultInterface
+    public function apply(ResultInterface $input): ?ResultInterface
     {
         $value = $input->value();
         $filter = $this->type2filter[$this->type];
