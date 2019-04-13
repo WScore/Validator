@@ -6,7 +6,7 @@ namespace WScore\Validation\Filters;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class InArray extends AbstractFilter
+final class InArray extends AbstractFilter
 {
     /**
      * @var array

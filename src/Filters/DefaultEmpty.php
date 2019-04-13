@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WScore\Validation\Filters;
 
-class DefaultEmpty extends DefaultValue
+final class DefaultEmpty extends DefaultValue
 {
     /**
      * DefaultValue constructor.

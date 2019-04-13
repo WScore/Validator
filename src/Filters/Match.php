@@ -7,7 +7,7 @@ use InvalidArgumentException;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class Match extends AbstractFilter
+final class Match extends AbstractFilter
 {
     const IP = __CLASS__ . '::IP'; // IP address
     const EMAIL = __CLASS__ . '::EMAIL'; // email address
@@ -55,13 +55,5 @@ class Match extends AbstractFilter
             return null;
         }
         return $input->failed($this->type, [], $this->message);
-    }
-
-    /**
-     * @return string
-     */
-    public function getFilterName(): string
-    {
-        return __CLASS__;
     }
 }

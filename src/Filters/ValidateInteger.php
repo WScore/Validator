@@ -6,7 +6,7 @@ namespace WScore\Validation\Filters;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class ValidateInteger extends AbstractFilter
+final class ValidateInteger extends AbstractFilter
 {
     use ValidateUtf8Trait;
 

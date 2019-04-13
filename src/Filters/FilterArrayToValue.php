@@ -16,7 +16,7 @@ use WScore\Validation\Interfaces\ResultInterface;
  *    'implode' => '-',                // <- if no format, implode values with this char.
  * ]);
  */
-class FilterArrayToValue extends AbstractFilter
+final class FilterArrayToValue extends AbstractFilter
 {
     const MISSING_FIELD = __CLASS__ . '::MISSING_FIELD';
 

@@ -6,7 +6,7 @@ namespace WScore\Validation\Filters;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class StringLength extends AbstractFilter
+final class StringLength extends AbstractFilter
 {
     const LENGTH = __CLASS__ . '::LENGTH';
     const MAX = __CLASS__ . '::MAX';

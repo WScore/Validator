@@ -6,7 +6,7 @@ namespace WScore\Validation\Filters;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class ValidateFloat extends AbstractFilter
+final class ValidateFloat extends AbstractFilter
 {
     use ValidateUtf8Trait;
 

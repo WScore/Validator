@@ -9,7 +9,7 @@ use WScore\Validation\Interfaces\ResultInterface;
 /**
  * todo: this is converter, but should run at the beginning of the validation loop.
  */
-class FilterMbString extends AbstractFilter
+final class FilterMbString extends AbstractFilter
 {
     const MB_HANKAKU = 'aKVs';
     const MB_ZENKAKU = 'AKVS';
@@ -43,16 +43,5 @@ class FilterMbString extends AbstractFilter
         $input->setValue($value);
 
         return null;
-    }
-
-    /**
-     * returns name of the filter;
-     * validation can have only one filter with the same name.
-     *
-     * @return string
-     */
-    public function getFilterName(): string
-    {
-        return __CLASS__;
     }
 }

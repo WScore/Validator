@@ -7,7 +7,7 @@ use InvalidArgumentException;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class ValidateFilterChar extends AbstractFilter
+final class ValidateFilterChar extends AbstractFilter
 {
     use ValidateUtf8Trait;
 

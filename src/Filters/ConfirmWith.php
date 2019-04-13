@@ -7,7 +7,7 @@ use RuntimeException;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class ConfirmWith extends AbstractFilter
+final class ConfirmWith extends AbstractFilter
 {
     const MISSING = __CLASS__ . '::MISSING';
     const DIFFER = __CLASS__ . '::DIFFER';

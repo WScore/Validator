@@ -8,7 +8,7 @@ use Exception;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class ValidateDateTime extends AbstractFilter
+final class ValidateDateTime extends AbstractFilter
 {
     /**
      * @var string

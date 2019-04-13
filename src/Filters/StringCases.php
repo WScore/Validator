@@ -7,7 +7,7 @@ use InvalidArgumentException;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class StringCases extends AbstractFilter
+final class StringCases extends AbstractFilter
 {
     const TO_UPPER = 'upper';
     const TO_LOWER = 'lower';

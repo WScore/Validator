@@ -6,7 +6,7 @@ namespace WScore\Validation\Filters;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class Required extends AbstractFilter
+final class Required extends AbstractFilter
 {
     public function __construct()
     {
@@ -24,13 +24,5 @@ class Required extends AbstractFilter
             return $this->failed($input);
         }
         return null;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFilterName(): string
-    {
-        return __CLASS__;
     }
 }

@@ -7,7 +7,7 @@ use InvalidArgumentException;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class StringTrim extends AbstractFilter
+final class StringTrim extends AbstractFilter
 {
     const TRIM = 'trim';
     const LEFT_TRIM = 'ltrim';

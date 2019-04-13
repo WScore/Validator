@@ -7,7 +7,7 @@ use InvalidArgumentException;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-class RegEx extends AbstractFilter
+final class RegEx extends AbstractFilter
 {
     /**
      * @var string
@@ -44,13 +44,5 @@ class RegEx extends AbstractFilter
             return null;
         }
         return $input->failed(__CLASS__, ['pattern' => $pattern], $this->message);
-    }
-
-    /**
-     * @return string
-     */
-    public function getFilterName(): string
-    {
-        return __CLASS__;
     }
 }
