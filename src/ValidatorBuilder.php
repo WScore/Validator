@@ -68,26 +68,10 @@ class ValidatorBuilder
             ->buildByType('email');
     }
 
-    /**
-     * @param array $list
-     * @return FilterInterface[]
-     */
-    private function prepareFilters(array $list)
-    {
-        $filters = [];
-        foreach ($list as $class => $option) {
-            $filter = $option instanceof FilterInterface
-                ? $option
-                : new $class($option);
-            $filters[] = $filter;
-        }
-        return $filters;
-    }
-
     public function form(array $options = []): ValidationList
     {
         $builder = $this->prepareOptions($options);
-        $v = new ValidationList($this->messages, $builder->name);
+        $v = new ValidationList($this->messages);
         $v->addFilters($builder->filters);
         return $v;
     }
@@ -95,7 +79,7 @@ class ValidatorBuilder
     public function repeat(array $options = []): ValidationRepeat
     {
         $builder = $this->prepareOptions($options);
-        $v = new ValidationRepeat($this->messages, $builder->name);
+        $v = new ValidationRepeat($this->messages);
         $v->addFilters($builder->filters);
         return $v;
     }
@@ -108,7 +92,7 @@ class ValidatorBuilder
 
     private function buildByType(string $type = null): ValidationInterface
     {
-        $v = new ValidationChain($this->messages, $this->name);
+        $v = new ValidationChain($this->messages);
         if ($this->multiple) {
             $v = $v->setMultiple(true);
         }
