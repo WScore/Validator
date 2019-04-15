@@ -35,7 +35,7 @@ interface ResultInterface extends IteratorAggregate
     /**
      * @return string
      */
-    public function name(): ?string ;
+    public function name(): ?string;
 
     /**
      * @return bool
