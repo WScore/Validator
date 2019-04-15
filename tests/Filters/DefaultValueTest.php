@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wsjp
- * Date: 2019/03/27
- * Time: 20:21
- */
 
 namespace tests\Filters;
 

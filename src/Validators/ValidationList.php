@@ -25,7 +25,7 @@ class ValidationList extends AbstractValidation
      */
     public function addRepeatedForm(string $name, ValidationList $form)
     {
-        $repeat = new ValidationRepeat($this->message, $name);
+        $repeat = new ValidationRepeat($this->message);
         $repeat->add($name, $form);
         $this->add($name, $repeat);
         return $this;
@@ -45,11 +45,12 @@ class ValidationList extends AbstractValidation
 
     /**
      * @param array $inputs
+     * @param string|null $name
      * @return ResultList|ResultInterface
      */
-    private function initialize($inputs)
+    private function initialize($inputs, $name = null)
     {
-        $results = new ResultList($inputs, $this->name);
+        $results = new ResultList($inputs, $name);
         return $results;
     }
 
@@ -69,7 +70,7 @@ class ValidationList extends AbstractValidation
         $inputs = $results->value();
         foreach ($this->children as $name => $validation) {
             $value = $inputs[$name] ?? null;
-            $result = $validation->verify($value, $results);
+            $result = $validation->callVerify($value, $name, $results);
             $results->addResult($result);
         }
         // perform post-validation on all inputs.
@@ -78,12 +79,16 @@ class ValidationList extends AbstractValidation
 
     /**
      * @param array $value
-     * @param ResultInterface|null $parentResult
      * @return ResultInterface|ResultList
      */
-    public function verify($value, ResultInterface $parentResult = null)
+    public function verify($value)
     {
-        $result = $this->initialize($value);
+        return $this->callVerify($value);
+    }
+
+    public function callVerify($value, $name = null, ResultInterface $parentResult = null)
+    {
+        $result = $this->initialize($value, $name);
         $result->setParent($parentResult);
         $result = $this->validate($result);
         $result->finalize($this->message, $this->error_message);

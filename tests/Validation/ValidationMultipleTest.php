@@ -60,7 +60,6 @@ class ValidationMultipleTest extends TestCase
     public function testFailedCase()
     {
         $chain = $this->buildValidationMultiple();
-        $chain->setName('numbers');
         $chain->addFilters([
             new ValidateInteger(),
         ]);

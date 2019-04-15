@@ -53,7 +53,6 @@ class ValidationChainTest extends TestCase
             )
             ;
         $this->assertTrue($form->has('name'));
-        $this->assertEquals('name', $form->get('name')->getName());
 
         $form->remove('name');
         $this->assertFalse($form->has('name'));

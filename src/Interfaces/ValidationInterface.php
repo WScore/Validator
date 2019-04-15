@@ -6,17 +6,6 @@ namespace WScore\Validation\Interfaces;
 interface ValidationInterface
 {
     /**
-     * @return string
-     */
-    public function getName();
-
-    /**
-     * @param string|null $name
-     * @return ValidationInterface|$this
-     */
-    public function setName(string $name);
-
-    /**
      * @param string $message
      * @return void
      */
@@ -78,8 +67,16 @@ interface ValidationInterface
 
     /**
      * @param string|array $value
-     * @param ResultInterface $parentResult
      * @return ResultInterface
      */
-    public function verify($value, ResultInterface $parentResult = null);
+    public function verify($value);
+
+    /**
+     * @internal
+     * @param string|array $value
+     * @param string|null $name
+     * @param ResultInterface|null $parentResult
+     * @return mixed
+     */
+    public function callVerify($value, $name = null, ResultInterface $parentResult = null);
 }

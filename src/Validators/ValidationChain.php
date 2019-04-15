@@ -15,12 +15,13 @@ class ValidationChain extends AbstractValidation
 
     /**
      * @param string|string[] $value
+     * @param string|null $name
      * @param ResultInterface $parentResult
      * @return ResultInterface
      */
-    private function validateSingle($value, $parentResult = null)
+    private function validateSingle($value, $name = null, $parentResult = null)
     {
-        $result = new Result($value, $this->name);
+        $result = new Result($value, $name);
         $result->setParent($parentResult);
         $result = $this->applyFilters($result);
         $result->finalize($this->message, $this->error_message);
@@ -30,12 +31,13 @@ class ValidationChain extends AbstractValidation
 
     /**
      * @param string[] $value
+     * @param string|null $name
      * @param ResultInterface $parentResult
      * @return ResultInterface
      */
-    private function validateMultiple($value, $parentResult = null)
+    private function validateMultiple($value, $name = null, $parentResult = null)
     {
-        $results = new ResultList($value, $this->name);
+        $results = new ResultList($value, $name);
         $results->setParent($parentResult);
         if ($this->hasFilter(Required::class)) {
             $required = $this->getFilter(Required::class);
@@ -58,15 +60,14 @@ class ValidationChain extends AbstractValidation
 
     /**
      * @param string|string[] $value
-     * @param ResultInterface $parentResult
      * @return ResultInterface|ResultList
      */
-    public function verify($value, ResultInterface $parentResult = null)
+    public function verify($value)
     {
         if ($this->multiple) {
-            $result = $this->validateMultiple($value, $parentResult);
+            $result = $this->validateMultiple($value);
         } else {
-            $result = $this->validateSingle($value, $parentResult);
+            $result = $this->validateSingle($value);
         }
         return $result;
     }
@@ -79,5 +80,21 @@ class ValidationChain extends AbstractValidation
     {
         $this->multiple = $multiple;
         return $this;
+    }
+
+    /**
+     * @param array|string $value
+     * @param string|null $name
+     * @param ResultInterface|null $parentResult
+     * @return mixed|ResultInterface
+     */
+    public function callVerify($value, $name = null, ResultInterface $parentResult = null)
+    {
+        if ($this->multiple) {
+            $result = $this->validateMultiple($value, $name, $parentResult);
+        } else {
+            $result = $this->validateSingle($value, $name, $parentResult);
+        }
+        return $result;
     }
 }

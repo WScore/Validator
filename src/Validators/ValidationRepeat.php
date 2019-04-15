@@ -15,11 +15,12 @@ class ValidationRepeat extends AbstractValidation
 {
     /**
      * @param string[] $value
+     * @param string|null $name
      * @return ResultInterface|ResultList
      */
-    private function initialize($value)
+    private function initialize($value, $name)
     {
-        $results = new ResultList($value, $this->name);
+        $results = new ResultList($value, $name);
         return $results;
     }
 
@@ -32,7 +33,7 @@ class ValidationRepeat extends AbstractValidation
         $values = $results->value();
         foreach ($values as $key => $val) {
             foreach ($this->children as $name => $validation) {
-                $result = $validation->verify($val, $results);
+                $result = $validation->verify($val);
                 $results->addResult($result, $key);
             }
         }
@@ -44,12 +45,22 @@ class ValidationRepeat extends AbstractValidation
 
     /**
      * @param string|array $value
-     * @param ResultInterface|null $parentResult
      * @return ResultInterface|ResultList
      */
-    public function verify($value, ResultInterface $parentResult = null)
+    public function verify($value)
     {
-        $result = $this->initialize($value);
+        return $this->callVerify($value);
+    }
+
+    /**
+     * @param array|string $value
+     * @param string|null $name
+     * @param ResultInterface|null $parentResult
+     * @return mixed|ResultInterface|ResultList
+     */
+    public function callVerify($value, $name = null, ResultInterface $parentResult = null)
+    {
+        $result = $this->initialize($value, $name);
         $result->setParent($parentResult);
         $result = $this->validate($result);
         $result->finalize($this->message, $this->error_message);

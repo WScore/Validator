@@ -11,11 +11,6 @@ use WScore\Validation\Locale\Messages;
 abstract class AbstractValidation implements ValidationInterface
 {
     /**
-     * @var string|null
-     */
-    protected $name;
-
-    /**
      * @var FilterInterface[]
      */
     protected $filters = [];
@@ -37,30 +32,10 @@ abstract class AbstractValidation implements ValidationInterface
 
     /**
      * @param Messages $message
-     * @param string|null $name
      */
-    public function __construct(Messages $message, $name = null)
+    public function __construct(Messages $message)
     {
         $this->message = $message;
-        $this->name = $name;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string|null $name
-     * @return ValidationInterface|$this
-     */
-    public function setName(string $name)
-    {
-        $this->name = $name;
-        return $this;
     }
 
     /**
@@ -132,7 +107,6 @@ abstract class AbstractValidation implements ValidationInterface
      */
     public function add(string $name, ValidationInterface $validation): ValidationInterface
     {
-        $validation->setName($name);
         $this->children[$name] = $validation;
         return $this;
     }
