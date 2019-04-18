@@ -2,8 +2,6 @@
 
 namespace tests\Filters;
 
-use WScore\Validation\Filters\DefaultEmpty;
-use WScore\Validation\Filters\DefaultNull;
 use WScore\Validation\Filters\DefaultValue;
 use PHPUnit\Framework\TestCase;
 use WScore\Validation\Validators\Result;
@@ -40,12 +38,12 @@ class DefaultValueTest extends TestCase
 
     public function testDefaultNull()
     {
-        $default = new DefaultNull();
+        $default = new DefaultValue(['default' => null]);
         $result = $this->buildResult('');
         $default->apply($result);
         $this->assertTrue(null === $result->value());
 
-        $default = new DefaultNull();
+        $default = new DefaultValue(['default' => null]);
         $result = $this->buildResult(null);
         $default->apply($result);
         $this->assertTrue(null === $result->value());
@@ -53,12 +51,12 @@ class DefaultValueTest extends TestCase
 
     public function testDefaultEmpty()
     {
-        $default = new DefaultEmpty();
+        $default = new DefaultValue(['default' => '']);
         $result = $this->buildResult('');
         $default->apply($result);
         $this->assertTrue('' === $result->value());
 
-        $default = new DefaultEmpty();
+        $default = new DefaultValue(['default' => '']);
         $result = $this->buildResult(null);
         $default->apply($result);
         $this->assertTrue('' === $result->value());
@@ -66,8 +64,8 @@ class DefaultValueTest extends TestCase
 
     public function testAllDefaultFiltersHaveSameName()
     {
-        $empty = new DefaultEmpty();
-        $null = new DefaultNull();
+        $empty = new DefaultValue(['default' => '']);
+        $null = new DefaultValue(['default' => null]);
         $default = new DefaultValue(['default' => 'tested']);
 
         $this->assertEquals($default->getFilterName(), $empty->getFilterName());

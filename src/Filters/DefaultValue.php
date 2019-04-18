@@ -41,4 +41,14 @@ class DefaultValue extends AbstractFilter
         $input->setValue($this->default);
         return null;
     }
+
+    /**
+     * @param mixed $default
+     * @return DefaultValue
+     */
+    public function setDefault($default)
+    {
+        $this->default = $default;
+        return $this;
+    }
 }
