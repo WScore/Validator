@@ -5,6 +5,7 @@ namespace WScore\Validation\Validators;
 
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
+use WScore\Validation\Interfaces\ValidationInterface;
 
 /**
  * validates a list of input, like form input.
@@ -13,11 +14,6 @@ use WScore\Validation\Interfaces\ResultInterface;
  */
 class ValidationList extends AbstractValidation
 {
-    /**
-     * @var FilterInterface[]
-     */
-    private $preFilters = [];
-
     /**
      * @param string $name
      * @param ValidationList $form
@@ -32,18 +28,6 @@ class ValidationList extends AbstractValidation
     }
 
     /**
-     * @param FilterInterface[] $filters
-     * @return ValidationList
-     */
-    public function addPreFilters(FilterInterface ...$filters): self
-    {
-        foreach ($filters as $filter) {
-            $this->preFilters[$filter->getFilterName()] = $filter;
-        }
-        return $this;
-    }
-
-    /**
      * @param array $inputs
      * @param string|null $name
      * @return ResultList|ResultInterface
@@ -51,6 +35,12 @@ class ValidationList extends AbstractValidation
     private function initialize($inputs, $name = null)
     {
         $results = new ResultList($inputs, $name);
+        // apply pre-filters.
+        foreach ($this->preFilters as $filter) {
+            if ($returned = $filter->apply($results)) {
+                break;
+            }
+        }
         return $results;
     }
 
@@ -60,12 +50,6 @@ class ValidationList extends AbstractValidation
      */
     private function validate($results)
     {
-        // apply pre-filters.
-        foreach ($this->preFilters as $filter) {
-            if ($returned = $filter->apply($results)) {
-                break;
-            }
-        }
         // perform children's validation.
         $inputs = $results->value();
         foreach ($this->children as $name => $validation) {

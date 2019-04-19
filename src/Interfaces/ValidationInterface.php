@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace WScore\Validation\Interfaces;
 
+use WScore\Validation\Validators\ValidationList;
+
 interface ValidationInterface
 {
     /**
@@ -34,6 +36,12 @@ interface ValidationInterface
      * @return ValidationInterface|$this
      */
     public function removeFilter(string $name): ValidationInterface;
+
+    /**
+     * @param FilterInterface[] $filters
+     * @return ValidationList
+     */
+    public function addPreparationFilters(FilterInterface ...$filters): ValidationInterface;
 
     /**
      * @param string $name
