@@ -33,7 +33,7 @@ class ValidationRepeat extends AbstractValidation
         $values = $results->value();
         foreach ($values as $key => $val) {
             foreach ($this->children as $name => $validation) {
-                $result = $validation->verify($val);
+                $result = $validation->callVerify($val, $name, $results);
                 $results->addResult($result, $key);
             }
         }

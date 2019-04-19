@@ -6,29 +6,31 @@ namespace tests\Validation;
 use tests\Validation\Filters\AddPostfix;
 use WScore\Validation\Filters\Required;
 use WScore\Validation\Filters\ValidateInteger;
-use WScore\Validation\Locale\Messages;
-use WScore\Validation\Validators\ValidationChain;
+use WScore\Validation\Interfaces\ValidationInterface;
+use WScore\Validation\ValidatorBuilder;
 use PHPUnit\Framework\TestCase;
+use WScore\Validation\Validators\ValidationRepeat;
 
 class ValidationMultipleTest extends TestCase
 {
     /**
-     * @param string $locale
-     * @return ValidationChain
+     * @param array $filters
+     * @return ValidationInterface|ValidationRepeat
      */
-    public function buildValidationMultiple($locale = 'en')
+    public function buildMultiple($filters = [])
     {
-        $messages = Messages::create($locale);
-        $chain = new ValidationChain($messages);
-        $chain->setMultiple();
-
-        return $chain;
+        $filters += [
+            'multiple' => true,
+        ];
+        $vb = new ValidatorBuilder();
+        return $vb->text($filters);
     }
 
     public function testVerify()
     {
-        $list = $this->buildValidationMultiple();
-        $list->addFilters([new AddPostfix('-multi')]);
+        $list = $this->buildMultiple([
+            new AddPostfix('-multi')
+        ]);
         $input = ['test' => 'test1', 'more' => 'test2'];
         $result = $list->verify($input);
 
@@ -40,27 +42,26 @@ class ValidationMultipleTest extends TestCase
 
     public function testEmptyInput()
     {
-        $chain = $this->buildValidationMultiple();
-        $result = $chain->verify(['', null, false]);
+        $chain = $this->buildMultiple();
+        $result = $chain->verify(['test', null, false]);
         $this->assertTrue($result->isValid());
-        $this->assertEquals([], $result->value());
+        $this->assertEquals(['test', '', ''], $result->value());
     }
 
     public function testRequired()
     {
-        $chain = $this->buildValidationMultiple();
+        $chain = $this->buildMultiple();
         $chain->addFilters([
             new Required(),
         ]);
-        $result = $chain->verify(['', null, false]);
+        $result = $chain->verify(['test', null, false]);
         $this->assertFalse($result->isValid());
-        $this->assertEquals([], $result->value());
+        $this->assertEquals(['test', '', ''], $result->value());
     }
 
     public function testFailedCase()
     {
-        $chain = $this->buildValidationMultiple();
-        $chain->addFilters([
+        $chain = $this->buildMultiple([
             new ValidateInteger(),
         ]);
         $result = $chain->verify([1, 'xxx', 2.0, '1a']);

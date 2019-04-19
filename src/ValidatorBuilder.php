@@ -93,14 +93,16 @@ class ValidatorBuilder
     private function buildByType(string $type = null): ValidationInterface
     {
         $v = new ValidationChain($this->messages);
-        if ($this->multiple) {
-            $v = $v->setMultiple(true);
-        }
         if ($type) {
             $filters = $this->typeFilter->getFilters($type);
             $v->addFilters($filters);
         }
         $v->addFilters($this->filters);
+        if ($this->multiple) {
+            $m = $this->repeat();
+            $m->add('0', $v);
+            $v = $m;
+        }
         return $v;
     }
 

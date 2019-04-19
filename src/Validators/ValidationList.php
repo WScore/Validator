@@ -26,7 +26,7 @@ class ValidationList extends AbstractValidation
     public function addRepeatedForm(string $name, ValidationList $form)
     {
         $repeat = new ValidationRepeat($this->message);
-        $repeat->add($name, $form);
+        $repeat->add('0', $form);
         $this->add($name, $repeat);
         return $this;
     }
