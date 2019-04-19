@@ -23,7 +23,7 @@ class ValidationRepeatTest extends TestCase
     public function testConstruction()
     {
         $vb = $this->ValidationBuilder;
-        $repeat = $vb->repeat(['name' => 'test']);
+        $repeat = $vb->repeat();
         $text = $vb->text()->addFilters([new AddPostfix('-repeat')]);
         $repeat->add('author', $text);
         $this->assertEquals(ValidationRepeat::class, get_class($repeat));
@@ -32,7 +32,7 @@ class ValidationRepeatTest extends TestCase
     public function testVerify()
     {
         $vb = $this->ValidationBuilder;
-        $repeat = $vb->repeat(['name' => 'test'])
+        $repeat = $vb->repeat()
             ->add('author', $vb->text()->addFilters([new AddPostfix('-repeat')]));
         $input = [
             'name1',
