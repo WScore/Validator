@@ -94,4 +94,13 @@ class ValidatorBuilder
     {
         return $this->buildType($options, 'integer');
     }
+
+    /**
+     * @param array $options
+     * @return ValidationChain|ValidationRepeat
+     */
+    public function date(array $options = []): ValidationInterface
+    {
+        return $this->buildType($options, 'date');
+    }
 }
