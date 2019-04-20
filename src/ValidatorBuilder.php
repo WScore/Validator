@@ -103,4 +103,9 @@ class ValidatorBuilder
     {
         return $this->buildType($options, 'date');
     }
+
+    public function digits(array $options = []): ValidationInterface
+    {
+        return $this->buildType($options, 'digits');
+    }
 }

@@ -7,6 +7,7 @@
 use WScore\Validation\Filters\DefaultValue;
 use WScore\Validation\Filters\Match;
 use WScore\Validation\Filters\ValidateDateTime;
+use WScore\Validation\Filters\ValidateDigits;
 use WScore\Validation\Filters\ValidateFloat;
 use WScore\Validation\Filters\ValidateInteger;
 use WScore\Validation\Filters\ValidateMbString;
@@ -35,6 +36,11 @@ return [
         ValidateMbString::class => ['type' => ValidateMbString::MB_HANKAKU],
         DefaultValue::class => ['default' => ''],
         Match::class => ['type' => Match::EMAIL],
+    ],
+    'digits' => [
+        ValidateMbString::class => ['type' => ValidateMbString::MB_HANKAKU],
+        ValidateDigits::class,
+        DefaultValue::class => ['default' => ''],
     ],
     'datetime' => [],
     'YearMonth' => [],
