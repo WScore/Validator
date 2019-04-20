@@ -45,18 +45,17 @@ class RealCaseTest extends TestCase
     private function getValidator(): ValidationInterface
     {
         $vb = new ValidatorBuilder();
-        $form = $vb->form();
-
-        $form->add('name', $vb->text([
-            Required::class,
-            StringCases::class => [StringCases::TO_LOWER, StringCases::UC_WORDS],
-        ]))->add('email', $vb->email([
-            Required::class,
-            StringCases::class => [StringCases::TO_LOWER],
-            ConfirmWith::class => [ConfirmWith::FIELD => 'email_check'],
-        ]))->add('birthday', $vb->date([
-            FilterArrayToValue::class => ['fields' => ['y', 'm', 'd'], 'format' => '%04d-%02d-%02d'],
-        ]));
+        $form = $vb->form()
+            ->add('name', $vb->text([
+                Required::class,
+                StringCases::class => [StringCases::TO_LOWER, StringCases::UC_WORDS],
+            ]))->add('email', $vb->email([
+                Required::class,
+                StringCases::class => [StringCases::TO_LOWER],
+                ConfirmWith::class => [ConfirmWith::FIELD => 'email_check'],
+            ]))->add('birthday', $vb->date([
+                FilterArrayToValue::class => ['fields' => ['y', 'm', 'd'], 'format' => '%04d-%02d-%02d'],
+            ]));
 
         $address = $vb->form()
             ->add('zip', $vb->digits([
@@ -66,15 +65,15 @@ class RealCaseTest extends TestCase
             ->add('address', $vb->text([
                 Required::class,
             ]))
-        ->add('region', $vb->text([
-            Required::class,
-            InArray::class => [
-                InArray::REPLACE => [
-                    'abc' => 'ABC Country',
-                    'def' => 'DEF Region',
+            ->add('region', $vb->text([
+                Required::class,
+                InArray::class => [
+                    InArray::REPLACE => [
+                        'abc' => 'ABC Country',
+                        'def' => 'DEF Region',
+                    ],
                 ],
-            ],
-        ]));
+            ]));
 
         $form->add('address', $address);
 
