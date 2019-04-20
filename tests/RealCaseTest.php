@@ -58,14 +58,17 @@ class RealCaseTest extends TestCase
             ]));
 
         $address = $vb->form()
-            ->add('zip', $vb->digits([
+            ->add('zip', $vb([
+                'type' => 'digits',
                 Required::class,
                 StringLength::class => [StringLength::LENGTH => 5],
             ]))
-            ->add('address', $vb->text([
+            ->add('address', $vb([
+                'type' => 'text',
                 Required::class,
             ]))
-            ->add('region', $vb->text([
+            ->add('region', $vb([
+                'type' => 'text',
                 Required::class,
                 InArray::class => [
                     InArray::REPLACE => [
@@ -76,12 +79,15 @@ class RealCaseTest extends TestCase
             ]));
 
         $posts = $vb->form()
-            ->add('title', $vb->text([
+            ->add('title', $vb([
+                'type' => 'text',
                 Required::class,
             ]))
-            ->add('publishedAt', $vb->date([
+            ->add('publishedAt', $vb([
+                'type' => 'date',
             ]))
-            ->add('size', $vb->integer([
+            ->add('size', $vb([
+                'type' => 'integer',
                 Required::class,
             ]));
 
@@ -116,6 +122,7 @@ class RealCaseTest extends TestCase
         $address = $results->getChild('address');
         // check address.
         $this->assertEquals('12345', $address->getChild('zip')->value());
+        $this->assertIsString($address->getChild('zip')->value());
         $this->assertEquals('city, street 101', $address->getChild('address')->value());
         $this->assertEquals('ABC Country', $address->getChild('region')->value());
 
@@ -127,10 +134,12 @@ class RealCaseTest extends TestCase
         $this->assertEquals('first title', $post0->getChild('title')->value());
         $this->assertEquals(null, $post0->getChild('publishedAt')->value());
         $this->assertEquals(1234, $post0->getChild('size')->value());
+        $this->assertIsInt($post0->getChild('size')->value());
         // check post1.
         $post1 = $posts->getChild(1);
         $this->assertEquals('more tests here', $post1->getChild('title')->value());
         $this->assertEquals('20190401', $post1->getChild('publishedAt')->value()->format('Ymd'));
         $this->assertEquals(2345, $post1->getChild('size')->value());
+        $this->assertIsInt($post1->getChild('size')->value());
     }
 }

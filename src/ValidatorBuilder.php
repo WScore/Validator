@@ -35,6 +35,15 @@ class ValidatorBuilder
 
     /**
      * @param array $options
+     * @return ValidationInterface
+     */
+    public function __invoke(array $options = []): ValidationInterface
+    {
+        return Builder::forge($this->messages, $this->typeFilter, $options);
+    }
+
+    /**
+     * @param array $options
      * @return ValidationList
      */
     public function form(array $options = []): ValidationInterface
