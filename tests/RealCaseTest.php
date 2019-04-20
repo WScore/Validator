@@ -5,8 +5,10 @@ namespace tests;
 use PHPUnit\Framework\TestCase;
 use WScore\Validation\Filters\ConfirmWith;
 use WScore\Validation\Filters\FilterArrayToValue;
+use WScore\Validation\Filters\InArray;
 use WScore\Validation\Filters\Required;
 use WScore\Validation\Filters\StringCases;
+use WScore\Validation\Filters\StringLength;
 use WScore\Validation\Interfaces\ValidationInterface;
 use WScore\Validation\ValidatorBuilder;
 use WScore\Validation\Validators\ValidationList;
@@ -30,8 +32,8 @@ class RealCaseTest extends TestCase
                 'region' => 'abc',
             ],
             'posts' => [
-                ['title' => 'first title', 'date' => '2018-04-01', 'size' => 1234],
-                ['title' => 'more tests here', 'date' => '2019-04-01', 'size' => 2345],
+                ['title' => 'first title', 'size' => 1234],
+                ['title' => 'more tests here', 'publishedAt' => '2019-04-01', 'size' => 2345],
             ],
         ];
         return $input;
@@ -56,6 +58,26 @@ class RealCaseTest extends TestCase
             FilterArrayToValue::class => ['fields' => ['y', 'm', 'd'], 'format' => '%04d-%02d-%02d'],
         ]));
 
+        $address = $vb->form()
+            ->add('zip', $vb->digits([
+                Required::class,
+                StringLength::class => [StringLength::LENGTH => 5],
+            ]))
+            ->add('address', $vb->text([
+                Required::class,
+            ]))
+        ->add('region', $vb->text([
+            Required::class,
+            InArray::class => [
+                InArray::REPLACE => [
+                    'abc' => 'ABC Country',
+                    'def' => 'DEF Region',
+                ],
+            ],
+        ]));
+
+        $form->add('address', $address);
+
         return $form;
     }
 
@@ -77,5 +99,13 @@ class RealCaseTest extends TestCase
         $birthday = $results->getChild('birthday')->value();
         $this->assertEquals('DateTimeImmutable', get_class($birthday));
         $this->assertEquals('19991231', $birthday->format('Ymd'));
+
+        /* check address input. */
+        $this->assertTrue($results->hasChild('address'));
+        $address = $results->getChild('address');
+        // check address.
+        $this->assertEquals('12345', $address->getChild('zip')->value());
+        $this->assertEquals('city, street 101', $address->getChild('address')->value());
+        $this->assertEquals('ABC Country', $address->getChild('region')->value());
     }
 }
