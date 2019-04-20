@@ -13,6 +13,11 @@ abstract class AbstractValidation implements ValidationInterface
     /**
      * @var FilterInterface[]
      */
+    protected $preFilters = [];
+
+    /**
+     * @var FilterInterface[]
+     */
     protected $filters = [];
 
     /**
@@ -44,6 +49,18 @@ abstract class AbstractValidation implements ValidationInterface
     public function setErrorMessage(string $message)
     {
         $this->error_message = $message;
+    }
+
+    /**
+     * @param FilterInterface[] $filters
+     * @return ValidationList
+     */
+    public function addPreparationFilters(FilterInterface ...$filters): ValidationInterface
+    {
+        foreach ($filters as $filter) {
+            $this->preFilters[$filter->getFilterName()] = $filter;
+        }
+        return $this;
     }
 
     /**

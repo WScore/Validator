@@ -27,9 +27,7 @@ Create a `ValidationBuilder` instance, then get validator like;
 ```php
 $vb = new ValidatorBuilder();
 $validator = $vb->text([
-    'filters' => [
-        StringLength::class => ['max' => 12],
-    ],
+    StringLength::class => ['max' => 12],
 ]);
 $result = $validator->verify($value);
 ```
@@ -129,6 +127,15 @@ $result = $form->verify($input);
 
 
 ### Validating Array
+
+To validate an array input, specify `multiple` when constructing a chain, as;
+
+```php
+$tests = $vb->text([
+    'multiple' => true, // specify multiple!
+]);
+$result = $tests->verify(['test', 'me']);
+```
 
 
 

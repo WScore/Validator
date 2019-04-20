@@ -5,6 +5,7 @@ namespace WScore\Validation\Validators;
 
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
+use WScore\Validation\Interfaces\ValidationInterface;
 
 /**
  * validates a list of input, like form input.
@@ -14,11 +15,6 @@ use WScore\Validation\Interfaces\ResultInterface;
 class ValidationList extends AbstractValidation
 {
     /**
-     * @var FilterInterface[]
-     */
-    private $preFilters = [];
-
-    /**
      * @param string $name
      * @param ValidationList $form
      * @return $this
@@ -26,20 +22,8 @@ class ValidationList extends AbstractValidation
     public function addRepeatedForm(string $name, ValidationList $form)
     {
         $repeat = new ValidationRepeat($this->message);
-        $repeat->add($name, $form);
+        $repeat->add('0', $form);
         $this->add($name, $repeat);
-        return $this;
-    }
-
-    /**
-     * @param FilterInterface[] $filters
-     * @return ValidationList
-     */
-    public function addPreFilters(FilterInterface ...$filters): self
-    {
-        foreach ($filters as $filter) {
-            $this->preFilters[$filter->getFilterName()] = $filter;
-        }
         return $this;
     }
 
@@ -51,6 +35,12 @@ class ValidationList extends AbstractValidation
     private function initialize($inputs, $name = null)
     {
         $results = new ResultList($inputs, $name);
+        // apply pre-filters.
+        foreach ($this->preFilters as $filter) {
+            if ($returned = $filter->apply($results)) {
+                break;
+            }
+        }
         return $results;
     }
 
@@ -60,12 +50,6 @@ class ValidationList extends AbstractValidation
      */
     private function validate($results)
     {
-        // apply pre-filters.
-        foreach ($this->preFilters as $filter) {
-            if ($returned = $filter->apply($results)) {
-                break;
-            }
-        }
         // perform children's validation.
         $inputs = $results->value();
         foreach ($this->children as $name => $validation) {

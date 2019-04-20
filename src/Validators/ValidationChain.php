@@ -3,98 +3,54 @@ declare(strict_types=1);
 
 namespace WScore\Validation\Validators;
 
-use WScore\Validation\Filters\Required;
 use WScore\Validation\Interfaces\ResultInterface;
 
 class ValidationChain extends AbstractValidation
 {
-    /**
-     * @var bool
-     */
-    private $multiple = false;
-
-    /**
-     * @param string|string[] $value
-     * @param string|null $name
-     * @param ResultInterface $parentResult
-     * @return ResultInterface
-     */
-    private function validateSingle($value, $name = null, $parentResult = null)
+    private function initialize($value, $name = null)
     {
         $result = new Result($value, $name);
-        $result->setParent($parentResult);
+        // apply pre-filters.
+        foreach ($this->preFilters as $filter) {
+            if ($returned = $filter->apply($result)) {
+                break;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * @param ResultInterface $result
+     * @return ResultInterface
+     */
+    private function validate(ResultInterface $result)
+    {
         $result = $this->applyFilters($result);
-        $result->finalize($this->message, $this->error_message);
 
         return $result;
     }
 
     /**
-     * @param string[] $value
-     * @param string|null $name
-     * @param ResultInterface $parentResult
-     * @return ResultInterface
-     */
-    private function validateMultiple($value, $name = null, $parentResult = null)
-    {
-        $results = new ResultList($value, $name);
-        $results->setParent($parentResult);
-        if ($this->hasFilter(Required::class)) {
-            $required = $this->getFilter(Required::class);
-            $this->removeFilter(Required::class);
-        }
-        $values = $results->value();
-        foreach ($values as $key => $val) {
-            if ('' === (string) $val) continue;
-            $result = new Result($val, $key);
-            $result = $this->applyFilters($result);
-            $results->addResult($result, $key);
-        }
-        $results->finalize($this->message, $this->error_message);
-        if (isset($required)) {
-            $required->apply($results);
-        }
-
-        return $results;
-    }
-
-    /**
      * @param string|string[] $value
-     * @return ResultInterface|ResultList
+     * @return ResultInterface
      */
     public function verify($value)
     {
-        if ($this->multiple) {
-            $result = $this->validateMultiple($value);
-        } else {
-            $result = $this->validateSingle($value);
-        }
-        return $result;
-    }
-
-    /**
-     * @param bool $multiple
-     * @return ValidationChain
-     */
-    public function setMultiple(bool $multiple = true): ValidationChain
-    {
-        $this->multiple = $multiple;
-        return $this;
+        return $this->callVerify($value);
     }
 
     /**
      * @param array|string $value
      * @param string|null $name
      * @param ResultInterface|null $parentResult
-     * @return mixed|ResultInterface
+     * @return ResultInterface
      */
     public function callVerify($value, $name = null, ResultInterface $parentResult = null)
     {
-        if ($this->multiple) {
-            $result = $this->validateMultiple($value, $name, $parentResult);
-        } else {
-            $result = $this->validateSingle($value, $name, $parentResult);
-        }
+        $result = $this->initialize($value, $name);
+        $result->setParent($parentResult);
+        $result = $this->validate($result);
+        $result->finalize($this->message, $this->error_message);
         return $result;
     }
 }

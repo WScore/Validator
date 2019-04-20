@@ -21,6 +21,12 @@ class ValidationRepeat extends AbstractValidation
     private function initialize($value, $name)
     {
         $results = new ResultList($value, $name);
+        // apply pre-filters.
+        foreach ($this->preFilters as $filter) {
+            if ($returned = $filter->apply($results)) {
+                break;
+            }
+        }
         return $results;
     }
 
@@ -33,7 +39,7 @@ class ValidationRepeat extends AbstractValidation
         $values = $results->value();
         foreach ($values as $key => $val) {
             foreach ($this->children as $name => $validation) {
-                $result = $validation->verify($val);
+                $result = $validation->callVerify($val, $name, $results);
                 $results->addResult($result, $key);
             }
         }

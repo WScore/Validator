@@ -14,7 +14,6 @@ class ValidatorBuilderTest extends TestCase
     {
         $vb = new ValidatorBuilder();
         $text = $vb->text([
-            'name' => 'tests',
             'multiple' => false,
             'filters' => [
                 AddPostfix::class => '-builder',
@@ -29,7 +28,6 @@ class ValidatorBuilderTest extends TestCase
     {
         $vb = new ValidatorBuilder();
         $text = $vb->text([
-            'name' => 'tests',
             'multiple' => true,
             'filters' => [
                 AddPostfix::class => '-builder',
