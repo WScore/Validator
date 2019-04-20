@@ -79,15 +79,11 @@ class RealCaseTest extends TestCase
             ]));
 
         $posts = $vb->form()
-            ->add('title', $vb([
-                'type' => 'text',
+            ->add('title', $vb->text([
                 Required::class,
             ]))
-            ->add('publishedAt', $vb([
-                'type' => 'date',
-            ]))
-            ->add('size', $vb([
-                'type' => 'integer',
+            ->add('publishedAt', $vb->date())
+            ->add('size', $vb->integer([
                 Required::class,
             ]));
 
