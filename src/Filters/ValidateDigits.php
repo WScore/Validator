@@ -6,25 +6,12 @@ namespace WScore\Validation\Filters;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-final class ValidateUtf8String extends AbstractFilter
+final class ValidateDigits extends AbstractFilter
 {
     use ValidateUtf8Trait;
 
-    const ERROR_INVALID_CHAR = __CLASS__ . '::INVALID_CHAR';
-    const ERROR_ARRAY_INPUT = __CLASS__ . '::ARRAY_INPUT';
-    const ERROR_INPUT_SIZE_MAX = __CLASS__ . '::INPUT_SIZE_MAX';
-
-    /**
-     * @var int
-     */
-    private $max;
-
-    /**
-     * @param array $options
-     */
-    public function __construct(array $options = [])
+    public function __construct()
     {
-        $this->max = $options['max'] ?? 1028*1028; // 1MB
         $this->setPriority(FilterInterface::PRIORITY_FILTER_SANITIZE);
     }
 
@@ -34,10 +21,15 @@ final class ValidateUtf8String extends AbstractFilter
      */
     public function apply(ResultInterface $input): ?ResultInterface
     {
-        if ($bad = $this->checkUtf8($input, $this->max)) {
+        if ($bad = $this->checkUtf8($input)) {
             return $bad;
         }
-
+        $value = $input->value();
+        if (!is_numeric($value)) {
+            $input->setValue(null);
+            return $input->failed(__CLASS__);
+        }
+        $input->setValue((string)$value);
         return null;
     }
 }

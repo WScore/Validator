@@ -29,12 +29,14 @@ $vb = new ValidatorBuilder();
 $validator = $vb->text([
     StringLength::class => ['max' => 12],
 ]);
-$result = $validator->verify($value);
 ```
+
+To create a validation, do: `$vb->{type}($option_array)`. 
 
 The `$result` contains the validation status and validated value. 
 
 ```php
+$result = $validator->verify($value);
 if ($result->isValid()) {
     echo $result->value(); // validated value
 } else {
@@ -46,17 +48,28 @@ if ($result->isValid()) {
 
 ```php
 $form = $vb->form('user')
-    ->add('name', $vb->text([Required::class]))
-    ->add('age', $vb->number())
-;
-$result = $form->verify($_POST);
+    ->add('name', $vb->text([
+        Required::class
+    ]))
+    ->add('email', $vb->email([
+        Required::class,
+        StringCases::class => [StringCases::TO_LOWER],
+        ConfirmWith::class => [ConfirmWith::FIELD => 'email_check'],
+    ]));
+$result = $form->verify([ // or simply verify $_POST here... 
+    'name' => 'MY NAME',
+    'email' => 'Email@Example.Com',
+    'email_check' => 'Email@Example.Com',
+]);
 ```
+Another way to create a validation, do: `$vb($option_array)`, where the type maybe specified in `$option_array`. 
 
 The `$result` contains child result for each element in the form. 
 
 ```php
 if ($result->isValid()) {
-    echo $result->value(); // validated values
+    echo $result->getChild('name')->value();  // 'my name'
+    echo $result->getChild('email')->value(); // 'email@example.com'
 } else {
     // access elements in the form.
     foreach($result as $key => $element) {
@@ -73,28 +86,45 @@ Simply add another form object in a form object.
 
 
 ```php
+$address = $vb->form()
+    ->add('zip', $vb([
+        'type' => 'digits',
+        Required::class,
+        StringLength::class => [StringLength::LENGTH => 5],
+    ]))
+    ->add('address', $vb([
+        'type' => 'text',
+        Required::class,
+    ]))
+    ->add('region', $vb([
+        'type' => 'text',
+        Required::class,
+        InArray::class => [
+            InArray::REPLACE => [
+                'abc' => 'ABC Country',
+                'def' => 'DEF Region',
+            ],
+        ],
+    ]));
+
 $form = $vb->form()
     ->add('name', $vb->text([Required::class]))
-    ->add('age', $vb->integer())
-    ->add('address',
-        $vb->form()
-            ->add('address', $vb->text())
-            ->add('countryCode', $vb->text([StringLength::class=>['length'=>3]]))
-    );
+    ->add('address', $address);
 ```
 
 A valid input may look like;
 
 ```php
 $input = [
-    'name' => 'test-me',
-    'age' => 25,
+    'name' => 'test-nested',
     'address' => [
-        'address' => 'PHP City, Validate St.',
-        'countryCode' => 'ABC',
+        'zip' => '12345',
+        'address' => 'city, street 101',
+        'region' => 'abc',
     ]
 ];
 $result = $form->verify($input);
+echo $result->getChild('address')->getChild('region')->value(); // 'ABC Country'
 ```
 
 ### One-To-Many Forms
@@ -102,24 +132,27 @@ $result = $form->verify($input);
 use `addRepeatedForm` method to add a one-to-many form in another form. 
 
 ```php
-$vb = new ValidatorBuilder();
+$posts = $vb->form()
+    ->add('title', $vb->text([
+        Required::class,
+    ]))
+    ->add('publishedAt', $vb->date())
+    ->add('size', $vb->integer([
+        Required::class,
+    ]));
 $form = $vb->form()
-    ->add('title', $vb->text([Required::class]))
-    ->addRepeatedForm('authors',
-        $vb->form()
-            ->add('name', $vb->text([Required::class]))
-            ->add('age', $vb->integer())
-    );
+    ->add('name', $vb->text([Required::class]))
+    ->addRepeatedForm('posts', $posts);
 ```
 
 A valid input may look like:
 
 ```php
 $input = [
-    'title' => 'New Validation',
-    'authors' => [
-        ['name' => 'name1', 'age' => '26'],
-        ['name' => 'name2', 'age' => '27'],
+    'name' => 'test-one-to-many',
+    'posts' => [
+        ['title' => 'first title', 'size' => 1234],
+        ['title' => 'more tests here', 'publishedAt' => '2019-04-01', 'size' => 2345],
     ],
 ];
 $result = $form->verify($input);

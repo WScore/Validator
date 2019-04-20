@@ -1,34 +1,43 @@
 <?php
-/** @noinspection PhpFullyQualifiedNameUsageInspection */
 
 /**
  * define filters for each validation type.
  */
+
+use WScore\Validation\Filters\DefaultValue;
+use WScore\Validation\Filters\Match;
+use WScore\Validation\Filters\ValidateDateTime;
+use WScore\Validation\Filters\ValidateDigits;
+use WScore\Validation\Filters\ValidateFilterChar;
+use WScore\Validation\Filters\ValidateFloat;
+use WScore\Validation\Filters\ValidateInteger;
+use WScore\Validation\Filters\ValidateUtf8String;
+
 return [
     'text' => [
-        \WScore\Validation\Filters\ValidateUtf8String::class,
-        \WScore\Validation\Filters\DefaultValue::class => ['default' => ''],
+        ValidateUtf8String::class,
+        DefaultValue::class => ['default' => ''],
     ],
     'integer' => [
-        \WScore\Validation\Filters\ValidateInteger::class,
-        \WScore\Validation\Filters\DefaultValue::class => ['default' => null],
+        ValidateInteger::class,
+        DefaultValue::class => ['default' => null],
     ],
     'float' => [
-        \WScore\Validation\Filters\ValidateFloat::class,
-        \WScore\Validation\Filters\DefaultValue::class => ['default' => null],
+        ValidateFloat::class,
+        DefaultValue::class => ['default' => null],
     ],
     'date' => [
-        \WScore\Validation\Filters\ValidateDateTime::class,
-        \WScore\Validation\Filters\DefaultValue::class => ['default' => null],
+        ValidateDateTime::class,
+        DefaultValue::class => ['default' => null],
     ],
     'email' => [
-        \WScore\Validation\Filters\ValidateUtf8String::class,
-        \WScore\Validation\Filters\DefaultValue::class => ['default' => ''],
-        \WScore\Validation\Filters\Match::class => ['type' => \WScore\Validation\Filters\Match::EMAIL],
+        ValidateUtf8String::class,
+        DefaultValue::class => ['default' => ''],
+        Match::class => ['type' => Match::EMAIL],
     ],
     'digits' => [
-        \WScore\Validation\Filters\ValidateFilterChar::class,
-        \WScore\Validation\Filters\DefaultValue::class => ['default' => ''],
+        ValidateDigits::class,
+        DefaultValue::class => ['default' => ''],
     ],
     'datetime' => [],
     'YearMonth' => [],

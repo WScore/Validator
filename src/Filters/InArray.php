@@ -8,6 +8,10 @@ use WScore\Validation\Interfaces\ResultInterface;
 
 final class InArray extends AbstractFilter
 {
+    const CHOICES = 'choices';
+    const REPLACE = 'replace';
+    const STRICT = 'strict';
+
     /**
      * @var array
      */
@@ -28,9 +32,9 @@ final class InArray extends AbstractFilter
      */
     public function __construct($options = [])
     {
-        $this->choices = $options['choices'] ?? [];
-        $this->replace = $options['replace'] ?? false;
-        $this->strict = $options['strict'] ?? true;
+        $this->choices = $options[self::CHOICES] ?? [];
+        $this->replace = $options[self::REPLACE] ?? null;
+        $this->strict = $options[self::STRICT] ?? true;
         $this->setPriority(FilterInterface::PRIORITY_FILTER_MODIFIER);
     }
 
@@ -41,13 +45,17 @@ final class InArray extends AbstractFilter
     public function apply(ResultInterface $input): ?ResultInterface
     {
         $value = $input->value();
-        if (in_array($value, $this->choices, $this->strict)) {
-            if ($this->replace) {
-                $input->setValue($this->choices[$value]);
+        if (isset($this->replace)) {
+            if (array_key_exists($value, $this->replace)) {
+                $input->setValue($this->replace[$value]);
+                return null;
             }
+            return $input->failed(__CLASS__);
+        }
+        if (in_array($value, $this->choices, $this->strict)) {
             return null;
         } else {
-            return $value;
+            return $input->failed(__CLASS__);
         }
     }
 }

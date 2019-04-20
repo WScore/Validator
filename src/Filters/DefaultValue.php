@@ -35,6 +35,9 @@ class DefaultValue extends AbstractFilter
     public function apply(ResultInterface $input): ?ResultInterface
     {
         $value = $input->value();
+        if (is_object($value)) {
+            return null;
+        }
         if ('' !== (string) $value) {
             return null;
         }

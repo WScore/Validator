@@ -1,35 +1,46 @@
 <?php
-/** @noinspection PhpFullyQualifiedNameUsageInspection */
 
 /**
  * define filters for each validation type.
  */
+
+use WScore\Validation\Filters\DefaultValue;
+use WScore\Validation\Filters\Match;
+use WScore\Validation\Filters\ValidateDateTime;
+use WScore\Validation\Filters\ValidateDigits;
+use WScore\Validation\Filters\ValidateFloat;
+use WScore\Validation\Filters\ValidateInteger;
+use WScore\Validation\Filters\ValidateMbString;
+
 return [
     'text' => [
-        \WScore\Validation\Filters\FilterMbString::class => ['type' => \WScore\Validation\Filters\FilterMbString::MB_ZENKAKU],
-        \WScore\Validation\Filters\ValidateUtf8String::class,
-        \WScore\Validation\Filters\DefaultValue::class => ['default' => ''],
+        ValidateMbString::class => ['type' => ValidateMbString::MB_ZENKAKU],
+        DefaultValue::class => ['default' => ''],
     ],
     'integer' => [
-        \WScore\Validation\Filters\FilterMbString::class => ['type' => \WScore\Validation\Filters\FilterMbString::MB_HANKAKU],
-        \WScore\Validation\Filters\ValidateInteger::class,
-        \WScore\Validation\Filters\DefaultValue::class => ['default' => null],
+        ValidateMbString::class => ['type' => ValidateMbString::MB_HANKAKU],
+        ValidateInteger::class,
+        DefaultValue::class => ['default' => null],
     ],
     'float' => [
-        \WScore\Validation\Filters\FilterMbString::class => ['type' => \WScore\Validation\Filters\FilterMbString::MB_HANKAKU],
-        \WScore\Validation\Filters\ValidateFloat::class,
-        \WScore\Validation\Filters\DefaultValue::class => ['default' => null],
+        ValidateMbString::class => ['type' => ValidateMbString::MB_HANKAKU],
+        ValidateFloat::class,
+        DefaultValue::class => ['default' => null],
     ],
     'date' => [
-        \WScore\Validation\Filters\FilterMbString::class => ['type' => \WScore\Validation\Filters\FilterMbString::MB_HANKAKU],
-        \WScore\Validation\Filters\ValidateDateTime::class,
-        \WScore\Validation\Filters\DefaultValue::class => ['default' => null],
+        ValidateMbString::class => ['type' => ValidateMbString::MB_HANKAKU],
+        ValidateDateTime::class,
+        DefaultValue::class => ['default' => null],
     ],
     'email' => [
-        \WScore\Validation\Filters\FilterMbString::class => ['type' => \WScore\Validation\Filters\FilterMbString::MB_HANKAKU],
-        \WScore\Validation\Filters\ValidateUtf8String::class,
-        \WScore\Validation\Filters\DefaultValue::class => ['default' => ''],
-        \WScore\Validation\Filters\Match::class => ['type' => \WScore\Validation\Filters\Match::EMAIL],
+        ValidateMbString::class => ['type' => ValidateMbString::MB_HANKAKU],
+        DefaultValue::class => ['default' => ''],
+        Match::class => ['type' => Match::EMAIL],
+    ],
+    'digits' => [
+        ValidateMbString::class => ['type' => ValidateMbString::MB_HANKAKU],
+        ValidateDigits::class,
+        DefaultValue::class => ['default' => ''],
     ],
     'datetime' => [],
     'YearMonth' => [],

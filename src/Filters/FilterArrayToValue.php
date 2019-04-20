@@ -18,8 +18,6 @@ use WScore\Validation\Interfaces\ResultInterface;
  */
 final class FilterArrayToValue extends AbstractFilter
 {
-    const MISSING_FIELD = __CLASS__ . '::MISSING_FIELD';
-
     /**
      * @var array
      */

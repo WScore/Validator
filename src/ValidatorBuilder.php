@@ -35,6 +35,15 @@ class ValidatorBuilder
 
     /**
      * @param array $options
+     * @return ValidationInterface
+     */
+    public function __invoke(array $options = []): ValidationInterface
+    {
+        return Builder::forge($this->messages, $this->typeFilter, $options);
+    }
+
+    /**
+     * @param array $options
      * @return ValidationList
      */
     public function form(array $options = []): ValidationInterface
@@ -93,5 +102,19 @@ class ValidatorBuilder
     public function integer(array $options = []): ValidationInterface
     {
         return $this->buildType($options, 'integer');
+    }
+
+    /**
+     * @param array $options
+     * @return ValidationChain|ValidationRepeat
+     */
+    public function date(array $options = []): ValidationInterface
+    {
+        return $this->buildType($options, 'date');
+    }
+
+    public function digits(array $options = []): ValidationInterface
+    {
+        return $this->buildType($options, 'digits');
     }
 }
