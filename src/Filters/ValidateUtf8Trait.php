@@ -22,15 +22,15 @@ trait ValidateUtf8Trait
         $value = $input->value();
         if (is_array($value)) {
             $input->setValue(null);
-            return $input->failed(ValidateUtf8String::ARRAY_INPUT);
+            return $input->failed(ValidateUtf8String::ERROR_ARRAY_INPUT);
         }
         if (!mb_check_encoding($value, 'UTF-8')) {
             $input->setValue(null);
-            return $input->failed(ValidateUtf8String::INVALID_CHAR);
+            return $input->failed(ValidateUtf8String::ERROR_INVALID_CHAR);
         }
         if (strlen((string) $value) > $max) {
             $input->setValue(null);
-            return $input->failed(ValidateUtf8String::INPUT_SIZE_MAX, ['max' => $max]);
+            return $input->failed(ValidateUtf8String::ERROR_INPUT_SIZE_MAX, ['max' => $max]);
         }
         return null;
     }

@@ -19,8 +19,8 @@ return [
     Messages::class => "validation failed",
 
     // fail for invalid charset string.
-    ValidateUtf8String::INVALID_CHAR => 'The input is invalid UTF-8 character.',
-    ValidateUtf8String::ARRAY_INPUT => 'The input is an array. ',
+    ValidateUtf8String::ERROR_INVALID_CHAR => 'The input is invalid UTF-8 character.',
+    ValidateUtf8String::ERROR_ARRAY_INPUT => 'The input is an array. ',
     ValidateInteger::class => 'The input is not a valid integer. ',
     ValidateFloat::class => 'The input is not a valid float. ',
     ValidateDateTime::class => 'Invalid DateTime input value.',

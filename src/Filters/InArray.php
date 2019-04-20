@@ -47,7 +47,7 @@ final class InArray extends AbstractFilter
             }
             return null;
         } else {
-            return $value;
+            return $input;
         }
     }
 }

@@ -10,9 +10,6 @@ final class ValidateInteger extends AbstractFilter
 {
     use ValidateUtf8Trait;
 
-    const INVALID_CHAR = __CLASS__ . '::INVALID_CHAR';
-    const ARRAY_INPUT = __CLASS__ . '::ARRAY_INPUT';
-
     public function __construct()
     {
         $this->setPriority(FilterInterface::PRIORITY_FILTER_SANITIZE);

@@ -19,8 +19,8 @@ return [
     Messages::class => "入力内容を確認してください。",
 
     // fail for invalid charset string.
-    ValidateUtf8String::INVALID_CHAR => '不正な文字列です。',
-    ValidateUtf8String::ARRAY_INPUT => '入力が配列です。',
+    ValidateUtf8String::ERROR_INVALID_CHAR => '不正な文字列です。',
+    ValidateUtf8String::ERROR_ARRAY_INPUT => '入力が配列です。',
     ValidateInteger::class => '整数を入力してください。',
     ValidateFloat::class => '数値を入力してください。',
     ValidateDateTime::class => '日付と認識できません。',

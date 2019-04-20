@@ -10,9 +10,9 @@ final class ValidateUtf8String extends AbstractFilter
 {
     use ValidateUtf8Trait;
 
-    const INVALID_CHAR = __CLASS__ . '::INVALID_CHAR';
-    const ARRAY_INPUT = __CLASS__ . '::ARRAY_INPUT';
-    const INPUT_SIZE_MAX = __CLASS__ . '::INPUT_SIZE_MAX';
+    const ERROR_INVALID_CHAR = __CLASS__ . '::INVALID_CHAR';
+    const ERROR_ARRAY_INPUT = __CLASS__ . '::ARRAY_INPUT';
+    const ERROR_INPUT_SIZE_MAX = __CLASS__ . '::INPUT_SIZE_MAX';
 
     /**
      * @var int
