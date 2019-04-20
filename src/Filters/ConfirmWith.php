@@ -9,8 +9,9 @@ use WScore\Validation\Interfaces\ResultInterface;
 
 final class ConfirmWith extends AbstractFilter
 {
-    const MISSING = __CLASS__ . '::MISSING';
-    const DIFFER = __CLASS__ . '::DIFFER';
+    const FIELD = 'field';
+    const ERROR_MISSING = __CLASS__ . '::MISSING';
+    const ERROR_DIFFER = __CLASS__ . '::DIFFER';
 
     /**
      * @var string
@@ -22,7 +23,7 @@ final class ConfirmWith extends AbstractFilter
      */
     public function __construct($option = [])
     {
-        $this->confirmWith = $option['with'] ?? null;
+        $this->confirmWith = $option[self::FIELD] ?? null;
         $this->setPriority(FilterInterface::PRIORITY_VALIDATIONS);
     }
 
@@ -48,12 +49,12 @@ final class ConfirmWith extends AbstractFilter
      */
     private function confirmValue(ResultInterface $input, string $confirmValue)
     {
-        if ($confirmValue === (string)$input->value()) {
+        if ($confirmValue === (string)$input->getOriginalValue()) {
             return null;
         }
         if ($this->isEmpty($confirmValue)) {
-            return $input->failed(self::MISSING);
+            return $input->failed(self::ERROR_MISSING);
         }
-        return $input->failed(self::DIFFER);
+        return $input->failed(self::ERROR_DIFFER);
     }
 }

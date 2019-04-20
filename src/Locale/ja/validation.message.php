@@ -40,6 +40,6 @@ return [
     Required::class => "必須項目です。",
 
     // ConfirmWith
-    ConfirmWith::MISSING => '確認用の項目に入力してください。',
-    ConfirmWith::DIFFER => '確認用の項目と異なります。',
+    ConfirmWith::ERROR_MISSING => '確認用の項目に入力してください。',
+    ConfirmWith::ERROR_DIFFER => '確認用の項目と異なります。',
 ];

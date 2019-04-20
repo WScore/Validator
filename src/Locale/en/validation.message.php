@@ -40,8 +40,8 @@ return [
     Required::class => "The input field is required.",
 
     // ConfirmWith
-    ConfirmWith::MISSING => 'The field for confirmation is empty.',
-    ConfirmWith::DIFFER => 'The input differs from confirmation.',
+    ConfirmWith::ERROR_MISSING => 'The field for confirmation is empty.',
+    ConfirmWith::ERROR_DIFFER => 'The input differs from confirmation.',
 ];
 
 /*
