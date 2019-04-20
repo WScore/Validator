@@ -10,6 +10,8 @@ use WScore\Validation\Interfaces\ResultInterface;
 
 final class ValidateDateTime extends AbstractFilter
 {
+    use ValidateUtf8Trait;
+
     /**
      * @var string
      */
@@ -34,6 +36,9 @@ final class ValidateDateTime extends AbstractFilter
         $value = $input->value();
         if ($this->isEmpty($value)) {
             return null;
+        }
+        if ($bad = $this->checkUtf8($input)) {
+            return $bad;
         }
         try {
             $date = isset($this->format)
