@@ -22,7 +22,7 @@ Simple Usage
 
 ### Validating a Value
 
-Create a `ValidationBuilder` instance, then get validator like;
+Create a `ValidationBuilder` instance, then create a validator;
 
 ```php
 $vb = new ValidatorBuilder();
@@ -31,7 +31,13 @@ $validator = $vb->text([
 ]);
 ```
 
-To create a validation, do: `$vb->{type}($option_array)`. 
+- To create a validation, do: `$vb->{type}($option_array)`. 
+  - `type`: type of validation, as defined in the subsequent section. 
+  - `option_array`: array of options. `StringLength` is a filter (also called validator). 
+    - `multiple`: boolean. optional. to validate against a multiple (i.e. array) value. 
+    - `type`: string. optional. can specify type in the option as well. 
+    - `filters`: array. deprecated way to specify filters. 
+    - all other options are considered as filters. 
 
 The `$result` contains the validation status and validated value. 
 
@@ -47,9 +53,10 @@ if ($result->isValid()) {
 ### Validating a Form Input
 
 ```php
-$form = $vb->form('user')
+$form = $vb->form()
     ->add('name', $vb->text([
-        Required::class
+        Required::class,
+        StringCases::class => [StringCases::TO_LOWER, StringCases::UC_WORDS],
     ]))
     ->add('email', $vb->email([
         Required::class,
@@ -68,7 +75,7 @@ The `$result` contains child result for each element in the form.
 
 ```php
 if ($result->isValid()) {
-    echo $result->getChild('name')->value();  // 'my name'
+    echo $result->getChild('name')->value();  // 'My Name'
     echo $result->getChild('email')->value(); // 'email@example.com'
 } else {
     // access elements in the form.
@@ -159,7 +166,7 @@ $result = $form->verify($input);
 ```
 
 
-### Validating Array
+### Validating an Array
 
 To validate an array input, specify `multiple` when constructing a chain, as;
 
@@ -191,90 +198,90 @@ The folder must contain: `validation.message.php` and `validation.types.php` fil
 
 ### `validation.message.php`
 
+A php file that returns an array of error messages, 
+
+```php
+return [
+    'filter_error_type' => 'error message here',
+    ...
+];
+```
 
 ### `validation.types.php`
 
+A php file that returns an array of filters for each type, 
+
+```php
+return [
+    'type-name' => [
+        'filter-name', 
+        'filter-with-option' => ['options' => 'here'],
+    ], ...
+];
+```
 
 Predefined Types
-================
+----------
 
 t.b.w.
 
-Text Types
-----------
-
 ### Text
 
-|filter|option|
-|----|----|
-|ValidateUtf8String|--|
-|DefaultEmpty|--|
+- Validates a valid UTF-8 string, maximum 1MB of `string`. 
+- predefined filters: 
+  - ValidateUtf8String
+  - DefaultValue: empty string
 
 ### email
 
-|filter|option|
-|----|----|
-|ValidateUtf8String|--|
-|DefaultEmpty|--|
-|Match|type: Match::EMAIL|
+- Validates a valid UTF-8 string, 
+  maximum 1MB of input, and a valid email `string`. 
+- predefined filters: 
+  - ValidateUtf8String
+  - DefaultValue: empty string
+  - Match: EMAIL
 
 ### integer
 
-|filter|option|
-|----|----|
-|ValidateInteger|--|
-|DefaultNull|--|
+- Validates a valid UTF-8 numeric string, 
+  and casted to an `integer`. 
+- predefined filters: 
+  - ValidateInteger
+  - DefaultValue: NULL
 
 ### float
 
-|filter|option|
-|----|----|
-|ValidateFloat|--|
-|DefaultNull|--|
-
-### tel
-
-DateTime Types
---------------
+- Validates a valid UTF-8 numeric string, 
+  and casted to a `float`. 
+- predefined filters: 
+  - ValidateFloat
+  - DefaultValue: NULL
 
 ### date
 
-|filter|option|
-|----|----|
-|ValidateDateTime|--|
-|DefaultNull|--|
+- Validates a valid UTF-8 date format string, 
+  and convert to a `\DateTimeImmutable` object. 
+- predefined filters: 
+  - ValidateDateTime
+  - DefaultValue: NULL
+
+### digits
+
+- Validates a valid UTF-8 string with digits only, 
+  and casted to a `string`. 
+- predefined filters: 
+  - ValidateDateTime
+  - DefaultValue: empty string
 
 ### datetime
 ### month
 ### time
 ### timeHi
-
-multiple input
---------------
-
 ### dateYMD
 
 
 Predefined Filters
-==================
-
-t.b.w.
-
-about priorities
-- Filters that may change the value.
-    - FILTER
-    - VALIDATOR
-    - CONVERTER
-    - DEFAULT
-- Filters that only validates the format.
-    - REQUIRED
-    - CHECKS
-    - USER_CHECK
-
-Filters
 -------
-
-`Filter*` filters may change the value but no validity check. 
 
 ### FilterArrayToValue
 
@@ -293,7 +300,7 @@ $filter = new FilterArrayToValue([
 ]);
 ```
 
-### FilterMbString
+### ValidateMbString
 
 - convert Japanese kana style. 
 - arguments: `['type' => 'convert']`
@@ -312,11 +319,6 @@ $filter = new FilterMbString(['type' => FilterMbString::MB_HANKAKU]);
 $result = $filter(new Result('ｚｅｎｋａｋｕ＠ｅｘａｍｐｌｅ．ｃｏｍ'));
 echo $result->value(); // zenkaku@example.com
 ```
-
-Validators
----------
-
-`Validate` filters may change the value as well as checks for the validity of the input. 
 
 ### ValidateValidUtf8
 
@@ -350,59 +352,48 @@ $date = $result->value(); // should be DateTimeImmutable object.
 - errors: if the value is not numeric, or the value is an array. 
 - arguments: none.
 
-
-Converters
-----------
-
-`Converter` filter may change the value. 
-
-### ConvertStringCases
-### ConvertTrim
-
-Default Checks
---------------
-
 ### DefaultValue
 
 - set value to a default `$default` if the input is null or empty. 
 - arguments: `['default' => 'some value']`
   - default: optional. if not set uses empty string ('').
 
-### DefaultNull
-
-- set value to `null` if the input is null or empty. 
-- arguments: none. 
-
-### DefaultEmpty
-
-- set value to `""` (empty string) if the input is null or empty. 
-- arguments: none. 
-
-
-Require Checks
---------------
-
 ### Required
 
 - validates the input value is not null nor empty string. 
 - aborts further validations if failed. 
-- arguments: none. 
+- arguments: `[Required::NULLABLE => true]`. 
+  - `Required::NULLABLE`: optional, default false. breaks validation chain 
+    if the value is empty (i.e. either null, empty string, or empty array).
 
 ### RequiredIf
 
 - validates the input value is not null nor empty string, 
   if the name `field` is set, or if `field` value is `value`.
 - aborts further validations if failed. 
-- arguments: `['field' => '', 'value' => '']`
-  - field: required. set other field name to refer to. 
-  - value: optional. set value (or values in array) if the other field has the specified value. 
+- arguments: `[RequiredIf::FIELD => 'other', RequiredIf::VALUE => 'val']`
+  - `RequiredIf::FIELD`: string. required. set other field name to refer to. 
+  - `RequiredIf::VALUE`: string, integer, float, or array. optional. 
+     set value (or values in array) if the other field has the specified value. 
+  - `Required::NULLABLE`: optional, default false. breaks validation chain 
+    if the value is empty (i.e. either null, empty string, or empty array).
 
 ```php
-$required = new RequiredIf(['field' => 'type', 'value' => 'check-me']);
+$required = new RequiredIf([
+    RequiredIf::FIELD => 'type', 
+    RequiredIf::VALUE => 'check-me',
+    RequiredIf::NULLABLE => true,
+]);
 ```
 
-Other Checks
-------------
+### Nullable
+
+- breaks validation chain/loop if the input value is empty. 
+  stops further validations which may fail if the input is an empty value. 
+  thus, this filter allows NULLABLE value, regardless of the subsequent filter. 
+- use it for non-required field but have certain filters (RegEx) which may fail if the input is empty. 
+- arguments: none.
+- [ ] not tested, yet. 
 
 ### StringLength
 
@@ -427,11 +418,11 @@ Other Checks
 ### InArray
 
 - checks the input value is defined in the given arrays. 
-- arguments: `['choices' => ['a' => 'A', 'b' => 'B',...], 'replace' => false, 'strict' => true]`
-  - choices: required. specify the available choices as hash array.
-  - replace: optional. replace the value with the choice. default false. 
+- arguments: `['choices' => ['A', 'B',...]` or `['replace' => ['a' => 'A', 'b' => 'B']]`. 
+  must specify either `choices` or `replace` option. 
+  - choices: optional array. specify the available choices as an array.
+  - replace: optional hashed array. replace the value. 
   - strict: optional. strict option when checking the value. default true. 
-- [ ] not tested, yet.
 
 ```php
 $filter = new InArray([
@@ -447,10 +438,10 @@ $filter = new InArray([
 ### RegEx
 
 - checks for regular expression. 
-- arguments: `['pattern' => '[A-D][0-9]{1}', 'message' => 'error message']`
-  - pattern: required. set regular expression pattern. 
+- arguments: `[RegEx::PATTERN => '[A-D][0-9]{1}', RegEx::MESSAGE => 'error message']`
+  - `RegEx::PATTERN`: required. set regular expression pattern. 
     the pattern is valuated as `/\A{$pattern}\z/us`. 
-  - message: optional. set error message. 
+  - `RegEx::MESSAGE`: optional. set error message. 
 - [ ] not tested, yet.
 
 ### Match
@@ -467,7 +458,7 @@ $filter = new InArray([
   - `Match::MAC`: validates MAC address.
 - [ ] not tested, yet.
 
-### code
-### MbCheckKana
-### Email
+### StringCases
+### StringTrim
+### ValidateDigits
 

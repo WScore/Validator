@@ -3,18 +3,36 @@ declare(strict_types=1);
 
 namespace WScore\Validation\Filters;
 
+use InvalidArgumentException;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
 final class RequiredIf extends AbstractFilter
 {
-    private $name;
+    const FIELD = 'field';
+    const VALUE = 'value';
+    const NULLABLE = 'nullable';
+
+    /**
+     * @var string|null
+     */
+    private $field;
+
+    /**
+     * @var string|int|array|null
+     */
     private $value;
+
+    /**
+     * @var bool|mixed|null
+     */
+    private $nullable = false;
 
     public function __construct($options = [])
     {
-        $this->name = $options['field'] ?? null;
-        $this->value = $options['value'] ?? null;
+        $this->field = $options[self::FIELD] ?? null;
+        $this->value = $options[self::VALUE] ?? null;
+        $this->nullable = $options[self::NULLABLE] ?? null;
         $this->setPriority(FilterInterface::PRIORITY_REQUIRED_CHECK);
     }
 
@@ -24,42 +42,40 @@ final class RequiredIf extends AbstractFilter
      */
     public function apply(ResultInterface $input): ?ResultInterface
     {
-        $isRequired = $this->checkCondition($input);
-        if (!$isRequired) {
+        $value = $input->value();
+        if ($this->hasValue($value)) {
             return null;
         }
-        $value = $input->value();
-        if ($value === null || '' === (string)$value || empty($value)) {
+        $isRequired = $this->checkCondition($input);
+        if ($isRequired) {
             return $input->failed(Required::class);
+        }
+        if ($this->nullable) {
+            return $input;
         }
         return null;
     }
 
     private function checkCondition(ResultInterface $input): bool
     {
-        if (!$this->name) {
+        if (!$this->field) {
             return true;
         }
-        $value = $input->getParent()->value()[$this->name] ?? null;
-        if ('' === (string)$this->value) {
-            if ('' === (string)$value) {
-                return false;
-            }
-            return true;
+        $value = $input->getParent()->value()[$this->field] ?? null;
+
+        // case when value condition is not specified.
+        if ($this->isEmpty($this->value)) {
+            return $this->hasValue($value);
         }
+        // when input value is equal to the value condition.
         if (is_string($this->value)) {
-            if ($this->value !== $value) {
-                return false;
-            }
-            return true;
+            return $this->value === $value;
         }
+        // when input value is one of the value condition.
         if (is_array($this->value)) {
-            if (!in_array($value, $this->value)) {
-                return false;
-            }
-            return true;
+            return in_array($value, $this->value);
         }
-        return true;
+        throw new InvalidArgumentException('value condition must be a string or an array.');
     }
 
     /**

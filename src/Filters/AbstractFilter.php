@@ -66,4 +66,9 @@ abstract class AbstractFilter implements FilterInterface
         }
         return false;
     }
+
+    protected function hasValue($value): bool
+    {
+        return !$this->isEmpty($value);
+    }
 }
