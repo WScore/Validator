@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace tests\Filters;
 
+use WScore\Validation\Filters\RegEx;
 use WScore\Validation\Filters\Required;
 use PHPUnit\Framework\TestCase;
 use WScore\Validation\Locale\Messages;
+use WScore\Validation\ValidatorBuilder;
 use WScore\Validation\Validators\Result;
 
 class RequiredTest extends TestCase
@@ -38,5 +40,26 @@ class RequiredTest extends TestCase
         $required->apply($result);
         $result->finalize(Messages::create('en'));
         $this->assertEquals('The input field is required.', $result->getErrorMessage()[0]);
+    }
+
+    public function testWithOutNullable()
+    {
+        $v = (new ValidatorBuilder())
+            ->text([
+                RegEx::class => [RegEx::PATTERN => '[0-3]{2}'],
+            ]);
+        $result = $v->verify('');
+        $this->assertFalse($result->isValid());
+    }
+
+    public function testNullable()
+    {
+        $v = (new ValidatorBuilder())
+            ->text([
+                Required::class => [Required::NULLABLE => true],
+                RegEx::class => [RegEx::PATTERN => '[0-3]{2}'],
+            ]);
+        $result = $v->verify('');
+        $this->assertTrue($result->isValid());
     }
 }

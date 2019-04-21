@@ -69,6 +69,6 @@ class FilterDateTimeTest extends TestCase
         $this->assertNull($input->value());
 
         $input->finalize(Messages::create());
-        $this->assertEquals(['Invalid DateTime input value.'], $input->getErrorMessage());
+        $this->assertEquals(['The input is invalid UTF-8 character.'], $input->getErrorMessage());
     }
 }

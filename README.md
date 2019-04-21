@@ -362,7 +362,9 @@ $date = $result->value(); // should be DateTimeImmutable object.
 
 - validates the input value is not null nor empty string. 
 - aborts further validations if failed. 
-- arguments: none. 
+- arguments: `[Required::NULLABLE => true]`. 
+  - `Required::NULLABLE`: optional, default false. breaks validation chain 
+    if the value is empty (i.e. either null, empty string, or empty array).
 
 ### RequiredIf
 
@@ -420,10 +422,10 @@ $filter = new InArray([
 ### RegEx
 
 - checks for regular expression. 
-- arguments: `['pattern' => '[A-D][0-9]{1}', 'message' => 'error message']`
-  - pattern: required. set regular expression pattern. 
+- arguments: `[RegEx::PATTERN => '[A-D][0-9]{1}', RegEx::MESSAGE => 'error message']`
+  - `RegEx::PATTERN`: required. set regular expression pattern. 
     the pattern is valuated as `/\A{$pattern}\z/us`. 
-  - message: optional. set error message. 
+  - `RegEx::MESSAGE`: optional. set error message. 
 - [ ] not tested, yet.
 
 ### Match

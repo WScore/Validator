@@ -9,6 +9,8 @@ use WScore\Validation\Interfaces\ResultInterface;
 
 final class RegEx extends AbstractFilter
 {
+    const PATTERN = 'pattern';
+    const MESSAGE = 'message';
     /**
      * @var string
      */
@@ -24,8 +26,8 @@ final class RegEx extends AbstractFilter
      */
     public function __construct($options = [])
     {
-        $this->pattern = $options['pattern'] ?? null;
-        $this->message = $options['message'] ?? null;
+        $this->pattern = $options[self::PATTERN] ?? null;
+        $this->message = $options[self::MESSAGE] ?? null;
         $this->setPriority(FilterInterface::PRIORITY_VALIDATIONS);
         if (!$this->pattern) {
             throw new InvalidArgumentException('pattern not set in Match filter');
@@ -43,6 +45,6 @@ final class RegEx extends AbstractFilter
         if (preg_match($pattern, $value)) {
             return null;
         }
-        return $input->failed(__CLASS__, ['pattern' => $pattern], $this->message);
+        return $input->failed(__CLASS__, [self::PATTERN => $pattern], $this->message);
     }
 }
