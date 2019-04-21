@@ -386,6 +386,15 @@ $required = new RequiredIf([
 ]);
 ```
 
+### Nullable
+
+- breaks validation chain/loop if the input value is empty. 
+  stops further validations which may fail if the input is an empty value. 
+  thus, this filter allows NULLABLE value, regardless of the subsequent filter. 
+- use it for non-required field but have certain filters (RegEx) which may fail if the input is empty. 
+- arguments: none.
+- [ ] not tested, yet. 
+
 ### StringLength
 
 - checks the input value's character length. 
