@@ -16,7 +16,7 @@ class StringLengthTest extends TestCase
 
     private function buildStringLength(): StringLength
     {
-        return new StringLength(['min' => 3, 'max' => 6]);
+        return new StringLength([StringLength::MIN => 3, StringLength::MAX => 6]);
     }
 
     public function test()
@@ -30,7 +30,7 @@ class StringLengthTest extends TestCase
     public function testLengthFails()
     {
         $result = $this->buildResult();
-        $length = new StringLength(['length' => 8]);
+        $length = new StringLength([StringLength::LENGTH => 8]);
         $length->apply($result);
         $result->finalize(Messages::create('en'));
         $this->assertFalse($result->isValid());
@@ -40,7 +40,7 @@ class StringLengthTest extends TestCase
     public function testLengthSucceeds()
     {
         $result = $this->buildResult();
-        $length = new StringLength(['length' => 5]);
+        $length = new StringLength([StringLength::LENGTH => 5]);
         $length->apply($result);
         $result->finalize(Messages::create('en'));
         $this->assertTrue($result->isValid());

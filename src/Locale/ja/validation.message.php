@@ -5,7 +5,7 @@
  */
 
 use WScore\Validation\Filters\ConfirmWith;
-use WScore\Validation\Filters\Match;
+use WScore\Validation\Filters\ValidateMatch;
 use WScore\Validation\Filters\Required;
 use WScore\Validation\Filters\StringLength;
 use WScore\Validation\Filters\ValidateDateTime;
@@ -31,10 +31,10 @@ return [
     StringLength::MIN => "文字数は {min} 文字以上で入力してください。",
 
     // error messages for Match
-    Match::IP => '正しいIPアドレスを入力してください。',
-    Match::EMAIL => '正しいメールアドレスを入力してください。',
-    Match::URL => '正しいURLを入力してください。',
-    Match::MAC => '正しいMACアドレスを入力してください。',
+    ValidateMatch::IP => '正しいIPアドレスを入力してください。',
+    ValidateMatch::EMAIL => '正しいメールアドレスを入力してください。',
+    ValidateMatch::URL => '正しいURLを入力してください。',
+    ValidateMatch::MAC => '正しいMACアドレスを入力してください。',
 
     // required value.
     Required::class => "必須項目です。",

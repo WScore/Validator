@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WScore\Validation\Filters;
 
-use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
 /**
@@ -19,7 +18,6 @@ final class Nullable extends AbstractFilter
 {
     public function __construct()
     {
-        $this->setPriority(FilterInterface::PRIORITY_REQUIRED_CHECK);
     }
 
     /**

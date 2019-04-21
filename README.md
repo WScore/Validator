@@ -363,7 +363,7 @@ $date = $result->value(); // should be DateTimeImmutable object.
 - validates the input value is not null nor empty string. 
 - aborts further validations if failed. 
 - arguments: `[Required::NULLABLE => true]`. 
-  - `Required::NULLABLE`: optional, default false. breaks validation chain 
+  - `Required::NULLABLE`: deprecated. use `Nullable` instead. default false. breaks validation chain 
     if the value is empty (i.e. either null, empty string, or empty array).
 
 ### RequiredIf
@@ -375,7 +375,7 @@ $date = $result->value(); // should be DateTimeImmutable object.
   - `RequiredIf::FIELD`: string. required. set other field name to refer to. 
   - `RequiredIf::VALUE`: string, integer, float, or array. optional. 
      set value (or values in array) if the other field has the specified value. 
-  - `Required::NULLABLE`: optional, default false. breaks validation chain 
+  - `Required::NULLABLE`: deprecated. use `Nullable` instead. default false. breaks validation chain 
     if the value is empty (i.e. either null, empty string, or empty array).
 
 ```php
@@ -393,7 +393,6 @@ $required = new RequiredIf([
   thus, this filter allows NULLABLE value, regardless of the subsequent filter. 
 - use it for non-required field but have certain filters (RegEx) which may fail if the input is empty. 
 - arguments: none.
-- [ ] not tested, yet. 
 
 ### StringLength
 
@@ -444,18 +443,16 @@ $filter = new InArray([
   - `RegEx::MESSAGE`: optional. set error message. 
 - [ ] not tested, yet.
 
-### Match
+### ValidateMatch
 
-- validates input string with predefined types using `filter_var`. 
+- validates input string for valid UTF-8 and predefined types using `filter_var`. 
 - as a default, error message is selected based on the type. 
-- arguments: `['type' => 'filter_var_filter', 'message' => 'error message']`
-  - type: required. 
-  - message: optional. set error message when failed to validate. 
-- types are:
-  - `Match::IP`: validates IP address. 
-  - `Match::EMAIL`: validates email address. 
-  - `Match::URL`: validates URL.
-  - `Match::MAC`: validates MAC address.
+- arguments: `[Match::TYPE=> 'filter_var_filter']`
+  - `Match::TYPE`: required. string from available type below:
+      - `Match::IP`: validates IP address. 
+      - `Match::EMAIL`: validates email address. 
+      - `Match::URL`: validates URL.
+      - `Match::MAC`: validates MAC address.
 - [ ] not tested, yet.
 
 ### StringCases

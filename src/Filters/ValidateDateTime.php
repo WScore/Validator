@@ -5,7 +5,6 @@ namespace WScore\Validation\Filters;
 
 use DateTimeImmutable;
 use Exception;
-use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
 final class ValidateDateTime extends AbstractFilter
@@ -24,7 +23,6 @@ final class ValidateDateTime extends AbstractFilter
     public function __construct($option = [])
     {
         $this->format = $option['format'] ?? null;
-        $this->setPriority(FilterInterface::PRIORITY_FILTER_SANITIZE);
     }
 
     /**

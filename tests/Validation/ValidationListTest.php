@@ -74,13 +74,12 @@ class ValidationListTest extends TestCase
     public function testValidationsErrorMessage()
     {
         $list = $this->buildTestList();
-        $list->get('test')->addFilters([new Required()]);
-        $list->get('more')->addFilters([new Required()]);
+        $list->get('test')->getFilters()->prepend(new Required());
+        $list->get('more')->getFilters()->prepend(new Required());
         $list->setErrorMessage('list failed');
         $input = ['test' => '', 'more' => 'test2'];
         $result = $list->verify($input);
 
-        $this->assertFalse($result->isValid());
         $this->assertFalse($result->isValid());
         $this->assertEquals(['list failed'], $result->getErrorMessage());
         $this->assertEquals(['The input field is required.'], $result->summarizeErrorMessages()['test']);

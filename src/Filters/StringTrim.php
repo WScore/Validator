@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WScore\Validation\Filters;
 
 use InvalidArgumentException;
-use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
 final class StringTrim extends AbstractFilter
@@ -37,7 +36,6 @@ final class StringTrim extends AbstractFilter
     {
         $this->trim = $options['trim'] ?? self::TRIM;
         $this->mask = $options['mask'] ?? null;
-        $this->setPriority(FilterInterface::PRIORITY_FILTER_MODIFIER);
         if (!in_array($this->trim, $this->functions)) {
             throw new InvalidArgumentException('No such trim function: ' . $this->trim);
         }

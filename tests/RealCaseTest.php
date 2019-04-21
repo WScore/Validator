@@ -54,7 +54,10 @@ class RealCaseTest extends TestCase
                 StringCases::class => [StringCases::TO_LOWER],
                 ConfirmWith::class => [ConfirmWith::FIELD => 'email_check'],
             ]))->add('birthday', $vb->date([
-                FilterArrayToValue::class => ['fields' => ['y', 'm', 'd'], 'format' => '%04d-%02d-%02d'],
+                FilterArrayToValue::class => [
+                    FilterArrayToValue::FIELDS => ['y', 'm', 'd'],
+                    FilterArrayToValue::FORMAT => '%04d-%02d-%02d'
+                ],
             ]));
 
         $address = $vb->form()

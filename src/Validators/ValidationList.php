@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace WScore\Validation\Validators;
 
-use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
-use WScore\Validation\Interfaces\ValidationInterface;
 
 /**
  * validates a list of input, like form input.

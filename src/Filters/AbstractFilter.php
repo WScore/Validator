@@ -8,17 +8,19 @@ use WScore\Validation\Interfaces\ResultInterface;
 
 abstract class AbstractFilter implements FilterInterface
 {
-    private $priority = FilterInterface::PRIORITY_VALIDATION_BY_USERS;
+    private $addType = FilterInterface::ADD_APPEND;
+
+    public function getAddType(): string
+    {
+        return $this->addType;
+    }
 
     /**
-     * returns the priority of the filter.
-     * applies filters with smaller priority, first.
-     *
-     * @return int
+     * @param string $addType
      */
-    public function getPriority(): int
+    protected function setAddType(string $addType): void
     {
-        return $this->priority;
+        $this->addType = $addType;
     }
 
     /**
@@ -30,16 +32,6 @@ abstract class AbstractFilter implements FilterInterface
     public function getFilterName(): string
     {
         return get_class($this);
-    }
-
-    /**
-     * @param int $priority
-     * @return AbstractFilter
-     */
-    public function setPriority(int $priority): AbstractFilter
-    {
-        $this->priority = $priority;
-        return $this;
     }
 
     /**

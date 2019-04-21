@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WScore\Validation\Filters;
 
 use InvalidArgumentException;
-use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
 final class ValidateFilterChar extends AbstractFilter
@@ -32,7 +31,6 @@ final class ValidateFilterChar extends AbstractFilter
     public function __construct(array $options = [])
     {
         $this->type = $options['type'] ?? null;
-        $this->setPriority(FilterInterface::PRIORITY_FILTER_SANITIZE);
     }
 
     /**

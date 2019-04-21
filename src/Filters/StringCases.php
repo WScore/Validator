@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WScore\Validation\Filters;
 
 use InvalidArgumentException;
-use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
 final class StringCases extends AbstractFilter
@@ -38,7 +37,6 @@ final class StringCases extends AbstractFilter
     public function __construct(array $options = [])
     {
         $this->options = $options;
-        $this->setPriority(FilterInterface::PRIORITY_FILTER_MODIFIER);
     }
 
     /**

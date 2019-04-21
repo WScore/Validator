@@ -20,28 +20,20 @@ interface ValidationInterface
     public function addFilters(array $filters): ValidationInterface;
 
     /**
-     * @param string $name
-     * @return bool
+     * @return FilterCollectionInterface
      */
-    public function hasFilter(string $name): bool;
-
-    /**
-     * @param string $name
-     * @return FilterInterface
-     */
-    public function getFilter(string $name): FilterInterface;
-
-    /**
-     * @param string $name
-     * @return ValidationInterface|$this
-     */
-    public function removeFilter(string $name): ValidationInterface;
+    public function getFilters(): FilterCollectionInterface;
 
     /**
      * @param FilterInterface[] $filters
      * @return ValidationList
      */
     public function addPreparationFilters(FilterInterface ...$filters): ValidationInterface;
+
+    /**
+     * @return FilterCollectionInterface
+     */
+    public function getPreparationFilters(): FilterCollectionInterface;
 
     /**
      * @param string $name

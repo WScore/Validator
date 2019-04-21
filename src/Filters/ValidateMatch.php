@@ -4,11 +4,14 @@ declare(strict_types=1);
 namespace WScore\Validation\Filters;
 
 use InvalidArgumentException;
-use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
-final class Match extends AbstractFilter
+final class ValidateMatch extends AbstractFilter
 {
+    use ValidateUtf8Trait;
+
+    const TYPE = 'type';
+
     const IP = __CLASS__ . '::IP'; // IP address
     const EMAIL = __CLASS__ . '::EMAIL'; // email address
     const URL = __CLASS__ . '::URL'; // URL
@@ -26,18 +29,11 @@ final class Match extends AbstractFilter
     private $type;
 
     /**
-     * @var string
-     */
-    private $message;
-
-    /**
      * @param array $options
      */
     public function __construct($options = [])
     {
-        $this->type = $options['type'] ?? null;
-        $this->message = $options['message'] ?? null;
-        $this->setPriority(FilterInterface::PRIORITY_VALIDATIONS);
+        $this->type = $options[self::TYPE] ?? null;
         if (!$this->type) {
             throw new InvalidArgumentException('type not set in Match filter');
         }
@@ -49,11 +45,20 @@ final class Match extends AbstractFilter
      */
     public function apply(ResultInterface $input): ?ResultInterface
     {
+        if ($bad = $this->checkUtf8($input)) {
+            return $bad;
+        }
         $value = $input->value();
+        if ($this->isEmpty($value)) {
+            return null;
+        }
+        if (!isset($this->type2filter[$this->type])) {
+            throw new InvalidArgumentException('not such type: ' . $this->type);
+        }
         $filter = $this->type2filter[$this->type];
         if (filter_var($value, $filter)) {
             return null;
         }
-        return $input->failed($this->type, [], $this->message);
+        return $input->failed($this->type);
     }
 }

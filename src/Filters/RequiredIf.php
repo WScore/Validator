@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WScore\Validation\Filters;
 
 use InvalidArgumentException;
-use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
 final class RequiredIf extends AbstractFilter
@@ -33,7 +32,6 @@ final class RequiredIf extends AbstractFilter
         $this->field = $options[self::FIELD] ?? null;
         $this->value = $options[self::VALUE] ?? null;
         $this->nullable = $options[self::NULLABLE] ?? null;
-        $this->setPriority(FilterInterface::PRIORITY_REQUIRED_CHECK);
     }
 
     /**
