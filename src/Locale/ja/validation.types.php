@@ -14,31 +14,31 @@ use WScore\Validation\Filters\ValidateMbString;
 
 return [
     'text' => [
-        ValidateMbString::class => ['type' => ValidateMbString::MB_ZENKAKU],
+        ValidateMbString::class => [ValidateMbString::TYPE => ValidateMbString::MB_ZENKAKU],
         DefaultValue::class => ['default' => ''],
     ],
     'integer' => [
-        ValidateMbString::class => ['type' => ValidateMbString::MB_HANKAKU],
+        ValidateMbString::class => [ValidateMbString::TYPE => ValidateMbString::MB_HANKAKU],
         ValidateInteger::class,
         DefaultValue::class => ['default' => null],
     ],
     'float' => [
-        ValidateMbString::class => ['type' => ValidateMbString::MB_HANKAKU],
+        ValidateMbString::class => [ValidateMbString::TYPE => ValidateMbString::MB_HANKAKU],
         ValidateFloat::class,
         DefaultValue::class => ['default' => null],
     ],
     'date' => [
-        ValidateMbString::class => ['type' => ValidateMbString::MB_HANKAKU],
+        ValidateMbString::class => [ValidateMbString::TYPE => ValidateMbString::MB_HANKAKU],
         ValidateDateTime::class,
         DefaultValue::class => ['default' => null],
     ],
     'email' => [
-        ValidateMbString::class => ['type' => ValidateMbString::MB_HANKAKU],
+        ValidateMbString::class => [ValidateMbString::TYPE => ValidateMbString::MB_HANKAKU],
         DefaultValue::class => ['default' => ''],
         Match::class => ['type' => Match::EMAIL],
     ],
     'digits' => [
-        ValidateMbString::class => ['type' => ValidateMbString::MB_HANKAKU],
+        ValidateMbString::class => [ValidateMbString::TYPE => ValidateMbString::MB_HANKAKU],
         ValidateDigits::class,
         DefaultValue::class => ['default' => ''],
     ],

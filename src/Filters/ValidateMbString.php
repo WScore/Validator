@@ -10,6 +10,9 @@ final class ValidateMbString extends AbstractFilter
 {
     use ValidateUtf8Trait;
 
+    const TYPE = 'type';
+    const MAX = 'max';
+
     const MB_HANKAKU = 'aKVs';
     const MB_ZENKAKU = 'AKVS';
     const MB_HAN_KANA = 'khs';
@@ -32,8 +35,9 @@ final class ValidateMbString extends AbstractFilter
      */
     public function __construct(array $options = [])
     {
-        $this->convertType = $options['type'] ?? self::MB_ZEN_KANA;
-        $this->max = $options['max'] ?? 1028*1028; // 1MB
+        $this->convertType = $options[self::TYPE] ?? self::MB_ZEN_KANA;
+        $this->max = $options[self::MAX] ?? 1028*1028; // 1MB
+        $this->setAddType(FilterInterface::ADD_PREPEND);
     }
 
     /**

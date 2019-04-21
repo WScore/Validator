@@ -8,7 +8,6 @@ use WScore\Validation\Filters\DefaultValue;
 use WScore\Validation\Filters\Match;
 use WScore\Validation\Filters\ValidateDateTime;
 use WScore\Validation\Filters\ValidateDigits;
-use WScore\Validation\Filters\ValidateFilterChar;
 use WScore\Validation\Filters\ValidateFloat;
 use WScore\Validation\Filters\ValidateInteger;
 use WScore\Validation\Filters\ValidateUtf8String;

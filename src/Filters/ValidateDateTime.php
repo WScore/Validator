@@ -5,7 +5,6 @@ namespace WScore\Validation\Filters;
 
 use DateTimeImmutable;
 use Exception;
-use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
 final class ValidateDateTime extends AbstractFilter
