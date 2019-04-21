@@ -32,7 +32,6 @@ final class ValidateFilterChar extends AbstractFilter
     public function __construct(array $options = [])
     {
         $this->type = $options['type'] ?? null;
-        $this->setPriority(FilterInterface::PRIORITY_FILTER_SANITIZE);
     }
 
     /**

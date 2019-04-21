@@ -24,7 +24,6 @@ final class ValidateDateTime extends AbstractFilter
     public function __construct($option = [])
     {
         $this->format = $option['format'] ?? null;
-        $this->setPriority(FilterInterface::PRIORITY_FILTER_SANITIZE);
     }
 
     /**

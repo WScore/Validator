@@ -37,7 +37,6 @@ final class Match extends AbstractFilter
     {
         $this->type = $options['type'] ?? null;
         $this->message = $options['message'] ?? null;
-        $this->setPriority(FilterInterface::PRIORITY_VALIDATIONS);
         if (!$this->type) {
             throw new InvalidArgumentException('type not set in Match filter');
         }

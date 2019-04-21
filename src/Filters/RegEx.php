@@ -28,7 +28,6 @@ final class RegEx extends AbstractFilter
     {
         $this->pattern = $options[self::PATTERN] ?? null;
         $this->message = $options[self::MESSAGE] ?? null;
-        $this->setPriority(FilterInterface::PRIORITY_VALIDATIONS);
         if (!$this->pattern) {
             throw new InvalidArgumentException('pattern not set in Match filter');
         }

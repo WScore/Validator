@@ -24,7 +24,6 @@ final class ConfirmWith extends AbstractFilter
     public function __construct($option = [])
     {
         $this->confirmWith = $option[self::FIELD] ?? null;
-        $this->setPriority(FilterInterface::PRIORITY_VALIDATIONS);
     }
 
     /**

@@ -28,14 +28,6 @@ interface FilterInterface
     public function getAddType(): string;
 
     /**
-     * returns the priority of the filter.
-     * applies filters with smaller priority, first.
-     *
-     * @return int
-     */
-    public function getPriority(): int;
-
-    /**
      * returns name of the filter;
      * validation can have only one filter with the same name.
      *

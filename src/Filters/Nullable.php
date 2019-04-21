@@ -19,7 +19,6 @@ final class Nullable extends AbstractFilter
 {
     public function __construct()
     {
-        $this->setPriority(FilterInterface::PRIORITY_REQUIRED_CHECK);
     }
 
     /**

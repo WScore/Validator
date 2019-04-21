@@ -40,7 +40,6 @@ final class StringLength extends AbstractFilter
                 $this->$method($value);
             }
         }
-        $this->setPriority(FilterInterface::PRIORITY_VALIDATIONS);
     }
 
     public function setMessage(string $message): StringLength

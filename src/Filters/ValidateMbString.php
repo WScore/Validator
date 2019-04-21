@@ -34,7 +34,6 @@ final class ValidateMbString extends AbstractFilter
     {
         $this->convertType = $options['type'] ?? self::MB_ZEN_KANA;
         $this->max = $options['max'] ?? 1028*1028; // 1MB
-        $this->setPriority(FilterInterface::PRIORITY_FILTER_PREPARE);
     }
 
     /**

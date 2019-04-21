@@ -35,7 +35,6 @@ final class InArray extends AbstractFilter
         $this->choices = $options[self::CHOICES] ?? [];
         $this->replace = $options[self::REPLACE] ?? null;
         $this->strict = $options[self::STRICT] ?? true;
-        $this->setPriority(FilterInterface::PRIORITY_FILTER_MODIFIER);
     }
 
     /**

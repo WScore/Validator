@@ -33,7 +33,6 @@ final class RequiredIf extends AbstractFilter
         $this->field = $options[self::FIELD] ?? null;
         $this->value = $options[self::VALUE] ?? null;
         $this->nullable = $options[self::NULLABLE] ?? null;
-        $this->setPriority(FilterInterface::PRIORITY_REQUIRED_CHECK);
     }
 
     /**
