@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WScore\Validation\Validators;
 
+use WScore\Validation\Interfaces\FilterCollectionInterface;
 use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 use WScore\Validation\Interfaces\ValidationInterface;
@@ -11,14 +12,14 @@ use WScore\Validation\Locale\Messages;
 abstract class AbstractValidation implements ValidationInterface
 {
     /**
-     * @var FilterInterface[]
+     * @var FilterCollection|FilterInterface[]
      */
-    protected $preFilters = [];
+    protected $preFilters;
 
     /**
-     * @var FilterInterface[]
+     * @var FilterCollection|FilterInterface[]
      */
-    protected $filters = [];
+    protected $filters;
 
     /**
      * @var ValidationInterface[]
@@ -40,6 +41,8 @@ abstract class AbstractValidation implements ValidationInterface
      */
     public function __construct(Messages $message)
     {
+        $this->filters = new FilterCollection();
+        $this->preFilters = new FilterCollection();
         $this->message = $message;
     }
 
@@ -57,10 +60,16 @@ abstract class AbstractValidation implements ValidationInterface
      */
     public function addPreparationFilters(FilterInterface ...$filters): ValidationInterface
     {
-        foreach ($filters as $filter) {
-            $this->preFilters[$filter->getFilterName()] = $filter;
-        }
+        $this->preFilters->addFilters($filters);
         return $this;
+    }
+
+    /**
+     * @return FilterCollectionInterface
+     */
+    public function getPreparationFilters(): FilterCollectionInterface
+    {
+        return $this->preFilters;
     }
 
     /**
@@ -69,52 +78,16 @@ abstract class AbstractValidation implements ValidationInterface
      */
     public function addFilters(array $filters): ValidationInterface
     {
-        foreach ($filters as $key => $filter) {
-            if ($filter instanceof FilterInterface) {
-                // $filter = $filter;
-            } elseif (is_numeric($key) && is_string($filter)) {
-                $filter = new $filter();
-            } else {
-                $filter = new $key($filter);
-            }
-            $this->filters[$filter->getFilterName()] = $filter;
-        }
-        uasort(
-            $this->filters,
-            function (FilterInterface $a, FilterInterface $b) {
-                return $a->getPriority() <=> $b->getPriority();
-            });
+        $this->filters->addFilters($filters);
         return $this;
     }
 
     /**
-     * @param string $name
-     * @return bool
+     * @return FilterCollectionInterface
      */
-    public function hasFilter(string $name): bool
+    public function getFilters(): FilterCollectionInterface
     {
-        return array_key_exists($name, $this->filters);
-    }
-
-    /**
-     * @param string $name
-     * @return FilterInterface
-     */
-    public function getFilter(string $name): FilterInterface
-    {
-        return $this->filters[$name] ?? null;
-    }
-
-    /**
-     * @param string $name
-     * @return ValidationInterface|$this
-     */
-    public function removeFilter(string $name): ValidationInterface
-    {
-        if (isset($this->filters[$name])) {
-            unset($this->filters[$name]);
-        }
-        return $this;
+        return $this->filters;
     }
 
     /**
