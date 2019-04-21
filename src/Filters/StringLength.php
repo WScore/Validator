@@ -10,6 +10,7 @@ final class StringLength extends AbstractFilter
     const LENGTH = __CLASS__ . '::LENGTH';
     const MAX = __CLASS__ . '::MAX';
     const MIN = __CLASS__ . '::MIN';
+    const MESSAGE = __CLASS__ . '::MESSAGE';
 
     /**
      * @var null|int
@@ -33,12 +34,10 @@ final class StringLength extends AbstractFilter
 
     public function __construct($options = [])
     {
-        foreach ($options as $key => $value) {
-            $method = 'set' . $key;
-            if (method_exists($this, $method)) {
-                $this->$method($value);
-            }
-        }
+        $this->max = $options[self::MAX] ?? null;
+        $this->min = $options[self::MIN] ?? null;
+        $this->length = $options[self::LENGTH] ?? null;
+        $this->message = $options[self::MESSAGE] ?? null;
     }
 
     public function setMessage(string $message): StringLength
