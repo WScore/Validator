@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace tests\Filters;
 
+use WScore\Validation\Filters\Required;
 use WScore\Validation\Filters\RequiredIf;
 use PHPUnit\Framework\TestCase;
 use WScore\Validation\Validators\Result;
@@ -33,7 +34,7 @@ class RequiredIfTest extends TestCase
 
     public function testRequiredSetsFalseIfValueIsNotSet()
     {
-        $required = new RequiredIf(['field' => 'more']);
+        $required = new RequiredIf([RequiredIf::FIELD => 'more']);
 
         $resultList = $this->buildResultList();
         $result = $resultList->getChild('some');
@@ -60,7 +61,7 @@ class RequiredIfTest extends TestCase
         $resultList = $this->buildResultList();
         $result = $resultList->getChild('some');
 
-        $required = new RequiredIf(['field' => 'more']);
+        $required = new RequiredIf([RequiredIf::FIELD => 'more']);
         $required->apply($result);
         $this->assertTrue($result->isValid());
     }
@@ -70,14 +71,14 @@ class RequiredIfTest extends TestCase
         $resultList = $this->buildResultList('not-more');
         $result = $resultList->getChild('some');
 
-        $required = new RequiredIf(['field' => 'more', 'value' => 'more-more']);
+        $required = new RequiredIf([RequiredIf::FIELD => 'more', RequiredIf::VALUE => 'more-more']);
         $required->apply($result);
         $this->assertTrue($result->isValid());
 
         $resultList = $this->buildResultList('more-more');
         $result = $resultList->getChild('some');
 
-        $required = new RequiredIf(['field' => 'more', 'value' => 'more-more']);
+        $required = new RequiredIf([RequiredIf::FIELD => 'more', RequiredIf::VALUE => 'more-more']);
         $required->apply($result);
         $this->assertFalse($result->isValid());
     }
@@ -94,5 +95,27 @@ class RequiredIfTest extends TestCase
             $resultList->addResult($this->buildResult($val, $key));
         }
         return $resultList;
+    }
+
+    public function testNullable()
+    {
+        $inputAll = $this->buildResultList('have-value');
+        $input = $inputAll->getChild('some');
+
+        $if = new RequiredIf([
+            RequiredIf::FIELD => 'more',
+            RequiredIf::VALUE => 'not-required',
+            RequiredIf::NULLABLE => false,
+        ]);
+        $result = $if->apply($input);
+        $this->assertTrue(is_null($result));
+
+        $if = new RequiredIf([
+            RequiredIf::FIELD => 'more',
+            RequiredIf::VALUE => 'not-required',
+            RequiredIf::NULLABLE => true,
+        ]);
+        $result = $if->apply($input);
+        $this->assertTrue(!is_null($result));
     }
 }

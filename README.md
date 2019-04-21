@@ -371,12 +371,19 @@ $date = $result->value(); // should be DateTimeImmutable object.
 - validates the input value is not null nor empty string, 
   if the name `field` is set, or if `field` value is `value`.
 - aborts further validations if failed. 
-- arguments: `['field' => '', 'value' => '']`
-  - field: required. set other field name to refer to. 
-  - value: optional. set value (or values in array) if the other field has the specified value. 
+- arguments: `[RequiredIf::FIELD => 'other', RequiredIf::VALUE => 'val']`
+  - `RequiredIf::FIELD`: string. required. set other field name to refer to. 
+  - `RequiredIf::VALUE`: string, integer, float, or array. optional. 
+     set value (or values in array) if the other field has the specified value. 
+  - `Required::NULLABLE`: optional, default false. breaks validation chain 
+    if the value is empty (i.e. either null, empty string, or empty array).
 
 ```php
-$required = new RequiredIf(['field' => 'type', 'value' => 'check-me']);
+$required = new RequiredIf([
+    RequiredIf::FIELD => 'type', 
+    RequiredIf::VALUE => 'check-me',
+    RequiredIf::NULLABLE => true,
+]);
 ```
 
 ### StringLength
