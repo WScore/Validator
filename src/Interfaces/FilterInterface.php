@@ -11,6 +11,9 @@ namespace WScore\Validation\Interfaces;
  */
 interface FilterInterface
 {
+    const ADD_APPEND = 'append';
+    const ADD_PREPEND = 'prepend';
+
     const PRIORITY_FILTER_PREPARE = 1000;
     const PRIORITY_FILTER_SANITIZE = 1100;
     const PRIORITY_FILTER_MODIFIER = 1200;
@@ -18,6 +21,11 @@ interface FilterInterface
     const PRIORITY_REQUIRED_CHECK = 2000;
     const PRIORITY_VALIDATIONS = 2100;
     const PRIORITY_VALIDATION_BY_USERS = 3000;
+
+    /**
+     * @return string
+     */
+    public function getAddType(): string;
 
     /**
      * returns the priority of the filter.

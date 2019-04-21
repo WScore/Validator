@@ -9,6 +9,20 @@ use WScore\Validation\Interfaces\ResultInterface;
 abstract class AbstractFilter implements FilterInterface
 {
     private $priority = FilterInterface::PRIORITY_VALIDATION_BY_USERS;
+    private $addType = FilterInterface::ADD_APPEND;
+
+    public function getAddType(): string
+    {
+        return $this->addType;
+    }
+
+    /**
+     * @param string $addType
+     */
+    protected function setAddType(string $addType): void
+    {
+        $this->addType = $addType;
+    }
 
     /**
      * returns the priority of the filter.
