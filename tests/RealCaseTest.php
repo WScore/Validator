@@ -27,7 +27,7 @@ class RealCaseTest extends TestCase
                 'd' => 31,
             ],
             'address' => [
-                'zip' => '12345',
+                'zip' => '123-45x',
                 'address' => 'city, street 101',
                 'region' => 'abc',
             ],

@@ -6,10 +6,11 @@ namespace WScore\Validation\Filters;
 use InvalidArgumentException;
 use WScore\Validation\Interfaces\ResultInterface;
 
-final class ValidateFilterChar extends AbstractFilter
+final class ValidateLetterType extends AbstractFilter
 {
     use ValidateUtf8Trait;
 
+    const TYPE = 'type';
     const DIGITS_ONLY = 'digits';
     const AL_NUM_ONLY = 'al_num';
     const CODE_ONLY = 'code';
@@ -30,7 +31,7 @@ final class ValidateFilterChar extends AbstractFilter
      */
     public function __construct(array $options = [])
     {
-        $this->type = $options['type'] ?? null;
+        $this->type = $options[self::TYPE] ?? null;
     }
 
     /**

@@ -352,6 +352,15 @@ $date = $result->value(); // should be DateTimeImmutable object.
 - errors: if the value is not numeric, or the value is an array. 
 - arguments: none.
 
+### ValidateLetterType
+
+- sanitize the input value consisted of certain type of letters. 
+  - arguments: `[ValidateLetterType::TYPE => ValidateLetterType::DIGITS_ONLY]`
+    - `ValidateLetterType::TYPE`: required. specify types from the following. 
+      - `ValidateLetterType::DIGITS_ONLY`: only numbers (0-9).
+      - `ValidateLetterType::AL_NUM_ONLY`: only alpha numeric characters (0-9a-zA-Z).
+      - `ValidateLetterType::CODE_ONLY`: only some codes (-_0-9a-zA-Z).
+
 ### DefaultValue
 
 - set value to a default `$default` if the input is null or empty. 
@@ -457,5 +466,4 @@ $filter = new InArray([
 
 ### StringCases
 ### StringTrim
-### ValidateDigits
 
