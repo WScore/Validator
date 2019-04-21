@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WScore\Validation\Filters;
 
-use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
 final class Required extends AbstractFilter
@@ -21,7 +20,6 @@ final class Required extends AbstractFilter
     public function __construct(array $options = [])
     {
         $this->nullable = $options[self::NULLABLE] ?? false;
-        $this->setPriority(FilterInterface::PRIORITY_REQUIRED_CHECK);
     }
 
     /**

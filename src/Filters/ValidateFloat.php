@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WScore\Validation\Filters;
 
-use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
 final class ValidateFloat extends AbstractFilter
@@ -12,7 +11,6 @@ final class ValidateFloat extends AbstractFilter
 
     public function __construct()
     {
-        $this->setPriority(FilterInterface::PRIORITY_FILTER_SANITIZE);
     }
 
     /**

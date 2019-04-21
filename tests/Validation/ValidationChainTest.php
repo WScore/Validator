@@ -77,14 +77,14 @@ class ValidationChainTest extends TestCase
         $result = $chain->verify('test');
         $this->assertEquals('test-filter', $result->value());
 
-        $this->assertTrue($chain->hasFilter(AddPostfix::class));
+        $this->assertTrue($chain->getFilters()->has(AddPostfix::class));
         /** @var AddPostfix $filter */
-        $filter = $chain->getFilter(AddPostfix::class);
+        $filter = $chain->getFilters()->get(AddPostfix::class);
         $filter->setPrefix('-mod-filter');
         $result = $chain->verify('test');
         $this->assertEquals('test-mod-filter', $result->value());
 
-        $chain->removeFilter(AddPostfix::class);
+        $chain->getFilters()->remove(AddPostfix::class);
         $result = $chain->verify('test');
         $this->assertEquals('test', $result->value());
     }

@@ -5,7 +5,7 @@
  */
 
 use WScore\Validation\Filters\ConfirmWith;
-use WScore\Validation\Filters\Match;
+use WScore\Validation\Filters\ValidateMatch;
 use WScore\Validation\Filters\Required;
 use WScore\Validation\Filters\StringLength;
 use WScore\Validation\Filters\ValidateDateTime;
@@ -31,10 +31,10 @@ return [
     StringLength::MIN => "The input is less than {min} characters.",
 
     // error messages for Match
-    Match::IP => 'The input is not a valid IP address.',
-    Match::EMAIL => 'The input is not a valid email address',
-    Match::URL => 'The input is not a valid URL',
-    Match::MAC => 'The input is not a valid MAC address',
+    ValidateMatch::IP => 'The input is not a valid IP address.',
+    ValidateMatch::EMAIL => 'The input is not a valid email address',
+    ValidateMatch::URL => 'The input is not a valid URL',
+    ValidateMatch::MAC => 'The input is not a valid MAC address',
 
     // required value.
     Required::class => "The input field is required.",

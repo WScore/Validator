@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WScore\Validation\Filters;
 
-use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
 class DefaultValue extends AbstractFilter
@@ -25,7 +24,6 @@ class DefaultValue extends AbstractFilter
             $this->default = array_key_exists('default', $options)
                 ? $options['default'] : null;
         }
-        $this->setPriority(FilterInterface::PRIORITY_REQUIRED_CHECK - 1);
     }
 
     /**

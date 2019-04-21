@@ -18,6 +18,9 @@ use WScore\Validation\Interfaces\ResultInterface;
  */
 final class FilterArrayToValue extends AbstractFilter
 {
+    const FIELDS = 'fields';
+    const FORMAT = 'format';
+    const IMPLODE = 'implode';
     /**
      * @var array
      */
@@ -38,10 +41,10 @@ final class FilterArrayToValue extends AbstractFilter
      */
     public function __construct($options = [])
     {
-        $this->fields = $options['fields'] ?? [];
-        $this->format = $options['format'] ?? null;
-        $this->implode = $options['implode'] ?? '-';
-        $this->setPriority(FilterInterface::PRIORITY_FILTER_PREPARE);
+        $this->fields = $options[self::FIELDS] ?? [];
+        $this->format = $options[self::FORMAT] ?? null;
+        $this->implode = $options[self::IMPLODE] ?? '-';
+        $this->setAddType(FilterInterface::ADD_PREPEND);
     }
 
     /**

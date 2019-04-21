@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WScore\Validation\Filters;
 
-use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
 final class ValidateUtf8String extends AbstractFilter
@@ -25,7 +24,6 @@ final class ValidateUtf8String extends AbstractFilter
     public function __construct(array $options = [])
     {
         $this->max = $options['max'] ?? 1028*1028; // 1MB
-        $this->setPriority(FilterInterface::PRIORITY_FILTER_SANITIZE);
     }
 
     /**
