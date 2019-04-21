@@ -7,7 +7,7 @@ use WScore\Validation\Filters\Required;
 use WScore\Validation\Interfaces\ValidationInterface;
 use WScore\Validation\ValidatorBuilder;
 
-class Test extends TestCase
+class EmailTypeTest extends TestCase
 {
     private function buildEmail($locale = 'en'): ValidationInterface
     {
@@ -25,6 +25,21 @@ class Test extends TestCase
     public function testRequiredEmail()
     {
         $v = $this->buildEmail();
+        $v->addFilters([new Required()]);
+        $result = $v->verify('');
+        $this->assertFalse($result->isValid());
+    }
+
+    public function testNullEmailJa()
+    {
+        $v = $this->buildEmail('ja');
+        $result = $v->verify('');
+        $this->assertTrue($result->isValid());
+    }
+
+    public function testRequiredEmailJa()
+    {
+        $v = $this->buildEmail('ja');
         $v->addFilters([new Required()]);
         $result = $v->verify('');
         $this->assertFalse($result->isValid());
