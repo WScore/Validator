@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WScore\Validation\Validators;
 
 use WScore\Validation\Interfaces\ResultInterface;
+use WScore\Validation\Interfaces\ValidationInterface;
 
 /**
  * validates a list of input, like form input.
@@ -17,7 +18,7 @@ class ValidationList extends AbstractValidation
      * @param ValidationList $form
      * @return $this
      */
-    public function addRepeatedForm(string $name, ValidationList $form)
+    public function addRepeatedForm(string $name, ValidationInterface $form)
     {
         $repeat = new ValidationRepeat($this->message);
         $repeat->add('0', $form);
