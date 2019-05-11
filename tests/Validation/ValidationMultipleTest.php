@@ -54,9 +54,8 @@ class ValidationMultipleTest extends TestCase
         $chain->addFilters([
             new Required(),
         ]);
-        $result = $chain->verify(['test', null, false]);
+        $result = $chain->verify([]);
         $this->assertFalse($result->isValid());
-        $this->assertEquals(['test', '', ''], $result->value());
     }
 
     public function testFailedCase()

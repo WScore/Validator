@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace WScore\Validation\Validators;
 
+use WScore\Validation\Filters\Required;
+use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 
 /**
@@ -46,7 +48,26 @@ class ValidationRepeat extends AbstractValidation
         foreach ($results->getChildren() as $result) {
             $this->applyFilters($result);
         }
+        foreach ($this->preparePostFilters() as $postFilter) {
+            if ($returned = $postFilter->apply($results)) {
+                return $results;
+            }
+        }
         return $results;
+    }
+
+    /**
+     * @return FilterInterface[]
+     */
+    private function preparePostFilters()
+    {
+        $postFilters = [];
+        foreach ($this->filters as $key => $filter) {
+            if ($filter instanceof Required) {
+                $postFilters[$key] = $filter;
+            }
+        }
+        return $postFilters;
     }
 
     /**
