@@ -61,15 +61,4 @@ class DefaultValueTest extends TestCase
         $default->apply($result);
         $this->assertTrue('' === $result->value());
     }
-
-    public function testAllDefaultFiltersHaveSameName()
-    {
-        $empty = new DefaultValue(['default' => '']);
-        $null = new DefaultValue(['default' => null]);
-        $default = new DefaultValue(['default' => 'tested']);
-
-        $this->assertEquals($default->getFilterName(), $empty->getFilterName());
-        $this->assertEquals($default->getFilterName(), $null->getFilterName());
-        $this->assertEquals(DefaultValue::class, $default->getFilterName());
-    }
 }

@@ -20,14 +20,6 @@ interface FilterInterface
     public function getAddType(): string;
 
     /**
-     * returns name of the filter;
-     * validation can have only one filter with the same name.
-     *
-     * @return string
-     */
-    public function getFilterName(): string;
-
-    /**
      * @param ResultInterface $input
      * @return ResultInterface|null
      */

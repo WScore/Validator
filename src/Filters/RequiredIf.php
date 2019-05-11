@@ -75,15 +75,4 @@ final class RequiredIf extends AbstractFilter
         }
         throw new InvalidArgumentException('value condition must be a string or an array.');
     }
-
-    /**
-     * use same name as Required class.
-     * so that only one Required or RequiredIf can be used as filters.
-     *
-     * @return string
-     */
-    public function getFilterName(): string
-    {
-        return Required::class;
-    }
 }

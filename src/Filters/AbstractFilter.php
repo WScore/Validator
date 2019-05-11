@@ -24,17 +24,6 @@ abstract class AbstractFilter implements FilterInterface
     }
 
     /**
-     * returns name of the filter;
-     * validation can have only one filter with the same name.
-     *
-     * @return string
-     */
-    public function getFilterName(): string
-    {
-        return get_class($this);
-    }
-
-    /**
      * @param ResultInterface $result
      * @param array $option
      * @param string $messages

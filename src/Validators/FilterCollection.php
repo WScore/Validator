@@ -37,13 +37,13 @@ class FilterCollection implements FilterCollectionInterface
 
     public function append(FilterInterface $filter): FilterCollectionInterface
     {
-        $this->filters[$filter->getFilterName()] = $filter;
+        $this->filters[get_class($filter)] = $filter;
         return $this;
     }
 
     public function prepend(FilterInterface $filter): FilterCollectionInterface
     {
-        $this->filters = array_merge([$filter->getFilterName() => $filter] + $this->filters);
+        $this->filters = array_merge([get_class($filter) => $filter] + $this->filters);
         return $this;
     }
 
