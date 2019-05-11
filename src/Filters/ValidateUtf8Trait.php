@@ -18,7 +18,7 @@ trait ValidateUtf8Trait
      */
     public function checkUtf8(ResultInterface $input, int $max = null): ?ResultInterface
     {
-        $max = $max ?? 1028*1028;
+        $max = $max ?? 1028 * 1028;
         $value = $input->value();
         if (is_array($value)) {
             $input->setValue(null);

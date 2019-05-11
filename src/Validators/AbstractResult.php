@@ -10,44 +10,37 @@ use WScore\Validation\Locale\Messages;
 abstract class AbstractResult implements ResultInterface
 {
     /**
-     * @var null|array
-     */
-    private $value = [];
-
-    /**
-     * @var null|array
-     */
-    private $originalValue = [];
-
-    /**
      * @var bool
      */
     protected $isValid = true;
-
     /**
      * @var string[]
      */
     protected $messages = [];
-
-    /**
-     * @var string
-     */
-    private $name = '';
-
     /**
      * @var Result[]
      */
     protected $children = [];
-
-    /**
-     * @var ResultList
-     */
-    private $parent;
-
     /**
      * @var array
      */
     protected $failed = [];
+    /**
+     * @var null|array
+     */
+    private $value = [];
+    /**
+     * @var null|array
+     */
+    private $originalValue = [];
+    /**
+     * @var string
+     */
+    private $name = '';
+    /**
+     * @var ResultList
+     */
+    private $parent;
 
     /**
      * Result constructor.
@@ -75,14 +68,6 @@ abstract class AbstractResult implements ResultInterface
         ];
         $this->isValid = false;
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function name(): ?string
-    {
-        return $this->name;
     }
 
     /**
@@ -147,6 +132,14 @@ abstract class AbstractResult implements ResultInterface
     }
 
     /**
+     * @return ResultInterface[]
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
      * @return bool
      */
     public function hasChildren(): bool
@@ -155,11 +148,18 @@ abstract class AbstractResult implements ResultInterface
     }
 
     /**
-     * @return ResultInterface[]
+     * @return ResultInterface|null
      */
-    public function getChildren()
+    public function getRoot(): ?ResultInterface
     {
-        return $this->children;
+        $root = $this->getParent();
+        while ($root) {
+            if (!$newRoot = $root->getParent()) {
+                return $root;
+            }
+            $root = $newRoot;
+        }
+        return $root;
     }
 
     /**
@@ -176,21 +176,6 @@ abstract class AbstractResult implements ResultInterface
     public function setParent(ResultInterface $parent = null): void
     {
         $this->parent = $parent;
-    }
-
-    /**
-     * @return ResultInterface|null
-     */
-    public function getRoot(): ?ResultInterface
-    {
-        $root = $this->getParent();
-        while($root) {
-            if(!$newRoot = $root->getParent()) {
-                return $root;
-            }
-            $root = $newRoot;
-        }
-        return $root;
     }
 
     protected function populateMessages(?Messages $messages)
@@ -214,5 +199,13 @@ abstract class AbstractResult implements ResultInterface
         if (empty($this->messages) && $messages) {
             $this->messages[] = $messages->getMessage(Messages::class, []);
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function name(): ?string
+    {
+        return $this->name;
     }
 }

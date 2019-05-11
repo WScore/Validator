@@ -47,7 +47,7 @@ final class ConfirmWith extends AbstractFilter
      */
     private function confirmValue(ResultInterface $input, string $confirmValue)
     {
-        if ($confirmValue === (string)$input->getOriginalValue()) {
+        if ($confirmValue === (string) $input->getOriginalValue()) {
             return null;
         }
         if ($this->isEmpty($confirmValue)) {

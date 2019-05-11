@@ -27,7 +27,7 @@ final class ValidateInteger extends AbstractFilter
             $input->setValue(null);
             return $input->failed(__CLASS__);
         }
-        $input->setValue((int)$value);
+        $input->setValue((int) $value);
         return null;
     }
 }

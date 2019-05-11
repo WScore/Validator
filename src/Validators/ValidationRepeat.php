@@ -16,6 +16,30 @@ use WScore\Validation\Interfaces\ResultInterface;
 class ValidationRepeat extends AbstractValidation
 {
     /**
+     * @param string|array $value
+     * @return ResultInterface|ResultList
+     */
+    public function verify($value)
+    {
+        return $this->callVerify($value);
+    }
+
+    /**
+     * @param array|string $value
+     * @param string|null $name
+     * @param ResultInterface|null $parentResult
+     * @return mixed|ResultInterface|ResultList
+     */
+    public function callVerify($value, $name = null, ResultInterface $parentResult = null)
+    {
+        $result = $this->initialize($value, $name);
+        $result->setParent($parentResult);
+        $result = $this->validate($result);
+        $result->finalize($this->message, $this->error_message);
+        return $result;
+    }
+
+    /**
      * @param string[] $value
      * @param string|null $name
      * @return ResultInterface|ResultList
@@ -68,29 +92,5 @@ class ValidationRepeat extends AbstractValidation
             }
         }
         return $postFilters;
-    }
-
-    /**
-     * @param string|array $value
-     * @return ResultInterface|ResultList
-     */
-    public function verify($value)
-    {
-        return $this->callVerify($value);
-    }
-
-    /**
-     * @param array|string $value
-     * @param string|null $name
-     * @param ResultInterface|null $parentResult
-     * @return mixed|ResultInterface|ResultList
-     */
-    public function callVerify($value, $name = null, ResultInterface $parentResult = null)
-    {
-        $result = $this->initialize($value, $name);
-        $result->setParent($parentResult);
-        $result = $this->validate($result);
-        $result->finalize($this->message, $this->error_message);
-        return $result;
     }
 }

@@ -48,7 +48,7 @@ final class ValidateLetterType extends AbstractFilter
         }
         $value = $input->value();
         $value = preg_replace("/{$this->patterns[$this->type]}/", '', $value);
-        $input->setValue((string)$value);
+        $input->setValue((string) $value);
         return null;
     }
 }

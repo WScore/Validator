@@ -66,27 +66,14 @@ class Builder
         return $this->prepareOptions($array)->buildValidations();
     }
 
-    private function prepareOptions(array $options): self
-    {
-        $this->type = $options['type'] ?? false;
-        unset($options['type']);
-        $this->multiple = $options['multiple'] ?? false;
-        unset($options['multiple']);
-        $filters = $options['filters']??[];
-        unset($options['filters']);
-        $this->filters = array_merge($filters, $options);
-
-        return $this;
-    }
-
     private function buildValidations(): ValidationInterface
     {
         $filters = [];
         if ($this->type === 'form') {
-            $v =new ValidationList($this->messages);
+            $v = new ValidationList($this->messages);
 
         } elseif ($this->type === 'repeat') {
-            $v =new ValidationRepeat($this->messages);
+            $v = new ValidationRepeat($this->messages);
 
         } else {
             $v = new ValidationChain($this->messages);
@@ -102,5 +89,18 @@ class Builder
             $v = $m;
         }
         return $v;
+    }
+
+    private function prepareOptions(array $options): self
+    {
+        $this->type = $options['type'] ?? false;
+        unset($options['type']);
+        $this->multiple = $options['multiple'] ?? false;
+        unset($options['multiple']);
+        $filters = $options['filters'] ?? [];
+        unset($options['filters']);
+        $this->filters = array_merge($filters, $options);
+
+        return $this;
     }
 }

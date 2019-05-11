@@ -20,20 +20,6 @@ class ResultList extends AbstractResult
     }
 
     /**
-     * @return bool
-     */
-    public function isValid(): bool
-    {
-        if ($this->isValid === false) return false;
-        foreach ($this->children as $child) {
-            if (!$child->isValid()) {
-                $this->isValid = false;
-            }
-        }
-        return $this->isValid;
-    }
-
-    /**
      * @param Messages|null $messages
      * @param string $final_error_message
      * @return  void
@@ -53,10 +39,15 @@ class ResultList extends AbstractResult
         $this->populateMessages($messages);
     }
 
-    public function summarizeErrorMessages(): array
+    /**
+     * @param Messages|null $messages
+     * @return void
+     */
+    private function finalizeChildren(Messages $messages = null): void
     {
-        $messages = $this->summarizeChildren('getErrorMessage');
-        return $messages;
+        foreach ($this->children as $child) {
+            $child->finalize($messages);
+        }
     }
 
     /**
@@ -73,13 +64,22 @@ class ResultList extends AbstractResult
     }
 
     /**
-     * @param Messages|null $messages
-     * @return void
+     * @return bool
      */
-    private function finalizeChildren(Messages $messages = null): void
+    public function isValid(): bool
     {
+        if ($this->isValid === false) return false;
         foreach ($this->children as $child) {
-            $child->finalize($messages);
+            if (!$child->isValid()) {
+                $this->isValid = false;
+            }
         }
+        return $this->isValid;
+    }
+
+    public function summarizeErrorMessages(): array
+    {
+        $messages = $this->summarizeChildren('getErrorMessage');
+        return $messages;
     }
 }

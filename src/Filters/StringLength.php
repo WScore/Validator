@@ -78,6 +78,26 @@ final class StringLength extends AbstractFilter
 
     /**
      * @param ResultInterface $input
+     * @return ResultInterface|null
+     */
+    public function apply(ResultInterface $input): ?ResultInterface
+    {
+        $value = $input->value();
+        $length = mb_strlen($value);
+        if ($this->length !== null) {
+            $this->checkLength($input, $length);
+        }
+        if ($this->max !== null) {
+            $this->checkMax($input, $length);
+        }
+        if ($this->min !== null) {
+            $this->checkMin($input, $length);
+        }
+        return null;
+    }
+
+    /**
+     * @param ResultInterface $input
      * @param int $length
      * @return ResultInterface|null
      */
@@ -111,26 +131,6 @@ final class StringLength extends AbstractFilter
     {
         if ($length < $this->min) {
             return $input->failed(self::MIN, ['min' => $this->min], $this->message);
-        }
-        return null;
-    }
-
-    /**
-     * @param ResultInterface $input
-     * @return ResultInterface|null
-     */
-    public function apply(ResultInterface $input): ?ResultInterface
-    {
-        $value = $input->value();
-        $length = mb_strlen($value);
-        if ($this->length !== null) {
-            $this->checkLength($input, $length);
-        }
-        if ($this->max !== null) {
-            $this->checkMax($input, $length);
-        }
-        if ($this->min !== null) {
-            $this->checkMin($input, $length);
         }
         return null;
     }

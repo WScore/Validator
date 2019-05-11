@@ -8,14 +8,6 @@ use WScore\Validation\Locale\Messages;
 class Result extends AbstractResult
 {
     /**
-     * @return bool
-     */
-    public function isValid(): bool
-    {
-        return $this->isValid;
-    }
-
-    /**
      * @param Messages|null $messages
      * @param string $final_error_message
      * @return  void
@@ -26,5 +18,13 @@ class Result extends AbstractResult
             $this->failed(__CLASS__, [], $final_error_message);
         }
         $this->populateMessages($messages);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isValid(): bool
+    {
+        return $this->isValid;
     }
 }

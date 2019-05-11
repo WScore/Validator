@@ -34,6 +34,11 @@ abstract class AbstractFilter implements FilterInterface
         return $result->failed(get_class($this), $option, $messages);
     }
 
+    protected function hasValue($value): bool
+    {
+        return !$this->isEmpty($value);
+    }
+
     protected function isEmpty($value): bool
     {
         if (is_object($value)) {
@@ -49,10 +54,5 @@ abstract class AbstractFilter implements FilterInterface
             return true;
         }
         return false;
-    }
-
-    protected function hasValue($value): bool
-    {
-        return !$this->isEmpty($value);
     }
 }

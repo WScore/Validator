@@ -71,12 +71,6 @@ class ValidatorBuilder
         return Builder::forge($this->messages, $this->typeFilter, $options);
     }
 
-    private function buildType(array $options, string $type)
-    {
-        $options['type'] = $type;
-        return Builder::forge($this->messages, $this->typeFilter, $options);
-    }
-
     /**
      * @param array $options
      * @return ValidationChain|ValidationRepeat
@@ -84,6 +78,12 @@ class ValidatorBuilder
     public function text(array $options = []): ValidationInterface
     {
         return $this->buildType($options, 'text');
+    }
+
+    private function buildType(array $options, string $type)
+    {
+        $options['type'] = $type;
+        return Builder::forge($this->messages, $this->typeFilter, $options);
     }
 
     /**

@@ -27,7 +27,7 @@ final class ValidateFloat extends AbstractFilter
             $input->setValue(null);
             return $input->failed(__CLASS__);
         }
-        $input->setValue((float)$value);
+        $input->setValue((float) $value);
         return null;
     }
 }

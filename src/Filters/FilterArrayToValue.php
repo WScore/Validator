@@ -63,6 +63,13 @@ final class FilterArrayToValue extends AbstractFilter
         return null;
     }
 
+    private function checkFields(): void
+    {
+        if (empty($this->fields)) {
+            throw new InvalidArgumentException('must set fields');
+        }
+    }
+
     private function arrayToValue(ResultInterface $input): string
     {
         $value = $input->value();
@@ -74,12 +81,5 @@ final class FilterArrayToValue extends AbstractFilter
             return sprintf($this->format, ...$replace);
         }
         return implode($this->implode, $replace);
-    }
-
-    private function checkFields(): void
-    {
-        if (empty($this->fields)) {
-            throw new InvalidArgumentException('must set fields');
-        }
     }
 }

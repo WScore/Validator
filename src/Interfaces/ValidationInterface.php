@@ -72,11 +72,11 @@ interface ValidationInterface
     public function verify($value);
 
     /**
-     * @internal
      * @param string|array $value
      * @param string|null $name
      * @param ResultInterface|null $parentResult
      * @return mixed
+     * @internal
      */
     public function callVerify($value, $name = null, ResultInterface $parentResult = null);
 }
