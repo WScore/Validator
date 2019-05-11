@@ -47,6 +47,9 @@ abstract class AbstractFilter implements FilterInterface
 
     protected function isEmpty($value): bool
     {
+        if (is_object($value)) {
+            return false;
+        }
         if (is_array($value)) {
             if (empty($value)) {
                 return true;
