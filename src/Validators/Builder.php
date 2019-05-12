@@ -70,24 +70,20 @@ class Builder
     {
         $filters = [];
         if ($this->type === 'form') {
-            $v = new ValidationList($this->messages);
-
+            return new ValidationList($this->messages);
         } elseif ($this->type === 'repeat') {
-            $v = new ValidationRepeat($this->messages);
-
-        } else {
-            $v = new ValidationChain($this->messages);
-            if ($this->type) {
-                $filters = $this->typeFilter->getFilters($this->type);
-            }
+            return new ValidationRepeat($this->messages);
+        }
+        if ($this->type) {
+            $filters = $this->typeFilter->getFilters($this->type);
         }
         $filters = array_merge($filters, $this->filters);
-        $v->addFilters($filters);
         if ($this->multiple) {
-            $m = new ValidationRepeat($this->messages);;
-            $m->add('0', $v);
-            $v = $m;
+            $v = new ValidationMultiple($this->messages);;
+        } else {
+            $v = new ValidationChain($this->messages);
         }
+        $v->addFilters($filters);
         return $v;
     }
 
