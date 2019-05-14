@@ -10,9 +10,22 @@ abstract class AbstractFilter implements FilterInterface
 {
     private $addType = FilterInterface::ADD_APPEND;
 
+    private $isFilterForMultiple = false;
+
     public function getAddType(): string
     {
         return $this->addType;
+    }
+
+    /**
+     * return true if the filter should applied in multiple
+     * value (i.e. an array input) validation.
+     *
+     * @return bool
+     */
+    public function isFilterForMultiple(): bool
+    {
+        return $this->isFilterForMultiple;
     }
 
     /**
@@ -21,6 +34,14 @@ abstract class AbstractFilter implements FilterInterface
     protected function setAddType(string $addType): void
     {
         $this->addType = $addType;
+    }
+
+    /**
+     * @param bool $isFilterForMultiple
+     */
+    protected function setIsFilterForMultiple(bool $isFilterForMultiple): void
+    {
+        $this->isFilterForMultiple = $isFilterForMultiple;
     }
 
     /**

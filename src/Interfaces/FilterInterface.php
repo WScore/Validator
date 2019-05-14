@@ -20,6 +20,14 @@ interface FilterInterface
     public function getAddType(): string;
 
     /**
+     * return true if the filter should applied in multiple
+     * value (i.e. an array input) validation.
+     *
+     * @return bool
+     */
+    public function isFilterForMultiple(): bool;
+
+    /**
      * @param ResultInterface $input
      * @return ResultInterface|null
      */

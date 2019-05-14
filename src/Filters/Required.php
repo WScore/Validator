@@ -20,6 +20,7 @@ final class Required extends AbstractFilter
     public function __construct(array $options = [])
     {
         $this->nullable = $options[self::NULLABLE] ?? false;
+        $this->setIsFilterForMultiple(true);
     }
 
     /**
