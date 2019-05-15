@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WScore\Validation\Validators;
 
-use WScore\Validation\Interfaces\FilterInterface;
 use WScore\Validation\Interfaces\ResultInterface;
 use WScore\Validation\Interfaces\ValidationInterface;
 use WScore\Validation\Locale\Messages;
@@ -113,5 +112,13 @@ class ValidationMultiple extends AbstractValidation
             }
         }
         $this->postFilters->addFilters($postFilters);
+    }
+
+    /**
+     * @return FilterCollection
+     */
+    public function getPostFilters(): FilterCollection
+    {
+        return $this->postFilters;
     }
 }

@@ -9,6 +9,7 @@ use WScore\Validation\Filters\ValidateInteger;
 use WScore\Validation\Interfaces\ValidationInterface;
 use WScore\Validation\ValidatorBuilder;
 use PHPUnit\Framework\TestCase;
+use WScore\Validation\Validators\ValidationMultiple;
 use WScore\Validation\Validators\ValidationRepeat;
 
 class ValidationMultipleTest extends TestCase
@@ -73,6 +74,21 @@ class ValidationMultipleTest extends TestCase
             [],
             ['The input is not a valid integer. '],
         ], $result->summarizeErrorMessages());
+    }
 
+    public function testMultipleFilter()
+    {
+       $vb = new ValidatorBuilder();
+       /** @var ValidationMultiple $chain */
+       $chain = $vb->chain([
+            'multiple' => [
+                Required::class,
+            ],
+        ]);
+        $result = $chain->verify([]);
+        $this->assertFalse($result->isValid());
+
+        $this->assertFalse($chain->getFilters()->has(Required::class));
+        $this->assertTrue($chain->getPostFilters()->has(Required::class));
     }
 }

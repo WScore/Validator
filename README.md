@@ -173,11 +173,24 @@ To validate an array input, specify `multiple` when constructing a chain, as;
 ```php
 $tests = $vb->text([
     'multiple' => true, // specify multiple!
+    StringLength::class => [StringLength::LENGTH => 3],
 ]);
 $result = $tests->verify(['test', 'me']);
 ```
 
+The filters, such as `StringLength` in the example above, will be applied to each of the value in the array. 
 
+To apply filters on to the whole array, specify filters as such;
+ 
+```php
+$tests = $vb->text([
+    'multiple' => [
+        Required::class,
+    ],
+    StringLength::class => [StringLength::LENGTH => 5],
+]);
+$result = $tests->verify(['test', 'me']);
+```
 
 Locale
 ------

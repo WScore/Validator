@@ -74,15 +74,18 @@ class Builder
         } elseif ($this->type === 'repeat') {
             return new ValidationRepeat($this->messages);
         }
+        if ($this->multiple) {
+            $v = new ValidationMultiple($this->messages);;
+            if (is_array($this->multiple)) {
+                $v->getPostFilters()->addFilters($this->multiple);
+            }
+        } else {
+            $v = new ValidationChain($this->messages);
+        }
         if ($this->type) {
             $filters = $this->typeFilter->getFilters($this->type);
         }
         $filters = array_merge($filters, $this->filters);
-        if ($this->multiple) {
-            $v = new ValidationMultiple($this->messages);;
-        } else {
-            $v = new ValidationChain($this->messages);
-        }
         $v->addFilters($filters);
         return $v;
     }
