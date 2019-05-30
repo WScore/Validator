@@ -37,6 +37,10 @@ return [
         ValidateLetterType::class => [ValidateLetterType::TYPE => ValidateLetterType::DIGITS_ONLY],
         DefaultValue::class => ['default' => ''],
     ],
+    'URL' => [
+        ValidateMatch::class => [ValidateMatch::TYPE => ValidateMatch::URL],
+        DefaultValue::class => ['default' => ''],
+    ],
     'datetime' => [],
     'YearMonth' => [],
 ];

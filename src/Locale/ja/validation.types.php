@@ -42,6 +42,11 @@ return [
         ValidateLetterType::class => [ValidateLetterType::TYPE => ValidateLetterType::DIGITS_ONLY],
         DefaultValue::class => ['default' => ''],
     ],
+    'URL' => [
+        ValidateMbString::class => [ValidateMbString::TYPE => ValidateMbString::MB_HANKAKU],
+        ValidateMatch::class => [ValidateMatch::TYPE => ValidateMatch::URL],
+        DefaultValue::class => ['default' => ''],
+    ],
     'datetime' => [],
     'YearMonth' => [],
 ];
