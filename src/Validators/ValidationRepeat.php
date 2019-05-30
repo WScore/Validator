@@ -63,10 +63,12 @@ class ValidationRepeat extends AbstractValidation
     private function validate($results)
     {
         $values = $results->value();
-        foreach ($values as $key => $val) {
-            foreach ($this->children as $name => $validation) {
-                $result = $validation->callVerify($val, $name, $results);
-                $results->addResult($result, $key);
+        if (is_iterable($values)) {
+            foreach ($values as $key => $val) {
+                foreach ($this->children as $name => $validation) {
+                    $result = $validation->callVerify($val, $name, $results);
+                    $results->addResult($result, $key);
+                }
             }
         }
         foreach ($results->getChildren() as $result) {

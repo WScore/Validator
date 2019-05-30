@@ -89,10 +89,12 @@ class ValidationMultiple extends AbstractValidation
     private function validate($results)
     {
         $values = $results->value();
-        foreach ($values as $key => $val) {
-            $result = new Result($val);
-            $results->addResult($result, $key);
-            $this->applyFilters($result);
+        if (is_iterable($values)) {
+            foreach ($values as $key => $val) {
+                $result = new Result($val);
+                $results->addResult($result, $key);
+                $this->applyFilters($result);
+            }
         }
         foreach ($this->postFilters as $postFilter) {
             if ($returned = $postFilter->apply($results)) {
