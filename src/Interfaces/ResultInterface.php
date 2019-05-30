@@ -7,7 +7,7 @@ use IteratorAggregate;
 use WScore\Validation\Locale\Messages;
 use WScore\Validation\Validators\ResultList;
 
-interface ResultInterface extends IteratorAggregate
+interface ResultInterface extends IteratorAggregate, \ArrayAccess
 {
     /**
      * @param string $failedAt
@@ -96,4 +96,10 @@ interface ResultInterface extends IteratorAggregate
      * @return  void
      */
     public function finalize(Messages $messages = null, $final_error_message = '');
+
+    /**
+     * @param mixed $offset
+     * @return ResultInterface
+     */
+    public function offsetGet($offset);
 }

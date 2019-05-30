@@ -208,4 +208,26 @@ abstract class AbstractResult implements ResultInterface
     {
         return $this->name;
     }
+
+    /**
+     * @param mixed $offset
+     * @return ResultInterface|Result|null
+     */
+    public function offsetGet($offset)
+    {
+        return $this->children[$offset] ?? null;
+    }
+
+    public function offsetExists($offset)
+    {
+        return array_key_exists($offset, $this->children);
+    }
+
+    public function offsetSet($offset, $value)
+    {
+    }
+
+    public function offsetUnset($offset)
+    {
+    }
 }
