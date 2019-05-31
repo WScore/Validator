@@ -70,9 +70,9 @@ class Builder
     {
         $filters = [];
         if ($this->type === 'form') {
-            return new ValidationList($this->messages);
+            return (new ValidationList($this->messages))->addFilters($this->filters);
         } elseif ($this->type === 'repeat') {
-            return new ValidationRepeat($this->messages);
+            return (new ValidationRepeat($this->messages))->addFilters($this->filters);
         }
         if ($this->multiple) {
             $v = new ValidationMultiple($this->messages);;
