@@ -62,7 +62,7 @@ class ValidatorBuilder
      */
     public function form(array $options = []): ValidationInterface
     {
-        $validation = new ValidationList($this->messages);
+        $validation = new ValidationList($this->messages, $this);
         $this::applyOptions($validation, $options);
         return $validation;
     }
