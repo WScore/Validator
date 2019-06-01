@@ -5,6 +5,8 @@ namespace WScore\Validation\Validators;
 
 use WScore\Validation\Interfaces\ResultInterface;
 use WScore\Validation\Interfaces\ValidationInterface;
+use WScore\Validation\Locale\Messages;
+use WScore\Validation\ValidatorBuilder;
 
 /**
  * validates a list of input, like form input.
@@ -14,13 +16,29 @@ use WScore\Validation\Interfaces\ValidationInterface;
 class ValidationList extends AbstractValidation
 {
     /**
+     * @var ValidatorBuilder
+     */
+    private $builder;
+
+    /**
+     * @param Messages $message
+     * @param ValidatorBuilder|null $builder
+     */
+    public function __construct(Messages $message, ValidatorBuilder $builder = null)
+    {
+        parent::__construct($message);
+        $this->builder = $builder;
+    }
+
+    /**
      * @param string $name
      * @param ValidationInterface|ValidationList $form
+     * @param array $options
      * @return $this
      */
-    public function addRepeatedForm(string $name, ValidationInterface $form)
+    public function addRepeatedForm(string $name, ValidationInterface $form, array $options = [])
     {
-        $repeat = new ValidationRepeat($this->message);
+        $repeat = $this->builder->repeat($options);
         $repeat->add('0', $form);
         $this->add($name, $repeat);
         return $this;
