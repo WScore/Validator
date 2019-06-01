@@ -6,9 +6,9 @@ namespace WScore\Validation;
 use WScore\Validation\Interfaces\ValidationInterface;
 use WScore\Validation\Locale\Messages;
 use WScore\Validation\Locale\TypeFilters;
-use WScore\Validation\Validators\Builder;
 use WScore\Validation\Validators\ValidationChain;
 use WScore\Validation\Validators\ValidationList;
+use WScore\Validation\Validators\ValidationMultiple;
 use WScore\Validation\Validators\ValidationRepeat;
 
 class ValidatorBuilder
@@ -39,7 +39,14 @@ class ValidatorBuilder
      */
     public function __invoke(array $options = []): ValidationInterface
     {
-        return Builder::forge($this->messages, $this->typeFilter, $options);
+        $type = $options['type'] ?? null;
+        if ($type === 'form') {
+            return $this->form($options);
+        }
+        if ($type === 'repeat') {
+            return $this->repeat($options);
+        }
+        return $this->chain($options);
     }
 
     /**
@@ -48,8 +55,9 @@ class ValidatorBuilder
      */
     public function form(array $options = []): ValidationInterface
     {
-        $options['type'] = 'form';
-        return Builder::forge($this->messages, $this->typeFilter, $options);
+        $validation = new ValidationList($this->messages);
+        $this->applyOptions($validation, $options);
+        return $validation;
     }
 
     /**
@@ -58,8 +66,25 @@ class ValidatorBuilder
      */
     public function repeat(array $options = []): ValidationInterface
     {
-        $options['type'] = 'repeat';
-        return Builder::forge($this->messages, $this->typeFilter, $options);
+        $validator = new ValidationRepeat($this->messages);
+        $this->applyOptions($validator, $options);
+        return $validator;
+    }
+
+    public function applyOptions(ValidationInterface $validator, array $options): ValidationInterface
+    {
+        unset($options['type']);
+        unset($options['multiple']);
+        $message = $options['errorMessage'] ?? $options['message'] ?? null;
+        if ($message && is_string($message)) {
+            $validator->setErrorMessage($message);
+        }
+        $filters = $options['filters'] ?? [];
+        unset($options['filters']);
+        $filters = array_merge($filters, $options);
+        $validator->addFilters($filters);
+
+        return $validator;
     }
 
     /**
@@ -68,7 +93,34 @@ class ValidatorBuilder
      */
     public function chain(array $options = []): ValidationInterface
     {
-        return Builder::forge($this->messages, $this->typeFilter, $options);
+        $validator = $this->forgeValidator($options);
+        $filters = $this->getFilters($options);
+        $options = array_merge($filters, $options);
+        return $this->applyOptions($validator, $options);
+    }
+
+    private function forgeValidator(array $options)
+    {
+        $multiple = $options['multiple'] ?? false;
+        if ($multiple) {
+            $validator = new ValidationMultiple($this->messages);;
+            if (is_array($multiple)) {
+                $validator->getPostFilters()->addFilters($multiple);
+            }
+        } else {
+            $validator = new ValidationChain($this->messages);
+        }
+
+        return $validator;
+    }
+
+    private function getFilters(array $options)
+    {
+        $type = $options['type'] ?? null;
+        if ($type) {
+            return $this->typeFilter->getFilters($type);
+        }
+        return [];
     }
 
     /**
@@ -83,7 +135,7 @@ class ValidatorBuilder
     private function buildType(array $options, string $type)
     {
         $options['type'] = $type;
-        return Builder::forge($this->messages, $this->typeFilter, $options);
+        return $this->__invoke($options);
     }
 
     /**
