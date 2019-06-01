@@ -11,6 +11,13 @@ use WScore\Validation\Validators\ValidationList;
 use WScore\Validation\Validators\ValidationMultiple;
 use WScore\Validation\Validators\ValidationRepeat;
 
+/**
+ * @method ValidationInterface text(array $options = [])
+ * @method ValidationInterface email(array $options = [])
+ * @method ValidationInterface digits(array $options = [])
+ * @method ValidationInterface integer(array $options = [])
+ * @method ValidationInterface date(array $options = [])
+ */
 class ValidatorBuilder
 {
     /**
@@ -56,7 +63,7 @@ class ValidatorBuilder
     public function form(array $options = []): ValidationInterface
     {
         $validation = new ValidationList($this->messages);
-        $this->applyOptions($validation, $options);
+        $this::applyOptions($validation, $options);
         return $validation;
     }
 
@@ -67,11 +74,11 @@ class ValidatorBuilder
     public function repeat(array $options = []): ValidationInterface
     {
         $validator = new ValidationRepeat($this->messages);
-        $this->applyOptions($validator, $options);
+        $this::applyOptions($validator, $options);
         return $validator;
     }
 
-    public function applyOptions(ValidationInterface $validator, array $options): ValidationInterface
+    public static function applyOptions(ValidationInterface $validator, array $options): ValidationInterface
     {
         unset($options['type']);
         unset($options['multiple']);
@@ -96,7 +103,7 @@ class ValidatorBuilder
         $validator = $this->forgeValidator($options);
         $filters = $this->getFilters($options);
         $options = array_merge($filters, $options);
-        return $this->applyOptions($validator, $options);
+        return $this::applyOptions($validator, $options);
     }
 
     private function forgeValidator(array $options)
@@ -123,50 +130,10 @@ class ValidatorBuilder
         return [];
     }
 
-    /**
-     * @param array $options
-     * @return ValidationChain|ValidationRepeat
-     */
-    public function text(array $options = []): ValidationInterface
+    public function __call($name, $arguments)
     {
-        return $this->buildType($options, 'text');
-    }
-
-    private function buildType(array $options, string $type)
-    {
-        $options['type'] = $type;
-        return $this->__invoke($options);
-    }
-
-    /**
-     * @param array $options
-     * @return ValidationChain|ValidationRepeat
-     */
-    public function email(array $options = []): ValidationInterface
-    {
-        return $this->buildType($options, 'email');
-    }
-
-    /**
-     * @param array $options
-     * @return ValidationChain|ValidationRepeat
-     */
-    public function integer(array $options = []): ValidationInterface
-    {
-        return $this->buildType($options, 'integer');
-    }
-
-    /**
-     * @param array $options
-     * @return ValidationChain|ValidationRepeat
-     */
-    public function date(array $options = []): ValidationInterface
-    {
-        return $this->buildType($options, 'date');
-    }
-
-    public function digits(array $options = []): ValidationInterface
-    {
-        return $this->buildType($options, 'digits');
+        $options = (array) ($arguments[0] ?? []);
+        $options['type'] = $name;
+        return $this->chain($options);
     }
 }
