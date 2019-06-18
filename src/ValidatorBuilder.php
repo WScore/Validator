@@ -83,6 +83,8 @@ class ValidatorBuilder
         unset($options['type']);
         unset($options['multiple']);
         $message = $options['errorMessage'] ?? $options['message'] ?? null;
+        unset($options['errorMessage']);
+        unset($options['message']);
         if ($message && is_string($message)) {
             $validator->setErrorMessage($message);
         }
