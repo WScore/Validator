@@ -46,7 +46,7 @@ final class ValidateMbString extends AbstractFilter
      */
     public function apply(ResultInterface $input): ?ResultInterface
     {
-        $value = $input->value();
+        $value = (string) $input->value();
         if ($bad = $this->checkUtf8($input, $this->max)) {
             return $bad;
         }
