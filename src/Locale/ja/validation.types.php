@@ -32,6 +32,11 @@ return [
         ValidateDateTime::class,
         DefaultValue::class => ['default' => null],
     ],
+    'datetime' => [
+        ValidateMbString::class => [ValidateMbString::TYPE => ValidateMbString::MB_HANKAKU],
+        ValidateDateTime::class,
+        DefaultValue::class => ['default' => null],
+    ],
     'month' => [
         ValidateMbString::class => [ValidateMbString::TYPE => ValidateMbString::MB_HANKAKU],
         ValidateDateTime::class,
@@ -52,6 +57,4 @@ return [
         ValidateMatch::class => [ValidateMatch::TYPE => ValidateMatch::URL],
         DefaultValue::class => ['default' => ''],
     ],
-    'datetime' => [],
-    'YearMonth' => [],
 ];

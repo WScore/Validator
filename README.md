@@ -278,6 +278,14 @@ t.b.w.
   - ValidateDateTime
   - DefaultValue: NULL
 
+### datetime
+
+- Validates a valid UTF-8 date format string, 
+  and convert to a `\DateTimeImmutable` object. 
+- predefined filters: 
+  - ValidateDateTime
+  - DefaultValue: NULL
+
 ### month
 
 - Validates a valid UTF-8 date format string, 
@@ -294,8 +302,6 @@ t.b.w.
   - ValidateDateTime
   - DefaultValue: empty string
 
-### datetime
-### month
 ### time
 ### timeHi
 ### dateYMD

@@ -29,6 +29,10 @@ return [
         ValidateDateTime::class,
         DefaultValue::class => ['default' => null],
     ],
+    'datetime' => [
+        ValidateDateTime::class,
+        DefaultValue::class => ['default' => null],
+    ],
     'month' => [
         ValidateDateTime::class,
         DefaultValue::class => ['default' => null],
@@ -45,6 +49,4 @@ return [
         ValidateMatch::class => [ValidateMatch::TYPE => ValidateMatch::URL],
         DefaultValue::class => ['default' => ''],
     ],
-    'datetime' => [],
-    'YearMonth' => [],
 ];
