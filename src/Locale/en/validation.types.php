@@ -29,6 +29,10 @@ return [
         ValidateDateTime::class,
         DefaultValue::class => ['default' => null],
     ],
+    'month' => [
+        ValidateDateTime::class,
+        DefaultValue::class => ['default' => null],
+    ],
     'email' => [
         ValidateMatch::class => ['type' => ValidateMatch::EMAIL],
         DefaultValue::class => ['default' => ''],

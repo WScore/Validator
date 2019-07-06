@@ -32,6 +32,11 @@ return [
         ValidateDateTime::class,
         DefaultValue::class => ['default' => null],
     ],
+    'month' => [
+        ValidateMbString::class => [ValidateMbString::TYPE => ValidateMbString::MB_HANKAKU],
+        ValidateDateTime::class,
+        DefaultValue::class => ['default' => null],
+    ],
     'email' => [
         ValidateMbString::class => [ValidateMbString::TYPE => ValidateMbString::MB_HANKAKU],
         ValidateMatch::class => ['type' => ValidateMatch::EMAIL],
