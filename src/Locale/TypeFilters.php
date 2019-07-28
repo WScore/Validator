@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace WScore\Validation\Locale;
+namespace WScore\Validator\Locale;
 
 use InvalidArgumentException;
-use WScore\Validation\Interfaces\FilterInterface;
+use WScore\Validator\Interfaces\FilterInterface;
 
 class TypeFilters
 {

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace tests\Result;
 
-use WScore\Validation\Validators\Result;
+use WScore\Validator\Validators\Result;
 use PHPUnit\Framework\TestCase;
 
 class ResultTest extends TestCase

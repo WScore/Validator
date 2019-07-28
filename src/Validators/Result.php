@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace WScore\Validation\Validators;
+namespace WScore\Validator\Validators;
 
-use WScore\Validation\Locale\Messages;
+use WScore\Validator\Locale\Messages;
 
 class Result extends AbstractResult
 {

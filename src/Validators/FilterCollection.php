@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace WScore\Validation\Validators;
+namespace WScore\Validator\Validators;
 
 use ArrayIterator;
 use Traversable;
-use WScore\Validation\Interfaces\FilterCollectionInterface;
-use WScore\Validation\Interfaces\FilterInterface;
+use WScore\Validator\Interfaces\FilterCollectionInterface;
+use WScore\Validator\Interfaces\FilterInterface;
 
 class FilterCollection implements FilterCollectionInterface
 {

@@ -3,9 +3,9 @@
 namespace tests\Filters;
 
 use PHPUnit\Framework\TestCase;
-use WScore\Validation\Filters\ValidateFloat;
-use WScore\Validation\Locale\Messages;
-use WScore\Validation\Validators\Result;
+use WScore\Validator\Filters\ValidateFloat;
+use WScore\Validator\Locale\Messages;
+use WScore\Validator\Validators\Result;
 
 class FilterFloatTest extends TestCase
 {

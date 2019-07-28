@@ -2,9 +2,9 @@
 
 namespace tests\Filters;
 
-use WScore\Validation\Filters\DefaultValue;
+use WScore\Validator\Filters\DefaultValue;
 use PHPUnit\Framework\TestCase;
-use WScore\Validation\Validators\Result;
+use WScore\Validator\Validators\Result;
 
 class DefaultValueTest extends TestCase
 {

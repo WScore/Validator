@@ -5,10 +5,10 @@ namespace tests\Validation;
 
 use PHPUnit\Framework\TestCase;
 use tests\Validation\Filters\AddPostfix;
-use WScore\Validation\Filters\Required;
-use WScore\Validation\Locale\Messages;
-use WScore\Validation\Validators\ValidationChain;
-use WScore\Validation\Validators\ValidationList;
+use WScore\Validator\Filters\Required;
+use WScore\Validator\Locale\Messages;
+use WScore\Validator\Validators\ValidationChain;
+use WScore\Validator\Validators\ValidationList;
 
 class ValidationListTest extends TestCase
 {

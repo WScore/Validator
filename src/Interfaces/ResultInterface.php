@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace WScore\Validation\Interfaces;
+namespace WScore\Validator\Interfaces;
 
 use IteratorAggregate;
-use WScore\Validation\Locale\Messages;
-use WScore\Validation\Validators\ResultList;
+use WScore\Validator\Locale\Messages;
+use WScore\Validator\Validators\ResultList;
 
 interface ResultInterface extends IteratorAggregate, \ArrayAccess
 {

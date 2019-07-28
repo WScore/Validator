@@ -1,5 +1,5 @@
 {
-    "name": "wscore/validation",
+    "name": "wscore/validator",
     "description": "Validation and filtration for values such as form input.",
     "type": "library",
     "license": "MIT",
@@ -11,7 +11,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "WScore\\Validation\\": "src/"
+            "WScore\\Validator\\": "src/"
         }
     },
     "autoload-dev": {

@@ -3,15 +3,15 @@
 namespace tests;
 
 use PHPUnit\Framework\TestCase;
-use WScore\Validation\Filters\ConfirmWith;
-use WScore\Validation\Filters\FilterArrayToValue;
-use WScore\Validation\Filters\InArray;
-use WScore\Validation\Filters\Required;
-use WScore\Validation\Filters\StringCases;
-use WScore\Validation\Filters\StringLength;
-use WScore\Validation\Interfaces\ValidationInterface;
-use WScore\Validation\ValidatorBuilder;
-use WScore\Validation\Validators\ValidationList;
+use WScore\Validator\Filters\ConfirmWith;
+use WScore\Validator\Filters\FilterArrayToValue;
+use WScore\Validator\Filters\InArray;
+use WScore\Validator\Filters\Required;
+use WScore\Validator\Filters\StringCases;
+use WScore\Validator\Filters\StringLength;
+use WScore\Validator\Interfaces\ValidationInterface;
+use WScore\Validator\ValidatorBuilder;
+use WScore\Validator\Validators\ValidationList;
 
 class RealCaseTest extends TestCase
 {

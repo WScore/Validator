@@ -1,8 +1,8 @@
 <?php
 namespace tests\Validation\Filters;
 
-use WScore\Validation\Filters\AbstractFilter;
-use WScore\Validation\Interfaces\ResultInterface;
+use WScore\Validator\Filters\AbstractFilter;
+use WScore\Validator\Interfaces\ResultInterface;
 
 class AddPostfix extends AbstractFilter
 {

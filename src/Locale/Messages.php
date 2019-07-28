@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WScore\Validation\Locale;
+namespace WScore\Validator\Locale;
 
 use InvalidArgumentException;
 

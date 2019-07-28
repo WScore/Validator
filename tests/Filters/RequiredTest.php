@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace tests\Filters;
 
-use WScore\Validation\Filters\RegEx;
-use WScore\Validation\Filters\Required;
+use WScore\Validator\Filters\RegEx;
+use WScore\Validator\Filters\Required;
 use PHPUnit\Framework\TestCase;
-use WScore\Validation\Locale\Messages;
-use WScore\Validation\ValidatorBuilder;
-use WScore\Validation\Validators\Result;
+use WScore\Validator\Locale\Messages;
+use WScore\Validator\ValidatorBuilder;
+use WScore\Validator\Validators\Result;
 
 class RequiredTest extends TestCase
 {

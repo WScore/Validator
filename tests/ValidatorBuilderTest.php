@@ -3,9 +3,9 @@
 namespace tests;
 
 use tests\Validation\Filters\AddPostfix;
-use WScore\Validation\Filters\Required;
-use WScore\Validation\Filters\StringLength;
-use WScore\Validation\ValidatorBuilder;
+use WScore\Validator\Filters\Required;
+use WScore\Validator\Filters\StringLength;
+use WScore\Validator\ValidatorBuilder;
 use PHPUnit\Framework\TestCase;
 
 class ValidatorBuilderTest extends TestCase

@@ -2,8 +2,8 @@
 namespace tests\Result;
 
 use PHPUnit\Framework\TestCase;
-use WScore\Validation\Validators\Result;
-use WScore\Validation\Validators\ResultList;
+use WScore\Validator\Validators\Result;
+use WScore\Validator\Validators\ResultList;
 
 class ResultSerializeTest extends TestCase
 {

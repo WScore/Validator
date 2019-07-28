@@ -3,10 +3,10 @@
 namespace tests\Filters;
 
 use PHPUnit\Framework\TestCase;
-use WScore\Validation\Filters\Nullable;
-use WScore\Validation\Filters\StringLength;
-use WScore\Validation\Interfaces\ValidationInterface;
-use WScore\Validation\ValidatorBuilder;
+use WScore\Validator\Filters\Nullable;
+use WScore\Validator\Filters\StringLength;
+use WScore\Validator\Interfaces\ValidationInterface;
+use WScore\Validator\ValidatorBuilder;
 
 class NullableTest extends TestCase
 {
