@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use tests\Validation\Filters\AddPostfix;
-use WScore\Validation\Filters\Required;
-use WScore\Validation\Locale\Messages;
-use WScore\Validation\ValidatorBuilder;
-use WScore\Validation\Validators\Result;
-use WScore\Validation\Validators\ValidationChain;
+use WScore\Validator\Filters\Required;
+use WScore\Validator\Locale\Messages;
+use WScore\Validator\ValidatorBuilder;
+use WScore\Validator\Validators\Result;
+use WScore\Validator\Validators\ValidationChain;
 
 class ValidationChainTest extends TestCase
 {

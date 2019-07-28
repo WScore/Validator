@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace WScore\Validation\Interfaces;
+namespace WScore\Validator\Interfaces;
 
-use WScore\Validation\Validators\ValidationList;
+use WScore\Validator\Validators\ValidationList;
 
 interface ValidationInterface
 {

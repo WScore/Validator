@@ -4,15 +4,15 @@
  * define default error message for each filter.
  */
 
-use WScore\Validation\Filters\ConfirmWith;
-use WScore\Validation\Filters\ValidateMatch;
-use WScore\Validation\Filters\Required;
-use WScore\Validation\Filters\StringLength;
-use WScore\Validation\Filters\ValidateDateTime;
-use WScore\Validation\Filters\ValidateFloat;
-use WScore\Validation\Filters\ValidateInteger;
-use WScore\Validation\Filters\ValidateUtf8String;
-use WScore\Validation\Locale\Messages;
+use WScore\Validator\Filters\ConfirmWith;
+use WScore\Validator\Filters\ValidateMatch;
+use WScore\Validator\Filters\Required;
+use WScore\Validator\Filters\StringLength;
+use WScore\Validator\Filters\ValidateDateTime;
+use WScore\Validator\Filters\ValidateFloat;
+use WScore\Validator\Filters\ValidateInteger;
+use WScore\Validator\Filters\ValidateUtf8String;
+use WScore\Validator\Locale\Messages;
 
 return [
     // a fall back error message.

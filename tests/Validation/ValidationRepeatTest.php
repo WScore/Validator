@@ -5,8 +5,8 @@ namespace tests\Validation;
 
 use PHPUnit\Framework\TestCase;
 use tests\Validation\Filters\AddPostfix;
-use WScore\Validation\ValidatorBuilder;
-use WScore\Validation\Validators\ValidationRepeat;
+use WScore\Validator\ValidatorBuilder;
+use WScore\Validator\Validators\ValidationRepeat;
 
 class ValidationRepeatTest extends TestCase
 {

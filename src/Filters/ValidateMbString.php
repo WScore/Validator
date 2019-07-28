@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace WScore\Validation\Filters;
+namespace WScore\Validator\Filters;
 
-use WScore\Validation\Interfaces\FilterInterface;
-use WScore\Validation\Interfaces\ResultInterface;
+use WScore\Validator\Interfaces\FilterInterface;
+use WScore\Validator\Interfaces\ResultInterface;
 
 final class ValidateMbString extends AbstractFilter
 {

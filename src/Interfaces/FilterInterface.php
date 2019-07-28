@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WScore\Validation\Interfaces;
+namespace WScore\Validator\Interfaces;
 
 /**
  * define filter for $input values.

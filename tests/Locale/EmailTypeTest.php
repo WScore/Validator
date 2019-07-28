@@ -3,9 +3,9 @@
 namespace tests\Locale;
 
 use PHPUnit\Framework\TestCase;
-use WScore\Validation\Filters\Required;
-use WScore\Validation\Interfaces\ValidationInterface;
-use WScore\Validation\ValidatorBuilder;
+use WScore\Validator\Filters\Required;
+use WScore\Validator\Interfaces\ValidationInterface;
+use WScore\Validator\ValidatorBuilder;
 
 class EmailTypeTest extends TestCase
 {

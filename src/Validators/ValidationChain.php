@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace WScore\Validation\Validators;
+namespace WScore\Validator\Validators;
 
-use WScore\Validation\Interfaces\ResultInterface;
+use WScore\Validator\Interfaces\ResultInterface;
 
 class ValidationChain extends AbstractValidation
 {

@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace tests\Validation;
 
 use tests\Validation\Filters\AddPostfix;
-use WScore\Validation\Filters\Required;
-use WScore\Validation\Filters\ValidateInteger;
-use WScore\Validation\Interfaces\ValidationInterface;
-use WScore\Validation\ValidatorBuilder;
+use WScore\Validator\Filters\Required;
+use WScore\Validator\Filters\ValidateInteger;
+use WScore\Validator\Interfaces\ValidationInterface;
+use WScore\Validator\ValidatorBuilder;
 use PHPUnit\Framework\TestCase;
-use WScore\Validation\Validators\ValidationMultiple;
-use WScore\Validation\Validators\ValidationRepeat;
+use WScore\Validator\Validators\ValidationMultiple;
+use WScore\Validator\Validators\ValidationRepeat;
 
 class ValidationMultipleTest extends TestCase
 {

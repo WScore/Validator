@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace WScore\Validation\Validators;
+namespace WScore\Validator\Validators;
 
-use WScore\Validation\Interfaces\ResultInterface;
-use WScore\Validation\Interfaces\ValidationInterface;
-use WScore\Validation\Locale\Messages;
-use WScore\Validation\ValidatorBuilder;
+use WScore\Validator\Interfaces\ResultInterface;
+use WScore\Validator\Interfaces\ValidationInterface;
+use WScore\Validator\Locale\Messages;
+use WScore\Validator\ValidatorBuilder;
 
 /**
  * validates a list of input, like form input.

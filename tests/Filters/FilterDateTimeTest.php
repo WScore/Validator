@@ -3,10 +3,10 @@
 namespace tests\Filters;
 
 use DateTimeImmutable;
-use WScore\Validation\Filters\ValidateDateTime;
+use WScore\Validator\Filters\ValidateDateTime;
 use PHPUnit\Framework\TestCase;
-use WScore\Validation\Locale\Messages;
-use WScore\Validation\Validators\Result;
+use WScore\Validator\Locale\Messages;
+use WScore\Validator\Validators\Result;
 
 class FilterDateTimeTest extends TestCase
 {

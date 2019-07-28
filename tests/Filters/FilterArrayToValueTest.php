@@ -2,10 +2,10 @@
 
 namespace tests\Filters;
 
-use WScore\Validation\Filters\FilterArrayToValue;
+use WScore\Validator\Filters\FilterArrayToValue;
 use PHPUnit\Framework\TestCase;
-use WScore\Validation\Filters\ValidateUtf8String;
-use WScore\Validation\ValidatorBuilder;
+use WScore\Validator\Filters\ValidateUtf8String;
+use WScore\Validator\ValidatorBuilder;
 
 class FilterArrayToValueTest extends TestCase
 {

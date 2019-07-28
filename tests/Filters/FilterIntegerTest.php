@@ -3,9 +3,9 @@
 namespace tests\Filters;
 
 use PHPUnit\Framework\TestCase;
-use WScore\Validation\Filters\ValidateInteger;
-use WScore\Validation\Locale\Messages;
-use WScore\Validation\Validators\Result;
+use WScore\Validator\Filters\ValidateInteger;
+use WScore\Validator\Locale\Messages;
+use WScore\Validator\Validators\Result;
 
 class FilterIntegerTest extends TestCase
 {

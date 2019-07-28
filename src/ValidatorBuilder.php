@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace WScore\Validation;
+namespace WScore\Validator;
 
-use WScore\Validation\Interfaces\ValidationInterface;
-use WScore\Validation\Locale\Messages;
-use WScore\Validation\Locale\TypeFilters;
-use WScore\Validation\Validators\ValidationChain;
-use WScore\Validation\Validators\ValidationList;
-use WScore\Validation\Validators\ValidationMultiple;
-use WScore\Validation\Validators\ValidationRepeat;
+use WScore\Validator\Interfaces\ValidationInterface;
+use WScore\Validator\Locale\Messages;
+use WScore\Validator\Locale\TypeFilters;
+use WScore\Validator\Validators\ValidationChain;
+use WScore\Validator\Validators\ValidationList;
+use WScore\Validator\Validators\ValidationMultiple;
+use WScore\Validator\Validators\ValidationRepeat;
 
 /**
  * @method ValidationInterface text(array $options = [])

@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace tests\Filters;
 
-use WScore\Validation\Filters\Required;
-use WScore\Validation\Filters\RequiredIf;
+use WScore\Validator\Filters\Required;
+use WScore\Validator\Filters\RequiredIf;
 use PHPUnit\Framework\TestCase;
-use WScore\Validation\Validators\Result;
-use WScore\Validation\Validators\ResultList;
+use WScore\Validator\Validators\Result;
+use WScore\Validator\Validators\ResultList;
 
 class RequiredIfTest extends TestCase
 {

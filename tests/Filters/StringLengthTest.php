@@ -3,9 +3,9 @@
 namespace tests\Filters;
 
 use PHPUnit\Framework\TestCase;
-use WScore\Validation\Filters\StringLength;
-use WScore\Validation\Locale\Messages;
-use WScore\Validation\Validators\Result;
+use WScore\Validator\Filters\StringLength;
+use WScore\Validator\Locale\Messages;
+use WScore\Validator\Validators\Result;
 
 class StringLengthTest extends TestCase
 {

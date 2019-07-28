@@ -2,11 +2,11 @@
 
 namespace tests\Filters;
 
-use WScore\Validation\Filters\ConfirmWith;
+use WScore\Validator\Filters\ConfirmWith;
 use PHPUnit\Framework\TestCase;
-use WScore\Validation\Interfaces\ValidationInterface;
-use WScore\Validation\ValidatorBuilder;
-use WScore\Validation\Validators\ValidationList;
+use WScore\Validator\Interfaces\ValidationInterface;
+use WScore\Validator\ValidatorBuilder;
+use WScore\Validator\Validators\ValidationList;
 
 class ConfirmWithTest extends TestCase
 {

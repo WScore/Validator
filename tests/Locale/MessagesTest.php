@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-use WScore\Validation\Locale\Messages;
+use WScore\Validator\Locale\Messages;
 use PHPUnit\Framework\TestCase;
-use WScore\Validation\Validators\Result;
+use WScore\Validator\Validators\Result;
 
 class MessagesTest extends TestCase
 {

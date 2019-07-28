@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace WScore\Validation\Validators;
+namespace WScore\Validator\Validators;
 
-use WScore\Validation\Filters\Required;
-use WScore\Validation\Interfaces\FilterInterface;
-use WScore\Validation\Interfaces\ResultInterface;
+use WScore\Validator\Filters\Required;
+use WScore\Validator\Interfaces\FilterInterface;
+use WScore\Validator\Interfaces\ResultInterface;
 
 /**
  * validates an repeated validation for one-to-many type forms.
