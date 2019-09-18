@@ -14,7 +14,7 @@ use WScore\Validator\Filters\ValidateMbString;
 
 return [
     'text' => [
-        ValidateMbString::class => [ValidateMbString::TYPE => ValidateMbString::MB_ZENKAKU],
+        ValidateMbString::class => [ValidateMbString::TYPE => ValidateMbString::MB_ZEN_KANA],
         DefaultValue::class => ['default' => ''],
     ],
     'integer' => [
